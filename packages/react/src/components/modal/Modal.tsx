@@ -38,7 +38,7 @@ export function Modal(props: ModalComponentProps) {
     visible,
     defaultVisible,
     title,
-    width,
+    width = 520,
     closable = true,
     maskClosable = true,
     closeOnEsc = true,

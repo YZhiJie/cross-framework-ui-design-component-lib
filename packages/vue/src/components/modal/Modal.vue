@@ -1,10 +1,10 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { nextTick, onUnmounted, ref, useTemplateRef, watch, watchEffect } from 'vue';
 import { createModalLogic } from '@xui/shared';
 import type { ModalProps } from '@xui/core';
 
 const {
-  title = '',
+  title,
   width = 520,
   closable = true,
   maskClosable = true,
@@ -81,6 +81,10 @@ watch(
   },
 );
 
+const open = () => {
+  logic.open();
+};
+
 const close = () => {
   logic.close();
 };
@@ -96,6 +100,10 @@ const handleCancel = () => {
 const handleMaskClick = () => {
   logic.handleMaskClick();
 };
+
+// 暴露命令式 open/close（与 React 适配层的 ModalRef 对齐，
+// 使契约中的 open 事件可达）
+defineExpose({ open, close });
 </script>
 
 <template>

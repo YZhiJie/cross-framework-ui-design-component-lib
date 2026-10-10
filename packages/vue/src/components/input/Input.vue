@@ -1,11 +1,11 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { onUnmounted, ref, useId, useTemplateRef, watchEffect } from 'vue';
 import { createInputLogic } from '@xui/shared';
 import type { InputProps } from '@xui/core';
 
 const {
   type = 'text',
-  placeholder = '',
+  placeholder,
   disabled = false,
   readonly = false,
   maxLength,
