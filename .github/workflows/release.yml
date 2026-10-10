@@ -1,7 +1,10 @@
 name: Release
 
+# CI 成功后才触发 Release，避免每次 push 重复执行
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
 
 concurrency:
@@ -10,6 +13,8 @@ concurrency:
 
 jobs:
   release:
+    # 仅在 CI 成功时执行（跳过失败/取消的 CI run）
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -21,12 +26,11 @@ jobs:
           fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
-        with:
-          version: 11
+        # 版本由 package.json 的 packageManager 字段决定
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
@@ -42,8 +46,8 @@ jobs:
         with:
           publish: pnpm changeset publish
           version: pnpm changeset version
-          commit: 'chore: release packages'
-          title: 'chore: release packages'
+          commit: "chore: release packages"
+          title: "chore: release packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
