@@ -148,17 +148,17 @@ export function Modal(props: ModalComponentProps) {
           <div className="xui-modal__footer">
             <button
               type="button"
-              className={cn('xui-button', 'xui-button--default')}
+              className={cn('xui-button', 'xui-button--md')}
               onClick={handleCancel}
             >
-              Cancel
+              取消
             </button>
             <button
               type="button"
-              className={cn('xui-button', 'xui-button--primary')}
+              className={cn('xui-button', 'xui-button--primary', 'xui-button--md')}
               onClick={handleOk}
             >
-              OK
+              确认
             </button>
           </div>
         )}

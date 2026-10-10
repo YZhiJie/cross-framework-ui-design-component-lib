@@ -161,7 +161,7 @@ describe('Modal 组件', () => {
   });
 
   describe('确认与取消', () => {
-    it('点击 OK 触发 onOk 并自动关闭', () => {
+    it('点击确认触发 onOk 并自动关闭', () => {
       const onOk = vi.fn();
       const onClose = vi.fn();
       render(
@@ -169,13 +169,13 @@ describe('Modal 组件', () => {
           内容
         </Modal>,
       );
-      fireEvent.click(screen.getByRole('button', { name: 'OK' }));
+      fireEvent.click(screen.getByRole('button', { name: '确认' }));
       expect(onOk).toHaveBeenCalledTimes(1);
       expect(onClose).toHaveBeenCalledTimes(1);
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
 
-    it('点击 Cancel 触发 onCancel 并自动关闭', () => {
+    it('点击取消触发 onCancel 并自动关闭', () => {
       const onCancel = vi.fn();
       const onClose = vi.fn();
       render(
@@ -183,7 +183,7 @@ describe('Modal 组件', () => {
           内容
         </Modal>,
       );
-      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+      fireEvent.click(screen.getByRole('button', { name: '取消' }));
       expect(onCancel).toHaveBeenCalledTimes(1);
       expect(onClose).toHaveBeenCalledTimes(1);
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
@@ -210,14 +210,14 @@ describe('Modal 组件', () => {
       expect(screen.getByText('自定义标题')).toBeInTheDocument();
     });
 
-    it('renderFooter 覆盖默认 OK/Cancel 底部', () => {
+    it('renderFooter 覆盖默认确认/取消底部', () => {
       render(
         <Modal visible renderFooter={() => <div>自定义底部</div>}>
           内容
         </Modal>,
       );
-      expect(screen.queryByRole('button', { name: 'OK' })).not.toBeInTheDocument();
-      expect(screen.queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: '确认' })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: '取消' })).not.toBeInTheDocument();
       expect(screen.getByText('自定义底部')).toBeInTheDocument();
     });
   });
