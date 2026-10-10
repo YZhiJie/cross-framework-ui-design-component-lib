@@ -8,7 +8,7 @@
     "build": "vite build",
     "type-check": "tsc --noEmit",
     "preview": "vite preview",
-    "lint": "eslint src --ext .ts,.tsx"
+    "lint": "eslint \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "react": "^19.0.0",

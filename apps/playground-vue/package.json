@@ -8,7 +8,7 @@
     "build": "vite build",
     "type-check": "vue-tsc --noEmit",
     "preview": "vite preview",
-    "lint": "eslint src --ext .ts,.vue"
+    "lint": "eslint \"src/**/*.{ts,vue}\""
   },
   "dependencies": {
     "vue": "^3.4.0",

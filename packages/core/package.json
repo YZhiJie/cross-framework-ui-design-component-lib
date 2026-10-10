@@ -33,7 +33,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
-    "lint": "eslint src --ext .ts",
+    "lint": "eslint \"src/**/*.ts\"",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

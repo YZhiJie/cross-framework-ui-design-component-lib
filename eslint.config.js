@@ -7,7 +7,10 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import prettierPlugin from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
 
-export default [
+export default tseslint.config(
+  {
+    ignores: ['dist/**', 'node_modules/**', 'coverage/**', '.turbo/**', '**/*.d.ts'],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -48,12 +51,8 @@ export default [
       prettier: prettierPlugin,
     },
     rules: {
-      ...vuePlugin.configs['vue3-recommended'].rules,
       'prettier/prettier': 'warn',
     },
   },
   prettierConfig,
-  {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**', '.turbo/**', '**/*.d.ts'],
-  },
-];
+);
