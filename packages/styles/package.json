@@ -1,0 +1,29 @@
+{
+  "name": "@xui/styles",
+  "version": "0.0.0",
+  "description": "跨框架组件库 - 共享样式包",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "style": "./dist/index.css",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./theme/*": "./dist/theme/*",
+    "./components/*": "./dist/components/*",
+    "./reset.css": "./dist/reset.css",
+    "./index.css": "./dist/index.css"
+  },
+  "sideEffects": ["**/*.css", "**/*.scss"],
+  "files": ["dist"],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "lint": "stylelint \"src/**/*.scss\""
+  },
+  "devDependencies": {
+    "sass": "^1.70.0"
+  }
+}

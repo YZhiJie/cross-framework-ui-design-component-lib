@@ -1,0 +1,52 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import dts from 'vite-plugin-dts';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const rootDir = fileURLToPath(new URL('.', import.meta.url));
+
+export default defineConfig({
+  plugins: [
+    react({
+      // React 19: 无需自动 JSX runtime 配置，plugin-react 已支持
+    }),
+    dts({
+      entryRoot: 'src',
+      outDir: 'dist/types',
+      include: ['src/**/*.ts', 'src/**/*.tsx'],
+      exclude: ['src/**/__tests__/**'],
+    }),
+  ],
+  build: {
+    lib: {
+      entry: {
+        index: resolve(rootDir, 'src/index.ts'),
+      },
+      formats: ['es', 'cjs'],
+      fileName: (format, entryName) =>
+        `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
+    },
+    rollupOptions: {
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'use-sync-external-store',
+        '@xui/core',
+        '@xui/shared',
+        '@xui/styles',
+        '@xui/icons',
+      ],
+      output: {
+        preserveModules: true,
+        preserveModulesRoot: 'src',
+        dir: 'dist',
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+        },
+      },
+    },
+  },
+});

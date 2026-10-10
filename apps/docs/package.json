@@ -1,0 +1,28 @@
+{
+  "name": "@xui/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .ts,.tsx,.vue"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@xui/vue": "workspace:*",
+    "@xui/react": "workspace:*",
+    "@xui/core": "workspace:*",
+    "@xui/styles": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "vue-tsc": "^2.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0"
+  }
+}

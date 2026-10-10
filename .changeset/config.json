@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
+  "changelog": ["@changesets/changelog-github", { "repo": "YZhiJie/cross-framework-ui-design" }],
+  "commit": false,
+  "fixed": [],
+  "linked": [["@xui/shared", "@xui/core", "@xui/vue", "@xui/react", "@xui/styles", "@xui/icons"]],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": ["@xui/playground-vue", "@xui/playground-react", "@xui/docs", "@xui/utils"]
+}

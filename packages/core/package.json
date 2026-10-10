@@ -1,0 +1,42 @@
+{
+  "name": "@xui/core",
+  "version": "0.0.0",
+  "description": "跨框架组件库 - 框架无关抽象层",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./components/*": {
+      "types": "./dist/types/components/*/index.d.ts",
+      "import": "./dist/components/*/index.mjs",
+      "require": "./dist/components/*/index.cjs"
+    },
+    "./spec": {
+      "types": "./dist/types/spec.d.ts",
+      "import": "./dist/spec.mjs",
+      "require": "./dist/spec.cjs"
+    },
+    "./types": {
+      "types": "./dist/types/types.d.ts",
+      "import": "./dist/types.mjs",
+      "require": "./dist/types.cjs"
+    }
+  },
+  "sideEffects": false,
+  "files": ["dist"],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "lint": "eslint src --ext .ts",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@xui/shared": "workspace:*"
+  }
+}

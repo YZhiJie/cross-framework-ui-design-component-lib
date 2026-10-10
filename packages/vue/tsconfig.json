@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": ".",
+    "types": ["vue"],
+    "paths": {
+      "@xui/shared": ["../shared/src/index.ts"],
+      "@xui/shared/*": ["../shared/src/*"],
+      "@xui/core": ["../core/src/index.ts"],
+      "@xui/core/*": ["../core/src/*"],
+      "@xui/styles": ["../styles/src/index.ts"],
+      "@xui/icons": ["../icons/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue"],
+  "exclude": ["dist", "node_modules"]
+}

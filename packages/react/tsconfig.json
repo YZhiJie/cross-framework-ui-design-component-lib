@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": ".",
+    "types": ["react", "react-dom"],
+    "paths": {
+      "@xui/shared": ["../shared/src/index.ts"],
+      "@xui/shared/*": ["../shared/src/*"],
+      "@xui/core": ["../core/src/index.ts"],
+      "@xui/core/*": ["../core/src/*"],
+      "@xui/styles": ["../styles/src/index.ts"],
+      "@xui/icons": ["../icons/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["dist", "node_modules"]
+}

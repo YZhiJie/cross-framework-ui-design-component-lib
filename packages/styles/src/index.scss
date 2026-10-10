@@ -1,0 +1,5 @@
+// @xui/styles - 共享样式包
+// 主题 tokens + 组件样式（CSS Modules）
+// 被 @xui/vue 和 @xui/react 共同引用
+
+@use './reset.scss';

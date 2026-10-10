@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@xui/shared": ["packages/shared/src/index.ts"],
+      "@xui/shared/*": ["packages/shared/src/*"],
+      "@xui/core": ["packages/core/src/index.ts"],
+      "@xui/core/*": ["packages/core/src/*"],
+      "@xui/vue": ["packages/vue/src/index.ts"],
+      "@xui/react": ["packages/react/src/index.ts"],
+      "@xui/styles": ["packages/styles/src/index.ts"],
+      "@xui/icons": ["packages/icons/src/index.ts"]
+    }
+  },
+  "references": [
+    { "path": "packages/shared" },
+    { "path": "packages/core" },
+    { "path": "packages/vue" },
+    { "path": "packages/react" },
+    { "path": "packages/styles" },
+    { "path": "packages/icons" },
+    { "path": "packages/utils" }
+  ]
+}

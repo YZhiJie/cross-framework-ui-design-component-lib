@@ -1,0 +1,27 @@
+// 基础重置样式
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --xui-color-primary: #4f46e5;
+  --xui-color-primary-hover: #4338ca;
+  --xui-color-primary-active: #3730a3;
+  --xui-color-text: #1f2937;
+  --xui-color-text-secondary: #6b7280;
+  --xui-color-border: #d1d5db;
+  --xui-color-bg: #ffffff;
+  --xui-color-bg-disabled: #f3f4f6;
+  --xui-radius-sm: 4px;
+  --xui-radius-md: 6px;
+  --xui-radius-lg: 8px;
+  --xui-font-size-sm: 12px;
+  --xui-font-size-md: 14px;
+  --xui-font-size-lg: 16px;
+  --xui-spacing-xs: 4px;
+  --xui-spacing-sm: 8px;
+  --xui-spacing-md: 12px;
+  --xui-spacing-lg: 16px;
+}

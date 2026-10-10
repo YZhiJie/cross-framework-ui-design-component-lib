@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": ["vue"],
+    "paths": {
+      "@xui/vue": ["../../packages/vue/src/index.ts"],
+      "@xui/core": ["../../packages/core/src/index.ts"],
+      "@xui/styles": ["../../packages/styles/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue"],
+  "exclude": ["dist", "node_modules"]
+}

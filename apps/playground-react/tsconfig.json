@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": ["react", "react-dom"],
+    "paths": {
+      "@xui/react": ["../../packages/react/src/index.ts"],
+      "@xui/core": ["../../packages/core/src/index.ts"],
+      "@xui/styles": ["../../packages/styles/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["dist", "node_modules"]
+}
