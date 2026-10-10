@@ -7,12 +7,11 @@
     "baseUrl": ".",
     "types": ["react", "react-dom"],
     "paths": {
-      "@xui/shared": ["../shared/src/index.ts"],
-      "@xui/shared/*": ["../shared/src/*"],
-      "@xui/core": ["../core/src/index.ts"],
-      "@xui/core/*": ["../core/src/*"],
-      "@xui/styles": ["../styles/src/index.ts"],
-      "@xui/icons": ["../icons/src/index.ts"]
+      "@xui/shared": ["../shared/dist/types/index.d.ts"],
+      "@xui/shared/*": ["../shared/dist/types/*"],
+      "@xui/core": ["../core/dist/types/index.d.ts"],
+      "@xui/core/*": ["../core/dist/types/*"],
+      "@xui/icons": ["../icons/dist/types/index.d.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],

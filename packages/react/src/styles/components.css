@@ -1,0 +1,297 @@
+/**
+ * @xui/react 组件样式（BEM，与 Vue 版保持一致）
+ *
+ * 覆盖 Button / Input / Modal 三个组件。
+ * 修饰符采用 --variant，状态采用 .is-xxx。
+ */
+
+/* ============ Button ============ */
+.xui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  padding: 0 0.9em;
+  height: 32px;
+  border: 1px solid #d0d4dc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #303640;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s;
+}
+
+.xui-button:hover {
+  border-color: #4080ff;
+  color: #4080ff;
+}
+
+.xui-button:focus-visible {
+  outline: 2px solid #4080ff;
+  outline-offset: 1px;
+}
+
+.xui-button--primary {
+  border-color: #4080ff;
+  background-color: #4080ff;
+  color: #fff;
+}
+
+.xui-button--primary:hover {
+  background-color: #5c93ff;
+  border-color: #5c93ff;
+  color: #fff;
+}
+
+.xui-button--danger {
+  border-color: #f5222d;
+  background-color: #f5222d;
+  color: #fff;
+}
+
+.xui-button--danger:hover {
+  background-color: #ff4d4f;
+  border-color: #ff4d4f;
+  color: #fff;
+}
+
+.xui-button--link {
+  border-color: transparent;
+  background-color: transparent;
+  color: #4080ff;
+  padding: 0;
+}
+
+.xui-button--link:hover {
+  background-color: transparent;
+  border-color: transparent;
+  color: #5c93ff;
+}
+
+.xui-button--sm {
+  height: 26px;
+  padding: 0 0.6em;
+  font-size: 12px;
+}
+
+.xui-button--lg {
+  height: 40px;
+  padding: 0 1.2em;
+  font-size: 16px;
+}
+
+.xui-button.is-disabled,
+.xui-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.xui-button.is-disabled:hover {
+  border-color: #d0d4dc;
+  color: #303640;
+  background-color: #fff;
+}
+
+.xui-button--primary.is-disabled:hover {
+  background-color: #4080ff;
+  border-color: #4080ff;
+  color: #fff;
+}
+
+.xui-button.is-loading {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.xui-button.is-block {
+  display: flex;
+  width: 100%;
+}
+
+.xui-button__icon,
+.xui-button__loading-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+}
+
+.xui-button__loading-icon svg {
+  animation: xui-button-spin 0.8s linear infinite;
+}
+
+.xui-button__content {
+  display: inline-block;
+}
+
+@keyframes xui-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============ Input ============ */
+.xui-input {
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  height: 32px;
+  padding: 0 0.6em;
+  border: 1px solid #d0d4dc;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #303640;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.xui-input.is-focused {
+  border-color: #4080ff;
+  box-shadow: 0 0 0 2px rgba(64, 128, 255, 0.15);
+}
+
+.xui-input.is-disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.xui-input.is-readonly {
+  background-color: #f3f4f6;
+}
+
+.xui-input__inner {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  padding: 0;
+}
+
+.xui-input__inner::placeholder {
+  color: #a1a6b0;
+}
+
+.xui-input__inner:disabled {
+  cursor: not-allowed;
+}
+
+.xui-input__prefix,
+.xui-input__suffix {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7180;
+  font-size: 1em;
+}
+
+.xui-input__prefix {
+  margin-right: 0.4em;
+}
+
+.xui-input__suffix {
+  margin-left: 0.4em;
+}
+
+.xui-input__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.3em;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #a1a6b0;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.xui-input__clear:hover {
+  color: #303640;
+}
+
+/* ============ Modal ============ */
+.xui-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.xui-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+.xui-modal__panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.xui-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.xui-modal__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #303640;
+}
+
+.xui-modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #6b7180;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.xui-modal__close:hover {
+  color: #303640;
+  background-color: #f3f4f6;
+}
+
+.xui-modal__body {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+  font-size: 14px;
+  color: #303640;
+}
+
+.xui-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid #eef0f3;
+}

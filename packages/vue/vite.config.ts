@@ -37,6 +37,7 @@ export default defineConfig({
         preserveModules: true,
         preserveModulesRoot: 'src',
         dir: 'dist',
+        exports: 'named',
         globals: {
           vue: 'Vue',
         },

@@ -51,6 +51,7 @@ export default tseslint.config(
       prettier: prettierPlugin,
     },
     rules: {
+      'no-undef': 'off',
       'prettier/prettier': 'warn',
     },
   },
