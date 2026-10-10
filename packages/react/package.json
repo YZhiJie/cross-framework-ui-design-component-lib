@@ -1,7 +1,7 @@
 {
   "name": "@xui/react",
   "version": "0.0.0",
-  "description": "跨框架组件库 - React 17/18/19 适配层",
+  "description": "跨框架组件库 - React 19 适配层",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -32,12 +32,11 @@
     "@xui/core": "workspace:*",
     "@xui/shared": "workspace:*",
     "@xui/styles": "workspace:*",
-    "@xui/icons": "workspace:*",
-    "use-sync-external-store": "^1.2.0"
+    "@xui/icons": "workspace:*"
   },
   "peerDependencies": {
-    "react": ">=17.0.0",
-    "react-dom": ">=17.0.0"
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
   },
   "peerDependenciesMeta": {
     "react": { "optional": false },

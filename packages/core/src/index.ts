@@ -6,3 +6,12 @@
  */
 
 export const CORE_VERSION = '0.0.0';
+
+// 基础类型原语 + 组件规格契约
+export * from './types';
+export * from './spec';
+
+// 组件契约（类型 + 规格）
+export * from './components/button';
+export * from './components/input';
+export * from './components/modal';

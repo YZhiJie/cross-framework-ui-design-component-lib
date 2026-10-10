@@ -114,7 +114,7 @@ importers:
         specifier: ^19.0.0
         version: 19.3.0(react@19.3.0)
       vue:
-        specifier: ^3.4.0
+        specifier: ^3.5.0
         version: 3.5.43(typescript@5.4.2)
     devDependencies:
       '@types/react':
@@ -173,7 +173,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/vue
       vue:
-        specifier: ^3.4.0
+        specifier: ^3.5.0
         version: 3.5.43(typescript@5.4.2)
     devDependencies:
       '@vitejs/plugin-vue':
@@ -213,9 +213,6 @@ importers:
       '@xui/styles':
         specifier: workspace:*
         version: link:../styles
-      use-sync-external-store:
-        specifier: ^1.2.0
-        version: 1.7.0(react@19.3.0)
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^6.0.0
@@ -281,7 +278,7 @@ importers:
         specifier: ^0.27.0
         version: 0.27.0(@babel/parser@7.29.9)(rollup@4.64.3)(vue@3.5.43(typescript@5.4.2))
       vue:
-        specifier: ^3.4.0
+        specifier: ^3.5.0
         version: 3.5.43(typescript@5.4.2)
       vue-tsc:
         specifier: ^2.1.0
@@ -4194,11 +4191,6 @@ packages:
 
   url-parse@1.5.10:
     resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
-
-  use-sync-external-store@1.7.0:
-    resolution: {integrity: sha512-6L+EeigHMQhdaIPNIFUKwfWJSwWFQ8gJbJ2DLOs5sDIegTwR9fRxvnM3uciHKjIZhFz+KAv2emhWMRvDmMcY8A==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   use@3.1.1:
     resolution: {integrity: sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==}
@@ -8710,10 +8702,6 @@ snapshots:
     dependencies:
       querystringify: 2.2.0
       requires-port: 1.0.0
-
-  use-sync-external-store@1.7.0(react@19.3.0):
-    dependencies:
-      react: 19.3.0
 
   use@3.1.1: {}
 

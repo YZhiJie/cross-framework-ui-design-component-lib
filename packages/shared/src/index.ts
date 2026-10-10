@@ -10,3 +10,11 @@ export const SHARED_VERSION = '0.0.0';
 export function isXuiShared(): true {
   return true;
 }
+
+// 通用类型原语
+export * from './types';
+
+// 组件逻辑工厂
+export * from './components/button';
+export * from './components/input';
+export * from './components/modal';
