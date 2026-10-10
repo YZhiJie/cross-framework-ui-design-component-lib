@@ -72,6 +72,7 @@ const pushLog = (msg: string) => {
     </section>
 
     <Modal
+      ref="modalRef"
       v-model:visible="modalVisible"
       title="Hello XUI"
       :width="480"
