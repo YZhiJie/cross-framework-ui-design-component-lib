@@ -91,7 +91,7 @@ export function Button(props: ButtonComponentProps) {
         'is-loading': state.loading,
         'is-block': block,
       })}
-      disabled={state.disabled}
+      disabled={state.disabled || state.loading}
       onClick={handleClick}
     >
       {state.loading && (
@@ -113,6 +113,7 @@ export function Button(props: ButtonComponentProps) {
 function LoadingSpinner() {
   return (
     <svg
+      className="xui-button__spinner"
       viewBox="0 0 24 24"
       width="1em"
       height="1em"

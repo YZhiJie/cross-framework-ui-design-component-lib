@@ -177,6 +177,10 @@ defineExpose({ focus, blur, clear: handleClear });
   cursor: not-allowed;
 }
 
+.xui-input.is-readonly {
+  background-color: var(--xui-color-bg-disabled, #f3f4f6);
+}
+
 .xui-input__inner {
   flex: 1;
   min-width: 0;
