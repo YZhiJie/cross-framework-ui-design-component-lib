@@ -31,7 +31,7 @@ jobs:
         run: pnpm type-check
 
       - name: Test
-        run: pnpm test -- --coverage
+        run: pnpm test:coverage
 
       - name: Build
         run: pnpm build
