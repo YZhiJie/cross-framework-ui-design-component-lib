@@ -1,0 +1,39 @@
+.playground {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #1f2937;
+}
+.playground h1 {
+  font-size: 24px;
+  margin: 0 0 4px;
+}
+.playground .subtitle {
+  margin: 0 0 32px;
+  color: #6b7280;
+}
+.playground h2 {
+  font-size: 16px;
+  margin: 32px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.playground .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.playground .row > .xui-input {
+  flex: 1 1 280px;
+}
+.playground .log {
+  background: #f3f4f6;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  max-height: 180px;
+  overflow: auto;
+}

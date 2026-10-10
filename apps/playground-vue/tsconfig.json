@@ -3,7 +3,6 @@
   "compilerOptions": {
     "jsx": "preserve",
     "outDir": "dist",
-    "rootDir": "src",
     "types": ["vue"],
     "paths": {
       "@xui/vue": ["../../packages/vue/src/index.ts"],
