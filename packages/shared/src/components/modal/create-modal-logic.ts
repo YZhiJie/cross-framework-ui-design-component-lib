@@ -56,7 +56,7 @@ export function createModalLogic(
   options: ModalLogicOptions = {},
 ): ModalLogicInstance {
   const state: ModalState = {
-    visible: options.defaultVisible ?? options.visible ?? false,
+    visible: options.visible ?? options.defaultVisible ?? false,
     closable: options.closable ?? true,
   };
 
