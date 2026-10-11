@@ -36,6 +36,8 @@ if (!/^[A-Z][a-zA-Z0-9]*$/.test(raw)) fail(`"${raw}" 不是合法的 PascalCase 
 
 const Name = raw;
 const kebab = Name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+// spec 导出标识符必须为合法 camelCase（kebab 名含连字符不能用作 const 名）
+const camel = Name.charAt(0).toLowerCase() + Name.slice(1);
 const logicName = `create${Name}Logic`;
 
 for (const pkg of ['core', 'shared', 'vue', 'react']) {
@@ -122,7 +124,7 @@ import { ${logicName} } from '@xui/shared';
 import type { ComponentSpec } from '../../spec';
 import type { ${Name}Events, ${Name}Logic, ${Name}Props, ${Name}Slots } from './types';
 
-export const ${kebab}Spec = {
+export const ${camel}Spec = {
   name: '${Name}',
   props: {
     type: {
