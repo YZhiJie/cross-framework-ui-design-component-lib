@@ -37,3 +37,13 @@
   max-height: 180px;
   overflow: auto;
 }
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hint {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: #6b7280;
+}

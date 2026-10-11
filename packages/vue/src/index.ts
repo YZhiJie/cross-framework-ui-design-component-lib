@@ -10,8 +10,13 @@
 import type { App } from 'vue';
 import { Button } from './components/button';
 import { Input } from './components/input';
+import { Switch } from './components/switch';
+import { Checkbox } from './components/checkbox';
+import { Tag } from './components/tag';
+import { Alert } from './components/alert';
 import { Modal } from './components/modal';
 
+export { Switch, Checkbox, Tag, Alert };
 export { Button, Input, Modal };
 
 export const VUE_VERSION = '0.0.0';
@@ -20,6 +25,10 @@ export default {
   install(app: App) {
     app.component(Button.name ?? 'Button', Button);
     app.component(Input.name ?? 'Input', Input);
+    app.component(Switch.name ?? 'Switch', Switch);
+    app.component(Checkbox.name ?? 'Checkbox', Checkbox);
+    app.component(Tag.name ?? 'Tag', Tag);
+    app.component(Alert.name ?? 'Alert', Alert);
     app.component(Modal.name ?? 'Modal', Modal);
   },
 };

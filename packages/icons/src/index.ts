@@ -23,7 +23,11 @@ export type IconName =
   | 'minus'
   | 'arrow-up'
   | 'arrow-down'
-  | 'calendar';
+  | 'calendar'
+  | 'info'
+  | 'success'
+  | 'warning'
+  | 'error';
 
 /** 图标内层 SVG 标记（不含 <svg> 壳） */
 export const icons: Record<IconName, string> = {
@@ -37,6 +41,11 @@ export const icons: Record<IconName, string> = {
   'arrow-up': '<path d="M12 19V5M5 12l7-7 7 7" />',
   'arrow-down': '<path d="M12 5v14M19 12l-7 7-7-7" />',
   calendar: '<rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 11h18" />',
+  info: '<circle cx="12" cy="12" r="9" /><path d="M12 8h.01" /><path d="M12 11v5" />',
+  success: '<circle cx="12" cy="12" r="9" /><path d="M8.5 12.2l2.4 2.4 4.6-5.2" />',
+  warning:
+    '<path d="M10.3 4.1L2.8 17a2 2 0 001.7 3h15a2 2 0 001.7-3L13.7 4.1a2 2 0 00-3.4 0z" /><path d="M12 9v4" /><path d="M12 16.5h.01" />',
+  error: '<circle cx="12" cy="12" r="9" /><path d="M15 9l-6 6M9 9l6 6" />',
 };
 
 /** 全部图标名 */

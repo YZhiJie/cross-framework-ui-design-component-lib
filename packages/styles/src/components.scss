@@ -1,7 +1,7 @@
 /**
  * 组件样式（BEM）— 单一来源
  *
- * 所有组件的 BEM 样式（button / input / modal），由 @xui/styles 统一提供，
+ * 所有组件的 BEM 样式（button / input / switch / checkbox / tag / alert / modal），由 @xui/styles 统一提供，
  * @xui/vue 与 @xui/react 共用同一套类名，确保双端视觉一致。
  * 主题 token 来自 reset.scss 的 :root CSS 变量；未引入 tokens 时使用降级值。
  */
@@ -244,6 +244,7 @@
   color: var(--xui-color-text, #1f2937);
 }
 
+
 /* ===================== Modal ===================== */
 
 .xui-modal {
@@ -326,4 +327,311 @@
   width: 100%;
   padding: 12px 20px;
   border-top: 1px solid var(--xui-color-border, #d1d5db);
+}
+
+/* ===================== Switch ===================== */
+
+.xui-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.xui-switch__core {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 40px;
+  height: 20px;
+  padding: 2px;
+  background-color: var(--xui-color-border, #d1d5db);
+  border-radius: 10px;
+  transition: background-color 0.2s;
+}
+
+.xui-switch__thumb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  color: var(--xui-color-primary, #4f46e5);
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 20%);
+  transition: transform 0.2s;
+}
+
+/* 顺序按选择器特异性升序，满足 stylelint no-descending-specificity */
+.xui-switch--sm .xui-switch__core {
+  width: 28px;
+  height: 16px;
+  padding: 2px;
+  border-radius: 8px;
+}
+
+.xui-switch--sm .xui-switch__thumb {
+  width: 12px;
+  height: 12px;
+}
+
+.xui-switch--sm.is-checked .xui-switch__thumb {
+  transform: translateX(12px);
+}
+
+.xui-switch.is-checked .xui-switch__core {
+  background-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-switch.is-checked .xui-switch__thumb {
+  transform: translateX(20px);
+}
+
+.xui-switch:focus-visible .xui-switch__core {
+  outline: 2px solid var(--xui-color-primary, #4f46e5);
+  outline-offset: 2px;
+}
+
+.xui-switch.is-disabled,
+.xui-switch.is-loading {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.xui-switch.is-loading {
+  cursor: progress;
+}
+
+.xui-switch__spinner {
+  animation: xui-button-spin 0.8s linear infinite;
+}
+
+.xui-switch:hover:not(.is-disabled, .is-loading) .xui-switch__core {
+  background-color: var(--xui-color-text-secondary, #6b7280);
+}
+
+.xui-switch.is-checked:hover:not(.is-disabled, .is-loading) .xui-switch__core {
+  background-color: var(--xui-color-primary-hover, #4338ca);
+}
+
+/* ===================== Checkbox ===================== */
+
+.xui-checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--xui-font-size-md, 14px);
+  color: var(--xui-color-text, #1f2937);
+  cursor: pointer;
+  user-select: none;
+}
+
+.xui-checkbox__input {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  opacity: 0;
+}
+
+.xui-checkbox__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: var(--xui-radius-sm, 4px);
+  background-color: var(--xui-color-bg, #fff);
+  color: #fff;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* 键盘聚焦时在自定义方块上显示焦点环（原生 input 保持可聚焦） */
+.xui-checkbox__input:focus-visible + .xui-checkbox__box {
+  outline: 2px solid var(--xui-color-primary, #4f46e5);
+  outline-offset: 2px;
+}
+
+.xui-checkbox.is-checked .xui-checkbox__box,
+.xui-checkbox.is-indeterminate .xui-checkbox__box {
+  background-color: var(--xui-color-primary, #4f46e5);
+  border-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-checkbox.is-disabled {
+  cursor: not-allowed;
+  color: var(--xui-color-text-secondary, #6b7280);
+}
+
+.xui-checkbox.is-disabled .xui-checkbox__box {
+  background-color: var(--xui-color-bg-disabled, #f3f4f6);
+  border-color: var(--xui-color-border, #d1d5db);
+  color: var(--xui-color-text-secondary, #6b7280);
+}
+
+.xui-checkbox:hover:not(.is-disabled) .xui-checkbox__box {
+  border-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-checkbox__label {
+  line-height: 1.5;
+}
+
+/* ===================== Tag ===================== */
+
+.xui-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-sizing: border-box;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: var(--xui-radius-sm, 4px);
+  background-color: var(--xui-color-bg, #fff);
+  color: var(--xui-color-text, #1f2937);
+  font-size: var(--xui-font-size-sm, 12px);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.xui-tag--sm {
+  height: 20px;
+  padding: 0 6px;
+}
+
+.xui-tag--primary {
+  border-color: #c7d2fe;
+  background-color: #eef2ff;
+  color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-tag--success {
+  border-color: #bbf7d0;
+  background-color: #f0fdf4;
+  color: #15803d;
+}
+
+.xui-tag--warning {
+  border-color: #fde68a;
+  background-color: #fffbeb;
+  color: #b45309;
+}
+
+.xui-tag--danger {
+  border-color: #fecaca;
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+.xui-tag__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  margin-right: -2px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.xui-tag__close:hover {
+  background-color: rgb(0 0 0 / 10%);
+}
+
+/* ===================== Alert ===================== */
+
+.xui-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: var(--xui-radius-md, 6px);
+  background-color: var(--xui-color-bg, #fff);
+  color: var(--xui-color-text, #1f2937);
+  font-size: var(--xui-font-size-md, 14px);
+}
+
+.xui-alert--info {
+  border-color: #c7d2fe;
+  background-color: #eef2ff;
+  color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-alert--success {
+  border-color: #bbf7d0;
+  background-color: #f0fdf4;
+  color: #15803d;
+}
+
+.xui-alert--warning {
+  border-color: #fde68a;
+  background-color: #fffbeb;
+  color: #b45309;
+}
+
+.xui-alert--error {
+  border-color: #fecaca;
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+.xui-alert__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.xui-alert__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.xui-alert__title {
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.xui-alert__description {
+  margin-top: 2px;
+  font-size: var(--xui-font-size-sm, 12px);
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.xui-alert__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: var(--xui-radius-sm, 4px);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.xui-alert__close:hover {
+  background-color: rgb(0 0 0 / 10%);
 }

@@ -9,6 +9,18 @@
  * 样式由 @xui/styles 统一提供（组件样式单一来源），导入 '@xui/styles' 即可获得全部样式。
  */
 
+export { Switch } from './components/switch';
+export type { SwitchComponentProps, SwitchRef } from './components/switch';
+
+export { Checkbox } from './components/checkbox';
+export type { CheckboxComponentProps, CheckboxRef } from './components/checkbox';
+
+export { Tag } from './components/tag';
+export type { TagComponentProps } from './components/tag';
+
+export { Alert } from './components/alert';
+export type { AlertComponentProps } from './components/alert';
+
 export { Button } from './components/button';
 export type { ButtonComponentProps, ButtonRef } from './components/button';
 

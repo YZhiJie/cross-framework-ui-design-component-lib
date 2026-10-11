@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Button, Input, Modal } from '@xui/react';
+import { Button, Input, Modal, Switch, Checkbox, Tag, Alert } from '@xui/react';
 import type { ModalRef } from '@xui/react';
 import '@xui/styles';
 
@@ -7,6 +7,8 @@ export default function App() {
   const [name, setName] = useState('');
   const [visible, setVisible] = useState(false);
   const [log, setLog] = useState<string[]>([]);
+  const [switchValue, setSwitchValue] = useState(false);
+  const [checkboxValue, setCheckboxValue] = useState(true);
   const modalRef = useRef<ModalRef>(null);
 
   const pushLog = (msg: string) => {
@@ -63,6 +65,73 @@ export default function App() {
           <Input value="disabled" disabled />
           <Input value="readonly" readonly />
           <Input placeholder="with prefix" renderPrefix={() => <span>🔍</span>} />
+        </div>
+      </section>
+
+      <section>
+        <h2>Switch</h2>
+        <div className="row">
+          <Switch
+            value={switchValue}
+            onChange={(v) => {
+              setSwitchValue(v);
+              pushLog(`switch: ${v}`);
+            }}
+          />
+          <Switch defaultValue size="sm" />
+          <Switch defaultValue />
+          <Switch disabled />
+          <Switch loading />
+        </div>
+        <p className="hint">controlled value = {String(switchValue)}</p>
+      </section>
+
+      <section>
+        <h2>Checkbox</h2>
+        <div className="row">
+          <Checkbox
+            value={checkboxValue}
+            onChange={(v) => {
+              setCheckboxValue(v);
+              pushLog(`checkbox: ${v}`);
+            }}
+          >
+            agree terms
+          </Checkbox>
+          <Checkbox indeterminate>indeterminate</Checkbox>
+          <Checkbox disabled>disabled</Checkbox>
+        </div>
+        <p className="hint">controlled value = {String(checkboxValue)}</p>
+      </section>
+
+      <section>
+        <h2>Tag</h2>
+        <div className="row">
+          <Tag>default</Tag>
+          <Tag type="primary">primary</Tag>
+          <Tag type="success">success</Tag>
+          <Tag type="warning">warning</Tag>
+          <Tag type="danger">danger</Tag>
+          <Tag size="sm">small</Tag>
+          <Tag closable onClose={() => pushLog('tag closed')}>
+            closable
+          </Tag>
+        </div>
+      </section>
+
+      <section>
+        <h2>Alert</h2>
+        <div className="column">
+          <Alert
+            title="Info"
+            description="This is an info alert."
+            showIcon
+            closable
+            onClose={() => pushLog('alert closed')}
+          />
+          <Alert type="success" title="Success" description="Operation completed." showIcon />
+          <Alert type="warning" title="Warning" description="Please check your input." showIcon />
+          <Alert type="error" title="Error" description="Something went wrong." showIcon />
         </div>
       </section>
 

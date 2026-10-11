@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, Input, Modal } from '@xui/vue';
+import { Button, Input, Modal, Switch, Checkbox, Tag, Alert } from '@xui/vue';
 import '@xui/styles';
 
 const name = ref('');
 const modalVisible = ref(false);
 const modalRef = ref<InstanceType<typeof Modal> | null>(null);
+const switchValue = ref(false);
+const checkboxValue = ref(true);
 const log = ref<string[]>([]);
 
 const pushLog = (msg: string) => {
@@ -60,6 +62,59 @@ const pushLog = (msg: string) => {
         <Input placeholder="with prefix">
           <template #prefix>🔍</template>
         </Input>
+      </div>
+    </section>
+
+    <section>
+      <h2>Switch</h2>
+      <div class="row">
+        <Switch v-model:value="switchValue" @change="(v: boolean) => pushLog(`switch: ${v}`)" />
+        <Switch default-value size="sm" />
+        <Switch default-value />
+        <Switch disabled />
+        <Switch loading />
+      </div>
+      <p class="hint">v-model:value = {{ switchValue }}</p>
+    </section>
+
+    <section>
+      <h2>Checkbox</h2>
+      <div class="row">
+        <Checkbox v-model:value="checkboxValue" @change="(v: boolean) => pushLog(`checkbox: ${v}`)">
+          agree terms
+        </Checkbox>
+        <Checkbox :value="false" indeterminate>indeterminate</Checkbox>
+        <Checkbox disabled>disabled</Checkbox>
+      </div>
+      <p class="hint">v-model:value = {{ checkboxValue }}</p>
+    </section>
+
+    <section>
+      <h2>Tag</h2>
+      <div class="row">
+        <Tag>default</Tag>
+        <Tag type="primary">primary</Tag>
+        <Tag type="success">success</Tag>
+        <Tag type="warning">warning</Tag>
+        <Tag type="danger">danger</Tag>
+        <Tag size="sm">small</Tag>
+        <Tag closable @close="pushLog('tag closed')">closable</Tag>
+      </div>
+    </section>
+
+    <section>
+      <h2>Alert</h2>
+      <div class="column">
+        <Alert
+          title="Info"
+          description="This is an info alert."
+          show-icon
+          closable
+          @close="pushLog('alert closed')"
+        />
+        <Alert type="success" title="Success" description="Operation completed." show-icon />
+        <Alert type="warning" title="Warning" description="Please check your input." show-icon />
+        <Alert type="error" title="Error" description="Something went wrong." show-icon />
       </div>
     </section>
 
@@ -131,6 +186,16 @@ h2 {
   gap: 10px;
   align-items: center;
   margin-bottom: 12px;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hint {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: #6b7280;
 }
 .row > :deep(.xui-input) {
   flex: 1 1 280px;

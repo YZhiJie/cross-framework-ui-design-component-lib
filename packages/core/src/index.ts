@@ -14,4 +14,8 @@ export * from './spec';
 // 组件契约（类型 + 规格）
 export * from './components/button';
 export * from './components/input';
+export * from './components/switch';
+export * from './components/checkbox';
+export * from './components/tag';
+export * from './components/alert';
 export * from './components/modal';
