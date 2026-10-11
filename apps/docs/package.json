@@ -7,22 +7,26 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "type-check": "vue-tsc --noEmit",
     "lint": "eslint \"src/**/*.{ts,tsx,vue}\""
   },
   "dependencies": {
-    "vue": "^3.5.0",
+    "@xui/core": "workspace:*",
+    "@xui/react": "workspace:*",
+    "@xui/styles": "workspace:*",
+    "@xui/vue": "workspace:*",
+    "prismjs": "^1.30.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@xui/vue": "workspace:*",
-    "@xui/react": "workspace:*",
-    "@xui/core": "workspace:*",
-    "@xui/styles": "workspace:*"
+    "vue": "^3.5.0",
+    "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.0",
-    "@vitejs/plugin-react": "^4.0.0",
-    "vue-tsc": "^2.1.0",
+    "@types/prismjs": "^1.26.6",
     "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0"
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vue-tsc": "^2.1.0"
   }
 }

@@ -1,9 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "outDir": "dist",
-    "rootDir": "src",
     "types": ["vue", "react", "react-dom"],
     "paths": {
       "@xui/vue": ["../../packages/vue/src/index.ts"],

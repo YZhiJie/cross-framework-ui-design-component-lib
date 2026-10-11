@@ -1,17 +1,12 @@
 <script setup lang="ts">
-const title = 'XUI 文档站点';
+import SideNav from './components/SideNav.vue';
 </script>
 
 <template>
-  <div class="docs">
-    <h1>{{ title }}</h1>
-    <p>跨框架通用组件库文档</p>
+  <div class="docs-app">
+    <SideNav />
+    <main class="docs-main">
+      <RouterView />
+    </main>
   </div>
 </template>
-
-<style scoped>
-.docs {
-  padding: 24px;
-  font-family: sans-serif;
-}
-</style>
