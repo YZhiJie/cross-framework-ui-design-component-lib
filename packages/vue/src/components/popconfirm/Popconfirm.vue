@@ -1,6 +1,12 @@
 <script setup lang="ts">
-import { onUnmounted, ref, useId, watchEffect } from 'vue';
-import { createPopconfirmLogic } from '@xui/shared';
+import { nextTick, onUnmounted, ref, useId, watch, watchEffect } from 'vue';
+import {
+  bindViewportUpdate,
+  createPopconfirmLogic,
+  getViewport,
+  resolveFloatingPosition,
+} from '@xui/shared';
+import type { FloatingPlacement } from '@xui/shared';
 import type { PopconfirmProps } from '@xui/core';
 
 const props = withDefaults(defineProps<Omit<PopconfirmProps, 'onConfirm' | 'onCancel'>>(), {
@@ -36,8 +42,61 @@ const handleDocMouseDown = (event: MouseEvent) => {
 };
 document.addEventListener('mousedown', handleDocMouseDown);
 
+// 视口避让：实际方位（可能翻转）与交叉轴 shift（px）
+const triggerRef = ref<HTMLElement | null>(null);
+const popperRef = ref<HTMLElement | null>(null);
+const resolvedPlacement = ref<FloatingPlacement>(props.placement);
+const shiftPx = ref(0);
+let unbindViewport: (() => void) | null = null;
+
+function updatePosition() {
+  const triggerEl = triggerRef.value;
+  const popperEl = popperRef.value;
+  if (!triggerEl || !popperEl) return;
+  const popperRect = popperEl.getBoundingClientRect();
+  // 零尺寸表示未完成布局（jsdom 环境恒为 0），保持首选方位避免误翻转
+  if (popperRect.width === 0 && popperRect.height === 0) return;
+  const { placement, shift } = resolveFloatingPosition(
+    triggerEl.getBoundingClientRect(),
+    popperRect,
+    getViewport(),
+    { placement: state.value.placement, gap: 8 },
+  );
+  resolvedPlacement.value = placement;
+  shiftPx.value = shift;
+}
+
+watch(
+  () => state.value.open,
+  (open) => {
+    if (open) {
+      resolvedPlacement.value = state.value.placement;
+      shiftPx.value = 0;
+      nextTick(updatePosition);
+      unbindViewport?.();
+      unbindViewport = bindViewportUpdate(updatePosition);
+    } else {
+      unbindViewport?.();
+      unbindViewport = null;
+    }
+  },
+);
+
+// 打开期间 placement prop（经 logic state 同步）变化需重新测量
+watch(
+  () => state.value.placement,
+  (placement) => {
+    if (state.value.open) {
+      resolvedPlacement.value = placement;
+      shiftPx.value = 0;
+      nextTick(updatePosition);
+    }
+  },
+);
+
 onUnmounted(() => {
   unsubscribe();
+  unbindViewport?.();
   document.removeEventListener('mousedown', handleDocMouseDown);
 });
 
@@ -50,6 +109,7 @@ watchEffect(() => {
 <template>
   <span ref="rootRef" class="xui-popconfirm" :class="className" :style="style">
     <span
+      ref="triggerRef"
       class="xui-popconfirm__trigger"
       :aria-describedby="state.open ? popperId : undefined"
       @click="logic.toggle()"
@@ -57,9 +117,15 @@ watchEffect(() => {
       <slot />
       <span
         v-if="state.open"
+        ref="popperRef"
         :id="popperId"
         class="xui-popconfirm__popper"
-        :class="`is-${state.placement}`"
+        :class="`is-${resolvedPlacement}`"
+        :style="
+          resolvedPlacement === 'top' || resolvedPlacement === 'bottom'
+            ? { marginLeft: `${shiftPx}px` }
+            : { marginTop: `${shiftPx}px` }
+        "
         role="tooltip"
         @click.stop
       >

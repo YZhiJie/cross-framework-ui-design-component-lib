@@ -1,6 +1,40 @@
 import { describe, expect, it } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Tooltip } from '../Tooltip';
+
+/** 桩接 rect：触发器贴近视口顶部（top 空间不足），浮层 120×60 */
+function stubNearTopRects() {
+  const original = HTMLElement.prototype.getBoundingClientRect;
+  HTMLElement.prototype.getBoundingClientRect = function (this: HTMLElement) {
+    const rect = original.call(this);
+    if (this.classList?.contains('xui-tooltip__trigger')) {
+      return {
+        ...rect,
+        top: 10,
+        bottom: 50,
+        left: 100,
+        right: 200,
+        width: 100,
+        height: 40,
+      } as DOMRect;
+    }
+    if (this.classList?.contains('xui-tooltip__popper')) {
+      return {
+        ...rect,
+        top: 0,
+        bottom: 60,
+        left: 0,
+        right: 120,
+        width: 120,
+        height: 60,
+      } as DOMRect;
+    }
+    return rect;
+  };
+  return () => {
+    HTMLElement.prototype.getBoundingClientRect = original;
+  };
+}
 
 describe('Tooltip (react)', () => {
   it('默认不渲染提示框，mouseEnter 显示 content，mouseLeave 收起', () => {
@@ -111,5 +145,20 @@ describe('Tooltip (react)', () => {
         ':scope > .xui-tooltip__popper',
       ),
     ).toBeNull();
+  });
+
+  it('视口避让：首选 top 空间不足时翻转为 bottom', async () => {
+    const restore = stubNearTopRects();
+    try {
+      const { container } = render(<Tooltip content="x">目标</Tooltip>);
+      fireEvent.mouseEnter(container.firstElementChild as Element);
+      await waitFor(() => {
+        expect(
+          container.querySelector('.xui-tooltip__popper')?.classList.contains('is-bottom'),
+        ).toBe(true);
+      });
+    } finally {
+      restore();
+    }
   });
 });

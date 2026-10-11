@@ -1,6 +1,25 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { nextTick } from 'vue';
 import Popconfirm from '../Popconfirm.vue';
+
+/** 桩接 rect：触发器贴近视口顶部（top 空间不足）、气泡 240×160 */
+function stubPopconfirmRects() {
+  const original = HTMLElement.prototype.getBoundingClientRect;
+  HTMLElement.prototype.getBoundingClientRect = function (this: HTMLElement) {
+    const rect = original.call(this);
+    if (this.classList?.contains('xui-popconfirm__trigger')) {
+      return { ...rect, top: 10, bottom: 50, left: 100, right: 200, width: 100, height: 40 };
+    }
+    if (this.classList?.contains('xui-popconfirm__popper')) {
+      return { ...rect, top: 0, bottom: 160, left: 0, right: 240, width: 240, height: 160 };
+    }
+    return rect;
+  };
+  return () => {
+    HTMLElement.prototype.getBoundingClientRect = original;
+  };
+}
 
 describe('Popconfirm (vue)', () => {
   it('默认不渲染气泡，点击触发元素展开', async () => {
@@ -138,5 +157,21 @@ describe('Popconfirm (vue)', () => {
     expect(wrapper.find('.xui-popconfirm__popper').exists()).toBe(true);
     expect(wrapper.emitted('confirm')).toBeUndefined();
     expect(wrapper.emitted('cancel')).toBeUndefined();
+  });
+
+  it('视口避让：首选 top 空间不足时气泡翻转到下方', async () => {
+    const restore = stubPopconfirmRects();
+    try {
+      const wrapper = mount(Popconfirm, {
+        props: { placement: 'top' },
+        slots: { default: '<button type="button">删除</button>' },
+      });
+      await wrapper.find('.xui-popconfirm__trigger').trigger('click');
+      await nextTick();
+      expect(wrapper.find('.xui-popconfirm__popper').classes()).toContain('is-bottom');
+      wrapper.unmount();
+    } finally {
+      restore();
+    }
   });
 });

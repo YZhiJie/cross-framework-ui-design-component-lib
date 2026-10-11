@@ -177,6 +177,7 @@ export const selectMeta: ComponentMeta = {
     '点击组件外部会收起面板且不改变选中值；多选模式点击选项后面板保持展开。',
     '虚拟模式要求选项行高固定（默认 30px，可用 CSS 变量 --xui-select-item-height 对齐调整）。',
     '多选删除某个 tag 即切换取消该项，触发 onChange 携带最新数组。',
+    '自带视口避让：视口下方空间不足时面板自动向上展开（根元素加 is-drop-up），滚动与窗口 resize 时实时重算；overflow: hidden 祖先仍可能裁剪面板。',
   ],
   a11y: [
     '选择器可通过 Tab 聚焦，方向键 / Enter / Esc 完成全部键盘操作；禁用项携带禁用语义。',

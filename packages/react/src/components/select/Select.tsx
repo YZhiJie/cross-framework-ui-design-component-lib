@@ -8,10 +8,16 @@
  * 虚拟滚动（virtual）：固定选项行高 spacer 方案，窗口外选项不渲染。
  */
 
-import { useEffect, useId, useRef } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
 import type { SelectProps } from '@xui/core';
-import { createSelectLogic, createVirtualListLogic } from '@xui/shared';
+import {
+  bindViewportUpdate,
+  createSelectLogic,
+  createVirtualListLogic,
+  getViewport,
+  resolveFloatingPosition,
+} from '@xui/shared';
 import type { SelectLogicInstance, VirtualListLogicInstance } from '@xui/shared';
 import { icons } from '@xui/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
@@ -92,6 +98,37 @@ export function Select(props: SelectComponentProps) {
 
   const state = useLogicState(logic.subscribe, logic.getState);
   const vlState = useLogicState(vl.subscribe, vl.getState);
+
+  // 视口避让：下方空间不足且上方更充足时下拉面板向上展开
+  const [dropUp, setDropUp] = useState(false);
+  useLayoutEffect(() => {
+    if (!state.open) {
+      setDropUp(false);
+      return;
+    }
+    setDropUp(false);
+    const update = () => {
+      const root = rootRef.current;
+      const dropdown = dropdownRef.current;
+      if (!root || !dropdown) return;
+      const dropdownRect = dropdown.getBoundingClientRect();
+      // 零尺寸表示未完成布局（jsdom 环境恒为 0），保持向下展开避免误翻转
+      if (dropdownRect.width === 0 && dropdownRect.height === 0) return;
+      const { placement } = resolveFloatingPosition(
+        root.getBoundingClientRect(),
+        dropdownRect,
+        getViewport(),
+        { placement: 'bottom', gap: 4, viewportPadding: 4 },
+      );
+      setDropUp(placement === 'top');
+    };
+    const raf = requestAnimationFrame(update);
+    const unbind = bindViewportUpdate(update);
+    return () => {
+      cancelAnimationFrame(raf);
+      unbind();
+    };
+  }, [state.open]);
 
   // 虚拟模式：过滤选项数 / 视口高度同步到窗口计算
   useEffect(() => {
@@ -218,6 +255,7 @@ export function Select(props: SelectComponentProps) {
       className={cn('xui-select', className, multiple && 'is-multiple', virtual && 'is-virtual', {
         'is-disabled': state.disabled,
         'is-open': state.open,
+        'is-drop-up': dropUp,
       })}
       style={style as CSSProperties}
     >

@@ -235,4 +235,28 @@ describe('Select (vue)', () => {
     expect(wrapper.find('.xui-select__arrow .my-arrow-x').exists()).toBe(true);
     expect(wrapper.find('.xui-select__arrow svg').exists()).toBe(false);
   });
+
+  it('视口避让：下方空间不足时根元素加 is-drop-up 向上展开', async () => {
+    const original = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = function (this: HTMLElement) {
+      const rect = original.call(this);
+      if (this.classList?.contains('xui-select')) {
+        // 触发器贴近视口底部（jsdom 默认视口高 768）：下方仅剩 8px
+        return { ...rect, top: 720, bottom: 760, left: 100, right: 300, width: 200, height: 40 };
+      }
+      if (this.classList?.contains('xui-select__dropdown')) {
+        return { ...rect, top: 0, bottom: 240, left: 0, right: 200, width: 200, height: 240 };
+      }
+      return rect;
+    };
+    try {
+      const wrapper = mount(Select, { props: { options: OPTIONS } });
+      await wrapper.find('.xui-select__trigger').trigger('click');
+      await nextTick();
+      expect(wrapper.find('.xui-select').classes()).toContain('is-drop-up');
+      wrapper.unmount();
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = original;
+    }
+  });
 });

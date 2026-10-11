@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Select } from '../Select';
 
 const OPTIONS = [
@@ -250,5 +250,45 @@ describe('Select (react)', () => {
       (option) => option.textContent,
     );
     expect(texts).toContain('选项100');
+  });
+
+  it('视口避让：下方空间不足时根元素加 is-drop-up 向上展开', async () => {
+    const original = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = function (this: HTMLElement) {
+      const rect = original.call(this);
+      if (this.classList?.contains('xui-select')) {
+        // 触发器贴近视口底部（jsdom 默认视口高 768）：下方仅剩 8px
+        return {
+          ...rect,
+          top: 720,
+          bottom: 760,
+          left: 100,
+          right: 300,
+          width: 200,
+          height: 40,
+        } as DOMRect;
+      }
+      if (this.classList?.contains('xui-select__dropdown')) {
+        return {
+          ...rect,
+          top: 0,
+          bottom: 240,
+          left: 0,
+          right: 200,
+          width: 200,
+          height: 240,
+        } as DOMRect;
+      }
+      return rect;
+    };
+    try {
+      const { container } = render(<Select options={OPTIONS} />);
+      fireEvent.click(container.querySelector('.xui-select__trigger') as HTMLElement);
+      await waitFor(() => {
+        expect(container.querySelector('.xui-select')?.classList.contains('is-drop-up')).toBe(true);
+      });
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = original;
+    }
   });
 });

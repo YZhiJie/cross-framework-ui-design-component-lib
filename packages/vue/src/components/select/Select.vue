@@ -10,7 +10,13 @@ import {
   watch,
   watchEffect,
 } from 'vue';
-import { createSelectLogic, createVirtualListLogic } from '@xui/shared';
+import {
+  bindViewportUpdate,
+  createSelectLogic,
+  createVirtualListLogic,
+  getViewport,
+  resolveFloatingPosition,
+} from '@xui/shared';
 import { icons } from '@xui/icons';
 import type { SelectProps, SelectValue } from '@xui/core';
 
@@ -89,6 +95,7 @@ onMounted(() => {
 onUnmounted(() => {
   unsubscribe();
   unsubscribeVl();
+  unbindViewport?.();
   document.removeEventListener('mousedown', handleOutside);
 });
 
@@ -139,8 +146,46 @@ const rootClass = computed(() => [
     'is-open': state.value.open,
     'is-multiple': props.multiple,
     'is-virtual': isVirtual.value,
+    'is-drop-up': dropUp.value,
   },
 ]);
+
+/** 视口避让：下方空间不足且上方更充足时下拉面板向上展开 */
+const dropUp = ref(false);
+let unbindViewport: (() => void) | null = null;
+
+function updateDropDirection() {
+  const root = rootRef.value;
+  const dropdown = dropdownRef.value;
+  if (!root || !dropdown) return;
+  const dropdownRect = dropdown.getBoundingClientRect();
+  // 零尺寸表示未完成布局（jsdom 环境恒为 0），保持向下展开避免误翻转
+  if (dropdownRect.width === 0 && dropdownRect.height === 0) return;
+  // Select 面板与触发器同宽，无交叉轴偏移，仅消费 flip 结果
+  const { placement } = resolveFloatingPosition(
+    root.getBoundingClientRect(),
+    dropdownRect,
+    getViewport(),
+    { placement: 'bottom', gap: 4, viewportPadding: 4 },
+  );
+  dropUp.value = placement === 'top';
+}
+
+watch(
+  () => state.value.open,
+  (open) => {
+    if (open) {
+      dropUp.value = false;
+      nextTick(updateDropDirection);
+      unbindViewport?.();
+      unbindViewport = bindViewportUpdate(updateDropDirection);
+    } else {
+      unbindViewport?.();
+      unbindViewport = null;
+      dropUp.value = false;
+    }
+  },
+);
 
 const rootStyle = computed(() => props.style ?? undefined);
 

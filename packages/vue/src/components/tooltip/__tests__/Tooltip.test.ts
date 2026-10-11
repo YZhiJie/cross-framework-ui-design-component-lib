@@ -1,6 +1,25 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { nextTick } from 'vue';
 import Tooltip from '../Tooltip.vue';
+
+/** 按 class 桩接 getBoundingClientRect，模拟触发器贴近视口顶部、浮层 120×60 */
+function stubRects() {
+  const original = HTMLElement.prototype.getBoundingClientRect;
+  HTMLElement.prototype.getBoundingClientRect = function (this: HTMLElement) {
+    const rect = original.call(this);
+    if (this.classList?.contains('xui-tooltip__trigger')) {
+      return { ...rect, top: 10, bottom: 50, left: 100, right: 200, width: 100, height: 40 };
+    }
+    if (this.classList?.contains('xui-tooltip__popper')) {
+      return { ...rect, top: 0, bottom: 60, left: 0, right: 120, width: 120, height: 60 };
+    }
+    return rect;
+  };
+  return () => {
+    HTMLElement.prototype.getBoundingClientRect = original;
+  };
+}
 
 describe('Tooltip (vue)', () => {
   it('默认不渲染提示框，hover 显示 content，leave 收起', async () => {
@@ -88,5 +107,21 @@ describe('Tooltip (vue)', () => {
     // popper 必须是 trigger 的后代：trigger 始终贴合触发器，包裹根即使被拉伸也不影响锚定
     expect(wrapper.find('.xui-tooltip__trigger > .xui-tooltip__popper').exists()).toBe(true);
     expect(wrapper.find('.xui-tooltip > .xui-tooltip__popper').exists()).toBe(false);
+  });
+
+  it('视口避让：首选 top 空间不足时翻转为 bottom', async () => {
+    const restore = stubRects();
+    try {
+      const wrapper = mount(Tooltip, {
+        props: { content: 'x', placement: 'top' },
+        slots: { default: '目标' },
+      });
+      await wrapper.trigger('mouseenter');
+      await nextTick();
+      expect(wrapper.find('.xui-tooltip__popper').classes()).toContain('is-bottom');
+      wrapper.unmount();
+    } finally {
+      restore();
+    }
   });
 });

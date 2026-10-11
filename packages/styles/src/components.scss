@@ -702,6 +702,12 @@
   box-shadow: 0 6px 16px rgb(0 0 0 / 10%);
 }
 
+/* 视口避让：下方空间不足时适配层加 is-drop-up，面板向上展开 */
+.xui-select.is-drop-up .xui-select__dropdown {
+  top: auto;
+  bottom: calc(100% + 4px);
+}
+
 .xui-select__option {
   display: flex;
   align-items: center;
@@ -1751,45 +1757,44 @@
   gap: 8px;
 }
 
+/* 箭头：外层 border 色菱形 + 内层背景色菱形（双菱形消除旋转后边线与面板边框的错位缝隙） */
 .xui-popconfirm__arrow {
   position: absolute;
   width: 8px;
   height: 8px;
-  border: 1px solid var(--xui-color-border, #e5e7eb);
-  background-color: inherit;
+  background-color: var(--xui-color-border, #e5e7eb);
   transform: rotate(45deg);
+}
+
+.xui-popconfirm__arrow::before {
+  position: absolute;
+  inset: 1px;
+  background-color: var(--xui-color-bg, #fff);
+  content: '';
 }
 
 .xui-popconfirm__popper.is-top .xui-popconfirm__arrow {
   bottom: -5px;
   left: 50%;
   margin-left: -4px;
-  border-top: none;
-  border-left: none;
 }
 
 .xui-popconfirm__popper.is-bottom .xui-popconfirm__arrow {
   top: -5px;
   left: 50%;
   margin-left: -4px;
-  border-bottom: none;
-  border-right: none;
 }
 
 .xui-popconfirm__popper.is-left .xui-popconfirm__arrow {
   top: 50%;
   right: -5px;
   margin-top: -4px;
-  border-top: none;
-  border-right: none;
 }
 
 .xui-popconfirm__popper.is-right .xui-popconfirm__arrow {
   top: 50%;
   left: -5px;
   margin-top: -4px;
-  border-bottom: none;
-  border-left: none;
 }
 
 /* ===================== Modal ===================== */

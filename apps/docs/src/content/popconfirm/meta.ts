@@ -102,6 +102,7 @@ export const popconfirmMeta: ComponentMeta = {
   notes: [
     '点击外部关闭只收起气泡，不会触发 confirm 或 cancel，便于用户无副作用地放弃操作。',
     '气泡为 CSS 包裹定位，与 Tooltip 类似，需注意父容器 overflow 裁剪。',
+    '自带视口避让：首选方位空间不足时自动翻转（箭头跟随），溢出视口边缘时自动钳制，滚动与窗口 resize 时实时重算。',
   ],
   a11y: ['确认 / 取消为原生按钮可键盘操作，气泡打开后焦点进入弹层，Esc 可取消关闭。'],
 };

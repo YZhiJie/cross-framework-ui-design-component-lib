@@ -1,9 +1,43 @@
 import { describe, expect, it, vi } from 'vitest';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Popconfirm } from '../Popconfirm';
 
 function openPopper(container: HTMLElement) {
   fireEvent.click(container.querySelector('.xui-popconfirm__trigger')!);
+}
+
+/** 桩接 rect：触发器贴近视口顶部（top 空间不足），气泡 240×160 */
+function stubPopconfirmNearTopRects() {
+  const original = HTMLElement.prototype.getBoundingClientRect;
+  HTMLElement.prototype.getBoundingClientRect = function (this: HTMLElement) {
+    const rect = original.call(this);
+    if (this.classList?.contains('xui-popconfirm__trigger')) {
+      return {
+        ...rect,
+        top: 10,
+        bottom: 50,
+        left: 100,
+        right: 200,
+        width: 100,
+        height: 40,
+      } as DOMRect;
+    }
+    if (this.classList?.contains('xui-popconfirm__popper')) {
+      return {
+        ...rect,
+        top: 0,
+        bottom: 160,
+        left: 0,
+        right: 240,
+        width: 240,
+        height: 160,
+      } as DOMRect;
+    }
+    return rect;
+  };
+  return () => {
+    HTMLElement.prototype.getBoundingClientRect = original;
+  };
 }
 
 describe('Popconfirm (react)', () => {
@@ -175,5 +209,24 @@ describe('Popconfirm (react)', () => {
     openPopper(container);
     fireEvent.click(container.querySelector('.xui-popconfirm__content') as Element);
     expect(container.querySelector('.xui-popconfirm__popper')).not.toBeNull();
+  });
+
+  it('视口避让：首选 top 空间不足时气泡翻转到下方', async () => {
+    const restore = stubPopconfirmNearTopRects();
+    try {
+      const { container } = render(
+        <Popconfirm placement="top">
+          <button type="button">删除</button>
+        </Popconfirm>,
+      );
+      openPopper(container);
+      await waitFor(() => {
+        expect(
+          container.querySelector('.xui-popconfirm__popper')?.classList.contains('is-bottom'),
+        ).toBe(true);
+      });
+    } finally {
+      restore();
+    }
   });
 });
