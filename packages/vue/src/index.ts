@@ -27,6 +27,11 @@ import { Tooltip } from './components/tooltip';
 import { Pagination } from './components/pagination';
 import { DatePicker } from './components/date-picker';
 import { Table } from './components/table';
+import { Spin } from './components/spin';
+import { Breadcrumb } from './components/breadcrumb';
+import { Skeleton } from './components/skeleton';
+import { InputNumber } from './components/input-number';
+import { Popconfirm } from './components/popconfirm';
 import { Modal } from './components/modal';
 
 export { Switch, Checkbox, Tag, Alert };
@@ -43,6 +48,11 @@ export { Tooltip };
 export { Pagination };
 export { DatePicker };
 export { Table };
+export { Spin };
+export { Breadcrumb };
+export { Skeleton };
+export { InputNumber };
+export { Popconfirm };
 export { Button, Input, Modal };
 
 export const VUE_VERSION = '0.0.0';
@@ -67,6 +77,11 @@ export default {
     app.component(Pagination.name ?? 'Pagination', Pagination);
     app.component(DatePicker.name ?? 'DatePicker', DatePicker);
     app.component(Table.name ?? 'Table', Table);
+    app.component(Spin.name ?? 'Spin', Spin);
+    app.component(Breadcrumb.name ?? 'Breadcrumb', Breadcrumb);
+    app.component(Skeleton.name ?? 'Skeleton', Skeleton);
+    app.component(InputNumber.name ?? 'InputNumber', InputNumber);
+    app.component(Popconfirm.name ?? 'Popconfirm', Popconfirm);
     app.component(Modal.name ?? 'Modal', Modal);
   },
 };

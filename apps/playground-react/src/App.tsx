@@ -19,10 +19,15 @@ import {
   DatePicker,
   Pagination,
   Table,
+  Spin,
+  Breadcrumb,
+  Skeleton,
+  InputNumber,
+  Popconfirm,
   message,
 } from '@xui/react';
 import type { ModalRef } from '@xui/react';
-import type { TableColumn } from '@xui/core';
+import type { BreadcrumbItem, TableColumn } from '@xui/core';
 import '@xui/styles';
 
 export default function App() {
@@ -37,6 +42,9 @@ export default function App() {
   const [tabsValue, setTabsValue] = useState('a');
   const [dateValue, setDateValue] = useState('');
   const [pageValue, setPageValue] = useState(2);
+  const [spinValue, setSpinValue] = useState(true);
+  const [skeletonLoading, setSkeletonLoading] = useState(true);
+  const [numberValue, setNumberValue] = useState<number | null>(2);
   const modalRef = useRef<ModalRef>(null);
 
   const radioCityOptions = [
@@ -74,6 +82,12 @@ export default function App() {
     { id: 2, name: '李四', age: 25, city: 'Shanghai' },
     { id: 3, name: '王五', age: 28, city: 'Guangzhou' },
     { id: 4, name: '赵六', age: 32, city: 'Shenzhen' },
+  ];
+
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { label: '首页', href: '#home' },
+    { label: '组件', href: '#components' },
+    { label: '当前页' },
   ];
 
   const pushLog = (msg: string) => {
@@ -479,6 +493,101 @@ export default function App() {
             dataSource={[]}
             renderEmpty={() => <span>自定义空态：没有更多数据啦</span>}
           />
+        </div>
+      </section>
+
+      <section>
+        <h2>Spin</h2>
+        <div className="row">
+          <Spin size="sm" />
+          <Spin />
+          <Spin size="lg" />
+          <Spin tip="加载中..." />
+          <span className="hint">独立模式（三档尺寸 + tip）</span>
+        </div>
+        <div className="row">
+          <Spin spinning={spinValue} tip="数据加载中">
+            <div style={{ padding: 16, border: '1px dashed #d1d5db' }}>
+              这里是被包裹的内容，加载时模糊化
+            </div>
+          </Spin>
+          <Button onClick={() => setSpinValue((v) => !v)}>
+            {spinValue ? '停止加载' : '开始加载'}
+          </Button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Breadcrumb</h2>
+        <Breadcrumb
+          items={breadcrumbItems}
+          separator=">"
+          onItemClick={(item, index) => pushLog(`breadcrumb: ${item.label} (index=${index})`)}
+        />
+      </section>
+
+      <section>
+        <h2>Skeleton</h2>
+        <div className="row">
+          <Button onClick={() => setSkeletonLoading((v) => !v)}>
+            {skeletonLoading ? '显示内容' : '显示骨架'}
+          </Button>
+          <span className="hint">loading = {String(skeletonLoading)}</span>
+        </div>
+        <Skeleton loading={skeletonLoading} avatar rows={3}>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <Avatar size="lg">X</Avatar>
+            <span>骨架屏内容加载完成，头像 + 文本正常渲染</span>
+          </div>
+        </Skeleton>
+      </section>
+
+      <section>
+        <h2>InputNumber</h2>
+        <div className="row">
+          <InputNumber
+            value={numberValue}
+            min={0}
+            max={10}
+            step={0.5}
+            precision={2}
+            placeholder="0.00 ~ 10.00"
+            onChange={(v) => {
+              setNumberValue(v);
+              pushLog(`input-number: ${v}`);
+            }}
+          />
+          <span className="hint">controlled value = {numberValue ?? 'null'}</span>
+        </div>
+        <div className="row">
+          <InputNumber defaultValue={5} disabled />
+          <InputNumber defaultValue={3} min={1} max={5} />
+          <span className="hint">disabled / 非受控（边界 clamp）</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Popconfirm</h2>
+        <div className="row">
+          <Popconfirm
+            content="确定删除这条记录吗？"
+            onConfirm={() => pushLog('popconfirm: 已删除')}
+            onCancel={() => pushLog('popconfirm: 已取消')}
+          >
+            <Button type="danger">删除</Button>
+          </Popconfirm>
+          <Popconfirm
+            content="右侧方位弹出，自定义按钮文本"
+            placement="right"
+            confirmText="好的"
+            cancelText="再想想"
+            onConfirm={() => pushLog('popconfirm: 确认执行')}
+          >
+            <Button>右侧 + 自定义文本</Button>
+          </Popconfirm>
+          <Popconfirm content="禁用状态不可触发" disabled>
+            <Button disabled>disabled</Button>
+          </Popconfirm>
         </div>
       </section>
 

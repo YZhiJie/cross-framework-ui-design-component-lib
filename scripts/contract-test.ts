@@ -309,6 +309,41 @@ const API_COMPONENTS: ComponentPlan[] = [
     modelProp: null,
     modelCoveredProps: [],
   },
+  {
+    name: 'Spin',
+    specKey: 'spinSpec',
+    reactSource: 'packages/react/src/components/spin/Spin.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
+  {
+    name: 'Breadcrumb',
+    specKey: 'breadcrumbSpec',
+    reactSource: 'packages/react/src/components/breadcrumb/Breadcrumb.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
+  {
+    name: 'Skeleton',
+    specKey: 'skeletonSpec',
+    reactSource: 'packages/react/src/components/skeleton/Skeleton.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
+  {
+    name: 'InputNumber',
+    specKey: 'inputNumberSpec',
+    reactSource: 'packages/react/src/components/input-number/InputNumber.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
+  {
+    name: 'Popconfirm',
+    specKey: 'popconfirmSpec',
+    reactSource: 'packages/react/src/components/popconfirm/Popconfirm.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
 ];
 
 interface MatrixRow {

@@ -20,10 +20,15 @@ import {
   DatePicker,
   Pagination,
   Table,
+  Spin,
+  Breadcrumb,
+  Skeleton,
+  InputNumber,
+  Popconfirm,
   message,
 } from '@xui/vue';
 import '@xui/styles';
-import type { TableColumn, TableSort } from '@xui/core';
+import type { BreadcrumbItem, TableColumn, TableSort } from '@xui/core';
 
 const name = ref('');
 const modalVisible = ref(false);
@@ -36,6 +41,9 @@ const progressValue = ref(60);
 const tabsValue = ref('a');
 const dateValue = ref('');
 const pageValue = ref(2);
+const spinValue = ref(true);
+const skeletonLoading = ref(true);
+const numberValue = ref<number | null>(2);
 const log = ref<string[]>([]);
 
 const radioCityOptions = [
@@ -73,6 +81,12 @@ const tableRows = [
   { id: 2, name: '李四', age: 25, city: 'Shanghai' },
   { id: 3, name: '王五', age: 28, city: 'Guangzhou' },
   { id: 4, name: '赵六', age: 32, city: 'Shenzhen' },
+];
+
+const breadcrumbItems: BreadcrumbItem[] = [
+  { label: '首页', href: '#home' },
+  { label: '组件', href: '#components' },
+  { label: '当前页' },
 ];
 
 const pushLog = (msg: string) => {
@@ -402,6 +416,101 @@ const pushLog = (msg: string) => {
           <span>自定义空态：没有更多数据啦</span>
         </template>
       </Table>
+    </section>
+
+    <section>
+      <h2>Spin</h2>
+      <div class="row">
+        <Spin size="sm" />
+        <Spin />
+        <Spin size="lg" />
+        <Spin tip="加载中..." />
+        <span class="hint">独立模式（三档尺寸 + tip）</span>
+      </div>
+      <div class="row">
+        <Spin :spinning="spinValue" tip="数据加载中">
+          <div style="padding: 16px; border: 1px dashed #d1d5db">
+            这里是被包裹的内容，加载时模糊化
+          </div>
+        </Spin>
+        <Button @click="spinValue = !spinValue">
+          {{ spinValue ? '停止加载' : '开始加载' }}
+        </Button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Breadcrumb</h2>
+      <Breadcrumb
+        :items="breadcrumbItems"
+        separator=">"
+        @item-click="
+          (item: BreadcrumbItem, index: number) =>
+            pushLog(`breadcrumb: ${item.label} (index=${index})`)
+        "
+      />
+    </section>
+
+    <section>
+      <h2>Skeleton</h2>
+      <div class="row">
+        <Button @click="skeletonLoading = !skeletonLoading">
+          {{ skeletonLoading ? '显示内容' : '显示骨架' }}
+        </Button>
+        <span class="hint">loading = {{ skeletonLoading }}</span>
+      </div>
+      <Skeleton :loading="skeletonLoading" avatar :rows="3">
+        <div style="display: flex; gap: 12px; align-items: center">
+          <Avatar size="lg">X</Avatar>
+          <span>骨架屏内容加载完成，头像 + 文本正常渲染</span>
+        </div>
+      </Skeleton>
+    </section>
+
+    <section>
+      <h2>InputNumber</h2>
+      <div class="row">
+        <InputNumber
+          v-model:value="numberValue"
+          :min="0"
+          :max="10"
+          :step="0.5"
+          :precision="2"
+          placeholder="0.00 ~ 10.00"
+          @change="(v: number | null) => pushLog(`input-number: ${v}`)"
+        />
+        <span class="hint">v-model:value = {{ numberValue ?? 'null' }}</span>
+      </div>
+      <div class="row">
+        <InputNumber :default-value="5" disabled />
+        <InputNumber :default-value="3" :min="1" :max="5" />
+        <span class="hint">disabled / 非受控（边界 clamp）</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Popconfirm</h2>
+      <div class="row">
+        <Popconfirm
+          content="确定删除这条记录吗？"
+          @confirm="pushLog('popconfirm: 已删除')"
+          @cancel="pushLog('popconfirm: 已取消')"
+        >
+          <Button type="danger">删除</Button>
+        </Popconfirm>
+        <Popconfirm
+          content="右侧方位弹出，自定义按钮文本"
+          placement="right"
+          confirm-text="好的"
+          cancel-text="再想想"
+          @confirm="pushLog('popconfirm: 确认执行')"
+        >
+          <Button>右侧 + 自定义文本</Button>
+        </Popconfirm>
+        <Popconfirm content="禁用状态不可触发" disabled>
+          <Button disabled>disabled</Button>
+        </Popconfirm>
+      </div>
     </section>
 
     <section>
