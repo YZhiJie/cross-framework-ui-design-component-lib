@@ -51,3 +51,4 @@ coverage/
 .parcel-cache/
 .turbo/
 .eslintcache
+*.ts.timestamp-*.mjs
