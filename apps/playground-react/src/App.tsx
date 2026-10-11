@@ -84,14 +84,35 @@ export default function App() {
         closable
         maskClosable
         closeOnEsc
-        onOpen={() => pushLog('modal open')}
-        onClose={() => setVisible(false)}
+        // 受控同步：命令式 open() 触发 onOpen 后将受控值对齐，
+        // 使 confirm/cancel/close 等关闭路径统一走受控 state（对齐 Vue v-model 回写行为）
+        onOpen={() => {
+          setVisible(true);
+          pushLog('modal open');
+        }}
+        onClose={() => {
+          setVisible(false);
+          pushLog('modal close');
+        }}
         onOk={() => pushLog('modal ok')}
         onCancel={() => pushLog('modal cancel')}
         renderFooter={() => (
           <>
-            <Button onClick={() => setVisible(false)}>cancel</Button>
-            <Button type="primary" onClick={() => setVisible(false)}>
+            <Button
+              onClick={() => {
+                pushLog('modal cancel');
+                setVisible(false);
+              }}
+            >
+              cancel
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                pushLog('modal ok');
+                setVisible(false);
+              }}
+            >
               confirm
             </Button>
           </>

@@ -53,6 +53,12 @@ export function Modal(props: ModalComponentProps) {
     ref,
   } = props;
 
+  // 回调 latest-ref：App 每次重渲染都会新建箭头函数，若回调进入 updateOptions 的
+  // effect 依赖，命令式 open() 后的任意重渲染都会用受控旧值把 visible 打回 false。
+  // 因此回调统一经 callbacksRef 间接调用，updateOptions 只同步状态类 props。
+  const callbacksRef = useRef({ onOpen, onClose, onOk, onCancel });
+  callbacksRef.current = { onOpen, onClose, onOk, onCancel };
+
   // 逻辑实例只创建一次：visible 提供即受控，否则用 defaultVisible 非受控
   const logicRef = useRef<ModalLogicInstance | null>(null);
   if (logicRef.current === null) {
@@ -62,10 +68,10 @@ export function Modal(props: ModalComponentProps) {
       closable,
       maskClosable,
       closeOnEsc,
-      onOpen: () => onOpen?.(),
-      onClose: () => onClose?.(),
-      onOk: () => onOk?.(),
-      onCancel: () => onCancel?.(),
+      onOpen: () => callbacksRef.current.onOpen?.(),
+      onClose: () => callbacksRef.current.onClose?.(),
+      onOk: () => callbacksRef.current.onOk?.(),
+      onCancel: () => callbacksRef.current.onCancel?.(),
     });
   }
   const logic = logicRef.current;
@@ -77,12 +83,8 @@ export function Modal(props: ModalComponentProps) {
       closable,
       maskClosable,
       closeOnEsc,
-      onOpen: () => onOpen?.(),
-      onClose: () => onClose?.(),
-      onOk: () => onOk?.(),
-      onCancel: () => onCancel?.(),
     });
-  }, [logic, visible, closable, maskClosable, closeOnEsc, onOpen, onClose, onOk, onCancel]);
+  }, [logic, visible, closable, maskClosable, closeOnEsc]);
 
   const state = useLogicState(logic.subscribe, logic.getState);
 
