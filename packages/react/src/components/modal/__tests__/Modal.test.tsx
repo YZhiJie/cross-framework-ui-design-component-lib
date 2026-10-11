@@ -245,4 +245,83 @@ describe('Modal 组件', () => {
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
+  describe('按钮文案与焦点管理', () => {
+    it('默认底部按钮文案为 取消/确认，okText / cancelText 可自定义', () => {
+      const { rerender } = render(<Modal visible>内容</Modal>);
+      expect(screen.getByRole('button', { name: '取消' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: '确认' })).toBeInTheDocument();
+
+      rerender(
+        <Modal visible okText="好的" cancelText="关闭">
+          内容
+        </Modal>,
+      );
+      expect(screen.queryByRole('button', { name: '确认' })).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: '好的' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: '关闭' })).toBeInTheDocument();
+    });
+
+    it('焦点陷阱：Tab 从最后一个可聚焦元素循环回第一个', () => {
+      render(<Modal visible>内容</Modal>);
+      const dialog = screen.getByRole('dialog');
+      const closeBtn = screen.getByRole('button', { name: 'close' });
+      const okBtn = screen.getByRole('button', { name: '确认' });
+
+      okBtn.focus();
+      fireEvent.keyDown(dialog, { key: 'Tab' });
+      expect(document.activeElement).toBe(closeBtn);
+    });
+
+    it('焦点陷阱：Shift+Tab 从第一个循环到最后一个', () => {
+      render(<Modal visible>内容</Modal>);
+      const dialog = screen.getByRole('dialog');
+      const closeBtn = screen.getByRole('button', { name: 'close' });
+      const okBtn = screen.getByRole('button', { name: '确认' });
+
+      closeBtn.focus();
+      fireEvent.keyDown(dialog, { key: 'Tab', shiftKey: true });
+      expect(document.activeElement).toBe(okBtn);
+    });
+
+    it('trapFocus=false 时不介入焦点循环', () => {
+      render(
+        <Modal visible trapFocus={false}>
+          内容
+        </Modal>,
+      );
+      const dialog = screen.getByRole('dialog');
+      const okBtn = screen.getByRole('button', { name: '确认' });
+
+      okBtn.focus();
+      fireEvent.keyDown(dialog, { key: 'Tab' });
+      expect(document.activeElement).toBe(okBtn);
+    });
+
+    it('打开时聚焦面板，关闭后焦点恢复到打开前的元素', () => {
+      const { rerender } = render(
+        <>
+          <button id="modal-trigger">触发</button>
+          <Modal visible={false}>内容</Modal>
+        </>,
+      );
+      const trigger = document.getElementById('modal-trigger')!;
+      trigger.focus();
+
+      rerender(
+        <>
+          <button id="modal-trigger">触发</button>
+          <Modal visible>内容</Modal>
+        </>,
+      );
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+      rerender(
+        <>
+          <button id="modal-trigger">触发</button>
+          <Modal visible={false}>内容</Modal>
+        </>,
+      );
+      expect(document.activeElement).toBe(trigger);
+    });
+  });
 });

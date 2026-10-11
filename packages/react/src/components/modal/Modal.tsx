@@ -7,10 +7,11 @@
  */
 
 import { useEffect, useImperativeHandle, useRef } from 'react';
-import type { CSSProperties, ReactNode, Ref } from 'react';
+import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent, ReactNode, Ref } from 'react';
 import { createPortal } from 'react-dom';
 import type { ModalProps } from '@xui/core';
 import { createModalLogic } from '@xui/shared';
+import { trapFocus as trapFocusIn } from '@xui/shared';
 import { icons } from '@xui/icons';
 import type { ModalLogicInstance } from '@xui/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
@@ -43,6 +44,9 @@ export function Modal(props: ModalComponentProps) {
     closable = true,
     maskClosable = true,
     closeOnEsc = true,
+    okText = '确认',
+    cancelText = '取消',
+    trapFocus = true,
     onOpen,
     onClose,
     onOk,
@@ -107,6 +111,32 @@ export function Modal(props: ModalComponentProps) {
     return () => document.removeEventListener('keydown', handler);
   }, [state.visible, closeOnEsc, logic]);
 
+  // 焦点管理：打开时记录此前焦点并聚焦面板，关闭时归还（焦点恢复）
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (!state.visible) {
+      previousFocusRef.current?.focus();
+      previousFocusRef.current = null;
+      return;
+    }
+    previousFocusRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    panelRef.current?.focus();
+  }, [state.visible]);
+
+  /** 面板按键：ESC 关闭 + Tab 焦点循环（trapFocus 关闭时不介入） */
+  const handlePanelKeydown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      logic.handleEsc();
+      return;
+    }
+    if (trapFocus) {
+      trapFocusIn(e.nativeEvent, e.currentTarget);
+    }
+  };
+
   const handleMaskClick = () => {
     logic.handleMaskClick();
   };
@@ -130,7 +160,15 @@ export function Modal(props: ModalComponentProps) {
   return createPortal(
     <div className="xui-modal">
       <div className="xui-modal__overlay" onClick={handleMaskClick} />
-      <div className="xui-modal__panel" style={panelStyle} role="dialog" aria-modal="true">
+      <div
+        ref={panelRef}
+        className="xui-modal__panel"
+        style={panelStyle}
+        role="dialog"
+        aria-modal="true"
+        tabIndex={-1}
+        onKeyDown={handlePanelKeydown}
+      >
         <div className="xui-modal__header">
           <span className="xui-modal__title">{renderTitle ? renderTitle() : (title ?? null)}</span>
           {state.closable && (
@@ -154,14 +192,14 @@ export function Modal(props: ModalComponentProps) {
               className={cn('xui-button', 'xui-button--md')}
               onClick={handleCancel}
             >
-              取消
+              {cancelText}
             </button>
             <button
               type="button"
               className={cn('xui-button', 'xui-button--primary', 'xui-button--md')}
               onClick={handleOk}
             >
-              确认
+              {okText}
             </button>
           </div>
         )}

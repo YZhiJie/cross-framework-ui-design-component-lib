@@ -22,6 +22,12 @@ export type ModalProps = {
   maskClosable?: boolean;
   /** 按 ESC 是否关闭 */
   closeOnEsc?: boolean;
+  /** 确认按钮文案（默认 footer 生效；默认 '确认'） */
+  okText?: string;
+  /** 取消按钮文案（默认 footer 生效；默认 '取消'） */
+  cancelText?: string;
+  /** 打开时是否将 Tab 焦点循环约束在弹窗内（默认 true） */
+  trapFocus?: boolean;
   onOpen?: () => void;
   onClose?: () => void;
   /** 确认回调（触发后自动关闭） */

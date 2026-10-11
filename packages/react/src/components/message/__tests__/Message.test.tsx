@@ -103,4 +103,25 @@ describe('message (react)', () => {
     // 恢复默认，避免影响其他用例
     manager.updateOptions({ maxCount: 5 });
   });
+  it('同 key 再次 open 原地更新该条（不新增）', () => {
+    act(() => {
+      message.open({ content: '上传中 0%', key: 'upload', duration: 0 });
+      message.open({ content: '上传完成', key: 'upload', type: 'success', duration: 0 });
+    });
+    const items = document.querySelectorAll('.xui-message__item');
+    expect(items).toHaveLength(1);
+    expect(items[0].querySelector('.xui-message__content')?.textContent).toBe('上传完成');
+    expect(items[0].className).toContain('xui-message__item--success');
+  });
+
+  it('onClose 在消息自动关闭时触发', () => {
+    const onClose = vi.fn();
+    act(() => {
+      message.open({ content: '回调', duration: 1000, onClose });
+    });
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
 });

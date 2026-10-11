@@ -222,4 +222,65 @@ describe('Modal 组件（Vue 适配层）', () => {
     expect(wrapper.emitted('close')).toHaveLength(1);
     expect(query('.xui-modal')).toBeNull();
   });
+  it('okText / cancelText 自定义底部按钮文案', async () => {
+    await openModal({ props: { okText: '好的', cancelText: '关闭' } });
+    const buttons = document.body.querySelectorAll('.xui-modal__footer button');
+    expect(buttons[0].textContent).toBe('关闭');
+    expect(buttons[1].textContent).toBe('好的');
+  });
+
+  it('默认底部按钮文案为 取消/确认（向后兼容）', async () => {
+    await openModal();
+    const buttons = document.body.querySelectorAll('.xui-modal__footer button');
+    expect(buttons[0].textContent).toBe('取消');
+    expect(buttons[1].textContent).toBe('确认');
+  });
+
+  it('焦点陷阱：Tab 从最后一个可聚焦元素循环回第一个', async () => {
+    await openModal();
+    const panel = query<HTMLElement>('.xui-modal__panel')!;
+    const closeBtn = query<HTMLElement>('.xui-modal__close')!;
+    const footerButtons = document.body.querySelectorAll<HTMLElement>('.xui-modal__footer button');
+
+    footerButtons[1].focus(); // 确认按钮（默认 footer 最后一个）
+    panel.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+    expect(document.activeElement).toBe(closeBtn);
+  });
+
+  it('焦点陷阱：Shift+Tab 从第一个循环到最后一个', async () => {
+    await openModal();
+    const panel = query<HTMLElement>('.xui-modal__panel')!;
+    const closeBtn = query<HTMLElement>('.xui-modal__close')!;
+    const footerButtons = document.body.querySelectorAll<HTMLElement>('.xui-modal__footer button');
+
+    closeBtn.focus();
+    panel.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true }));
+    expect(document.activeElement).toBe(footerButtons[1]);
+  });
+
+  it('trapFocus=false 时不介入焦点循环', async () => {
+    await openModal({ props: { trapFocus: false } });
+    const panel = query<HTMLElement>('.xui-modal__panel')!;
+    const footerButtons = document.body.querySelectorAll<HTMLElement>('.xui-modal__footer button');
+
+    footerButtons[1].focus();
+    panel.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
+    expect(document.activeElement).toBe(footerButtons[1]);
+  });
+
+  it('打开时聚焦面板，关闭后焦点恢复到打开前的元素', async () => {
+    const trigger = document.createElement('button');
+    document.body.appendChild(trigger);
+    trigger.focus();
+
+    const wrapper = await openModal();
+    await nextTick();
+    expect(query<HTMLElement>('.xui-modal__panel')?.contains(document.activeElement)).toBe(true);
+
+    await wrapper.setProps({ visible: false });
+    await nextTick();
+    expect(document.activeElement).toBe(trigger);
+
+    trigger.remove();
+  });
 });

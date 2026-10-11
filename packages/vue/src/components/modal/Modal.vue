@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, onUnmounted, ref, useTemplateRef, watch, watchEffect } from 'vue';
-import { createModalLogic } from '@xui/shared';
+import { createModalLogic, trapFocus as trapFocusIn } from '@xui/shared';
 import { icons } from '@xui/icons';
 import type { ModalProps } from '@xui/core';
 
@@ -10,6 +10,9 @@ const {
   closable = true,
   maskClosable = true,
   closeOnEsc = true,
+  okText = '确认',
+  cancelText = '取消',
+  trapFocus = true,
 } = defineProps<
   Omit<ModalProps, 'visible' | 'defaultVisible' | 'onOpen' | 'onClose' | 'onOk' | 'onCancel'>
 >();
@@ -54,6 +57,21 @@ const handleEscKey = (e: KeyboardEvent) => {
   }
 };
 
+/** 面板按键：ESC 关闭 + Tab 焦点循环（trapFocus 关闭时不介入） */
+const handlePanelKeydown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    logic.handleEsc();
+    return;
+  }
+  if (trapFocus) {
+    trapFocusIn(e, e.currentTarget as HTMLElement);
+  }
+};
+
+/** 打开前记录的焦点元素，关闭时恢复 */
+let previouslyFocused: HTMLElement | null = null;
+
 onUnmounted(() => {
   unsubscribe();
   document.removeEventListener('keydown', handleEscKey);
@@ -71,13 +89,20 @@ watchEffect(() => {
 watch(
   () => state.value.visible,
   (isVisible) => {
-    if (isVisible && closeOnEsc) {
-      document.addEventListener('keydown', handleEscKey);
+    if (isVisible) {
+      if (closeOnEsc) {
+        document.addEventListener('keydown', handleEscKey);
+      }
+      // 记录打开前的焦点元素，关闭时归还（焦点恢复）
+      previouslyFocused =
+        document.activeElement instanceof HTMLElement ? document.activeElement : null;
       nextTick(() => {
         panelRef.value?.focus();
       });
     } else {
       document.removeEventListener('keydown', handleEscKey);
+      previouslyFocused?.focus();
+      previouslyFocused = null;
     }
   },
 );
@@ -116,7 +141,7 @@ defineExpose({ open, close });
         class="xui-modal__panel"
         :style="{ width: typeof width === 'number' ? `${width}px` : width }"
         tabindex="-1"
-        @keydown.esc.prevent="logic.handleEsc"
+        @keydown="handlePanelKeydown"
       >
         <div class="xui-modal__header">
           <slot name="title">
@@ -140,9 +165,11 @@ defineExpose({ open, close });
         </div>
         <div class="xui-modal__footer">
           <slot name="footer">
-            <button class="xui-button xui-button--md" @click="handleCancel">取消</button>
+            <button class="xui-button xui-button--md" @click="handleCancel">
+              {{ cancelText }}
+            </button>
             <button class="xui-button xui-button--primary xui-button--md" @click="handleOk">
-              确认
+              {{ okText }}
             </button>
           </slot>
         </div>

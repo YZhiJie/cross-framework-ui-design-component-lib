@@ -127,4 +127,128 @@ describe('createMessageManager', () => {
   it('messageDefaults 契约值正确', () => {
     expect(messageDefaults).toEqual({ type: 'info', duration: 3000, closable: false, maxCount: 5 });
   });
+
+  describe('key 更新语义', () => {
+    it('同 key 再次 open 原地更新内容，不新增条目', () => {
+      const manager = createMessageManager();
+      manager.open({ content: '上传中 0%', key: 'upload', duration: 0 });
+      manager.open({ content: '上传中 50%', key: 'upload', type: 'success', duration: 0 });
+
+      const { items } = manager.getState();
+      expect(items).toHaveLength(1);
+      expect(items[0]).toMatchObject({
+        id: 1,
+        type: 'success',
+        content: '上传中 50%',
+        key: 'upload',
+      });
+    });
+
+    it('不同 key 正常新增，互不影响', () => {
+      const manager = createMessageManager();
+      manager.open({ content: 'A', key: 'a', duration: 0 });
+      manager.open({ content: 'B', key: 'b', duration: 0 });
+
+      expect(manager.getState().items.map((item) => item.content)).toEqual(['A', 'B']);
+    });
+
+    it('更新重置计时：新 duration 生效，旧定时器被清理', () => {
+      const manager = createMessageManager();
+      manager.open({ content: '进度 0%', key: 'progress', duration: 1000 });
+      vi.advanceTimersByTime(999);
+      manager.open({ content: '进度 100%', key: 'progress', duration: 3000 });
+
+      // 旧 1000ms 定时器已清理：999 + 任意时间后仍存活，直到新 3000ms 计满
+      vi.advanceTimersByTime(2000);
+      expect(manager.getState().items).toHaveLength(1);
+      vi.advanceTimersByTime(1000);
+      expect(manager.getState().items).toHaveLength(0);
+    });
+
+    it('更新为 duration 0 后不再自动关闭', () => {
+      const manager = createMessageManager();
+      manager.open({ content: '进度', key: 'p', duration: 1000 });
+      manager.open({ content: '完成', key: 'p', duration: 0 });
+
+      vi.advanceTimersByTime(60_000);
+      expect(manager.getState().items).toHaveLength(1);
+    });
+
+    it('同 key 更新后句柄关闭的是更新后的那条消息', () => {
+      const manager = createMessageManager();
+      const first = manager.open({ content: '第一次', key: 'k', duration: 0 });
+      const second = manager.open({ content: '第二次', key: 'k', duration: 0 });
+
+      second.close();
+      expect(manager.getState().items).toEqual([]);
+
+      // 旧句柄指向同一 id，重复关闭安全
+      first.close();
+      expect(manager.getState().items).toEqual([]);
+    });
+
+    it('更新时未传 type / closable 保留原值', () => {
+      const manager = createMessageManager();
+      manager.open({ content: '原内容', type: 'warning', closable: true, key: 'k', duration: 0 });
+      manager.open({ content: '新内容', key: 'k', duration: 0 });
+
+      const { items } = manager.getState();
+      expect(items[0]).toMatchObject({ type: 'warning', closable: true, content: '新内容' });
+    });
+  });
+
+  describe('onClose 回调', () => {
+    it('句柄手动关闭时触发', () => {
+      const manager = createMessageManager();
+      const onClose = vi.fn();
+      const handle = manager.open({ content: '消息', onClose });
+
+      handle.close();
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+
+    it('duration 自动关闭时触发', () => {
+      const manager = createMessageManager();
+      const onClose = vi.fn();
+      manager.open({ content: '消息', duration: 1000, onClose });
+
+      vi.advanceTimersByTime(1000);
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+
+    it('超出 maxCount 被挤出时触发', () => {
+      const manager = createMessageManager({ maxCount: 1 });
+      const firstClose = vi.fn();
+      const secondClose = vi.fn();
+      manager.open({ content: '第一条', onClose: firstClose });
+      manager.open({ content: '第二条', onClose: secondClose });
+
+      expect(firstClose).toHaveBeenCalledTimes(1);
+      expect(secondClose).not.toHaveBeenCalled();
+    });
+
+    it('closeAll 逐条触发', () => {
+      const manager = createMessageManager();
+      const onCloseA = vi.fn();
+      const onCloseB = vi.fn();
+      manager.open({ content: 'A', onClose: onCloseA });
+      manager.open({ content: 'B', onClose: onCloseB });
+
+      manager.closeAll();
+      expect(onCloseA).toHaveBeenCalledTimes(1);
+      expect(onCloseB).toHaveBeenCalledTimes(1);
+    });
+
+    it('同 key 更新可替换 onClose 回调', () => {
+      const manager = createMessageManager();
+      const firstClose = vi.fn();
+      const secondClose = vi.fn();
+      manager.open({ content: '第一次', key: 'k', onClose: firstClose });
+      manager.open({ content: '第二次', key: 'k', onClose: secondClose });
+
+      manager.closeAll();
+      expect(firstClose).not.toHaveBeenCalled();
+      expect(secondClose).toHaveBeenCalledTimes(1);
+    });
+  });
 });
