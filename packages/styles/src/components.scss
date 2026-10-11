@@ -587,6 +587,60 @@
   cursor: not-allowed;
 }
 
+/* 多选模式：trigger 自动增高容纳 tag 列表 */
+.xui-select.is-multiple .xui-select__trigger {
+  height: auto;
+  min-height: 32px;
+  padding: 3px 10px;
+  flex-wrap: wrap;
+}
+
+.xui-select__tags {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+}
+
+.xui-select__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-sizing: border-box;
+  max-width: 100%;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--xui-radius-sm, 4px);
+  background-color: var(--xui-color-bg-hover, #f3f4f6);
+  color: var(--xui-color-text, #1f2937);
+  font-size: var(--xui-font-size-sm, 12px);
+}
+
+.xui-select__tag-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.xui-select__tag-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  color: var(--xui-color-text-secondary, #6b7280);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.xui-select__tag-close:hover {
+  background-color: var(--xui-color-border, #d1d5db);
+  color: var(--xui-color-text, #1f2937);
+}
+
 .xui-select__value {
   flex: 1;
   min-width: 0;
@@ -652,7 +706,7 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  height: 30px;
+  height: var(--xui-select-item-height, 30px);
   padding: 0 8px;
   border-radius: var(--xui-radius-sm, 4px);
   color: var(--xui-color-text, #1f2937);
@@ -676,6 +730,59 @@
 
 .xui-select__option:hover:not(.is-disabled, .is-active) {
   background-color: var(--xui-color-bg-hover, #f3f4f6);
+}
+
+/* 可搜索模式：面板顶部搜索框 */
+.xui-select__search {
+  position: sticky;
+  top: -4px;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  height: 28px;
+  margin-bottom: 4px;
+  padding: 0 8px;
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: var(--xui-radius-sm, 4px);
+  background-color: var(--xui-color-bg, #fff);
+  color: var(--xui-color-text, #1f2937);
+  font-size: var(--xui-font-size-sm, 12px);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.xui-select__search:focus {
+  border-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-select__search:disabled {
+  background-color: var(--xui-color-bg-disabled, #f3f4f6);
+  cursor: not-allowed;
+}
+
+/* 搜索无匹配结果时的空态提示 */
+.xui-select__empty {
+  padding: 16px 8px;
+  color: var(--xui-color-text-secondary, #6b7280);
+  font-size: var(--xui-font-size-sm, 12px);
+  text-align: center;
+}
+
+/* 虚拟滚动：spacer 占位行，撑起窗口外选项的总高度 */
+.xui-select__spacer {
+  height: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.xui-select__spacer--top {
+  margin-bottom: 0;
+}
+
+.xui-select__spacer--bottom {
+  margin-top: 0;
 }
 
 /* ===================== Tabs ===================== */

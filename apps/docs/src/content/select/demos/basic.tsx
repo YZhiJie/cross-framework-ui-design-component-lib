@@ -16,7 +16,7 @@ export default function SelectBasicDemo() {
     <div className="demo-column">
       <Select
         value={value}
-        onChange={setValue}
+        onChange={(v) => setValue(v as string)}
         options={options}
         placeholder="请选择城市"
         clearable

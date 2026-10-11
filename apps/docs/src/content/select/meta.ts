@@ -2,27 +2,38 @@ import type { ComponentMeta } from '../types';
 
 import BasicVue from './demos/basic.vue';
 import StateVue from './demos/state.vue';
+import AdvancedVue from './demos/advanced.vue';
 import BasicReact from './demos/basic';
 import StateReact from './demos/state';
+import AdvancedReact from './demos/advanced';
 
 import basicVueSource from './demos/basic.vue?raw';
 import stateVueSource from './demos/state.vue?raw';
+import advancedVueSource from './demos/advanced.vue?raw';
 import basicReactSource from './demos/basic.tsx?raw';
 import stateReactSource from './demos/state.tsx?raw';
+import advancedReactSource from './demos/advanced.tsx?raw';
 
 export const selectMeta: ComponentMeta = {
   name: 'Select',
   slug: 'select',
   title: '下拉选择',
   category: 'form',
-  summary: '从弹出的选项面板中选择一个值，支持禁用项、清空与完整的键盘操作。',
+  summary:
+    '从弹出的选项面板中选择值，支持单选 / 多选 / 可搜索 / 虚拟滚动，键盘操作与 ARIA 语义完整。',
   features: [
     '受控 / 非受控双模式，Vue 端支持 v-model:value',
-    'options 配置数组驱动渲染，单个选项可 disabled',
-    'clearable 已选中时显示清空按钮；整组件 disabled 不可交互',
+    'multiple 多选：选中值为 string[]，点击选项切换选中且面板不关闭，tag 可单独移除',
+    'searchable 可搜索：面板顶部搜索框按选项文案过滤（大小写不敏感）',
+    'virtual 虚拟滚动：1000+ 选项仅渲染可视窗口，maxHeight 控制面板视口高度',
+    'clearable 已选中时显示清空按钮（多选清空全部）；disabled 整体禁用',
     '键盘支持：上下方向键移动高亮（跳过禁用项）、Enter 确认、Esc 关闭',
   ],
-  scenarios: ['选项数量较多、不适合用 Radio 平铺的单选表单字段。'],
+  scenarios: [
+    '选项数量较多、不适合用 Radio 平铺的单选 / 多选表单字段。',
+    '选项上千条的大数据量选择场景（配合 virtual 虚拟滚动）。',
+    '需要按文案快速定位选项的检索式选择场景（配合 searchable）。',
+  ],
   demos: [
     {
       id: 'basic',
@@ -42,11 +53,31 @@ export const selectMeta: ComponentMeta = {
       vueSource: stateVueSource,
       reactSource: stateReactSource,
     },
+    {
+      id: 'advanced',
+      title: '多选 / 可搜索 / 虚拟滚动',
+      description:
+        'multiple 以 tag 展示选中项；searchable 按文案过滤；virtual 渲染 1000 项仅维护可视窗口。',
+      vueComponent: AdvancedVue,
+      reactComponent: AdvancedReact,
+      vueSource: advancedVueSource,
+      reactSource: advancedReactSource,
+    },
   ],
   api: {
     props: [
-      { name: 'value', type: 'string', default: '—', description: '受控选中值（提供即受控）' },
-      { name: 'defaultValue', type: 'string', default: '—', description: '非受控初始选中值' },
+      {
+        name: 'value',
+        type: 'string | string[]',
+        default: '—',
+        description: '受控选中值（提供即受控）；多选模式为 string[]',
+      },
+      {
+        name: 'defaultValue',
+        type: 'string | string[]',
+        default: '—',
+        description: '非受控初始选中值',
+      },
       {
         name: 'options',
         type: 'SelectOption[]',
@@ -60,20 +91,61 @@ export const selectMeta: ComponentMeta = {
         name: 'clearable',
         type: 'boolean',
         default: 'false',
-        description: '是否显示清空按钮（仅已选中时）',
+        description: '是否显示清空按钮（仅已选中时；多选清空全部）',
+      },
+      {
+        name: 'multiple',
+        type: 'boolean',
+        default: 'false',
+        description: '多选模式：选中值为数组，点击选项切换选中且面板不关闭',
+      },
+      {
+        name: 'searchable',
+        type: 'boolean',
+        default: 'false',
+        description: '可搜索模式：面板顶部显示搜索框，按选项文案过滤',
+      },
+      {
+        name: 'virtual',
+        type: 'boolean',
+        default: 'false',
+        description: '虚拟滚动模式（大数据量选项）',
+      },
+      {
+        name: 'maxHeight',
+        type: 'number',
+        default: '264',
+        description: '下拉面板最大高度（px）；虚拟模式下即视口高度',
+      },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的内联样式（支持 CSS 自定义属性）',
       },
       {
         name: 'onChange',
-        type: '(value: string) => void',
+        type: '(value: string | string[]) => void',
         default: '—',
-        description: '选中值变更回调',
+        description: '选中值变更回调（多选载荷为 string[]）',
       },
       { name: 'onClear', type: '() => void', default: '—', description: '清空回调' },
     ],
     events: [
-      { vue: 'change', react: 'onChange', payload: 'value: string', description: '选中值变更' },
+      {
+        vue: 'change',
+        react: 'onChange',
+        payload: 'value: string | string[]',
+        description: '选中值变更（多选为最新数组）',
+      },
       { vue: 'clear', react: 'onClear', payload: '—', description: '清空选中值' },
-      { vue: 'update:value', react: '—', payload: 'string', description: 'v-model:value 回写' },
+      {
+        vue: 'update:value',
+        react: '—',
+        payload: 'string | string[]',
+        description: 'v-model:value 回写',
+      },
     ],
     types: [
       {
@@ -85,11 +157,21 @@ export const selectMeta: ComponentMeta = {
 }`,
         description: '下拉选项配置。',
       },
+      {
+        name: 'SelectValue',
+        definition: `type SelectValue = string | string[];`,
+        description: '选中值：单选为 string，多选为 string[]（向后兼容：单选行为与旧版一致）。',
+      },
     ],
   },
   notes: [
     '禁用选项不响应点击与键盘高亮，选中禁用项的操作会被静默忽略。',
-    '点击组件外部会收起面板且不改变选中值。',
+    '点击组件外部会收起面板且不改变选中值；多选模式点击选项后面板保持展开。',
+    '虚拟模式要求选项行高固定（默认 30px，可用 CSS 变量 --xui-select-item-height 对齐调整）。',
+    '多选删除某个 tag 即切换取消该项，触发 onChange 携带最新数组。',
   ],
-  a11y: ['选择器可通过 Tab 聚焦，方向键 / Enter / Esc 完成全部键盘操作；禁用项携带禁用语义。'],
+  a11y: [
+    '选择器可通过 Tab 聚焦，方向键 / Enter / Esc 完成全部键盘操作；禁用项携带禁用语义。',
+    '多选面板携带 aria-multiselectable；搜索框独立 role=searchbox。',
+  ],
 };

@@ -17,6 +17,8 @@ describe('createSelectLogic', () => {
       open: false,
       activeIndex: -1,
       disabled: false,
+      searchQuery: '',
+      filteredOptions: OPTIONS,
     });
   });
 
@@ -211,5 +213,163 @@ describe('createSelectLogic', () => {
     logic.updateOptions({ options: [{ label: '杭州', value: 'hangzhou' }] });
     logic.confirmHighlight();
     expect(logic.getState().value).toBe('hangzhou');
+  });
+});
+
+describe('createSelectLogic 多选模式', () => {
+  it('初始 value 为空数组；defaultValue 数组生效', () => {
+    const empty = createSelectLogic({ options: OPTIONS, multiple: true });
+    expect(empty.getState().value).toEqual([]);
+
+    const initial = createSelectLogic({
+      options: OPTIONS,
+      multiple: true,
+      defaultValue: ['beijing', 'guangzhou'],
+    });
+    expect(initial.getState().value).toEqual(['beijing', 'guangzhou']);
+  });
+
+  it('select 切换语义：追加选中、再次点击取消，面板保持展开', () => {
+    const onChange = vi.fn();
+    const logic = createSelectLogic({ options: OPTIONS, multiple: true, onChange });
+    logic.toggleOpen();
+    logic.select('beijing');
+    expect(logic.getState().value).toEqual(['beijing']);
+    expect(logic.getState().open).toBe(true);
+    expect(onChange).toHaveBeenLastCalledWith(['beijing']);
+
+    logic.select('guangzhou');
+    expect(logic.getState().value).toEqual(['beijing', 'guangzhou']);
+    expect(onChange).toHaveBeenLastCalledWith(['beijing', 'guangzhou']);
+
+    logic.select('beijing');
+    expect(logic.getState().value).toEqual(['guangzhou']);
+    expect(onChange).toHaveBeenLastCalledWith(['guangzhou']);
+  });
+
+  it('select 禁用项忽略；onChange 载荷为数组', () => {
+    const onChange = vi.fn();
+    const logic = createSelectLogic({ options: OPTIONS, multiple: true, onChange });
+    logic.select('shanghai');
+    expect(logic.getState().value).toEqual([]);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('受控多选：select 仅回调最新数组，不改内部值', () => {
+    const onChange = vi.fn();
+    const logic = createSelectLogic({
+      options: OPTIONS,
+      multiple: true,
+      value: ['beijing'],
+      onChange,
+    });
+    logic.select('guangzhou');
+    expect(onChange).toHaveBeenCalledWith(['beijing', 'guangzhou']);
+    expect(logic.getState().value).toEqual(['beijing']);
+
+    logic.updateOptions({ value: ['beijing', 'guangzhou'] });
+    expect(logic.getState().value).toEqual(['beijing', 'guangzhou']);
+  });
+
+  it('多选 clear：清空全部并触发 onClear；空数组时忽略', () => {
+    const onClear = vi.fn();
+    const logic = createSelectLogic({
+      options: OPTIONS,
+      multiple: true,
+      defaultValue: ['beijing', 'guangzhou'],
+      onClear,
+    });
+    logic.clear();
+    expect(logic.getState().value).toEqual([]);
+    expect(onClear).toHaveBeenCalledTimes(1);
+
+    logic.clear();
+    expect(onClear).toHaveBeenCalledTimes(1);
+  });
+
+  it('confirmHighlight 多选：确认高亮项为切换语义', () => {
+    const logic = createSelectLogic({ options: OPTIONS, multiple: true });
+    logic.toggleOpen();
+    logic.confirmHighlight();
+    expect(logic.getState().value).toEqual(['beijing']);
+  });
+});
+
+describe('createSelectLogic 可搜索模式', () => {
+  it('setSearch 过滤选项并重置高亮到第一个可用项', () => {
+    const logic = createSelectLogic({ options: OPTIONS, searchable: true });
+    logic.toggleOpen();
+    logic.setSearch('广');
+    expect(logic.getState().filteredOptions.map((option) => option.value)).toEqual(['guangzhou']);
+    expect(logic.getState().activeIndex).toBe(0);
+    expect(logic.getState().searchQuery).toBe('广');
+  });
+
+  it('搜索大小写不敏感且按 label 匹配（value 不参与匹配）', () => {
+    const logic = createSelectLogic({
+      options: [
+        { label: 'Apple', value: 'apple' },
+        { label: 'Banana', value: 'banana' },
+      ],
+      searchable: true,
+    });
+    logic.setSearch('APP');
+    expect(logic.getState().filteredOptions).toHaveLength(1);
+    logic.setSearch('apple');
+    expect(logic.getState().filteredOptions.map((option) => option.value)).toEqual(['apple']);
+  });
+
+  it('无匹配时高亮 -1，select 不存在的过滤项仍按全量列表校验', () => {
+    const onChange = vi.fn();
+    const logic = createSelectLogic({ options: OPTIONS, searchable: true, onChange });
+    logic.setSearch('不存在');
+    expect(logic.getState().filteredOptions).toEqual([]);
+    expect(logic.getState().activeIndex).toBe(-1);
+
+    // 过滤后键盘确认不触发（无高亮）
+    logic.confirmHighlight();
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('confirmHighlight 确认过滤后列表的高亮项；单选确认后清空搜索并收起', () => {
+    const logic = createSelectLogic({ options: OPTIONS, searchable: true });
+    logic.toggleOpen();
+    logic.setSearch('深');
+    logic.confirmHighlight();
+    expect(logic.getState().value).toBe('shenzhen');
+    expect(logic.getState().open).toBe(false);
+    expect(logic.getState().searchQuery).toBe('');
+    expect(logic.getState().filteredOptions.map((option) => option.value)).toEqual(
+      OPTIONS.map((option) => option.value),
+    );
+  });
+
+  it('close 重置搜索词与过滤列表', () => {
+    const logic = createSelectLogic({ options: OPTIONS, searchable: true });
+    logic.toggleOpen();
+    logic.setSearch('广');
+    logic.close();
+    expect(logic.getState().searchQuery).toBe('');
+    expect(logic.getState().filteredOptions).toHaveLength(OPTIONS.length);
+  });
+
+  it('搜索词为空白串时不过滤', () => {
+    const logic = createSelectLogic({ options: OPTIONS, searchable: true });
+    logic.setSearch('   ');
+    expect(logic.getState().filteredOptions).toHaveLength(OPTIONS.length);
+  });
+
+  it('非 searchable 模式 setSearch 不生效', () => {
+    const logic = createSelectLogic({ options: OPTIONS });
+    logic.setSearch('广');
+    expect(logic.getState().searchQuery).toBe('');
+    expect(logic.getState().filteredOptions).toHaveLength(OPTIONS.length);
+  });
+
+  it('updateOptions 替换 options 后过滤列表同步重算', () => {
+    const logic = createSelectLogic({ options: OPTIONS, searchable: true });
+    logic.setSearch('广');
+    logic.updateOptions({ options: [{ label: '杭州', value: 'hangzhou' }] });
+    expect(logic.getState().filteredOptions).toEqual([]);
   });
 });

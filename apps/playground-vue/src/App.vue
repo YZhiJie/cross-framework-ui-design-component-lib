@@ -28,7 +28,14 @@ import {
   message,
 } from '@xui/vue';
 import '@xui/styles';
-import type { BreadcrumbItem, TableColumn, TableSort } from '@xui/core';
+import type {
+  BreadcrumbItem,
+  SelectValue,
+  TableColumn,
+  TableRow,
+  TableRowKey,
+  TableSort,
+} from '@xui/core';
 
 const name = ref('');
 const modalVisible = ref(false);
@@ -59,6 +66,12 @@ const selectOptions = [
   { label: 'Shenzhen', value: 'shenzhen' },
 ];
 
+// 虚拟滚动演示：1000 项选项
+const bigSelectOptions = Array.from({ length: 1000 }, (_, i) => ({
+  label: `Option ${i + 1}`,
+  value: `opt-${i + 1}`,
+}));
+
 const tabsItems = [
   { label: 'Tab One', value: 'a' },
   { label: 'Tab Disabled', value: 'b', disabled: true },
@@ -82,6 +95,14 @@ const tableRows = [
   { id: 3, name: '王五', age: 28, city: 'Guangzhou' },
   { id: 4, name: '赵六', age: 32, city: 'Shenzhen' },
 ];
+
+// 虚拟滚动演示：1000 行数据
+const bigTableRows = Array.from({ length: 1000 }, (_, i) => ({
+  id: i + 1,
+  name: `用户${i + 1}`,
+  age: 20 + (i % 40),
+  city: `城市${(i % 20) + 1}`,
+}));
 
 const breadcrumbItems: BreadcrumbItem[] = [
   { label: '首页', href: '#home' },
@@ -317,10 +338,32 @@ const pushLog = (msg: string) => {
           :options="selectOptions"
           placeholder="Select a city"
           clearable
-          @change="(v: string) => pushLog(`select: ${v}`)"
+          @change="(v: SelectValue) => pushLog(`select: ${v}`)"
           @clear="pushLog('select cleared')"
         />
         <Select :options="selectOptions" disabled placeholder="Disabled" />
+      </div>
+      <div class="row">
+        <Select
+          :options="selectOptions"
+          multiple
+          :default-value="['beijing']"
+          placeholder="Multiple"
+          @change="(v: SelectValue) => pushLog(`select multi: ${JSON.stringify(v)}`)"
+        />
+        <Select
+          :options="selectOptions"
+          searchable
+          placeholder="Searchable"
+          @change="(v: SelectValue) => pushLog(`select search: ${v}`)"
+        />
+        <Select
+          :options="bigSelectOptions"
+          virtual
+          :max-height="200"
+          placeholder="Virtual 1000 items"
+          @change="(v: SelectValue) => pushLog(`select virtual: ${v}`)"
+        />
       </div>
     </section>
 
@@ -409,6 +452,12 @@ const pushLog = (msg: string) => {
         row-key="id"
         stripe
         border
+        :row-selection="{
+          onChange: (keys: TableRowKey[]) => pushLog(`select rows: ${JSON.stringify(keys)}`),
+        }"
+        @row-click="
+          (row: TableRow, index: number) => pushLog(`row click: ${String(row.name)} #${index}`)
+        "
         @sort-change="(s: TableSort) => pushLog(`sort: ${s.key} ${s.order ?? 'none'}`)"
       />
       <Table :columns="tableColumns" :data-source="[]" style="margin-top: 12px">
@@ -416,6 +465,16 @@ const pushLog = (msg: string) => {
           <span>自定义空态：没有更多数据啦</span>
         </template>
       </Table>
+      <Table
+        :columns="tableColumns"
+        :data-source="bigTableRows"
+        row-key="id"
+        virtual
+        :height="320"
+        :row-height="40"
+        stripe
+        style="margin-top: 12px"
+      />
     </section>
 
     <section>

@@ -60,6 +60,12 @@ export default function App() {
     { label: 'Shenzhen', value: 'shenzhen' },
   ];
 
+  // 虚拟滚动演示：1000 项选项
+  const bigSelectOptions = Array.from({ length: 1000 }, (_, i) => ({
+    label: `Option ${i + 1}`,
+    value: `opt-${i + 1}`,
+  }));
+
   const tabsItems = [
     { label: 'Tab One', value: 'a' },
     { label: 'Tab Disabled', value: 'b', disabled: true },
@@ -83,6 +89,14 @@ export default function App() {
     { id: 3, name: '王五', age: 28, city: 'Guangzhou' },
     { id: 4, name: '赵六', age: 32, city: 'Shenzhen' },
   ];
+
+  // 虚拟滚动演示：1000 行数据
+  const bigTableRows = Array.from({ length: 1000 }, (_, i) => ({
+    id: i + 1,
+    name: `用户${i + 1}`,
+    age: 20 + (i % 40),
+    city: `城市${(i % 20) + 1}`,
+  }));
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: '首页', href: '#home' },
@@ -381,6 +395,28 @@ export default function App() {
           />
           <Select options={selectOptions} disabled placeholder="Disabled" />
         </div>
+        <div className="row">
+          <Select
+            options={selectOptions}
+            multiple
+            defaultValue={['beijing']}
+            placeholder="Multiple"
+            onChange={(v) => pushLog(`select multi: ${JSON.stringify(v)}`)}
+          />
+          <Select
+            options={selectOptions}
+            searchable
+            placeholder="Searchable"
+            onChange={(v) => pushLog(`select search: ${v}`)}
+          />
+          <Select
+            options={bigSelectOptions}
+            virtual
+            maxHeight={200}
+            placeholder="Virtual 1000 items"
+            onChange={(v) => pushLog(`select virtual: ${v}`)}
+          />
+        </div>
       </section>
 
       <section>
@@ -485,6 +521,10 @@ export default function App() {
           rowKey="id"
           stripe
           border
+          rowSelection={{
+            onChange: (keys) => pushLog(`select rows: ${JSON.stringify(keys)}`),
+          }}
+          onRowClick={(row, index) => pushLog(`row click: ${String(row.name)} #${index}`)}
           onSortChange={(s) => pushLog(`sort: ${s.key} ${s.order ?? 'none'}`)}
         />
         <div style={{ marginTop: 12 }}>
@@ -492,6 +532,17 @@ export default function App() {
             columns={tableColumns}
             dataSource={[]}
             renderEmpty={() => <span>自定义空态：没有更多数据啦</span>}
+          />
+        </div>
+        <div style={{ marginTop: 12 }}>
+          <Table
+            columns={tableColumns}
+            dataSource={bigTableRows}
+            rowKey="id"
+            virtual
+            height={320}
+            rowHeight={40}
+            stripe
           />
         </div>
       </section>

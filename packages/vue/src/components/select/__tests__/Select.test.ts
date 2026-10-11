@@ -109,4 +109,110 @@ describe('Select (vue)', () => {
     expect(wrapper.find('[role="listbox"]').exists()).toBe(false);
     wrapper.unmount();
   });
+
+  it('className / style 透传到根节点（含 CSS 变量）', () => {
+    const wrapper = mount(Select, {
+      props: {
+        options: OPTIONS,
+        className: 'my-select',
+        style: { '--xui-select-max-height': '200px', margin: '4px' },
+      },
+    });
+    expect(wrapper.classes()).toContain('my-select');
+    expect(wrapper.classes()).toContain('xui-select');
+    const style = wrapper.attributes('style');
+    expect(style).toContain('--xui-select-max-height: 200px');
+    expect(style).toContain('margin: 4px');
+  });
+
+  it('多选：tag 列表渲染，点击选项追加 tag 且面板不关闭', async () => {
+    const wrapper = mount(Select, { props: { options: OPTIONS, multiple: true } });
+    expect(wrapper.classes()).toContain('is-multiple');
+
+    await wrapper.find('.xui-select__trigger').trigger('click');
+    await wrapper.findAll('[role="option"]')[0].trigger('click');
+    await wrapper.findAll('[role="option"]')[2].trigger('click');
+
+    const tags = wrapper.findAll('.xui-select__tag');
+    expect(tags).toHaveLength(2);
+    expect(tags[0].text()).toContain('北京');
+    expect(tags[1].text()).toContain('广州');
+    // 面板保持展开
+    expect(wrapper.find('[role="listbox"]').exists()).toBe(true);
+    // onChange 载荷为数组（emitted 每项为参数列表）
+    expect(wrapper.emitted('change')).toEqual([[['beijing']], [['beijing', 'guangzhou']]]);
+  });
+
+  it('多选：tag 删除按钮切换取消选中', async () => {
+    const wrapper = mount(Select, {
+      props: { options: OPTIONS, multiple: true, defaultValue: ['beijing', 'guangzhou'] },
+    });
+    expect(wrapper.findAll('.xui-select__tag')).toHaveLength(2);
+
+    await wrapper.findAll('.xui-select__tag-close')[0].trigger('click');
+    expect(wrapper.emitted('change')).toEqual([[['guangzhou']]]);
+    expect(wrapper.findAll('.xui-select__tag')).toHaveLength(1);
+  });
+
+  it('多选 clearable：清空全部 tag', async () => {
+    const wrapper = mount(Select, {
+      props: { options: OPTIONS, multiple: true, defaultValue: ['beijing'], clearable: true },
+    });
+    await wrapper.find('.xui-select__clear').trigger('click');
+    expect(wrapper.emitted('clear')).toHaveLength(1);
+    expect(wrapper.findAll('.xui-select__tag')).toHaveLength(0);
+  });
+
+  it('可搜索：输入过滤选项，无匹配显示空态', async () => {
+    const wrapper = mount(Select, { props: { options: OPTIONS, searchable: true } });
+    await wrapper.find('.xui-select__trigger').trigger('click');
+
+    const input = wrapper.find('.xui-select__search');
+    expect(input.exists()).toBe(true);
+    await input.setValue('广');
+    const options = wrapper.findAll('[role="option"]');
+    expect(options).toHaveLength(1);
+    expect(options[0].text()).toBe('广州');
+
+    await input.setValue('不存在');
+    expect(wrapper.find('.xui-select__empty').text()).toBe('无匹配结果');
+    expect(wrapper.findAll('[role="option"]')).toHaveLength(0);
+
+    // 点击过滤结果选中后清空搜索并收起
+    await input.setValue('广');
+    await wrapper.findAll('[role="option"]')[0].trigger('click');
+    expect(wrapper.emitted('change')).toEqual([['guangzhou']]);
+    expect(wrapper.find('[role="listbox"]').exists()).toBe(false);
+  });
+
+  it('虚拟模式：默认窗口渲染 + spacer 占位，滚动更新窗口', async () => {
+    const bigOptions = Array.from({ length: 100 }, (_, i) => ({
+      label: `选项${i + 1}`,
+      value: `v${i + 1}`,
+    }));
+    const wrapper = mount(Select, {
+      props: { options: bigOptions, virtual: true, maxHeight: 120 },
+      attachTo: document.body,
+    });
+    await wrapper.find('.xui-select__trigger').trigger('click');
+
+    expect(wrapper.classes()).toContain('is-virtual');
+    // jsdom 视口高 0：窗口 = rawStart 0 + overscan 5 → 6 行（远小于 100）
+    const bodyOptions = wrapper.findAll('[role="option"]');
+    expect(bodyOptions.length).toBeLessThan(20);
+    expect(wrapper.findAll('.xui-select__spacer').length).toBeGreaterThan(0);
+
+    // 滚动到底部更新窗口
+    const dropdown = wrapper.find('[role="listbox"]');
+    Object.defineProperty(dropdown.element, 'scrollTop', {
+      value: 3000,
+      configurable: true,
+      writable: true,
+    });
+    await dropdown.trigger('scroll');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const texts = wrapper.findAll('[role="option"]').map((option) => option.text());
+    expect(texts).toContain('选项100');
+    wrapper.unmount();
+  });
 });

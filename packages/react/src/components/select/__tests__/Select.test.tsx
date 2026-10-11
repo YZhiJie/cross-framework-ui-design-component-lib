@@ -112,4 +112,117 @@ describe('Select (react)', () => {
     fireEvent.mouseDown(document.body);
     expect(container.querySelector('[role="listbox"]')).toBeNull();
   });
+
+  it('className / style 透传到根节点（含 CSS 变量）', () => {
+    const { container } = render(
+      <Select
+        options={OPTIONS}
+        className="my-select"
+        style={{ '--xui-select-max-height': '200px', margin: '4px' }}
+      />,
+    );
+    const root = container.querySelector('.xui-select') as HTMLElement;
+    expect(root.classList.contains('my-select')).toBe(true);
+    expect(root.style.getPropertyValue('--xui-select-max-height')).toBe('200px');
+    expect(root.style.margin).toBe('4px');
+  });
+
+  it('多选：tag 列表渲染，点击选项追加 tag 且面板不关闭', () => {
+    const onChange = vi.fn();
+    const { container } = render(<Select options={OPTIONS} multiple onChange={onChange} />);
+    const root = container.querySelector('.xui-select') as HTMLElement;
+    expect(root.classList.contains('is-multiple')).toBe(true);
+
+    fireEvent.click(container.querySelector('.xui-select__trigger') as HTMLElement);
+    fireEvent.click(container.querySelectorAll('[role="option"]')[0]);
+    fireEvent.click(container.querySelectorAll('[role="option"]')[2]);
+
+    const tags = container.querySelectorAll('.xui-select__tag');
+    expect(tags).toHaveLength(2);
+    expect(tags[0].textContent).toContain('北京');
+    expect(tags[1].textContent).toContain('广州');
+    // 面板保持展开，onChange 载荷为数组
+    expect(container.querySelector('[role="listbox"]')).not.toBeNull();
+    expect(onChange).toHaveBeenNthCalledWith(1, ['beijing']);
+    expect(onChange).toHaveBeenNthCalledWith(2, ['beijing', 'guangzhou']);
+  });
+
+  it('多选：tag 删除按钮切换取消选中', () => {
+    const onChange = vi.fn();
+    const { container } = render(
+      <Select
+        options={OPTIONS}
+        multiple
+        defaultValue={['beijing', 'guangzhou']}
+        onChange={onChange}
+      />,
+    );
+    expect(container.querySelectorAll('.xui-select__tag')).toHaveLength(2);
+
+    fireEvent.click(container.querySelectorAll('.xui-select__tag-close')[0]);
+    expect(onChange).toHaveBeenCalledWith(['guangzhou']);
+    expect(container.querySelectorAll('.xui-select__tag')).toHaveLength(1);
+  });
+
+  it('多选 clearable：清空全部 tag', () => {
+    const onClear = vi.fn();
+    const { container } = render(
+      <Select options={OPTIONS} multiple defaultValue={['beijing']} clearable onClear={onClear} />,
+    );
+    fireEvent.click(container.querySelector('.xui-select__clear') as HTMLElement);
+    expect(onClear).toHaveBeenCalledTimes(1);
+    expect(container.querySelectorAll('.xui-select__tag')).toHaveLength(0);
+  });
+
+  it('可搜索：输入过滤选项，无匹配显示空态', () => {
+    const onChange = vi.fn();
+    const { container } = render(<Select options={OPTIONS} searchable onChange={onChange} />);
+    fireEvent.click(container.querySelector('.xui-select__trigger') as HTMLElement);
+
+    const input = container.querySelector('.xui-select__search') as HTMLInputElement;
+    expect(input).not.toBeNull();
+    fireEvent.change(input, { target: { value: '广' } });
+    const options = container.querySelectorAll('[role="option"]');
+    expect(options).toHaveLength(1);
+    expect(options[0].textContent).toBe('广州');
+
+    fireEvent.change(input, { target: { value: '不存在' } });
+    expect(container.querySelector('.xui-select__empty')?.textContent).toBe('无匹配结果');
+    expect(container.querySelectorAll('[role="option"]')).toHaveLength(0);
+
+    // 点击过滤结果选中后清空搜索并收起
+    fireEvent.change(input, { target: { value: '广' } });
+    fireEvent.click(container.querySelectorAll('[role="option"]')[0]);
+    expect(onChange).toHaveBeenCalledWith('guangzhou');
+    expect(container.querySelector('[role="listbox"]')).toBeNull();
+  });
+
+  it('虚拟模式：默认窗口渲染 + spacer 占位，滚动更新窗口', () => {
+    const bigOptions = Array.from({ length: 100 }, (_, i) => ({
+      label: `选项${i + 1}`,
+      value: `v${i + 1}`,
+    }));
+    const { container } = render(<Select options={bigOptions} virtual maxHeight={120} />);
+    const root = container.querySelector('.xui-select') as HTMLElement;
+    fireEvent.click(root.querySelector('.xui-select__trigger') as HTMLElement);
+
+    expect(root.classList.contains('is-virtual')).toBe(true);
+    // jsdom 视口高 0：窗口 = rawStart 0 + overscan 5 → 6 行（远小于 100）
+    const bodyOptions = container.querySelectorAll('[role="option"]');
+    expect(bodyOptions.length).toBeLessThan(20);
+    expect(container.querySelectorAll('.xui-select__spacer').length).toBeGreaterThan(0);
+
+    // 滚动到底部更新窗口
+    const dropdown = container.querySelector('[role="listbox"]') as HTMLElement;
+    Object.defineProperty(dropdown, 'scrollTop', {
+      value: 3000,
+      configurable: true,
+      writable: true,
+    });
+    fireEvent.scroll(dropdown);
+    const texts = Array.from(container.querySelectorAll('[role="option"]')).map(
+      (option) => option.textContent,
+    );
+    expect(texts).toContain('选项100');
+  });
 });
