@@ -1,6 +1,6 @@
 {
   "name": "@xui/icons",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "跨框架组件库 - 图标包",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -19,7 +19,9 @@
     }
   },
   "sideEffects": false,
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",

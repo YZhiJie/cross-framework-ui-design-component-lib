@@ -1,6 +1,6 @@
 {
   "name": "@xui/react",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "跨框架组件库 - React 19 适配层",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -18,8 +18,13 @@
       "require": "./dist/components/*/index.cjs"
     }
   },
-  "sideEffects": ["**/*.css", "**/*.scss"],
-  "files": ["dist"],
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
@@ -38,8 +43,12 @@
     "react-dom": ">=19.0.0"
   },
   "peerDependenciesMeta": {
-    "react": { "optional": false },
-    "react-dom": { "optional": false }
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    }
   },
   "devDependencies": {
     "react": "^19.0.0",

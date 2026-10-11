@@ -1,6 +1,6 @@
 {
   "name": "@xui/styles",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "跨框架组件库 - 共享样式包",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -16,8 +16,13 @@
     "./reset.css": "./dist/reset.css",
     "./index.css": "./dist/index.css"
   },
-  "sideEffects": ["**/*.css", "**/*.scss"],
-  "files": ["dist"],
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
