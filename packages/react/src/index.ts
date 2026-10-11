@@ -27,6 +27,9 @@ export { Progress } from './components/progress';
 export { Badge } from './components/badge';
 export { Avatar } from './components/avatar';
 export { Empty } from './components/empty';
+export { Select } from './components/select';
+export { Tabs } from './components/tabs';
+export { message } from './components/message';
 export { Button } from './components/button';
 export type { RadioGroupComponentProps } from './components/radio-group';
 export type { RadioComponentProps } from './components/radio';
@@ -34,6 +37,8 @@ export type { ProgressComponentProps } from './components/progress';
 export type { BadgeComponentProps } from './components/badge';
 export type { AvatarComponentProps } from './components/avatar';
 export type { EmptyComponentProps } from './components/empty';
+export type { SelectComponentProps } from './components/select';
+export type { TabsComponentProps } from './components/tabs';
 export type { ButtonComponentProps, ButtonRef } from './components/button';
 
 export { Input } from './components/input';

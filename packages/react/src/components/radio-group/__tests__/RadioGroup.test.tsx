@@ -39,7 +39,9 @@ describe('RadioGroup (react)', () => {
 
   it('受控模式：value 驱动选中态，外部未回写时视觉回退', () => {
     const onChange = vi.fn();
-    const { container } = render(<RadioGroup options={options.slice(0, 2)} value="a" onChange={onChange} />);
+    const { container } = render(
+      <RadioGroup options={options.slice(0, 2)} value="a" onChange={onChange} />,
+    );
     const inputs = queryInputs(container);
     expect(inputs[0].checked).toBe(true);
 
@@ -50,9 +52,7 @@ describe('RadioGroup (react)', () => {
   });
 
   it('受控模式：value 更新驱动选中切换', () => {
-    const { container, rerender } = render(
-      <RadioGroup options={options.slice(0, 2)} value="a" />,
-    );
+    const { container, rerender } = render(<RadioGroup options={options.slice(0, 2)} value="a" />);
     expect(queryInputs(container)[0].checked).toBe(true);
 
     rerender(<RadioGroup options={options.slice(0, 2)} value="b" />);

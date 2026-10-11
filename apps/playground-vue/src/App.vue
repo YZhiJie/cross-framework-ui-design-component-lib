@@ -14,6 +14,9 @@ import {
   Badge,
   Avatar,
   Empty,
+  Select,
+  Tabs,
+  message,
 } from '@xui/vue';
 import '@xui/styles';
 
@@ -25,12 +28,26 @@ const checkboxValue = ref(true);
 const radioValue = ref('a');
 const radioCity = ref('beijing');
 const progressValue = ref(60);
+const tabsValue = ref('a');
 const log = ref<string[]>([]);
 
 const radioCityOptions = [
   { label: 'Beijing', value: 'beijing' },
   { label: 'Shanghai', value: 'shanghai' },
   { label: 'Disabled', value: 'gz', disabled: true },
+];
+
+const selectOptions = [
+  { label: 'Beijing', value: 'beijing' },
+  { label: 'Shanghai', value: 'shanghai', disabled: true },
+  { label: 'Guangzhou', value: 'guangzhou' },
+  { label: 'Shenzhen', value: 'shenzhen' },
+];
+
+const tabsItems = [
+  { label: 'Tab One', value: 'a' },
+  { label: 'Tab Disabled', value: 'b', disabled: true },
+  { label: 'Tab Two', value: 'c' },
 ];
 
 const pushLog = (msg: string) => {
@@ -255,6 +272,45 @@ const pushLog = (msg: string) => {
     </section>
 
     <section>
+      <h2>Select</h2>
+      <div class="row">
+        <Select
+          :options="selectOptions"
+          placeholder="Select a city"
+          clearable
+          @change="(v: string) => pushLog(`select: ${v}`)"
+          @clear="pushLog('select cleared')"
+        />
+        <Select :options="selectOptions" disabled placeholder="Disabled" />
+      </div>
+    </section>
+
+    <section>
+      <h2>Tabs</h2>
+      <Tabs
+        v-model:value="tabsValue"
+        :items="tabsItems"
+        @change="(v: string) => pushLog(`tabs: ${v}`)"
+      >
+        <template #default="{ item }">Content of {{ item.label }}</template>
+      </Tabs>
+    </section>
+
+    <section>
+      <h2>Message</h2>
+      <div class="row">
+        <Button @click="message.info('This is an info message')">Info</Button>
+        <Button type="primary" @click="message.success('Saved successfully')">Success</Button>
+        <Button @click="message.warning('Disk space is low')">Warning</Button>
+        <Button @click="message.error('Failed to save')">Error</Button>
+        <Button @click="message.open({ content: 'Closable message', closable: true, duration: 0 })">
+          Closable
+        </Button>
+        <Button @click="message.closeAll()">Close all</Button>
+      </div>
+    </section>
+
+    <section>
       <h2>Event log</h2>
       <pre class="log">{{ log.join('\n') || '(no events yet)' }}</pre>
     </section>
@@ -305,6 +361,9 @@ h2 {
 }
 .row > :deep(.xui-input) {
   flex: 1 1 280px;
+}
+.row > :deep(.xui-select) {
+  flex: 0 1 240px;
 }
 .log {
   background: #f3f4f6;

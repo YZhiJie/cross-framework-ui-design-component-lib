@@ -20,17 +20,27 @@ describe('Badge (react)', () => {
     const { container } = render(<Badge count={0}>inbox</Badge>);
     expect(container.querySelector('.xui-badge__sup')).toBeNull();
 
-    const { container: shown } = render(<Badge count={0} showZero>inbox</Badge>);
+    const { container: shown } = render(
+      <Badge count={0} showZero>
+        inbox
+      </Badge>,
+    );
     expect((shown.querySelector('.xui-badge__sup') as HTMLElement).textContent).toContain('0');
   });
 
   it('count 超过 max 显示 `${max}+`', () => {
     const { container } = render(<Badge count={120}>inbox</Badge>);
-    expect((container.querySelector('.xui-badge__sup') as HTMLElement).textContent).toContain('99+');
+    expect((container.querySelector('.xui-badge__sup') as HTMLElement).textContent).toContain(
+      '99+',
+    );
   });
 
   it('dot 模式渲染点状徽标（无文本、aria-hidden）', () => {
-    const { container } = render(<Badge count={5} dot>inbox</Badge>);
+    const { container } = render(
+      <Badge count={5} dot>
+        inbox
+      </Badge>,
+    );
     const sup = container.querySelector('.xui-badge__sup') as HTMLElement;
     expect(sup.className).toContain('is-dot');
     expect(sup.getAttribute('aria-hidden')).toBe('true');

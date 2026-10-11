@@ -27,4 +27,7 @@ export * from './components/progress';
 export * from './components/badge';
 export * from './components/avatar';
 export * from './components/empty';
+export * from './components/select';
+export * from './components/tabs';
+export * from './components/message';
 export * from './components/modal';

@@ -29,6 +29,9 @@
 .playground .row > .xui-input {
   flex: 1 1 280px;
 }
+.playground .row > .xui-select {
+  flex: 0 1 240px;
+}
 .playground .log {
   background: #f3f4f6;
   padding: 12px;

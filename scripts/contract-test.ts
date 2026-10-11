@@ -267,6 +267,20 @@ const API_COMPONENTS: ComponentPlan[] = [
     modelProp: null,
     modelCoveredProps: [],
   },
+  {
+    name: 'Select',
+    specKey: 'selectSpec',
+    reactSource: 'packages/react/src/components/select/Select.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
+  {
+    name: 'Tabs',
+    specKey: 'tabsSpec',
+    reactSource: 'packages/react/src/components/tabs/Tabs.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
 ];
 
 interface MatrixRow {

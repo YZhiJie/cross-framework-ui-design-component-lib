@@ -13,6 +13,9 @@ import {
   Badge,
   Avatar,
   Empty,
+  Select,
+  Tabs,
+  message,
 } from '@xui/react';
 import type { ModalRef } from '@xui/react';
 import '@xui/styles';
@@ -26,12 +29,26 @@ export default function App() {
   const [radioValue, setRadioValue] = useState('a');
   const [radioCity, setRadioCity] = useState('beijing');
   const [progressValue, setProgressValue] = useState(60);
+  const [tabsValue, setTabsValue] = useState('a');
   const modalRef = useRef<ModalRef>(null);
 
   const radioCityOptions = [
     { label: 'Beijing', value: 'beijing' },
     { label: 'Shanghai', value: 'shanghai' },
     { label: 'Disabled', value: 'gz', disabled: true },
+  ];
+
+  const selectOptions = [
+    { label: 'Beijing', value: 'beijing' },
+    { label: 'Shanghai', value: 'shanghai', disabled: true },
+    { label: 'Guangzhou', value: 'guangzhou' },
+    { label: 'Shenzhen', value: 'shenzhen' },
+  ];
+
+  const tabsItems = [
+    { label: 'Tab One', value: 'a' },
+    { label: 'Tab Disabled', value: 'b', disabled: true },
+    { label: 'Tab Two', value: 'c' },
   ];
 
   const pushLog = (msg: string) => {
@@ -311,6 +328,53 @@ export default function App() {
             Create now
           </Button>
         </Empty>
+      </section>
+
+      <section>
+        <h2>Select</h2>
+        <div className="row">
+          <Select
+            options={selectOptions}
+            placeholder="Select a city"
+            clearable
+            onChange={(v) => pushLog(`select: ${v}`)}
+            onClear={() => pushLog('select cleared')}
+          />
+          <Select options={selectOptions} disabled placeholder="Disabled" />
+        </div>
+      </section>
+
+      <section>
+        <h2>Tabs</h2>
+        <Tabs
+          value={tabsValue}
+          items={tabsItems}
+          onChange={(v) => {
+            setTabsValue(v);
+            pushLog(`tabs: ${v}`);
+          }}
+          renderPanel={(item) => `Content of ${item.label}`}
+        />
+      </section>
+
+      <section>
+        <h2>Message</h2>
+        <div className="row">
+          <Button onClick={() => message.info('This is an info message')}>Info</Button>
+          <Button type="primary" onClick={() => message.success('Saved successfully')}>
+            Success
+          </Button>
+          <Button onClick={() => message.warning('Disk space is low')}>Warning</Button>
+          <Button onClick={() => message.error('Failed to save')}>Error</Button>
+          <Button
+            onClick={() =>
+              message.open({ content: 'Closable message', closable: true, duration: 0 })
+            }
+          >
+            Closable
+          </Button>
+          <Button onClick={() => message.closeAll()}>Close all</Button>
+        </div>
       </section>
 
       <section>

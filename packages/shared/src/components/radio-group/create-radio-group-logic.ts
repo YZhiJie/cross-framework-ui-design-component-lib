@@ -28,8 +28,10 @@ export type RadioGroupState = {
 };
 
 /** RadioGroup 逻辑实例 */
-export interface RadioGroupLogicInstance
-  extends LogicInstance<RadioGroupLogicOptions, RadioGroupState> {
+export interface RadioGroupLogicInstance extends LogicInstance<
+  RadioGroupLogicOptions,
+  RadioGroupState
+> {
   /** 选中处理：disabled 时不更新状态、不触发回调 */
   select: (value: string) => void;
 }

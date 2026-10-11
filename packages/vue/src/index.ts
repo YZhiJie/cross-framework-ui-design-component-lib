@@ -20,6 +20,9 @@ import { Progress } from './components/progress';
 import { Badge } from './components/badge';
 import { Avatar } from './components/avatar';
 import { Empty } from './components/empty';
+import { Select } from './components/select';
+import { Tabs } from './components/tabs';
+import { message } from './components/message';
 import { Modal } from './components/modal';
 
 export { Switch, Checkbox, Tag, Alert };
@@ -29,6 +32,9 @@ export { Progress };
 export { Badge };
 export { Avatar };
 export { Empty };
+export { Select };
+export { Tabs };
+export { message };
 export { Button, Input, Modal };
 
 export const VUE_VERSION = '0.0.0';
@@ -47,6 +53,8 @@ export default {
     app.component(Badge.name ?? 'Badge', Badge);
     app.component(Avatar.name ?? 'Avatar', Avatar);
     app.component(Empty.name ?? 'Empty', Empty);
+    app.component(Select.name ?? 'Select', Select);
+    app.component(Tabs.name ?? 'Tabs', Tabs);
     app.component(Modal.name ?? 'Modal', Modal);
   },
 };
