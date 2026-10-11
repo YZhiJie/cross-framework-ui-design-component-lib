@@ -16,9 +16,14 @@ import {
   Empty,
   Select,
   Tabs,
+  Tooltip,
+  DatePicker,
+  Pagination,
+  Table,
   message,
 } from '@xui/vue';
 import '@xui/styles';
+import type { TableColumn, TableSort } from '@xui/core';
 
 const name = ref('');
 const modalVisible = ref(false);
@@ -29,6 +34,8 @@ const radioValue = ref('a');
 const radioCity = ref('beijing');
 const progressValue = ref(60);
 const tabsValue = ref('a');
+const dateValue = ref('');
+const pageValue = ref(2);
 const log = ref<string[]>([]);
 
 const radioCityOptions = [
@@ -48,6 +55,24 @@ const tabsItems = [
   { label: 'Tab One', value: 'a' },
   { label: 'Tab Disabled', value: 'b', disabled: true },
   { label: 'Tab Two', value: 'c' },
+];
+
+const tableColumns: TableColumn[] = [
+  { key: 'name', title: '姓名' },
+  { key: 'age', title: '年龄', sortable: true, width: 100, align: 'center' },
+  { key: 'city', title: '城市' },
+  {
+    key: 'action',
+    title: '操作',
+    render: (record) => `查看 ${String(record.name)}`,
+  },
+];
+
+const tableRows = [
+  { id: 1, name: '张三', age: 30, city: 'Beijing' },
+  { id: 2, name: '李四', age: 25, city: 'Shanghai' },
+  { id: 3, name: '王五', age: 28, city: 'Guangzhou' },
+  { id: 4, name: '赵六', age: 32, city: 'Shenzhen' },
 ];
 
 const pushLog = (msg: string) => {
@@ -308,6 +333,75 @@ const pushLog = (msg: string) => {
         </Button>
         <Button @click="message.closeAll()">Close all</Button>
       </div>
+    </section>
+
+    <section>
+      <h2>Tooltip</h2>
+      <div class="row">
+        <Tooltip content="顶部提示（默认）">
+          <Button>top</Button>
+        </Tooltip>
+        <Tooltip content="底部提示" placement="bottom">
+          <Button>bottom</Button>
+        </Tooltip>
+        <Tooltip content="左侧提示" placement="left">
+          <Button>left</Button>
+        </Tooltip>
+        <Tooltip content="右侧提示" placement="right">
+          <Button>right</Button>
+        </Tooltip>
+        <Tooltip content="聚焦触发" trigger="focus">
+          <Input placeholder="focus 触发" />
+        </Tooltip>
+        <Tooltip content="禁用状态" disabled>
+          <Button>disabled</Button>
+        </Tooltip>
+      </div>
+    </section>
+
+    <section>
+      <h2>DatePicker</h2>
+      <div class="row">
+        <DatePicker
+          v-model:value="dateValue"
+          placeholder="选择日期"
+          clearable
+          @change="(v: string) => pushLog(`date: ${v}`)"
+          @clear="pushLog('date cleared')"
+        />
+        <DatePicker disabled placeholder="Disabled" />
+      </div>
+      <p class="hint">v-model:value = {{ dateValue || '(未选择)' }}</p>
+    </section>
+
+    <section>
+      <h2>Pagination</h2>
+      <Pagination
+        v-model:value="pageValue"
+        :total="285"
+        @change="(p: number) => pushLog(`page: ${p}`)"
+      />
+      <div class="row">
+        <Pagination :total="50" disabled />
+        <span class="hint">v-model:value = {{ pageValue }}</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Table</h2>
+      <Table
+        :columns="tableColumns"
+        :data-source="tableRows"
+        row-key="id"
+        stripe
+        border
+        @sort-change="(s: TableSort) => pushLog(`sort: ${s.key} ${s.order ?? 'none'}`)"
+      />
+      <Table :columns="tableColumns" :data-source="[]" style="margin-top: 12px">
+        <template #empty>
+          <span>自定义空态：没有更多数据啦</span>
+        </template>
+      </Table>
     </section>
 
     <section>

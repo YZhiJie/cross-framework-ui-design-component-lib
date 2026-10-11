@@ -809,6 +809,439 @@
   background-color: rgb(0 0 0 / 10%);
 }
 
+
+/* ===================== Tooltip ===================== */
+
+.xui-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.xui-tooltip__trigger {
+  display: inline-block;
+}
+
+.xui-tooltip__popper {
+  position: absolute;
+  z-index: 1060;
+  box-sizing: border-box;
+  max-width: 240px;
+  padding: 6px 10px;
+  border-radius: var(--xui-radius-sm, 4px);
+  background-color: var(--xui-color-text, #1f2937);
+  color: #fff;
+  font-size: var(--xui-font-size-sm, 12px);
+  line-height: 1.5;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* 方位：CSS 包裹定位（已知限制：overflow 祖先会裁剪提示框） */
+.xui-tooltip__popper.is-top {
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.xui-tooltip__popper.is-bottom {
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.xui-tooltip__popper.is-left {
+  top: 50%;
+  right: calc(100% + 8px);
+  transform: translateY(-50%);
+}
+
+.xui-tooltip__popper.is-right {
+  top: 50%;
+  left: calc(100% + 8px);
+  transform: translateY(-50%);
+}
+
+/* 箭头：旋转 45° 的方块，背景继承提示框 */
+.xui-tooltip__arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: inherit;
+  transform: rotate(45deg);
+}
+
+.xui-tooltip__popper.is-top .xui-tooltip__arrow {
+  bottom: -3px;
+  left: calc(50% - 4px);
+}
+
+.xui-tooltip__popper.is-bottom .xui-tooltip__arrow {
+  top: -3px;
+  left: calc(50% - 4px);
+}
+
+.xui-tooltip__popper.is-left .xui-tooltip__arrow {
+  top: calc(50% - 4px);
+  right: -3px;
+}
+
+.xui-tooltip__popper.is-right .xui-tooltip__arrow {
+  top: calc(50% - 4px);
+  left: -3px;
+}
+
+
+/* ===================== Pagination ===================== */
+
+.xui-pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--xui-font-size-md, 14px);
+  user-select: none;
+}
+
+.xui-pagination__page,
+.xui-pagination__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 6px;
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: var(--xui-radius-sm, 4px);
+  background-color: var(--xui-color-bg, #fff);
+  color: var(--xui-color-text, #1f2937);
+  font-size: var(--xui-font-size-md, 14px);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+.xui-pagination__nav {
+  flex-shrink: 0;
+  color: var(--xui-color-text-secondary, #6b7280);
+}
+
+.xui-pagination__page:disabled,
+.xui-pagination__nav:disabled {
+  border-color: var(--xui-color-border, #d1d5db);
+  background-color: var(--xui-color-bg-disabled, #f3f4f6);
+  color: var(--xui-color-text-secondary, #6b7280);
+  cursor: not-allowed;
+}
+
+.xui-pagination__page:hover:not(.is-active, :disabled),
+.xui-pagination__nav:hover:not(:disabled) {
+  border-color: var(--xui-color-primary, #4f46e5);
+  color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-pagination__page.is-active {
+  border-color: var(--xui-color-primary, #4f46e5);
+  background-color: var(--xui-color-primary, #4f46e5);
+  color: #fff;
+  cursor: default;
+}
+
+.xui-pagination.is-disabled .xui-pagination__page,
+.xui-pagination.is-disabled .xui-pagination__nav {
+  border-color: var(--xui-color-border, #d1d5db);
+  background-color: var(--xui-color-bg-disabled, #f3f4f6);
+  color: var(--xui-color-text-secondary, #6b7280);
+  cursor: not-allowed;
+}
+
+.xui-pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  color: var(--xui-color-text-secondary, #6b7280);
+  letter-spacing: 1px;
+}
+
+
+/* ===================== DatePicker ===================== */
+
+.xui-date-picker {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-width: 0;
+}
+
+.xui-date-picker__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: var(--xui-radius-md, 6px);
+  background-color: var(--xui-color-bg, #fff);
+  color: var(--xui-color-text, #1f2937);
+  font-size: var(--xui-font-size-md, 14px);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.xui-date-picker__trigger:focus-visible {
+  outline: none;
+  border-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-date-picker.is-open .xui-date-picker__trigger {
+  border-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-date-picker.is-disabled .xui-date-picker__trigger {
+  border-color: var(--xui-color-border, #d1d5db);
+  background-color: var(--xui-color-bg-disabled, #f3f4f6);
+  color: var(--xui-color-text-secondary, #6b7280);
+  cursor: not-allowed;
+}
+
+.xui-date-picker__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.xui-date-picker__placeholder {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--xui-color-text-secondary, #6b7280);
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.xui-date-picker__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--xui-color-text-secondary, #6b7280);
+}
+
+.xui-date-picker__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--xui-color-text-secondary, #6b7280);
+  transition: color 0.2s ease;
+}
+
+.xui-date-picker__clear:hover {
+  color: var(--xui-color-text, #1f2937);
+}
+
+.xui-date-picker__panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 1050;
+  box-sizing: border-box;
+  width: 280px;
+  padding: 12px;
+  background-color: var(--xui-color-bg, #fff);
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: var(--xui-radius-md, 6px);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 10%);
+}
+
+.xui-date-picker__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.xui-date-picker__title {
+  color: var(--xui-color-text, #1f2937);
+  font-size: var(--xui-font-size-md, 14px);
+  font-weight: 600;
+}
+
+.xui-date-picker__nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  border-radius: var(--xui-radius-sm, 4px);
+  background: transparent;
+  color: var(--xui-color-text-secondary, #6b7280);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.xui-date-picker__nav:hover {
+  background-color: var(--xui-color-bg-hover, #f3f4f6);
+  color: var(--xui-color-text, #1f2937);
+}
+
+.xui-date-picker__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 4px;
+}
+
+.xui-date-picker__weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  color: var(--xui-color-text-secondary, #6b7280);
+  font-size: var(--xui-font-size-sm, 12px);
+}
+
+.xui-date-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.xui-date-picker__day {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 32px;
+  height: 28px;
+  margin: 0 auto;
+  padding: 0;
+  border: none;
+  border-radius: var(--xui-radius-sm, 4px);
+  background: transparent;
+  color: var(--xui-color-text, #1f2937);
+  font-size: var(--xui-font-size-sm, 12px);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.xui-date-picker__day.is-outside {
+  color: var(--xui-color-text-placeholder, #9ca3af);
+}
+
+.xui-date-picker__day.is-today {
+  color: var(--xui-color-primary, #4f46e5);
+  font-weight: 600;
+}
+
+.xui-date-picker__day.is-selected {
+  background-color: var(--xui-color-primary, #4f46e5);
+  color: #fff;
+  font-weight: 600;
+}
+
+.xui-date-picker__day:hover:not(.is-selected) {
+  background-color: var(--xui-color-bg-hover, #f3f4f6);
+}
+
+
+/* ===================== Table ===================== */
+
+.xui-table {
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.xui-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--xui-font-size-md, 14px);
+}
+
+.xui-table__th,
+.xui-table__td {
+  box-sizing: border-box;
+  padding: 10px 12px;
+  text-align: left;
+  color: var(--xui-color-text, #1f2937);
+}
+
+.xui-table__th {
+  background-color: var(--xui-color-bg-hover, #f9fafb);
+  color: var(--xui-color-text-secondary, #6b7280);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.xui-table__td {
+  border-top: 1px solid var(--xui-color-border-light, #f3f4f6);
+}
+
+.xui-table__sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.xui-table__sort-icons {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  color: var(--xui-color-text-placeholder, #c0c4cc);
+}
+
+.xui-table__sort-icons svg.is-active {
+  color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-table__sort:hover .xui-table__sort-icons {
+  color: var(--xui-color-text-secondary, #6b7280);
+}
+
+.xui-table__sort:hover .xui-table__sort-icons svg.is-active {
+  color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-table__empty {
+  padding: 32px 12px;
+  color: var(--xui-color-text-secondary, #6b7280);
+  font-size: var(--xui-font-size-md, 14px);
+  text-align: center;
+}
+
+/* 边框模式 */
+.xui-table.is-bordered .xui-table__table {
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: var(--xui-radius-md, 6px);
+}
+
+.xui-table.is-bordered .xui-table__th,
+.xui-table.is-bordered .xui-table__td {
+  border: 1px solid var(--xui-color-border-light, #f3f4f6);
+}
+
+.xui-table.is-bordered .xui-table__th {
+  border-color: var(--xui-color-border, #d1d5db);
+}
+
+/* 斑马纹 */
+.xui-table.is-striped tbody tr:nth-child(even) .xui-table__td {
+  background-color: var(--xui-color-bg-hover, #f9fafb);
+}
+
 /* ===================== Modal ===================== */
 
 .xui-modal {

@@ -23,6 +23,10 @@ import { Empty } from './components/empty';
 import { Select } from './components/select';
 import { Tabs } from './components/tabs';
 import { message } from './components/message';
+import { Tooltip } from './components/tooltip';
+import { Pagination } from './components/pagination';
+import { DatePicker } from './components/date-picker';
+import { Table } from './components/table';
 import { Modal } from './components/modal';
 
 export { Switch, Checkbox, Tag, Alert };
@@ -35,6 +39,10 @@ export { Empty };
 export { Select };
 export { Tabs };
 export { message };
+export { Tooltip };
+export { Pagination };
+export { DatePicker };
+export { Table };
 export { Button, Input, Modal };
 
 export const VUE_VERSION = '0.0.0';
@@ -55,6 +63,10 @@ export default {
     app.component(Empty.name ?? 'Empty', Empty);
     app.component(Select.name ?? 'Select', Select);
     app.component(Tabs.name ?? 'Tabs', Tabs);
+    app.component(Tooltip.name ?? 'Tooltip', Tooltip);
+    app.component(Pagination.name ?? 'Pagination', Pagination);
+    app.component(DatePicker.name ?? 'DatePicker', DatePicker);
+    app.component(Table.name ?? 'Table', Table);
     app.component(Modal.name ?? 'Modal', Modal);
   },
 };

@@ -1,0 +1,223 @@
+<script setup lang="ts">
+import { computed, onMounted, onUnmounted, ref, useId, useTemplateRef, watchEffect } from 'vue';
+import { createDatePickerLogic, DATE_WEEKDAY_LABELS, getMonthMatrix } from '@xui/shared';
+import { icons } from '@xui/icons';
+import type { DatePickerProps } from '@xui/core';
+
+const props = withDefaults(defineProps<Omit<DatePickerProps, 'onChange' | 'onClear'>>(), {
+  // 显式 undefined 默认值：未绑定 value 时保持 undefined → 逻辑层进入非受控模式
+  // （提供 value 即受控），与 React 端语义对齐
+  value: undefined,
+  defaultValue: undefined,
+  placeholder: undefined,
+  disabled: false,
+  clearable: false,
+});
+
+const emit = defineEmits<{
+  change: [value: string];
+  clear: [];
+  'update:value': [value: string];
+}>();
+
+const rootRef = useTemplateRef<HTMLElement>('root');
+const triggerId = useId();
+const panelId = useId();
+
+// setup 仅执行一次：解构快照仅用于逻辑层初始化，后续同步一律经 props.xxx 响应式访问
+const { value, defaultValue, disabled } = props;
+
+const logic = createDatePickerLogic({
+  value,
+  defaultValue,
+  disabled,
+  onChange: (val) => {
+    emit('update:value', val);
+    emit('change', val);
+  },
+  onClear: () => emit('clear'),
+});
+
+const state = ref(logic.getState());
+
+const unsubscribe = logic.subscribe((next) => {
+  state.value = next;
+});
+
+// 点击组件外部时收起面板
+const handleOutside = (event: MouseEvent) => {
+  if (state.value.open && rootRef.value && !rootRef.value.contains(event.target as Node)) {
+    logic.close();
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('mousedown', handleOutside);
+});
+
+onUnmounted(() => {
+  unsubscribe();
+  document.removeEventListener('mousedown', handleOutside);
+});
+
+// Props 变更同步到逻辑层（受控模式：value 变更 → 逻辑层）
+watchEffect(() => {
+  logic.updateOptions({
+    value: props.value,
+    disabled: props.disabled,
+  });
+});
+
+const monthCells = computed(() => getMonthMatrix(state.value.viewYear, state.value.viewMonth));
+
+const title = computed(
+  () => `${state.value.viewYear} 年 ${String(state.value.viewMonth).padStart(2, '0')} 月`,
+);
+
+const handleTriggerKeydown = (event: KeyboardEvent) => {
+  switch (event.key) {
+    case 'Enter':
+    case ' ':
+      event.preventDefault();
+      logic.toggleOpen();
+      break;
+    case 'Escape':
+      if (state.value.open) {
+        event.preventDefault();
+        logic.close();
+      }
+      break;
+  }
+};
+</script>
+
+<template>
+  <div
+    ref="root"
+    class="xui-date-picker"
+    :class="{ 'is-disabled': state.disabled, 'is-open': state.open }"
+  >
+    <div
+      :id="triggerId"
+      class="xui-date-picker__trigger"
+      role="combobox"
+      :aria-expanded="state.open"
+      aria-haspopup="dialog"
+      :aria-controls="state.open ? panelId : undefined"
+      :aria-disabled="state.disabled || undefined"
+      :tabindex="state.disabled ? -1 : 0"
+      @click="logic.toggleOpen()"
+      @keydown="handleTriggerKeydown"
+    >
+      <span v-if="state.value" class="xui-date-picker__value">{{ state.value }}</span>
+      <span v-else class="xui-date-picker__placeholder">{{
+        props.placeholder ?? '请选择日期'
+      }}</span>
+      <span
+        v-if="props.clearable && state.value && !state.disabled"
+        class="xui-date-picker__clear"
+        role="button"
+        aria-label="clear"
+        @click.stop="logic.clear()"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          width="14"
+          height="14"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+          v-html="icons.clear"
+        />
+      </span>
+      <span v-else class="xui-date-picker__icon" aria-hidden="true">
+        <svg
+          viewBox="0 0 24 24"
+          width="14"
+          height="14"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          v-html="icons.calendar"
+        />
+      </span>
+    </div>
+    <div
+      v-if="state.open"
+      :id="panelId"
+      class="xui-date-picker__panel"
+      role="dialog"
+      aria-label="选择日期"
+    >
+      <div class="xui-date-picker__header">
+        <button
+          type="button"
+          class="xui-date-picker__nav"
+          aria-label="上个月"
+          @click="logic.prevMonth()"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            v-html="icons['arrow-left']"
+          />
+        </button>
+        <span class="xui-date-picker__title">{{ title }}</span>
+        <button
+          type="button"
+          class="xui-date-picker__nav"
+          aria-label="下个月"
+          @click="logic.nextMonth()"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            v-html="icons['arrow-right']"
+          />
+        </button>
+      </div>
+      <div class="xui-date-picker__weekdays" aria-hidden="true">
+        <span v-for="label in DATE_WEEKDAY_LABELS" :key="label" class="xui-date-picker__weekday">
+          {{ label }}
+        </span>
+      </div>
+      <div class="xui-date-picker__grid">
+        <button
+          v-for="cell in monthCells"
+          :key="cell.date"
+          type="button"
+          class="xui-date-picker__day"
+          :class="{
+            'is-outside': !cell.inMonth,
+            'is-today': cell.isToday,
+            'is-selected': cell.date === state.value,
+          }"
+          :aria-label="cell.date"
+          @click="logic.select(cell.date)"
+        >
+          {{ cell.day }}
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- 组件样式统一维护在 packages/styles/src/components.scss（单一来源），SFC 不再内联样式 -->

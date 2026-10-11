@@ -30,4 +30,8 @@ export * from './components/empty';
 export * from './components/select';
 export * from './components/tabs';
 export * from './components/message';
+export * from './components/tooltip';
+export * from './components/pagination';
+export * from './components/date-picker';
+export * from './components/table';
 export * from './components/modal';

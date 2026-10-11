@@ -281,6 +281,34 @@ const API_COMPONENTS: ComponentPlan[] = [
     modelProp: 'value',
     modelCoveredProps: ['defaultValue'],
   },
+  {
+    name: 'Tooltip',
+    specKey: 'tooltipSpec',
+    reactSource: 'packages/react/src/components/tooltip/Tooltip.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
+  {
+    name: 'Pagination',
+    specKey: 'paginationSpec',
+    reactSource: 'packages/react/src/components/pagination/Pagination.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
+  {
+    name: 'DatePicker',
+    specKey: 'datePickerSpec',
+    reactSource: 'packages/react/src/components/date-picker/DatePicker.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
+  {
+    name: 'Table',
+    specKey: 'tableSpec',
+    reactSource: 'packages/react/src/components/table/Table.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
 ];
 
 interface MatrixRow {

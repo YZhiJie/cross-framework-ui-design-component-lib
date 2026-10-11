@@ -15,9 +15,14 @@ import {
   Empty,
   Select,
   Tabs,
+  Tooltip,
+  DatePicker,
+  Pagination,
+  Table,
   message,
 } from '@xui/react';
 import type { ModalRef } from '@xui/react';
+import type { TableColumn } from '@xui/core';
 import '@xui/styles';
 
 export default function App() {
@@ -30,6 +35,8 @@ export default function App() {
   const [radioCity, setRadioCity] = useState('beijing');
   const [progressValue, setProgressValue] = useState(60);
   const [tabsValue, setTabsValue] = useState('a');
+  const [dateValue, setDateValue] = useState('');
+  const [pageValue, setPageValue] = useState(2);
   const modalRef = useRef<ModalRef>(null);
 
   const radioCityOptions = [
@@ -49,6 +56,24 @@ export default function App() {
     { label: 'Tab One', value: 'a' },
     { label: 'Tab Disabled', value: 'b', disabled: true },
     { label: 'Tab Two', value: 'c' },
+  ];
+
+  const tableColumns: TableColumn[] = [
+    { key: 'name', title: '姓名' },
+    { key: 'age', title: '年龄', sortable: true, width: 100, align: 'center' },
+    { key: 'city', title: '城市' },
+    {
+      key: 'action',
+      title: '操作',
+      render: (record) => `查看 ${String(record.name)}`,
+    },
+  ];
+
+  const tableRows = [
+    { id: 1, name: '张三', age: 30, city: 'Beijing' },
+    { id: 2, name: '李四', age: 25, city: 'Shanghai' },
+    { id: 3, name: '王五', age: 28, city: 'Guangzhou' },
+    { id: 4, name: '赵六', age: 32, city: 'Shenzhen' },
   ];
 
   const pushLog = (msg: string) => {
@@ -374,6 +399,86 @@ export default function App() {
             Closable
           </Button>
           <Button onClick={() => message.closeAll()}>Close all</Button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Tooltip</h2>
+        <div className="row">
+          <Tooltip content="顶部提示（默认）">
+            <Button>top</Button>
+          </Tooltip>
+          <Tooltip content="底部提示" placement="bottom">
+            <Button>bottom</Button>
+          </Tooltip>
+          <Tooltip content="左侧提示" placement="left">
+            <Button>left</Button>
+          </Tooltip>
+          <Tooltip content="右侧提示" placement="right">
+            <Button>right</Button>
+          </Tooltip>
+          <Tooltip content="聚焦触发" trigger="focus">
+            <Input placeholder="focus 触发" />
+          </Tooltip>
+          <Tooltip content="禁用状态" disabled>
+            <Button>disabled</Button>
+          </Tooltip>
+        </div>
+      </section>
+
+      <section>
+        <h2>DatePicker</h2>
+        <div className="row">
+          <DatePicker
+            value={dateValue}
+            placeholder="选择日期"
+            clearable
+            onChange={(v) => {
+              setDateValue(v);
+              pushLog(`date: ${v}`);
+            }}
+            onClear={() => {
+              setDateValue('');
+              pushLog('date cleared');
+            }}
+          />
+          <DatePicker disabled placeholder="Disabled" />
+        </div>
+        <p className="hint">controlled value = {dateValue || '(未选择)'}</p>
+      </section>
+
+      <section>
+        <h2>Pagination</h2>
+        <Pagination
+          value={pageValue}
+          total={285}
+          onChange={(p) => {
+            setPageValue(p);
+            pushLog(`page: ${p}`);
+          }}
+        />
+        <div className="row">
+          <Pagination total={50} disabled />
+          <span className="hint">controlled value = {pageValue}</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Table</h2>
+        <Table
+          columns={tableColumns}
+          dataSource={tableRows}
+          rowKey="id"
+          stripe
+          border
+          onSortChange={(s) => pushLog(`sort: ${s.key} ${s.order ?? 'none'}`)}
+        />
+        <div style={{ marginTop: 12 }}>
+          <Table
+            columns={tableColumns}
+            dataSource={[]}
+            renderEmpty={() => <span>自定义空态：没有更多数据啦</span>}
+          />
         </div>
       </section>
 
