@@ -67,16 +67,12 @@ export function createSpinLogic(options: SpinLogicOptions = {}): SpinLogicInstan
     getState: () => ({ ...state }),
 
     updateOptions(next) {
-      const nextSize =
-        next.size !== undefined ? normalizeSize(next.size) : state.size;
-      const nextSpinning =
-        next.spinning !== undefined ? next.spinning : state.spinning;
+      const nextSize = next.size !== undefined ? normalizeSize(next.size) : state.size;
+      const nextSpinning = next.spinning !== undefined ? next.spinning : state.spinning;
       const nextTip = next.tip !== undefined ? normalizeTip(next.tip) : state.tip;
 
       const changed =
-        nextSize !== state.size ||
-        nextSpinning !== state.spinning ||
-        nextTip !== state.tip;
+        nextSize !== state.size || nextSpinning !== state.spinning || nextTip !== state.tip;
 
       state.size = nextSize;
       state.spinning = nextSpinning;

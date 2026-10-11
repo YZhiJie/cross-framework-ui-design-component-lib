@@ -1,6 +1,7 @@
 // @xui/styles - 共享样式包（单一来源）
-// 主题 tokens（reset.scss）+ 组件样式（components.scss）
+// 基础重置（reset.scss）+ 主题 tokens（tokens.scss，含暗色主题）+ 组件样式（components.scss）
 // 被 @xui/vue 和 @xui/react 共同引用；消费方导入 index.css 即获得全部样式
 
 @use './reset.scss';
+@use './tokens.scss';
 @use './components.scss';

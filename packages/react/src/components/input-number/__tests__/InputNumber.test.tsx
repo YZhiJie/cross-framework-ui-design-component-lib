@@ -88,9 +88,7 @@ describe('InputNumber (react)', () => {
 
   it('disabled：输入与按钮禁用，步进无效', () => {
     const onChange = vi.fn();
-    const { container } = render(
-      <InputNumber defaultValue={5} disabled onChange={onChange} />,
-    );
+    const { container } = render(<InputNumber defaultValue={5} disabled onChange={onChange} />);
     expect(container.querySelector('.xui-input-number')?.className).toContain('is-disabled');
     const input = container.querySelector('input') as HTMLInputElement;
     expect(input.disabled).toBe(true);
@@ -113,8 +111,6 @@ describe('InputNumber (react)', () => {
 
   it('placeholder 生效', () => {
     const { container } = render(<InputNumber placeholder="请输入数量" />);
-    expect((container.querySelector('input') as HTMLInputElement).placeholder).toBe(
-      '请输入数量',
-    );
+    expect((container.querySelector('input') as HTMLInputElement).placeholder).toBe('请输入数量');
   });
 });

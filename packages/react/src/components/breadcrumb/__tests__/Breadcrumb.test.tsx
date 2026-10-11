@@ -2,11 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { fireEvent, render } from '@testing-library/react';
 import { Breadcrumb } from '../Breadcrumb';
 
-const ITEMS = [
-  { label: '首页', href: '/home' },
-  { label: '列表' },
-  { label: '详情' },
-];
+const ITEMS = [{ label: '首页', href: '/home' }, { label: '列表' }, { label: '详情' }];
 
 describe('Breadcrumb (react)', () => {
   it('nav + ol 结构渲染 items，默认分隔符 /', () => {
@@ -24,9 +20,9 @@ describe('Breadcrumb (react)', () => {
     const { container } = render(<Breadcrumb items={ITEMS} />);
     const items = container.querySelectorAll('.xui-breadcrumb__item');
     expect(items[2].className).toContain('is-active');
-    expect(
-      items[2].querySelector('.xui-breadcrumb__label')?.getAttribute('aria-current'),
-    ).toBe('page');
+    expect(items[2].querySelector('.xui-breadcrumb__label')?.getAttribute('aria-current')).toBe(
+      'page',
+    );
     expect(items[2].querySelector('.xui-breadcrumb__separator')).toBeNull();
   });
 
@@ -49,7 +45,9 @@ describe('Breadcrumb (react)', () => {
     const onItemClick = vi.fn();
     const { container } = render(<Breadcrumb items={ITEMS} onItemClick={onItemClick} />);
     fireEvent.click(
-      container.querySelectorAll('.xui-breadcrumb__item')[2].querySelector('.xui-breadcrumb__label')!,
+      container
+        .querySelectorAll('.xui-breadcrumb__item')[2]
+        .querySelector('.xui-breadcrumb__label')!,
     );
     expect(onItemClick).not.toHaveBeenCalled();
   });

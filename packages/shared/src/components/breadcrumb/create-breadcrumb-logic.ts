@@ -30,10 +30,7 @@ export type BreadcrumbState = {
 };
 
 /** Breadcrumb 逻辑实例 */
-export type BreadcrumbLogicInstance = LogicInstance<
-  BreadcrumbLogicOptions,
-  BreadcrumbState
-> & {
+export type BreadcrumbLogicInstance = LogicInstance<BreadcrumbLogicOptions, BreadcrumbState> & {
   /** 点击某项：末项 / disabled 项静默忽略，其余触发回调 */
   selectItem: (index: number) => void;
 };

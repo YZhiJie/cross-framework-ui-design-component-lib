@@ -39,15 +39,10 @@ export function Spin(props: SpinComponentProps) {
   if (children !== undefined) {
     return (
       <div className="xui-spin xui-spin--wrapper">
-        <div className={cn('xui-spin__content', { 'is-blur': state.spinning })}>
-          {children}
-        </div>
+        <div className={cn('xui-spin__content', { 'is-blur': state.spinning })}>{children}</div>
         {state.spinning && (
           <div className="xui-spin__mask" role="status" aria-live="polite">
-            <span
-              className={cn('xui-spin__indicator', `is-${state.size}`)}
-              aria-hidden="true"
-            />
+            <span className={cn('xui-spin__indicator', `is-${state.size}`)} aria-hidden="true" />
             {state.tip && <span className="xui-spin__tip">{state.tip}</span>}
           </div>
         )}

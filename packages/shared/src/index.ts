@@ -14,6 +14,11 @@ export function isXuiShared(): true {
 // 通用类型原语
 export * from './types';
 
+// 基础设施：主题运行时 API / 插件系统 / 虚拟滚动原语
+export * from './theme';
+export * from './plugin';
+export * from './virtual-list';
+
 // 组件逻辑工厂
 export * from './components/button';
 export * from './components/input';

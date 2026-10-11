@@ -1,0 +1,86 @@
+/**
+ * @xui/styles - 主题 tokens（单一来源）
+ *
+ * 分层结构：
+ * 1. 基础 token（:root）：浅色主题为默认值，未引入本文件时组件降级值兜底；
+ * 2. 暗色主题（[data-theme='dark']）：仅覆盖语义色变量，圆角 / 字号 / 间距等结构 token 不随主题变化；
+ * 3. 组件级 token：components.scss 内按需下沉（.xui-xxx { --xui-xxx-* }），
+ *    支持按组件实例覆盖（style="--xui-button-height: 40px"）。
+ *
+ * 运行时切换统一走 @xui/shared 的 setTheme / getTheme / toggleTheme（写入 <html data-theme>）。
+ */
+
+:root {
+  /* ---- 品牌色 ---- */
+  --xui-color-primary: #4f46e5;
+  --xui-color-primary-hover: #4338ca;
+  --xui-color-primary-active: #3730a3;
+
+  /* ---- 文本色 ---- */
+  --xui-color-text: #1f2937;
+  --xui-color-text-secondary: #6b7280;
+
+  /* ---- 边框与背景 ---- */
+  --xui-color-border: #d1d5db;
+  --xui-color-bg: #fff;
+  --xui-color-bg-disabled: #f3f4f6;
+  --xui-color-bg-hover: #f9fafb;
+  --xui-color-bg-container: #fff;
+
+  /* ---- 状态色 ---- */
+  --xui-color-success: #16a34a;
+  --xui-color-warning: #d97706;
+  --xui-color-danger: #dc2626;
+  --xui-color-info: #2563eb;
+
+  /* ---- 遮罩与阴影（Modal / Tooltip 等浮层） ---- */
+  --xui-color-overlay: rgb(0 0 0 / 50%);
+  --xui-shadow-sm: 0 1px 2px rgb(0 0 0 / 6%);
+  --xui-shadow-md: 0 4px 12px rgb(0 0 0 / 10%);
+  --xui-shadow-lg: 0 8px 24px rgb(0 0 0 / 16%);
+
+  /* ---- 轨道 / 分隔线（Progress / Table / Skeleton 等） ---- */
+  --xui-color-track: #e5e7eb;
+  --xui-color-divider: #e5e7eb;
+
+  /* ---- 结构 token（不随主题切换） ---- */
+  --xui-radius-sm: 4px;
+  --xui-radius-md: 6px;
+  --xui-radius-lg: 8px;
+  --xui-font-size-sm: 12px;
+  --xui-font-size-md: 14px;
+  --xui-font-size-lg: 16px;
+  --xui-spacing-xs: 4px;
+  --xui-spacing-sm: 8px;
+  --xui-spacing-md: 12px;
+  --xui-spacing-lg: 16px;
+
+  color-scheme: light;
+}
+
+/* ===================== 暗色主题 ===================== */
+
+[data-theme='dark'] {
+  --xui-color-primary: #818cf8;
+  --xui-color-primary-hover: #a5b4fc;
+  --xui-color-primary-active: #6366f1;
+  --xui-color-text: #f3f4f6;
+  --xui-color-text-secondary: #9ca3af;
+  --xui-color-border: #374151;
+  --xui-color-bg: #111827;
+  --xui-color-bg-disabled: #1f2937;
+  --xui-color-bg-hover: #1f2937;
+  --xui-color-bg-container: #111827;
+  --xui-color-success: #4ade80;
+  --xui-color-warning: #fbbf24;
+  --xui-color-danger: #f87171;
+  --xui-color-info: #60a5fa;
+  --xui-color-overlay: rgb(0 0 0 / 65%);
+  --xui-shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+  --xui-shadow-md: 0 4px 12px rgb(0 0 0 / 50%);
+  --xui-shadow-lg: 0 8px 24px rgb(0 0 0 / 60%);
+  --xui-color-track: #374151;
+  --xui-color-divider: #374151;
+
+  color-scheme: dark;
+}

@@ -68,4 +68,12 @@ export type { ModalComponentProps, ModalRef } from './components/modal';
 export { useLogicState } from './hooks/use-logic-state';
 export { cn } from './utils/cn';
 
+// 基础设施：主题运行时 API / 插件系统 / 虚拟滚动原语（re-export 自 @xui/shared）
+export { getTheme, setTheme, subscribeTheme, toggleTheme } from '@xui/shared';
+export { applyPlugins } from '@xui/shared';
+export { createVirtualListLogic } from '@xui/shared';
+export type { XuiTheme } from '@xui/shared';
+export type { XuiPlugin, PluginInstallContext } from '@xui/shared';
+export type { VirtualListLogicInstance, VirtualListOptions, VirtualListState } from '@xui/shared';
+
 export const REACT_VERSION = '0.0.0';

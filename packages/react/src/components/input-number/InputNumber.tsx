@@ -62,9 +62,7 @@ export function InputNumber(props: InputNumberComponentProps) {
   const state = useLogicState(logic.subscribe, logic.getState);
 
   // 输入框显示文本：编辑期自由文本，提交 / 步进后与逻辑收敛值对齐
-  const [inputText, setInputText] = useState(() =>
-    formatValue(state.value, state.precision),
-  );
+  const [inputText, setInputText] = useState(() => formatValue(state.value, state.precision));
 
   // 受控值变化时对齐显示（非受控由 commit / step 处理器对齐）
   useEffect(() => {

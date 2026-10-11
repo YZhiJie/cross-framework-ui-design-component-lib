@@ -28,10 +28,7 @@ export type PopconfirmState = {
 };
 
 /** Popconfirm 逻辑实例 */
-export type PopconfirmLogicInstance = LogicInstance<
-  PopconfirmLogicOptions,
-  PopconfirmState
-> & {
+export type PopconfirmLogicInstance = LogicInstance<PopconfirmLogicOptions, PopconfirmState> & {
   /** 点击触发元素切换开关（disabled no-op） */
   toggle: () => void;
   /** 点击确定：收起并触发 onConfirm */
