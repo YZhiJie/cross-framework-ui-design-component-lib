@@ -1751,7 +1751,7 @@
   transition: transform 0.2s;
 }
 
-/* 顺序按选择器特异性升序，满足 stylelint no-descending-specificity */
+/* sm 尺寸：轨道 28×16、滑块 12×12；选中位移 = 28 - 2×2(padding) - 12 = 12px */
 .xui-switch--sm .xui-switch__core {
   width: 28px;
   height: 16px;
@@ -1764,16 +1764,18 @@
   height: 12px;
 }
 
-.xui-switch--sm.is-checked .xui-switch__thumb {
-  transform: translateX(12px);
-}
-
 .xui-switch.is-checked .xui-switch__core {
   background-color: var(--xui-color-primary, #4f46e5);
 }
 
 .xui-switch.is-checked .xui-switch__thumb {
   transform: translateX(20px);
+}
+
+/* 与上方通用选中规则特异性相同（均 3 个类），必须置于其后才能覆盖为 sm 的 12px；
+   若排在前面，sm 开关会误用 md 的 20px 位移导致滑块溢出轨道右边缘 */
+.xui-switch--sm.is-checked .xui-switch__thumb {
+  transform: translateX(12px);
 }
 
 .xui-switch:focus-visible .xui-switch__core {
