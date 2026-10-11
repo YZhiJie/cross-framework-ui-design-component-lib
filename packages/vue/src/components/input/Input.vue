@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onUnmounted, ref, useId, useTemplateRef, watchEffect } from 'vue';
 import { createInputLogic } from '@xui/shared';
+import { icons } from '@xui/icons';
 import type { InputProps } from '@xui/core';
 
 const {
@@ -141,11 +142,8 @@ defineExpose({ focus, blur, clear: handleClear });
           stroke="currentColor"
           stroke-width="2"
           stroke-linecap="round"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <line x1="8.5" y1="8.5" x2="15.5" y2="15.5" />
-          <line x1="15.5" y1="8.5" x2="8.5" y2="15.5" />
-        </svg>
+          v-html="icons.clear"
+        />
       </slot>
     </span>
     <span v-if="$slots.suffix" class="xui-input__suffix">

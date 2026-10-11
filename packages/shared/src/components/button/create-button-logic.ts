@@ -22,15 +22,12 @@ export type ButtonState = {
 };
 
 /** Button 逻辑实例 */
-export interface ButtonLogicInstance
-  extends LogicInstance<ButtonLogicOptions, ButtonState> {
+export interface ButtonLogicInstance extends LogicInstance<ButtonLogicOptions, ButtonState> {
   /** 点击处理：disabled 或 loading 时不触发回调 */
   handleClick: (event: MouseEvent) => void;
 }
 
-export function createButtonLogic(
-  options: ButtonLogicOptions = {},
-): ButtonLogicInstance {
+export function createButtonLogic(options: ButtonLogicOptions = {}): ButtonLogicInstance {
   const state: ButtonState = {
     disabled: options.disabled ?? false,
     loading: options.loading ?? false,

@@ -1,6 +1,7 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { onUnmounted, ref, watchEffect } from 'vue';
 import { createButtonLogic } from '@xui/shared';
+import { icons } from '@xui/icons';
 import type { ButtonProps } from '@xui/core';
 
 const {
@@ -58,18 +59,16 @@ const handleClick = (event: MouseEvent) => {
   >
     <span v-if="state.loading" class="xui-button__loading-icon">
       <slot name="loadingIcon">
-        <svg class="xui-button__spinner" viewBox="0 0 24 24" width="14" height="14">
-          <circle
-            cx="12"
-            cy="12"
-            r="9"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-dasharray="40 60"
-          />
-        </svg>
+        <svg
+          class="xui-button__spinner"
+          viewBox="0 0 24 24"
+          width="14"
+          height="14"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          v-html="icons.loading"
+        />
       </slot>
     </span>
     <span v-if="!state.loading && $slots.icon" class="xui-button__icon">

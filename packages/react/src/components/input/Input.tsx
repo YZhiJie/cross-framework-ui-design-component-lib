@@ -10,6 +10,7 @@ import { useEffect, useImperativeHandle, useRef } from 'react';
 import type { ChangeEvent, FocusEvent, InputEvent, ReactNode, Ref } from 'react';
 import type { InputProps } from '@xui/core';
 import { createInputLogic } from '@xui/shared';
+import { icons } from '@xui/icons';
 import type { InputLogicInstance } from '@xui/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
@@ -160,19 +161,18 @@ export function Input(props: InputComponentProps) {
   );
 }
 
-/** 内联 SVG 清除图标 */
+/** 清除图标（数据来自 @xui/icons，与 Vue 端圆圈 X 样式一致） */
 function ClearIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="1em"
-      height="1em"
+      width="14"
+      height="14"
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-    >
-      <path d="M6 6l12 12M18 6L6 18" />
-    </svg>
+      dangerouslySetInnerHTML={{ __html: icons.clear }}
+    />
   );
 }

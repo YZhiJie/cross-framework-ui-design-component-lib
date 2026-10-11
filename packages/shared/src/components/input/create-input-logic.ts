@@ -33,8 +33,7 @@ export type InputState = {
 };
 
 /** Input 逻辑实例 */
-export interface InputLogicInstance
-  extends LogicInstance<InputLogicOptions, InputState> {
+export interface InputLogicInstance extends LogicInstance<InputLogicOptions, InputState> {
   /** 输入处理：disabled / readonly 时忽略 */
   handleInput: (value: string) => void;
   /** 值变更提交（失焦或回车） */
@@ -45,9 +44,7 @@ export interface InputLogicInstance
   handleClear: () => void;
 }
 
-export function createInputLogic(
-  options: InputLogicOptions = {},
-): InputLogicInstance {
+export function createInputLogic(options: InputLogicOptions = {}): InputLogicInstance {
   const controlled = options.value !== undefined;
 
   const state: InputState = {

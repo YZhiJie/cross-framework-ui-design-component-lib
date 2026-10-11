@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nextTick, onUnmounted, ref, useTemplateRef, watch, watchEffect } from 'vue';
 import { createModalLogic } from '@xui/shared';
+import { icons } from '@xui/icons';
 import type { ModalProps } from '@xui/core';
 
 const {
@@ -130,10 +131,8 @@ defineExpose({ open, close });
               stroke="currentColor"
               stroke-width="2"
               stroke-linecap="round"
-            >
-              <line x1="6" y1="6" x2="18" y2="18" />
-              <line x1="18" y1="6" x2="6" y2="18" />
-            </svg>
+              v-html="icons.close"
+            />
           </button>
         </div>
         <div class="xui-modal__body">

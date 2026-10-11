@@ -1,9 +1,9 @@
 /**
- * @xui/react - 组件样式（BEM，与 @xui/vue 完全一致）
+ * 组件样式（BEM）— 单一来源
  *
- * 所有组件的 BEM 样式（button / input / modal）。
- * 与 Vue 版使用同一套类名与 CSS 变量，确保双端视觉一致。
- * 主题 token 由 @xui/styles 提供，未引入时使用降级值。
+ * 所有组件的 BEM 样式（button / input / modal），由 @xui/styles 统一提供，
+ * @xui/vue 与 @xui/react 共用同一套类名，确保双端视觉一致。
+ * 主题 token 来自 reset.scss 的 :root CSS 变量；未引入 tokens 时使用降级值。
  */
 
 /* ===================== Button ===================== */
@@ -168,6 +168,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -254,7 +255,7 @@
 .xui-modal__overlay {
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.45);
+  background-color: rgb(0 0 0 / 45%);
 }
 
 .xui-modal__panel {
@@ -269,7 +270,7 @@
   flex-direction: column;
   background-color: var(--xui-color-bg, #fff);
   border-radius: var(--xui-radius-lg, 8px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 20%);
   outline: none;
 }
 

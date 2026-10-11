@@ -3,9 +3,9 @@
  *
  * 将 @xui/shared 核心逻辑桥接到 Vue 响应式系统。
  * 使用 <script setup> + reactive props destructure + defineModel + watchEffect 连接核心层状态。
+ *
+ * 样式由 @xui/styles 统一提供（组件样式单一来源），导入 '@xui/styles' 即可获得全部样式。
  */
-
-import './styles/components.css';
 
 import type { App } from 'vue';
 import { Button } from './components/button';

@@ -3,11 +3,7 @@
   "compilerOptions": {
     "jsx": "preserve",
     "outDir": "dist",
-    "rootDir": "src",
-    "baseUrl": ".",
-    "paths": {
-      "@xui/styles": ["../styles/src/index.ts"]
-    }
+    "rootDir": "src"
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["dist", "node_modules"]

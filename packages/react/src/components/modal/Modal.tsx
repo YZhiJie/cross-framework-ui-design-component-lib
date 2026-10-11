@@ -11,6 +11,7 @@ import type { CSSProperties, ReactNode, Ref } from 'react';
 import { createPortal } from 'react-dom';
 import type { ModalProps } from '@xui/core';
 import { createModalLogic } from '@xui/shared';
+import { icons } from '@xui/icons';
 import type { ModalLogicInstance } from '@xui/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
@@ -168,19 +169,18 @@ export function Modal(props: ModalComponentProps) {
   );
 }
 
-/** 内联 SVG 关闭图标 */
+/** 关闭图标（数据来自 @xui/icons） */
 function CloseIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="1em"
-      height="1em"
+      width="16"
+      height="16"
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
-    >
-      <path d="M6 6l12 12M18 6L6 18" />
-    </svg>
+      dangerouslySetInnerHTML={{ __html: icons.close }}
+    />
   );
 }

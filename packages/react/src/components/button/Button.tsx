@@ -9,6 +9,7 @@ import { useEffect, useImperativeHandle, useRef } from 'react';
 import type { MouseEvent, ReactNode, Ref } from 'react';
 import type { ButtonProps } from '@xui/core';
 import { createButtonLogic } from '@xui/shared';
+import { icons } from '@xui/icons';
 import type { ButtonLogicInstance } from '@xui/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
@@ -109,21 +110,18 @@ export function Button(props: ButtonComponentProps) {
   );
 }
 
-/** 内联 SVG 加载图标（旋转动画由 CSS 驱动） */
+/** 加载图标（数据来自 @xui/icons，旋转动画由 CSS 驱动） */
 function LoadingSpinner() {
   return (
     <svg
       className="xui-button__spinner"
       viewBox="0 0 24 24"
-      width="1em"
-      height="1em"
+      width="14"
+      height="14"
       fill="none"
       stroke="currentColor"
-      strokeWidth="3"
       strokeLinecap="round"
-    >
-      <circle cx="12" cy="12" r="9" strokeOpacity="0.25" />
-      <path d="M21 12a9 9 0 0 0-9-9" />
-    </svg>
+      dangerouslySetInnerHTML={{ __html: icons.loading }}
+    />
   );
 }

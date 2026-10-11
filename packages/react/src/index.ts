@@ -6,9 +6,8 @@
  * - useSyncExternalStore：订阅逻辑层状态，保证引用稳定
  *
  * 类型契约来自 @xui/core，纯逻辑来自 @xui/shared。
+ * 样式由 @xui/styles 统一提供（组件样式单一来源），导入 '@xui/styles' 即可获得全部样式。
  */
-
-import './styles/components.css';
 
 export { Button } from './components/button';
 export type { ButtonComponentProps, ButtonRef } from './components/button';

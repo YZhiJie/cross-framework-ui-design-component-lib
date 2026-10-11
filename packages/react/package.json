@@ -16,8 +16,7 @@
       "types": "./dist/types/components/*/index.d.ts",
       "import": "./dist/components/*/index.mjs",
       "require": "./dist/components/*/index.cjs"
-    },
-    "./style.css": "./dist/style.css"
+    }
   },
   "sideEffects": ["**/*.css", "**/*.scss"],
   "files": ["dist"],

@@ -38,8 +38,7 @@ export type ModalState = {
 };
 
 /** Modal 逻辑实例 */
-export interface ModalLogicInstance
-  extends LogicInstance<ModalLogicOptions, ModalState> {
+export interface ModalLogicInstance extends LogicInstance<ModalLogicOptions, ModalState> {
   open: () => void;
   close: () => void;
   /** 确认：触发 onOk 后关闭 */
@@ -52,9 +51,7 @@ export interface ModalLogicInstance
   handleEsc: () => void;
 }
 
-export function createModalLogic(
-  options: ModalLogicOptions = {},
-): ModalLogicInstance {
+export function createModalLogic(options: ModalLogicOptions = {}): ModalLogicInstance {
   const state: ModalState = {
     visible: options.visible ?? options.defaultVisible ?? false,
     closable: options.closable ?? true,

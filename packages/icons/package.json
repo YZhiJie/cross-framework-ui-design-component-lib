@@ -23,13 +23,11 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
+    "test": "vitest run",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@xui/styles": "workspace:*"
-  },
-  "devDependencies": {
-    "vite-plugin-svg-icons": "^2.0.0"
   }
 }
