@@ -9,12 +9,7 @@
 import { createBreadcrumbLogic } from '@xui/shared';
 
 import type { ComponentSpec } from '../../spec';
-import type {
-  BreadcrumbEvents,
-  BreadcrumbLogic,
-  BreadcrumbProps,
-  BreadcrumbSlots,
-} from './types';
+import type { BreadcrumbEvents, BreadcrumbLogic, BreadcrumbProps, BreadcrumbSlots } from './types';
 
 export const breadcrumbSpec = {
   name: 'Breadcrumb',

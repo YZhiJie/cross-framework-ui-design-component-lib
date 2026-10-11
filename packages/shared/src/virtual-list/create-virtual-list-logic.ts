@@ -75,7 +75,8 @@ export function createVirtualListLogic(options: VirtualListOptions = {}): Virtua
     const clampedScroll = Math.min(Math.max(0, scrollTop), maxScroll);
     const visibleCount = viewportHeight > 0 ? Math.ceil(viewportHeight / itemHeight) : 0;
 
-    const rawStart = visibleCount > 0 ? Math.floor(clampedScroll / itemHeight) : 0;
+    // 起始下标仅由滚动偏移决定（视口高度未知时窗口仍跟随滚动，由 overscan 保底渲染）
+    const rawStart = Math.floor(clampedScroll / itemHeight);
     const startIndex = Math.min(Math.max(0, rawStart - overscan), Math.max(0, itemCount - 1));
     const endIndex =
       itemCount === 0 ? -1 : Math.min(itemCount - 1, rawStart + visibleCount + overscan);

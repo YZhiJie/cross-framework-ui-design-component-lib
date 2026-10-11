@@ -104,4 +104,141 @@ describe('Table (react)', () => {
     rerender(<Table columns={columns} dataSource={[{ id: 4, name: '赵六', age: 26 }, ...rows]} />);
     expect(cellTexts(container, 1)).toEqual(['25', '26', '28', '30']);
   });
+
+  it('className / style 透传到根节点（含 CSS 变量）', () => {
+    const { container } = render(
+      <Table
+        columns={columns}
+        dataSource={rows}
+        className="my-table"
+        style={{ '--xui-table-row-height': '48px', margin: '8px' }}
+      />,
+    );
+    const root = container.querySelector('.xui-table') as HTMLElement;
+    expect(root.classList.contains('my-table')).toBe(true);
+    expect(root.style.getPropertyValue('--xui-table-row-height')).toBe('48px');
+    expect(root.style.margin).toBe('8px');
+  });
+
+  it('onRowClick 回调行数据与下标，选择列点击不冒泡', () => {
+    const onRowClick = vi.fn();
+    const { container } = render(
+      <Table
+        columns={columns}
+        dataSource={rows}
+        rowKey="id"
+        rowSelection={{}}
+        onRowClick={onRowClick}
+      />,
+    );
+
+    fireEvent.click(container.querySelectorAll('tbody tr')[1]);
+    expect(onRowClick).toHaveBeenCalledWith(rows[1], 1);
+
+    fireEvent.click(container.querySelectorAll('tbody tr')[1].querySelectorAll('td')[0]);
+    expect(onRowClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('rowSelection：行勾选 / 全选 / 半选状态联动', () => {
+    const onChange = vi.fn();
+    const { container } = render(
+      <Table columns={columns} dataSource={rows} rowKey="id" rowSelection={{ onChange }} />,
+    );
+
+    const checkboxes = container.querySelectorAll('tbody input[type="checkbox"]');
+    expect(checkboxes).toHaveLength(3);
+    const selectAll = container.querySelector('thead input[type="checkbox"]') as HTMLInputElement;
+    expect(selectAll.checked).toBe(false);
+
+    fireEvent.click(checkboxes[0]);
+    expect(onChange).toHaveBeenCalledWith([1], [rows[0]]);
+
+    fireEvent.click(checkboxes[1]);
+    fireEvent.click(checkboxes[2]);
+    expect(selectAll.checked).toBe(true);
+
+    fireEvent.click(selectAll);
+    expect(onChange).toHaveBeenLastCalledWith([], []);
+  });
+
+  it('rowSelection 受控模式：selectedRowKeys 驱动勾选状态', () => {
+    const onChange = vi.fn();
+    const { container, rerender } = render(
+      <Table
+        columns={columns}
+        dataSource={rows}
+        rowKey="id"
+        rowSelection={{ selectedRowKeys: [2], onChange }}
+      />,
+    );
+
+    const checkboxes = () => container.querySelectorAll('tbody input[type="checkbox"]');
+    expect((checkboxes()[1] as HTMLInputElement).checked).toBe(true);
+    expect((checkboxes()[0] as HTMLInputElement).checked).toBe(false);
+
+    fireEvent.click(checkboxes()[0]);
+    // keys 顺序为受控集合 + 新勾行；selectedRows 按 dataSource 顺序
+    expect(onChange).toHaveBeenCalledWith([2, 1], [rows[0], rows[1]]);
+    // 受控：内部状态未变
+    expect((checkboxes()[0] as HTMLInputElement).checked).toBe(false);
+
+    rerender(
+      <Table
+        columns={columns}
+        dataSource={rows}
+        rowKey="id"
+        rowSelection={{ selectedRowKeys: [2, 1], onChange }}
+      />,
+    );
+    expect((checkboxes()[0] as HTMLInputElement).checked).toBe(true);
+  });
+
+  it('rowSelection.getCheckboxDisabled：禁用行不可勾选，全选跳过禁用行', () => {
+    const { container } = render(
+      <Table
+        columns={columns}
+        dataSource={rows}
+        rowKey="id"
+        rowSelection={{ getCheckboxDisabled: (record) => record.id === 2 }}
+      />,
+    );
+
+    const checkboxes = container.querySelectorAll('tbody input[type="checkbox"]');
+    expect((checkboxes[1] as HTMLInputElement).disabled).toBe(true);
+
+    fireEvent.click(container.querySelector('thead input[type="checkbox"]')!);
+    const checked = Array.from(container.querySelectorAll('tbody input[type="checkbox"]')).filter(
+      (box) => (box as HTMLInputElement).checked,
+    );
+    expect(checked).toHaveLength(2);
+  });
+
+  it('虚拟模式：默认渲染窗口行 + spacer 占位，滚动更新窗口', () => {
+    const bigRows = Array.from({ length: 100 }, (_, i) => ({ id: i + 1, name: `行${i + 1}` }));
+    const { container } = render(
+      <Table
+        columns={[{ key: 'name', title: '名称' }]}
+        dataSource={bigRows}
+        rowKey="id"
+        virtual
+        height={300}
+        rowHeight={30}
+      />,
+    );
+
+    const root = container.querySelector('.xui-table') as HTMLElement;
+    expect(root.classList.contains('is-virtual')).toBe(true);
+    // jsdom 视口高 0：窗口 = rawStart 0 + overscan 5 → 6 行（远小于 100）
+    const bodyRows = container.querySelectorAll('tbody tr:not(.xui-table__spacer)');
+    expect(bodyRows.length).toBeLessThan(20);
+    expect(container.querySelectorAll('.xui-table__spacer').length).toBeGreaterThan(0);
+
+    // 滚动到底部更新窗口（jsdom 无布局，scrollTop 经 defineProperty 注入）
+    Object.defineProperty(root, 'scrollTop', { value: 2970, configurable: true, writable: true });
+    fireEvent.scroll(root);
+    const texts = Array.from(container.querySelectorAll('tbody tr:not(.xui-table__spacer) td')).map(
+      (td) => td.textContent,
+    );
+    expect(texts).toContain('行100');
+  });
 });

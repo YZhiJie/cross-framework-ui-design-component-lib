@@ -9,12 +9,7 @@
 import { createSkeletonLogic } from '@xui/shared';
 
 import type { ComponentSpec } from '../../spec';
-import type {
-  SkeletonEvents,
-  SkeletonLogic,
-  SkeletonProps,
-  SkeletonSlots,
-} from './types';
+import type { SkeletonEvents, SkeletonLogic, SkeletonProps, SkeletonSlots } from './types';
 
 export const skeletonSpec = {
   name: 'Skeleton',

@@ -9,12 +9,7 @@
 import { createPopconfirmLogic } from '@xui/shared';
 
 import type { ComponentSpec } from '../../spec';
-import type {
-  PopconfirmEvents,
-  PopconfirmLogic,
-  PopconfirmProps,
-  PopconfirmSlots,
-} from './types';
+import type { PopconfirmEvents, PopconfirmLogic, PopconfirmProps, PopconfirmSlots } from './types';
 
 export const popconfirmSpec = {
   name: 'Popconfirm',

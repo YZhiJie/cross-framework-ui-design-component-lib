@@ -1237,9 +1237,65 @@
   border-color: var(--xui-color-border, #d1d5db);
 }
 
-/* 斑马纹 */
-.xui-table.is-striped tbody tr:nth-child(even) .xui-table__td {
+/* 虚拟滚动：根节点为滚动容器，表头吸附，行高固定（--xui-table-row-height 可覆盖） */
+.xui-table.is-virtual {
+  overflow-y: auto;
+}
+
+.xui-table.is-virtual .xui-table__th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.xui-table.is-virtual .xui-table__td {
+  height: var(--xui-table-row-height, 40px);
+}
+
+/* 虚拟滚动占位行：不参与视觉与 hover */
+.xui-table__spacer td {
+  padding: 0;
+  border-top: none;
+  background: transparent;
+}
+
+/* 行 hover（同特异性下先于斑马纹声明） */
+.xui-table tbody tr:hover .xui-table__td {
   background-color: var(--xui-color-bg-hover, #f9fafb);
+}
+
+/* 行选中态（非斑马纹模式） */
+.xui-table tbody tr.is-selected .xui-table__td {
+  background-color: var(--xui-color-bg-selected, #eef2ff);
+}
+
+/* 斑马纹：以行 class 判定奇偶（虚拟滚动 spacer 行不打乱计数） */
+.xui-table.is-striped tbody tr.is-even .xui-table__td {
+  background-color: var(--xui-color-bg-hover, #f9fafb);
+}
+
+/* 斑马纹模式下的选中态（后于斑马纹声明，覆盖生效） */
+.xui-table.is-striped tbody tr.is-selected .xui-table__td {
+  background-color: var(--xui-color-bg-selected, #eef2ff);
+}
+
+/* 可点击行 */
+.xui-table tbody tr.is-clickable {
+  cursor: pointer;
+}
+
+/* 行选择列 */
+.xui-table__check {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  accent-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-table__check:disabled {
+  cursor: not-allowed;
 }
 
 

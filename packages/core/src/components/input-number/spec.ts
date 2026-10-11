@@ -36,7 +36,10 @@ export const inputNumberSpec = {
     },
   },
   events: {
-    change: { description: '值提交时触发（清空 / 非法输入载荷为 null）', payloadType: 'number | null' },
+    change: {
+      description: '值提交时触发（清空 / 非法输入载荷为 null）',
+      payloadType: 'number | null',
+    },
   },
   slots: {},
   useLogic: (props: InputNumberProps) =>
@@ -50,9 +53,4 @@ export const inputNumberSpec = {
       disabled: props.disabled,
       onChange: props.onChange,
     }),
-} satisfies ComponentSpec<
-  InputNumberProps,
-  InputNumberEvents,
-  InputNumberSlots,
-  InputNumberLogic
->;
+} satisfies ComponentSpec<InputNumberProps, InputNumberEvents, InputNumberSlots, InputNumberLogic>;
