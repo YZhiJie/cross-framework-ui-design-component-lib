@@ -53,6 +53,13 @@ export const tabsMeta: ComponentMeta = {
         default: '—',
         description: '激活项变更回调',
       },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     events: [
       { vue: 'change', react: 'onChange', payload: 'value: string', description: '激活标签变更' },

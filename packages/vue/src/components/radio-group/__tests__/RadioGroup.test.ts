@@ -69,4 +69,14 @@ describe('RadioGroup (vue)', () => {
     await getInputs(wrapper)[0].setValue();
     expect(wrapper.emitted('change')![0]).toEqual(['x']);
   });
+
+  it('className / style 透传到根元素', () => {
+    const wrapper = mount(RadioGroup, {
+      props: { options: options.slice(0, 1), className: 'my-x', style: { color: 'red' } },
+    });
+
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.classes()).toContain('xui-radio-group');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

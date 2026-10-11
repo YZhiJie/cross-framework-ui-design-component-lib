@@ -66,7 +66,7 @@ provide(RADIO_GROUP_KEY, {
 </script>
 
 <template>
-  <div class="xui-radio-group" role="radiogroup">
+  <div class="xui-radio-group" :class="className" :style="style" role="radiogroup">
     <!-- options 数组渲染优先；未提供 options 时由 default 插槽渲染 Radio 子项 -->
     <template v-if="props.options && props.options.length > 0">
       <Radio

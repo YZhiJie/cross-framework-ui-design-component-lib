@@ -56,6 +56,13 @@ export const spinMeta: ComponentMeta = {
         default: '—',
         description: '提示文案（显示在指示器下方，空串不渲染）',
       },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     slots: [
       { vue: 'default', react: 'children', description: '包裹内容（spinning 时覆盖半透明遮罩）' },

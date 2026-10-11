@@ -18,6 +18,10 @@ export type ButtonProps = {
   loading?: boolean;
   /** 是否块级元素（宽度撑满容器） */
   block?: boolean;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
   /** 点击回调（由适配层桥接为框架事件） */
   onClick?: (event: MouseEvent) => void;
 };

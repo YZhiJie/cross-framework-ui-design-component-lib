@@ -6,6 +6,7 @@
  */
 
 import { useEffect, useRef } from 'react';
+import type { CSSProperties } from 'react';
 import type { ProgressProps } from '@xui/core';
 import { createProgressLogic } from '@xui/shared';
 import type { ProgressLogicInstance } from '@xui/shared';
@@ -16,7 +17,15 @@ import { cn } from '../../utils/cn';
 export type ProgressComponentProps = ProgressProps;
 
 export function Progress(props: ProgressComponentProps) {
-  const { percent = 0, type = 'line', strokeWidth = 6, showText = true, status = 'normal' } = props;
+  const {
+    percent = 0,
+    type = 'line',
+    strokeWidth = 6,
+    showText = true,
+    status = 'normal',
+    className,
+    style,
+  } = props;
 
   const logicRef = useRef<ProgressLogicInstance | null>(null);
   if (logicRef.current === null) {
@@ -39,7 +48,8 @@ export function Progress(props: ProgressComponentProps) {
 
   return (
     <div
-      className={cn('xui-progress', `xui-progress--${type}`, `is-${state.status}`)}
+      className={cn('xui-progress', `xui-progress--${type}`, `is-${state.status}`, className)}
+      style={style as CSSProperties}
       role="progressbar"
       aria-valuenow={Math.round(state.percent)}
       aria-valuemin={0}

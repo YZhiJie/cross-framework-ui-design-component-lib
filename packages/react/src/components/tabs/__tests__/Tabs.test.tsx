@@ -77,4 +77,11 @@ describe('Tabs (react)', () => {
       '标签三',
     );
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(<Tabs items={ITEMS} className="my-x" style={{ color: 'red' }} />);
+    const root = container.querySelector('.xui-tabs') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

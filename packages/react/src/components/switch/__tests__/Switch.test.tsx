@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
 import { Switch } from '../Switch';
 
 describe('Switch (react)', () => {
@@ -61,5 +62,12 @@ describe('Switch (react)', () => {
   it('size 类名正确', () => {
     const { container } = render(<Switch size="sm" />);
     expect((container.firstElementChild as HTMLElement).className).toContain('xui-switch--sm');
+  });
+
+  it('className / style 透传到根元素', () => {
+    const { container } = render(<Switch className="my-x" style={{ color: 'red' }} />);
+    const root = container.querySelector('.xui-switch') as HTMLElement;
+    expect(root).toHaveClass('my-x', 'xui-switch');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
   });
 });

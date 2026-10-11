@@ -18,6 +18,8 @@ export const radioGroupSpec = {
       defaultValue: String,
       disabled: Boolean,
       options: Array,
+      className: String,
+      style: Object,
       onChange: Function,
     },
     defaults: {

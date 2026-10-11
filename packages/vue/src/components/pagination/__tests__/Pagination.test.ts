@@ -62,4 +62,12 @@ describe('Pagination (vue)', () => {
     const small = mount(Pagination, { props: { total: 95, pageSize: 50 } });
     expect(small.findAll('.xui-pagination__page')).toHaveLength(2);
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(Pagination, {
+      props: { total: 95, className: 'my-x', style: { color: 'red' } },
+    });
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

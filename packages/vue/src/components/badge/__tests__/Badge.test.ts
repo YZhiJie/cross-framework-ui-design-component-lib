@@ -50,4 +50,15 @@ describe('Badge (vue)', () => {
     const wrapper = mount(Badge, { props: { count: Number.NaN }, slots: { default: 'inbox' } });
     expect(wrapper.find('.xui-badge__sup').exists()).toBe(false);
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(Badge, {
+      props: { count: 5, className: 'my-x', style: { color: 'red' } },
+      slots: { default: 'inbox' },
+    });
+    const root = wrapper.find('.xui-badge');
+    expect(root.classes()).toContain('xui-badge');
+    expect(root.classes()).toContain('my-x');
+    expect(root.attributes('style')).toContain('color: red');
+  });
 });

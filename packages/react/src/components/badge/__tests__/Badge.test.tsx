@@ -58,4 +58,15 @@ describe('Badge (react)', () => {
     const { container } = render(<Badge count={Number.NaN}>inbox</Badge>);
     expect(container.querySelector('.xui-badge__sup')).toBeNull();
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(
+      <Badge count={5} className="my-x" style={{ color: 'red' }}>
+        inbox
+      </Badge>,
+    );
+    const root = container.querySelector('.xui-badge') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

@@ -18,6 +18,10 @@ export type SwitchProps = {
   disabled?: boolean;
   /** 加载状态（切换被忽略） */
   loading?: boolean;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
   /** 状态变更回调（载荷为切换后的选中值） */
   onChange?: (value: boolean) => void;
 };

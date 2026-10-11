@@ -106,6 +106,18 @@ export const modalMeta: ComponentMeta = {
         default: '—',
         description: '取消回调（触发后自动关闭）',
       },
+      {
+        name: 'className',
+        type: 'string',
+        default: '—',
+        description: '附加到对话框面板的自定义类名',
+      },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到对话框面板的自定义样式',
+      },
     ],
     events: [
       { vue: 'open', react: 'onOpen', payload: '—', description: '对话框打开' },

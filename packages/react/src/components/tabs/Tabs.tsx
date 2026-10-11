@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useId, useRef } from 'react';
-import type { KeyboardEvent, ReactNode } from 'react';
+import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
 import type { TabItem, TabsProps } from '@xui/core';
 import { createTabsLogic } from '@xui/shared';
 import type { TabsLogicInstance } from '@xui/shared';
@@ -21,7 +21,7 @@ export type TabsComponentProps = TabsProps & {
 };
 
 export function Tabs(props: TabsComponentProps) {
-  const { value, defaultValue, items, onChange, renderPanel } = props;
+  const { value, defaultValue, items, className, style, onChange, renderPanel } = props;
 
   const rootRef = useRef<HTMLDivElement>(null);
   const tabsId = useId();
@@ -70,7 +70,7 @@ export function Tabs(props: TabsComponentProps) {
   };
 
   return (
-    <div ref={rootRef} className="xui-tabs">
+    <div ref={rootRef} className={cn('xui-tabs', className)} style={style as CSSProperties}>
       <div className="xui-tabs__list" role="tablist" onKeyDown={handleKeydown}>
         {(items ?? []).map((item) => (
           <button

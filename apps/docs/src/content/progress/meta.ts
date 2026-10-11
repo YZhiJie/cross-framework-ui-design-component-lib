@@ -65,6 +65,13 @@ export const progressMeta: ComponentMeta = {
         default: `'normal'`,
         description: '进度状态（100% 自动派生 success）',
       },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     types: [
       {

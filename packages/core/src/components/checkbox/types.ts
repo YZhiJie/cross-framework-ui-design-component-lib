@@ -16,6 +16,10 @@ export type CheckboxProps = {
   disabled?: boolean;
   /** 半选状态（点击后切换为全选） */
   indeterminate?: boolean;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
   /** 状态变更回调（载荷为切换后的选中值） */
   onChange?: (value: boolean) => void;
 };

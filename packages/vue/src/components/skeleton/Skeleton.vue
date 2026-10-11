@@ -37,7 +37,14 @@ watchEffect(() => {
   <!-- 真实内容：loading=false 时渲染 default 插槽 -->
   <slot v-if="!state.loading" />
   <!-- 骨架占位：头像 + 段落行（末行短宽度） -->
-  <div v-else class="xui-skeleton" role="status" aria-label="加载中">
+  <div
+    v-else
+    class="xui-skeleton"
+    :class="className"
+    :style="style"
+    role="status"
+    aria-label="加载中"
+  >
     <span v-if="state.avatar" class="xui-skeleton__avatar" aria-hidden="true" />
     <div class="xui-skeleton__rows" aria-hidden="true">
       <span

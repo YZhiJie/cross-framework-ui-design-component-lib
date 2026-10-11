@@ -22,6 +22,10 @@ export type TooltipProps = {
   trigger?: TooltipTrigger;
   /** 禁用状态（禁用后不响应触发） */
   disabled?: boolean;
+  /** 自定义类名（应用于触发器包裹根元素） */
+  className?: string;
+  /** 自定义内联样式（应用位置同 className） */
+  style?: Record<string, string>;
 };
 
 /** Tooltip 事件契约（无契约事件） */

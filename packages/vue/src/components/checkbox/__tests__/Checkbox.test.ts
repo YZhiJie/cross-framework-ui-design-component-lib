@@ -61,4 +61,12 @@ describe('Checkbox (vue)', () => {
     await wrapper.find('input').setValue();
     expect(wrapper.emitted('update:value')![0]).toEqual([true]);
   });
+
+  it('className / style 透传到根元素', () => {
+    const wrapper = mount(Checkbox, { props: { className: 'my-x', style: { color: 'red' } } });
+
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.classes()).toContain('xui-checkbox');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

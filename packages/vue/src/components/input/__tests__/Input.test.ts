@@ -168,4 +168,12 @@ describe('Input 组件（Vue 适配层）', () => {
     expect(wrapper.find('.xui-input__prefix .prefix-content').exists()).toBe(true);
     expect(wrapper.find('.xui-input__suffix .suffix-content').exists()).toBe(true);
   });
+
+  it('className / style 透传到根元素', () => {
+    const wrapper = mount(Input, { props: { className: 'my-x', style: { color: 'red' } } });
+
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.classes()).toContain('xui-input');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

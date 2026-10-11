@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { SpinProps } from '@xui/core';
 import { createSpinLogic } from '@xui/shared';
 import type { SpinLogicInstance } from '@xui/shared';
@@ -21,7 +21,7 @@ export type SpinComponentProps = SpinProps & {
 };
 
 export function Spin(props: SpinComponentProps) {
-  const { size = 'md', spinning = true, tip, children } = props;
+  const { size = 'md', spinning = true, tip, className, style, children } = props;
 
   const logicRef = useRef<SpinLogicInstance | null>(null);
   if (logicRef.current === null) {
@@ -38,7 +38,10 @@ export function Spin(props: SpinComponentProps) {
   // 包裹模式：内容 + 加载遮罩
   if (children !== undefined) {
     return (
-      <div className="xui-spin xui-spin--wrapper">
+      <div
+        className={cn('xui-spin', 'xui-spin--wrapper', className)}
+        style={style as CSSProperties}
+      >
         <div className={cn('xui-spin__content', { 'is-blur': state.spinning })}>{children}</div>
         {state.spinning && (
           <div className="xui-spin__mask" role="status" aria-live="polite">
@@ -53,7 +56,12 @@ export function Spin(props: SpinComponentProps) {
   // 独立模式：无包裹内容时单独渲染指示器（spinning=false 不渲染）
   if (!state.spinning) return null;
   return (
-    <span className="xui-spin" role="status" aria-live="polite">
+    <span
+      className={cn('xui-spin', className)}
+      style={style as CSSProperties}
+      role="status"
+      aria-live="polite"
+    >
       <span className={cn('xui-spin__indicator', `is-${state.size}`)} aria-hidden="true" />
       {state.tip && <span className="xui-spin__tip">{state.tip}</span>}
     </span>

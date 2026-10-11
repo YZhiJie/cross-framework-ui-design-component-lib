@@ -54,4 +54,11 @@ describe('Alert (react)', () => {
     const { container } = render(<Alert title="x" />);
     expect(container.querySelector('.xui-alert__close')).toBeNull();
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(<Alert className="my-x" style={{ color: 'red' }} />);
+    const root = container.querySelector('.xui-alert') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

@@ -17,6 +17,10 @@ export type SpinProps = {
   spinning?: boolean;
   /** 提示文案（显示在指示器下方） */
   tip?: string;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
 };
 
 /** Spin 事件契约（无契约事件） */

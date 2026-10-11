@@ -7,6 +7,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import type { InputNumberProps } from '@xui/core';
 import { createInputNumberLogic } from '@xui/shared';
 import type { InputNumberLogicInstance } from '@xui/shared';
@@ -33,6 +34,8 @@ export function InputNumber(props: InputNumberComponentProps) {
     precision,
     disabled = false,
     placeholder,
+    className,
+    style,
     onChange,
   } = props;
 
@@ -84,7 +87,10 @@ export function InputNumber(props: InputNumberComponentProps) {
   };
 
   return (
-    <div className={cn('xui-input-number', { 'is-disabled': state.disabled })}>
+    <div
+      className={cn('xui-input-number', className, { 'is-disabled': state.disabled })}
+      style={style as CSSProperties}
+    >
       <input
         className="xui-input-number__input"
         type="text"

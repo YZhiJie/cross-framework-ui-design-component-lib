@@ -24,6 +24,10 @@ export type ProgressProps = {
   showText?: boolean;
   /** 进度状态（percent 达到 100 且未显式指定 status/error 时派生为 success） */
   status?: ProgressStatus;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
 };
 
 /** Progress 事件契约（纯展示组件，无事件） */

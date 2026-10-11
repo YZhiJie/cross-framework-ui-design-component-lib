@@ -7,11 +7,12 @@
  */
 
 import { useEffect, useId, useMemo, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { RadioGroupProps } from '@xui/core';
 import { createRadioGroupLogic } from '@xui/shared';
 import type { RadioGroupLogicInstance } from '@xui/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
+import { cn } from '../../utils/cn';
 import { Radio } from '../radio/Radio';
 import { RadioGroupContext } from './context';
 import type { RadioGroupContextValue } from './context';
@@ -23,7 +24,16 @@ export type RadioGroupComponentProps = RadioGroupProps & {
 };
 
 export function RadioGroup(props: RadioGroupComponentProps) {
-  const { value, defaultValue, disabled = false, options, onChange, children } = props;
+  const {
+    value,
+    defaultValue,
+    disabled = false,
+    options,
+    className,
+    style,
+    onChange,
+    children,
+  } = props;
 
   // 同组原生 input 共用的 name（实例级唯一）
   const inputName = `xui-radio-${useId()}`;
@@ -63,7 +73,11 @@ export function RadioGroup(props: RadioGroupComponentProps) {
 
   return (
     <RadioGroupContext.Provider value={contextValue}>
-      <div className="xui-radio-group" role="radiogroup">
+      <div
+        className={cn('xui-radio-group', className)}
+        style={style as CSSProperties}
+        role="radiogroup"
+      >
         {/* options 数组渲染优先；未提供 options 时渲染 children 的 Radio 子项 */}
         {options && options.length > 0
           ? options.map((option) => (

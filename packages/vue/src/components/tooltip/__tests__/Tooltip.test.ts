@@ -68,4 +68,14 @@ describe('Tooltip (vue)', () => {
     expect(wrapper.find('.xui-tooltip__popper').text()).toContain('插槽内容');
     expect(wrapper.find('.xui-tooltip__popper').text()).not.toContain('prop 内容');
   });
+
+  it('className / style 透传到根元素', () => {
+    const wrapper = mount(Tooltip, {
+      props: { content: 'x', className: 'my-x', style: { color: 'red' } },
+      slots: { default: '目标' },
+    });
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.classes()).toContain('xui-tooltip');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

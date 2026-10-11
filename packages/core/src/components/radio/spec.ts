@@ -17,6 +17,8 @@ export const radioSpec = {
     type: {
       value: String,
       disabled: Boolean,
+      className: String,
+      style: Object,
     },
     defaults: {
       disabled: false,

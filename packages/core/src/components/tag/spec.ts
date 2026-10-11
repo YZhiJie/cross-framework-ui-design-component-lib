@@ -17,6 +17,8 @@ export const tagSpec = {
       type: String,
       size: String,
       closable: Boolean,
+      className: String,
+      style: Object,
       onClose: Function,
     },
     defaults: {

@@ -18,6 +18,8 @@ export const avatarSpec = {
       shape: String,
       src: String,
       alt: String,
+      className: String,
+      style: Object,
       onError: Function,
     },
     defaults: {

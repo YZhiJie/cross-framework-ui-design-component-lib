@@ -35,4 +35,14 @@ describe('Tag (vue)', () => {
     await wrapper.trigger('click');
     expect(wrapper.emitted('close')).toBeUndefined();
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(Tag, {
+      props: { className: 'my-x', style: { color: 'red' } },
+      slots: { default: '标签' },
+    });
+    expect(wrapper.classes()).toContain('xui-tag');
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

@@ -52,7 +52,8 @@ const circle = computed(() => {
 
 <template>
   <div
-    :class="['xui-progress', `xui-progress--${props.type}`, `is-${state.status}`]"
+    :class="[className, 'xui-progress', `xui-progress--${props.type}`, `is-${state.status}`]"
+    :style="style"
     role="progressbar"
     :aria-valuenow="Math.round(state.percent)"
     aria-valuemin="0"

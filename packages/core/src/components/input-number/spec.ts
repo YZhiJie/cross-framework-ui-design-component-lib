@@ -28,6 +28,8 @@ export const inputNumberSpec = {
       precision: Number,
       disabled: Boolean,
       placeholder: String,
+      className: String,
+      style: Object,
       onChange: Function,
     },
     defaults: {

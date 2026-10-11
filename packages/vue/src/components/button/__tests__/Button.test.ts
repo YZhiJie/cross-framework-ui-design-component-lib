@@ -105,4 +105,15 @@ describe('Button 组件（Vue 适配层）', () => {
 
     expect(wrapper.find('.xui-button__content').text()).toBe('主要操作');
   });
+
+  it('className / style 透传到根元素', () => {
+    const wrapper = mount(Button, {
+      props: { className: 'my-x', style: { color: 'red' } },
+      slots: { default: '主要操作' },
+    });
+
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.classes()).toContain('xui-button');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

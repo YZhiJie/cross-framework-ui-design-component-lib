@@ -28,6 +28,10 @@ export type ModalProps = {
   cancelText?: string;
   /** 打开时是否将 Tab 焦点循环约束在弹窗内（默认 true） */
   trapFocus?: boolean;
+  /** 自定义类名（Modal 应用于对话框面板；Tooltip/Popconfirm 应用于触发器包裹根元素） */
+  className?: string;
+  /** 自定义内联样式（应用位置同 className） */
+  style?: Record<string, string>;
   onOpen?: () => void;
   onClose?: () => void;
   /** 确认回调（触发后自动关闭） */

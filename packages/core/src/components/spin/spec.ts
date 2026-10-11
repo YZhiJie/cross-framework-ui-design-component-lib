@@ -18,6 +18,8 @@ export const spinSpec = {
       size: String,
       spinning: Boolean,
       tip: String,
+      className: String,
+      style: Object,
     },
     defaults: {
       size: 'md',

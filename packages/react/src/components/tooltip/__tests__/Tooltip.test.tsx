@@ -84,4 +84,16 @@ describe('Tooltip (react)', () => {
     expect(popper?.textContent).toContain('回调内容');
     expect(popper?.textContent).not.toContain('prop 内容');
   });
+
+  it('className / style 透传到根元素', () => {
+    const { container } = render(
+      <Tooltip content="x" className="my-x" style={{ color: 'red' }}>
+        目标
+      </Tooltip>,
+    );
+    const root = container.querySelector('.xui-tooltip') as HTMLElement;
+    expect(root.classList.contains('my-x')).toBe(true);
+    expect(root.classList.contains('xui-tooltip')).toBe(true);
+    expect(root.style.color).toBe('red');
+  });
 });

@@ -189,4 +189,11 @@ describe('Input 组件', () => {
       // 注意：useSyncExternalStore 在 passive 阶段才订阅，此阶段状态变更不会触发重渲染
     });
   });
+
+  it('className / style 透传到根元素', () => {
+    const { container } = render(<Input className="my-x" style={{ color: 'red' }} />);
+    const root = container.querySelector('.xui-input') as HTMLElement;
+    expect(root).toHaveClass('my-x', 'xui-input');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

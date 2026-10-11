@@ -63,6 +63,13 @@ export const badgeMeta: ComponentMeta = {
         default: 'false',
         description: 'count 为 0 时是否显示徽标（默认隐藏）',
       },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     slots: [
       { vue: 'default', react: 'children', description: '徽标包裹的内容（未提供时徽标独立渲染）' },

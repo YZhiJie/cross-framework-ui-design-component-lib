@@ -41,7 +41,10 @@ watchEffect(() => {
 </script>
 
 <template>
-  <span :class="['xui-avatar', `xui-avatar--${props.size}`, `xui-avatar--${props.shape}`]">
+  <span
+    :class="[className, 'xui-avatar', `xui-avatar--${props.size}`, `xui-avatar--${props.shape}`]"
+    :style="style"
+  >
     <img
       v-if="props.src && !state.failed"
       class="xui-avatar__img"

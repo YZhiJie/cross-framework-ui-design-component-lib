@@ -20,6 +20,8 @@ export const datePickerSpec = {
       placeholder: String,
       disabled: Boolean,
       clearable: Boolean,
+      className: String,
+      style: Object,
       onChange: Function,
       onClear: Function,
     },

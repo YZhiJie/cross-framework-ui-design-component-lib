@@ -139,7 +139,8 @@ defineExpose({ open, close });
       <div
         ref="panel"
         class="xui-modal__panel"
-        :style="{ width: typeof width === 'number' ? `${width}px` : width }"
+        :class="className"
+        :style="[{ width: typeof width === 'number' ? `${width}px` : width }, style]"
         tabindex="-1"
         @keydown="handlePanelKeydown"
       >

@@ -23,6 +23,8 @@ export const modalSpec = {
       okText: String,
       cancelText: String,
       trapFocus: Boolean,
+      className: String,
+      style: Object,
       onOpen: Function,
       onClose: Function,
       onOk: Function,

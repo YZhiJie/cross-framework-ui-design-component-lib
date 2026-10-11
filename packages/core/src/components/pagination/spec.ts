@@ -19,6 +19,8 @@ export const paginationSpec = {
       total: Number,
       pageSize: Number,
       disabled: Boolean,
+      className: String,
+      style: Object,
       onChange: Function,
     },
     defaults: {

@@ -19,6 +19,8 @@ export const alertSpec = {
       description: String,
       closable: Boolean,
       showIcon: Boolean,
+      className: String,
+      style: Object,
       onClose: Function,
     },
     defaults: {

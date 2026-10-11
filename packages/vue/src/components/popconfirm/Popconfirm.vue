@@ -48,7 +48,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <span ref="rootRef" class="xui-popconfirm">
+  <span ref="rootRef" class="xui-popconfirm" :class="className" :style="style">
     <span
       class="xui-popconfirm__trigger"
       :aria-describedby="state.open ? popperId : undefined"

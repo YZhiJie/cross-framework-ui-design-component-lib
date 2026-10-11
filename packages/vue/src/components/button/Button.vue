@@ -45,6 +45,7 @@ const handleClick = (event: MouseEvent) => {
 <template>
   <button
     :class="[
+      className,
       'xui-button',
       `xui-button--${type}`,
       `xui-button--${size}`,
@@ -54,6 +55,7 @@ const handleClick = (event: MouseEvent) => {
         'is-block': block,
       },
     ]"
+    :style="style"
     :disabled="state.disabled || state.loading"
     @click="handleClick"
   >

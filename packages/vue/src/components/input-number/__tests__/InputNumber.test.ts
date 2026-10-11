@@ -101,4 +101,12 @@ describe('InputNumber (vue)', () => {
     const wrapper = mount(InputNumber, { props: { placeholder: '请输入数量' } });
     expect(wrapper.find('input').attributes('placeholder')).toBe('请输入数量');
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(InputNumber, {
+      props: { className: 'my-x', style: { color: 'red' } },
+    });
+    expect(wrapper.find('.xui-input-number').classes()).toContain('my-x');
+    expect(wrapper.find('.xui-input-number').attributes('style')).toContain('color: red');
+  });
 });

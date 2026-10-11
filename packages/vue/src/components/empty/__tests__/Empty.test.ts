@@ -38,4 +38,13 @@ describe('Empty (vue)', () => {
     const wrapper = mount(Empty, { props: { description: '暂无数据' } });
     expect(wrapper.find('.xui-empty__footer').exists()).toBe(false);
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(Empty, {
+      props: { className: 'my-x', style: { color: 'red' } },
+    });
+    expect(wrapper.classes()).toContain('xui-empty');
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

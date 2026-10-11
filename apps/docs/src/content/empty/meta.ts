@@ -49,6 +49,13 @@ export const emptyMeta: ComponentMeta = {
         default: '—',
         description: '空状态描述文案（未提供或空白时不渲染）',
       },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     slots: [
       { vue: 'default', react: 'children', description: '底部动作区（如"去创建"按钮）' },

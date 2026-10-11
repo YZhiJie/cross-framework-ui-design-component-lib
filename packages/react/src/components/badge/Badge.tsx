@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { BadgeProps } from '@xui/core';
 import { createBadgeLogic } from '@xui/shared';
 import type { BadgeLogicInstance } from '@xui/shared';
@@ -21,7 +21,7 @@ export type BadgeComponentProps = BadgeProps & {
 };
 
 export function Badge(props: BadgeComponentProps) {
-  const { count, max = 99, dot = false, showZero = false, children } = props;
+  const { count, max = 99, dot = false, showZero = false, className, style, children } = props;
 
   const logicRef = useRef<BadgeLogicInstance | null>(null);
   if (logicRef.current === null) {
@@ -37,7 +37,7 @@ export function Badge(props: BadgeComponentProps) {
 
   if (children !== undefined && children !== null) {
     return (
-      <span className="xui-badge">
+      <span className={cn('xui-badge', className)} style={style as CSSProperties}>
         {children}
         {state.visible ? (
           <sup className={cn('xui-badge__sup', { 'is-dot': dot })} aria-hidden={dot || undefined}>

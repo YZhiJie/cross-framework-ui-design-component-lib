@@ -22,6 +22,10 @@ export type BreadcrumbProps = {
   items?: BreadcrumbItem[];
   /** 分隔符（默认 '/'） */
   separator?: string;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
   /** 点击可导航项回调（末项与 disabled 项不触发） */
   onItemClick?: (item: BreadcrumbItem, index: number) => void;
 };

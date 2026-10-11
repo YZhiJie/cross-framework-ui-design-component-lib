@@ -51,6 +51,13 @@ export const skeletonMeta: ComponentMeta = {
       },
       { name: 'avatar', type: 'boolean', default: 'false', description: '是否显示头部头像占位' },
       { name: 'rows', type: 'number', default: '3', description: '段落行数（收敛为正整数）' },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     slots: [{ vue: 'default', react: 'children', description: '真实内容（loading=false 时渲染）' }],
   },

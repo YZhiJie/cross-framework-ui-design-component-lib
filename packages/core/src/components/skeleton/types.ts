@@ -14,6 +14,10 @@ export type SkeletonProps = {
   avatar?: boolean;
   /** 段落行数 */
   rows?: number;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
 };
 
 /** Skeleton 事件契约（无契约事件） */

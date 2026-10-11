@@ -6,11 +6,12 @@
  */
 
 import { useEffect, useId, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { PopconfirmProps } from '@xui/core';
 import { createPopconfirmLogic } from '@xui/shared';
 import type { PopconfirmLogicInstance } from '@xui/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
+import { cn } from '../../utils/cn';
 
 /** Popconfirm 组件 Props（在契约 Props 基础上扩展 React 专属属性） */
 export type PopconfirmComponentProps = PopconfirmProps & {
@@ -27,6 +28,8 @@ export function Popconfirm(props: PopconfirmComponentProps) {
     cancelText = '取消',
     placement = 'top',
     disabled = false,
+    className,
+    style,
     onConfirm,
     onCancel,
     children,
@@ -70,7 +73,7 @@ export function Popconfirm(props: PopconfirmComponentProps) {
   }, [logic]);
 
   return (
-    <span ref={rootRef} className="xui-popconfirm">
+    <span ref={rootRef} className={cn('xui-popconfirm', className)} style={style as CSSProperties}>
       <span
         className="xui-popconfirm__trigger"
         aria-describedby={state.open ? popperId : undefined}

@@ -18,6 +18,8 @@ export const badgeSpec = {
       max: Number,
       dot: Boolean,
       showZero: Boolean,
+      className: String,
+      style: Object,
     },
     defaults: {
       max: 99,

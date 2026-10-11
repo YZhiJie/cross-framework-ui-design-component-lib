@@ -45,4 +45,15 @@ describe('Tag (react)', () => {
     const { container } = render(<Tag>x</Tag>);
     expect(container.querySelector('.xui-tag__close')).toBeNull();
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(
+      <Tag className="my-x" style={{ color: 'red' }}>
+        x
+      </Tag>,
+    );
+    const root = container.querySelector('.xui-tag') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

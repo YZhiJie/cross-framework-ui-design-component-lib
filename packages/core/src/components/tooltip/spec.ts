@@ -20,6 +20,8 @@ export const tooltipSpec = {
       placement: String,
       trigger: String,
       disabled: Boolean,
+      className: String,
+      style: Object,
     },
     defaults: {
       placement: 'top',

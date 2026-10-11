@@ -51,4 +51,13 @@ describe('Progress (vue)', () => {
     expect(bar.attributes('stroke-dasharray')).toBeDefined();
     expect(Number(bar.attributes('stroke-dashoffset'))).toBeGreaterThan(0);
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(Progress, {
+      props: { percent: 30, className: 'my-x', style: { color: 'red' } },
+    });
+    expect(wrapper.classes()).toContain('xui-progress');
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

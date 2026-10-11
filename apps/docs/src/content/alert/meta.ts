@@ -66,6 +66,13 @@ export const alertMeta: ComponentMeta = {
         default: '—',
         description: '关闭回调（组件隐藏后触发）',
       },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     events: [
       { vue: 'close', react: 'onClose', payload: '—', description: '点击关闭按钮、提示隐藏后触发' },

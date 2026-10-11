@@ -37,7 +37,11 @@ const handleClose = () => {
 </script>
 
 <template>
-  <span v-if="state.visible" :class="['xui-tag', `xui-tag--${type}`, `xui-tag--${size}`]">
+  <span
+    v-if="state.visible"
+    :class="[className, 'xui-tag', `xui-tag--${type}`, `xui-tag--${size}`]"
+    :style="style"
+  >
     <slot />
     <button
       v-if="state.closable"

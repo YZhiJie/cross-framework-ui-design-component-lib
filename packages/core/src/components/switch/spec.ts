@@ -19,6 +19,8 @@ export const switchSpec = {
       size: String,
       disabled: Boolean,
       loading: Boolean,
+      className: String,
+      style: Object,
       onChange: Function,
     },
     defaults: {

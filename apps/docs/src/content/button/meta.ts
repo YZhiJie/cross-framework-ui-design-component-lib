@@ -86,6 +86,13 @@ export const buttonMeta: ComponentMeta = {
         default: '—',
         description: '点击回调（由适配层桥接为框架事件）',
       },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     events: [
       {

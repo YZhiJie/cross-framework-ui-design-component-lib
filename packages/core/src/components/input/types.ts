@@ -24,6 +24,10 @@ export type InputProps = {
   maxLength?: number;
   /** 是否显示清除图标 */
   clearable?: boolean;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
   /** 输入回调（每次键入） */
   onInput?: (value: string) => void;
   /** 值变更提交回调（失焦或回车） */

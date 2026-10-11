@@ -73,7 +73,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 </script>
 
 <template>
-  <div ref="root" class="xui-tabs">
+  <div ref="root" class="xui-tabs" :class="className" :style="style">
     <div class="xui-tabs__list" role="tablist" @keydown="handleKeydown">
       <button
         v-for="item in props.items"

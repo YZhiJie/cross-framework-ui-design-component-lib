@@ -72,4 +72,11 @@ describe('Skeleton (react)', () => {
       'true',
     );
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(<Skeleton className="my-x" style={{ color: 'red' }} />);
+    const root = container.querySelector('.xui-skeleton') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

@@ -94,6 +94,13 @@ export const inputMeta: ComponentMeta = {
         default: '—',
         description: '清空回调（点击清除图标）',
       },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     events: [
       { vue: 'input', react: 'onInput', payload: 'string', description: '每次键入触发' },

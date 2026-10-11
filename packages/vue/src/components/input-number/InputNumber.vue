@@ -85,7 +85,11 @@ function onStep(direction: 1 | -1) {
 </script>
 
 <template>
-  <div class="xui-input-number" :class="{ 'is-disabled': state.disabled }">
+  <div
+    class="xui-input-number"
+    :class="[className, { 'is-disabled': state.disabled }]"
+    :style="style"
+  >
     <input
       v-model="inputText"
       class="xui-input-number__input"

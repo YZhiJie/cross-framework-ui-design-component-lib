@@ -51,6 +51,8 @@ const handleBlur = () => {
 <template>
   <span
     class="xui-tooltip"
+    :class="className"
+    :style="style"
     @mouseenter="handleEnter"
     @mouseleave="handleLeave"
     @focusin="handleFocus"

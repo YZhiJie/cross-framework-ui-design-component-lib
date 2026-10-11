@@ -21,6 +21,10 @@ export type DatePickerProps = {
   disabled?: boolean;
   /** 是否显示清空按钮（仅已选中时） */
   clearable?: boolean;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
   /** 选中值变更回调（契约事件） */
   onChange?: (value: string) => void;
   /** 清空回调（契约事件） */

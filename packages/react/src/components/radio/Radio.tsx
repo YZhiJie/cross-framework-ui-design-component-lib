@@ -8,7 +8,7 @@
  */
 
 import { useContext, useEffect, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { RadioProps } from '@xui/core';
 import { createRadioLogic } from '@xui/shared';
 import type { RadioLogicInstance } from '@xui/shared';
@@ -23,7 +23,7 @@ export type RadioComponentProps = RadioProps & {
 };
 
 export function Radio(props: RadioComponentProps) {
-  const { value, disabled = false, children } = props;
+  const { value, disabled = false, className, style, children } = props;
 
   const logicRef = useRef<RadioLogicInstance | null>(null);
   if (logicRef.current === null) {
@@ -52,10 +52,15 @@ export function Radio(props: RadioComponentProps) {
 
   return (
     <label
-      className={cn('xui-radio', {
-        'is-checked': checked,
-        'is-disabled': isDisabled,
-      })}
+      className={cn(
+        'xui-radio',
+        {
+          'is-checked': checked,
+          'is-disabled': isDisabled,
+        },
+        className,
+      )}
+      style={style as CSSProperties}
     >
       <input
         className="xui-radio__input"

@@ -19,6 +19,8 @@ export const progressSpec = {
       strokeWidth: Number,
       showText: Boolean,
       status: String,
+      className: String,
+      style: Object,
     },
     defaults: {
       percent: 0,

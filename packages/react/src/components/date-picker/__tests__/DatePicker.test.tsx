@@ -101,4 +101,11 @@ describe('DatePicker (react)', () => {
       '-1',
     );
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(<DatePicker className="my-x" style={{ color: 'red' }} />);
+    const root = container.querySelector('.xui-date-picker') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

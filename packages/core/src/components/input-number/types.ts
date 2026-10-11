@@ -24,6 +24,10 @@ export type InputNumberProps = {
   disabled?: boolean;
   /** 占位文案 */
   placeholder?: string;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
   /** 值变更回调（提交时触发；清空 / 非法输入载荷为 null） */
   onChange?: (value: number | null) => void;
 };

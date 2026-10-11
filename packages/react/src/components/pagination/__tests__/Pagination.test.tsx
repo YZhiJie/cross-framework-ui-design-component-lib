@@ -69,4 +69,13 @@ describe('Pagination (react)', () => {
     rerender(<Pagination total={95} pageSize={50} />);
     expect(container.querySelectorAll('.xui-pagination__page')).toHaveLength(2);
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(
+      <Pagination total={95} className="my-x" style={{ color: 'red' }} />,
+    );
+    const root = container.querySelector('.xui-pagination') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useId, useRef } from 'react';
-import type { KeyboardEvent } from 'react';
+import type { CSSProperties, KeyboardEvent } from 'react';
 import type { DatePickerProps } from '@xui/core';
 import { createDatePickerLogic, DATE_WEEKDAY_LABELS, getMonthMatrix } from '@xui/shared';
 import type { DatePickerLogicInstance } from '@xui/shared';
@@ -25,6 +25,8 @@ export function DatePicker(props: DatePickerComponentProps) {
     placeholder,
     disabled = false,
     clearable = false,
+    className,
+    style,
     onChange,
     onClear,
   } = props;
@@ -89,10 +91,11 @@ export function DatePicker(props: DatePickerComponentProps) {
   return (
     <div
       ref={rootRef}
-      className={cn('xui-date-picker', {
+      className={cn('xui-date-picker', className, {
         'is-disabled': state.disabled,
         'is-open': state.open,
       })}
+      style={style as CSSProperties}
     >
       <div
         id={triggerId}

@@ -21,6 +21,8 @@ export const inputSpec = {
       readonly: Boolean,
       maxLength: Number,
       clearable: Boolean,
+      className: String,
+      style: Object,
       onInput: Function,
       onChange: Function,
       onFocus: Function,

@@ -20,6 +20,8 @@ export const popconfirmSpec = {
       cancelText: String,
       placement: String,
       disabled: Boolean,
+      className: String,
+      style: Object,
       onConfirm: Function,
       onCancel: Function,
     },

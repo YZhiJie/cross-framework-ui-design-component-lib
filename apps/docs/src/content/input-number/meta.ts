@@ -69,6 +69,13 @@ export const inputNumberMeta: ComponentMeta = {
         default: '—',
         description: '值变更回调（清空 / 非法输入载荷为 null）',
       },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     events: [
       {

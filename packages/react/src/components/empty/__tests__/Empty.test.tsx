@@ -38,4 +38,11 @@ describe('Empty (react)', () => {
     const { container } = render(<Empty description="暂无数据" />);
     expect(container.querySelector('.xui-empty__footer')).toBeNull();
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(<Empty className="my-x" style={{ color: 'red' }} />);
+    const root = container.querySelector('.xui-empty') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

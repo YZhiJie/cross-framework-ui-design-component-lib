@@ -48,4 +48,13 @@ describe('Progress (react)', () => {
     const bar = container.querySelector('circle.xui-progress__bar') as SVGCircleElement;
     expect(Number(bar.getAttribute('stroke-dashoffset'))).toBeGreaterThan(0);
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(
+      <Progress percent={30} className="my-x" style={{ color: 'red' }} />,
+    );
+    const root = container.querySelector('.xui-progress') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

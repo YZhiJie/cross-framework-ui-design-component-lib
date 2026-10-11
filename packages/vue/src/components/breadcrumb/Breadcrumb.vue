@@ -35,10 +35,16 @@ watchEffect(() => {
 
 <template>
   <!-- 自定义内容区：default 插槽覆盖 items 渲染 -->
-  <nav v-if="$slots.default" class="xui-breadcrumb" aria-label="面包屑">
+  <nav
+    v-if="$slots.default"
+    class="xui-breadcrumb"
+    :class="className"
+    :style="style"
+    aria-label="面包屑"
+  >
     <slot />
   </nav>
-  <nav v-else class="xui-breadcrumb" aria-label="面包屑">
+  <nav v-else class="xui-breadcrumb" :class="className" :style="style" aria-label="面包屑">
     <ol class="xui-breadcrumb__list">
       <li
         v-for="(item, index) in state.items"

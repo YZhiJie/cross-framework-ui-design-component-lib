@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { AvatarProps } from '@xui/core';
 import { createAvatarLogic } from '@xui/shared';
 import type { AvatarLogicInstance } from '@xui/shared';
@@ -22,7 +22,7 @@ export type AvatarComponentProps = AvatarProps & {
 };
 
 export function Avatar(props: AvatarComponentProps) {
-  const { size = 'md', shape = 'circle', src, alt, onError, children } = props;
+  const { size = 'md', shape = 'circle', src, alt, className, style, onError, children } = props;
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
   const callbacksRef = useRef({ onError });
@@ -44,7 +44,10 @@ export function Avatar(props: AvatarComponentProps) {
   const state = useLogicState(logic.subscribe, logic.getState);
 
   return (
-    <span className={cn('xui-avatar', `xui-avatar--${size}`, `xui-avatar--${shape}`)}>
+    <span
+      className={cn('xui-avatar', `xui-avatar--${size}`, `xui-avatar--${shape}`, className)}
+      style={style as CSSProperties}
+    >
       {src && !state.failed ? (
         <img
           className="xui-avatar__img"

@@ -113,4 +113,11 @@ describe('InputNumber (react)', () => {
     const { container } = render(<InputNumber placeholder="请输入数量" />);
     expect((container.querySelector('input') as HTMLInputElement).placeholder).toBe('请输入数量');
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(<InputNumber className="my-x" style={{ color: 'red' }} />);
+    const root = container.querySelector('.xui-input-number') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

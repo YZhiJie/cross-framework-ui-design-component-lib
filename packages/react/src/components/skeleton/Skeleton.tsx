@@ -6,11 +6,12 @@
  */
 
 import { useEffect, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { SkeletonProps } from '@xui/core';
 import { createSkeletonLogic } from '@xui/shared';
 import type { SkeletonLogicInstance } from '@xui/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
+import { cn } from '../../utils/cn';
 
 /** Skeleton 组件 Props（在契约 Props 基础上扩展 React 专属属性） */
 export type SkeletonComponentProps = SkeletonProps & {
@@ -19,7 +20,7 @@ export type SkeletonComponentProps = SkeletonProps & {
 };
 
 export function Skeleton(props: SkeletonComponentProps) {
-  const { loading = true, avatar = false, rows = 3, children } = props;
+  const { loading = true, avatar = false, rows = 3, className, style, children } = props;
 
   const logicRef = useRef<SkeletonLogicInstance | null>(null);
   if (logicRef.current === null) {
@@ -40,7 +41,12 @@ export function Skeleton(props: SkeletonComponentProps) {
 
   // 骨架占位：头像 + 段落行（末行短宽度）
   return (
-    <div className="xui-skeleton" role="status" aria-label="加载中">
+    <div
+      className={cn('xui-skeleton', className)}
+      style={style as CSSProperties}
+      role="status"
+      aria-label="加载中"
+    >
       {state.avatar && <span className="xui-skeleton__avatar" aria-hidden="true" />}
       <div className="xui-skeleton__rows" aria-hidden="true">
         {Array.from({ length: state.rows }, (_, index) => (

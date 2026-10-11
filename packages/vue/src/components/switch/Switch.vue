@@ -66,6 +66,7 @@ const handleToggle = () => {
     type="button"
     role="switch"
     :class="[
+      className,
       'xui-switch',
       `xui-switch--${props.size}`,
       {
@@ -74,6 +75,7 @@ const handleToggle = () => {
         'is-loading': state.loading,
       },
     ]"
+    :style="style"
     :aria-checked="state.checked"
     :aria-disabled="state.disabled || state.loading"
     :disabled="state.disabled || state.loading"

@@ -10,6 +10,10 @@ import type { LogicInstance } from '../../types';
 export type EmptyProps = {
   /** 空状态描述文案（未提供或空白时不渲染描述，由外部决定文案以避免内置 i18n 问题） */
   description?: string;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
 };
 
 /** Empty 事件契约（纯展示组件，无事件） */

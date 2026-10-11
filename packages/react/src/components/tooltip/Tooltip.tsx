@@ -8,7 +8,7 @@
  */
 
 import { useEffect, useId, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { TooltipProps } from '@xui/core';
 import { createTooltipLogic } from '@xui/shared';
 import type { TooltipLogicInstance } from '@xui/shared';
@@ -29,6 +29,8 @@ export function Tooltip(props: TooltipComponentProps) {
     placement = 'top',
     trigger = 'hover',
     disabled = false,
+    className,
+    style,
     children,
     renderContent,
   } = props;
@@ -64,7 +66,8 @@ export function Tooltip(props: TooltipComponentProps) {
 
   return (
     <span
-      className="xui-tooltip"
+      className={cn('xui-tooltip', className)}
+      style={style as CSSProperties}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       onFocus={handleFocus}

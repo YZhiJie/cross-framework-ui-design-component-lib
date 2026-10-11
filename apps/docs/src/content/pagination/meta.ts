@@ -56,6 +56,13 @@ export const paginationMeta: ComponentMeta = {
         default: '—',
         description: '页码变更回调',
       },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     events: [
       { vue: 'change', react: 'onChange', payload: 'page: number', description: '页码变更' },

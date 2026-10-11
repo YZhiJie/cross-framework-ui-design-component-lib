@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useImperativeHandle, useRef } from 'react';
-import type { ChangeEvent, FocusEvent, InputEvent, ReactNode, Ref } from 'react';
+import type { ChangeEvent, CSSProperties, FocusEvent, InputEvent, ReactNode, Ref } from 'react';
 import type { InputProps } from '@xui/core';
 import { createInputLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
@@ -46,6 +46,8 @@ export function Input(props: InputComponentProps) {
     readonly = false,
     maxLength,
     clearable = false,
+    className,
+    style,
     onInput,
     onChange,
     onFocus,
@@ -124,11 +126,16 @@ export function Input(props: InputComponentProps) {
 
   return (
     <div
-      className={cn('xui-input', {
-        'is-focused': state.focused,
-        'is-disabled': state.disabled,
-        'is-readonly': state.readonly,
-      })}
+      className={cn(
+        'xui-input',
+        {
+          'is-focused': state.focused,
+          'is-disabled': state.disabled,
+          'is-readonly': state.readonly,
+        },
+        className,
+      )}
+      style={style as CSSProperties}
     >
       {renderPrefix && <span className="xui-input__prefix">{renderPrefix()}</span>}
       <input

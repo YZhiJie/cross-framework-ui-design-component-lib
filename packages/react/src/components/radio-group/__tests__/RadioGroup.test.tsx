@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
 import { RadioGroup } from '../RadioGroup';
 import { Radio } from '../../radio/Radio';
 
@@ -86,5 +87,14 @@ describe('RadioGroup (react)', () => {
     expect(queryInputs(container)).toHaveLength(2);
     fireEvent.click(queryInputs(container)[0]);
     expect(onChange).toHaveBeenCalledWith('x');
+  });
+
+  it('className / style 透传到根元素', () => {
+    const { container } = render(
+      <RadioGroup options={options.slice(0, 1)} className="my-x" style={{ color: 'red' }} />,
+    );
+    const root = container.querySelector('.xui-radio-group') as HTMLElement;
+    expect(root).toHaveClass('my-x', 'xui-radio-group');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
   });
 });

@@ -19,6 +19,8 @@ export const buttonSpec = {
       disabled: Boolean,
       loading: Boolean,
       block: Boolean,
+      className: String,
+      style: Object,
       onClick: Function,
     },
     defaults: {

@@ -16,6 +16,10 @@ export type BadgeProps = {
   dot?: boolean;
   /** count 为 0 时是否显示徽标（默认隐藏） */
   showZero?: boolean;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
 };
 
 /** Badge 事件契约（纯展示组件，无事件） */

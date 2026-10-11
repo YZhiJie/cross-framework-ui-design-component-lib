@@ -39,7 +39,12 @@ const handleClose = () => {
 </script>
 
 <template>
-  <div v-if="state.visible" :class="['xui-alert', `xui-alert--${type}`]" role="alert">
+  <div
+    v-if="state.visible"
+    :class="[className, 'xui-alert', `xui-alert--${type}`]"
+    :style="style"
+    role="alert"
+  >
     <div v-if="showIcon" class="xui-alert__icon" aria-hidden="true">
       <slot name="icon">
         <svg

@@ -137,4 +137,16 @@ describe('Popconfirm (react)', () => {
     expect(onConfirm).not.toHaveBeenCalled();
     expect(onCancel).not.toHaveBeenCalled();
   });
+
+  it('className / style 透传到根元素', () => {
+    const { container } = render(
+      <Popconfirm className="my-x" style={{ color: 'red' }}>
+        <button type="button">删除</button>
+      </Popconfirm>,
+    );
+    const root = container.querySelector('.xui-popconfirm') as HTMLElement;
+    expect(root.classList.contains('my-x')).toBe(true);
+    expect(root.classList.contains('xui-popconfirm')).toBe(true);
+    expect(root.style.color).toBe('red');
+  });
 });

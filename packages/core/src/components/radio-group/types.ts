@@ -26,6 +26,10 @@ export type RadioGroupProps = {
   disabled?: boolean;
   /** 选项数组（提供后按 options 渲染，忽略 default 插槽） */
   options?: RadioOption[];
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
   /** 选中值变更回调（载荷为选中的选项值） */
   onChange?: (value: string) => void;
 };

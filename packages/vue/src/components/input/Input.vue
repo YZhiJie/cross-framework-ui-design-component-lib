@@ -102,6 +102,7 @@ defineExpose({ focus, blur, clear: handleClear });
 <template>
   <div
     :class="[
+      className,
       'xui-input',
       {
         'is-disabled': state.disabled,
@@ -109,6 +110,7 @@ defineExpose({ focus, blur, clear: handleClear });
         'is-focused': state.focused,
       },
     ]"
+    :style="style"
   >
     <span v-if="$slots.prefix" class="xui-input__prefix">
       <slot name="prefix" />

@@ -93,4 +93,12 @@ describe('DatePicker (vue)', () => {
     expect(wrapper.find('.xui-date-picker__clear').exists()).toBe(false);
     expect(wrapper.find('.xui-date-picker__trigger').attributes('tabindex')).toBe('-1');
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(DatePicker, {
+      props: { className: 'my-x', style: { color: 'red' } },
+    });
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

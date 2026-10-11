@@ -63,7 +63,8 @@ const isNumber = (item: number | 'ellipsis-prev' | 'ellipsis-next'): item is num
 <template>
   <nav
     class="xui-pagination"
-    :class="{ 'is-disabled': state.disabled }"
+    :class="[className, { 'is-disabled': state.disabled }]"
+    :style="style"
     role="navigation"
     aria-label="分页"
   >

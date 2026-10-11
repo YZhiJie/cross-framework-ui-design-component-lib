@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
 import { Checkbox } from '../Checkbox';
 
 describe('Checkbox (react)', () => {
@@ -53,5 +54,12 @@ describe('Checkbox (react)', () => {
     fireEvent.click(input);
     expect(onChange).not.toHaveBeenCalled();
     expect((container.firstElementChild as HTMLElement).className).toContain('is-disabled');
+  });
+
+  it('className / style 透传到根元素', () => {
+    const { container } = render(<Checkbox className="my-x" style={{ color: 'red' }} />);
+    const root = container.querySelector('.xui-checkbox') as HTMLElement;
+    expect(root).toHaveClass('my-x', 'xui-checkbox');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
   });
 });

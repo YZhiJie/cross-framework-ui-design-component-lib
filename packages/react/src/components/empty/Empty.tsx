@@ -7,12 +7,13 @@
  */
 
 import { useEffect, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { EmptyProps } from '@xui/core';
 import { createEmptyLogic } from '@xui/shared';
 import type { EmptyLogicInstance } from '@xui/shared';
 import { icons } from '@xui/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
+import { cn } from '../../utils/cn';
 
 /** Empty 组件 Props（在契约 Props 基础上扩展 React 专属属性） */
 export type EmptyComponentProps = EmptyProps & {
@@ -23,7 +24,7 @@ export type EmptyComponentProps = EmptyProps & {
 };
 
 export function Empty(props: EmptyComponentProps) {
-  const { description, children, renderImage } = props;
+  const { description, className, style, children, renderImage } = props;
 
   const logicRef = useRef<EmptyLogicInstance | null>(null);
   if (logicRef.current === null) {
@@ -38,7 +39,7 @@ export function Empty(props: EmptyComponentProps) {
   const state = useLogicState(logic.subscribe, logic.getState);
 
   return (
-    <div className="xui-empty">
+    <div className={cn('xui-empty', className)} style={style as CSSProperties}>
       <div className="xui-empty__image" aria-hidden="true">
         {renderImage ? renderImage() : <EmptyIllustration />}
       </div>

@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
 import { Radio } from '../Radio';
 import { RadioGroup } from '../../radio-group/RadioGroup';
 
@@ -54,5 +55,12 @@ describe('Radio (react)', () => {
     expect(label.className).toContain('is-disabled');
     fireEvent.click(input);
     expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('className / style 透传到根元素', () => {
+    const { container } = render(<Radio value="x" className="my-x" style={{ color: 'red' }} />);
+    const root = container.querySelector('.xui-radio') as HTMLElement;
+    expect(root).toHaveClass('my-x', 'xui-radio');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
   });
 });

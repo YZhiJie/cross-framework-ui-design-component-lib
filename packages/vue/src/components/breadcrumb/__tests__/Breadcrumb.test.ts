@@ -71,4 +71,13 @@ describe('Breadcrumb (vue)', () => {
     expect(wrapper.find('nav').text()).toBe('自定义内容');
     expect(wrapper.findAll('.xui-breadcrumb__item')).toHaveLength(0);
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(Breadcrumb, {
+      props: { items: ITEMS, className: 'my-x', style: { color: 'red' } },
+    });
+    const nav = wrapper.find('nav');
+    expect(nav.classes()).toContain('my-x');
+    expect(nav.attributes('style')).toContain('color: red');
+  });
 });

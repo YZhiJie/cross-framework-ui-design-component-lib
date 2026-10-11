@@ -60,12 +60,14 @@ const handleChange = (event: Event) => {
 <template>
   <label
     :class="[
+      className,
       'xui-radio',
       {
         'is-checked': checked,
         'is-disabled': disabled,
       },
     ]"
+    :style="style"
   >
     <input
       class="xui-radio__input"

@@ -18,6 +18,10 @@ export type PaginationProps = {
   pageSize?: number;
   /** 禁用状态 */
   disabled?: boolean;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
   /** 页码变更回调（契约事件） */
   onChange?: (page: number) => void;
 };

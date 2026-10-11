@@ -76,4 +76,13 @@ describe('Breadcrumb (react)', () => {
     expect(container.querySelector('nav')?.textContent).toBe('自定义内容');
     expect(container.querySelectorAll('.xui-breadcrumb__item')).toHaveLength(0);
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(
+      <Breadcrumb items={ITEMS} className="my-x" style={{ color: 'red' }} />,
+    );
+    const root = container.querySelector('.xui-breadcrumb') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

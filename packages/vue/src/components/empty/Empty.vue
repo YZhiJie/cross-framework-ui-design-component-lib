@@ -31,7 +31,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="xui-empty">
+  <div class="xui-empty" :class="className" :style="style">
     <div class="xui-empty__image" aria-hidden="true">
       <slot name="image">
         <svg

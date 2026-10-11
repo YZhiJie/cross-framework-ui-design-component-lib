@@ -95,7 +95,8 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
   <div
     ref="root"
     class="xui-date-picker"
-    :class="{ 'is-disabled': state.disabled, 'is-open': state.open }"
+    :class="[className, { 'is-disabled': state.disabled, 'is-open': state.open }]"
+    :style="style"
   >
     <div
       :id="triggerId"

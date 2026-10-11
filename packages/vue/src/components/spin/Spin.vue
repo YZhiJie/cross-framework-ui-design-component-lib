@@ -35,7 +35,7 @@ watchEffect(() => {
 
 <template>
   <!-- 包裹模式：内容 + 加载遮罩 -->
-  <div v-if="$slots.default" class="xui-spin xui-spin--wrapper">
+  <div v-if="$slots.default" class="xui-spin xui-spin--wrapper" :class="className" :style="style">
     <div class="xui-spin__content" :class="{ 'is-blur': state.spinning }">
       <slot />
     </div>
@@ -45,7 +45,14 @@ watchEffect(() => {
     </div>
   </div>
   <!-- 独立模式：无包裹内容时单独渲染指示器（spinning=false 不渲染） -->
-  <span v-else-if="state.spinning" class="xui-spin" role="status" aria-live="polite">
+  <span
+    v-else-if="state.spinning"
+    class="xui-spin"
+    :class="className"
+    :style="style"
+    role="status"
+    aria-live="polite"
+  >
     <span class="xui-spin__indicator" :class="`is-${state.size}`" aria-hidden="true" />
     <span v-if="state.tip" class="xui-spin__tip">{{ state.tip }}</span>
   </span>

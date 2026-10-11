@@ -21,6 +21,10 @@ export type PopconfirmProps = {
   placement?: PopconfirmPlacement;
   /** 禁用状态（禁用后点击触发元素无效，运行时禁用收起已开气泡） */
   disabled?: boolean;
+  /** 自定义类名（应用于触发器包裹根元素） */
+  className?: string;
+  /** 自定义内联样式（应用位置同 className） */
+  style?: Record<string, string>;
   /** 点击确定回调（气泡收起后触发） */
   onConfirm?: () => void;
   /** 点击取消回调（气泡收起后触发） */

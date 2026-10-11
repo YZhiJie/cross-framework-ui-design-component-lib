@@ -47,6 +47,8 @@ export function Modal(props: ModalComponentProps) {
     okText = '确认',
     cancelText = '取消',
     trapFocus = true,
+    className,
+    style,
     onOpen,
     onClose,
     onOk,
@@ -162,8 +164,8 @@ export function Modal(props: ModalComponentProps) {
       <div className="xui-modal__overlay" onClick={handleMaskClick} />
       <div
         ref={panelRef}
-        className="xui-modal__panel"
-        style={panelStyle}
+        className={cn('xui-modal__panel', className)}
+        style={{ ...panelStyle, ...(style as CSSProperties) }}
         role="dialog"
         aria-modal="true"
         tabIndex={-1}

@@ -22,6 +22,10 @@ export type AvatarProps = {
   src?: string;
   /** 图片 alt 文案（未提供时按装饰图处理，读屏跳过） */
   alt?: string;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
   /** 图片加载失败回调 */
   onError?: () => void;
 };

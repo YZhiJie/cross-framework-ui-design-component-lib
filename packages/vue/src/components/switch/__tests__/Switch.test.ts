@@ -63,4 +63,12 @@ describe('Switch (vue)', () => {
     await wrapper.trigger('click');
     expect(wrapper.emitted('update:value')![0]).toEqual([true]);
   });
+
+  it('className / style 透传到根元素', () => {
+    const wrapper = mount(Switch, { props: { className: 'my-x', style: { color: 'red' } } });
+
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.classes()).toContain('xui-switch');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

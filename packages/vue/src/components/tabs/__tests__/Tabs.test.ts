@@ -71,4 +71,12 @@ describe('Tabs (vue)', () => {
     expect(wrapper.findAll('[role="tab"]')[2].classes()).toContain('is-active');
     expect(wrapper.find('[role="tabpanel"]').text()).toBe('标签三');
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(Tabs, {
+      props: { items: ITEMS, className: 'my-x', style: { color: 'red' } },
+    });
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

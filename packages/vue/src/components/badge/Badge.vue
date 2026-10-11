@@ -40,7 +40,7 @@ watchEffect(() => {
 
 <template>
   <!-- 包裹模式：徽标叠加在内容右上角 -->
-  <span v-if="$slots.default" class="xui-badge">
+  <span v-if="$slots.default" class="xui-badge" :class="className" :style="style">
     <slot />
     <sup
       v-if="state.visible"

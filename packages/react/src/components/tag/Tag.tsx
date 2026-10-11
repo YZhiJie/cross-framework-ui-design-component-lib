@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { TagProps } from '@xui/core';
 import { createTagLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
@@ -21,7 +21,15 @@ export type TagComponentProps = TagProps & {
 };
 
 export function Tag(props: TagComponentProps) {
-  const { type = 'default', size = 'md', closable = false, onClose, children } = props;
+  const {
+    type = 'default',
+    size = 'md',
+    closable = false,
+    className,
+    style,
+    onClose,
+    children,
+  } = props;
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
   const callbacksRef = useRef({ onClose });
@@ -46,7 +54,10 @@ export function Tag(props: TagComponentProps) {
   if (!state.visible) return null;
 
   return (
-    <span className={cn('xui-tag', `xui-tag--${type}`, `xui-tag--${size}`)}>
+    <span
+      className={cn('xui-tag', `xui-tag--${type}`, `xui-tag--${size}`, className)}
+      style={style as CSSProperties}
+    >
       {children}
       {state.closable && (
         <button

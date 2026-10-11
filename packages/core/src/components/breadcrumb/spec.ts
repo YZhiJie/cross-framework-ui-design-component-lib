@@ -17,6 +17,8 @@ export const breadcrumbSpec = {
     type: {
       items: Array,
       separator: String,
+      className: String,
+      style: Object,
       onItemClick: Function,
     },
     defaults: {

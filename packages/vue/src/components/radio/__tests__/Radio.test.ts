@@ -55,4 +55,14 @@ describe('Radio (vue)', () => {
     expect((inputs[0].element as HTMLInputElement).checked).toBe(false);
     expect((inputs[1].element as HTMLInputElement).checked).toBe(true);
   });
+
+  it('className / style 透传到根元素', () => {
+    const wrapper = mount(Radio, {
+      props: { value: 'x', className: 'my-x', style: { color: 'red' } },
+    });
+
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.classes()).toContain('xui-radio');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

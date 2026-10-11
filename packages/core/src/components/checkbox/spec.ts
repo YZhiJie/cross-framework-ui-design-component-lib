@@ -18,6 +18,8 @@ export const checkboxSpec = {
       defaultValue: Boolean,
       disabled: Boolean,
       indeterminate: Boolean,
+      className: String,
+      style: Object,
       onChange: Function,
     },
     defaults: {

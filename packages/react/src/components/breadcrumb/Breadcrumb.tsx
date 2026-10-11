@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { BreadcrumbProps } from '@xui/core';
 import { createBreadcrumbLogic } from '@xui/shared';
 import type { BreadcrumbLogicInstance } from '@xui/shared';
@@ -20,7 +20,7 @@ export type BreadcrumbComponentProps = BreadcrumbProps & {
 };
 
 export function Breadcrumb(props: BreadcrumbComponentProps) {
-  const { items, separator = '/', onItemClick, children } = props;
+  const { items, separator = '/', className, style, onItemClick, children } = props;
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
   const callbacksRef = useRef({ onItemClick });
@@ -45,7 +45,11 @@ export function Breadcrumb(props: BreadcrumbComponentProps) {
   // 自定义内容区：children 覆盖 items 渲染
   if (children !== undefined) {
     return (
-      <nav className="xui-breadcrumb" aria-label="面包屑">
+      <nav
+        className={cn('xui-breadcrumb', className)}
+        style={style as CSSProperties}
+        aria-label="面包屑"
+      >
         {children}
       </nav>
     );
@@ -53,7 +57,11 @@ export function Breadcrumb(props: BreadcrumbComponentProps) {
 
   const last = state.items.length - 1;
   return (
-    <nav className="xui-breadcrumb" aria-label="面包屑">
+    <nav
+      className={cn('xui-breadcrumb', className)}
+      style={style as CSSProperties}
+      aria-label="面包屑"
+    >
       <ol className="xui-breadcrumb__list">
         {state.items.map((item, index) => (
           <li

@@ -18,6 +18,8 @@ export const skeletonSpec = {
       loading: Boolean,
       avatar: Boolean,
       rows: Number,
+      className: String,
+      style: Object,
     },
     defaults: {
       loading: true,

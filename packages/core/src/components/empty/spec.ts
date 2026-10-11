@@ -15,6 +15,8 @@ export const emptySpec = {
   props: {
     type: {
       description: String,
+      className: String,
+      style: Object,
     },
     defaults: {},
   },

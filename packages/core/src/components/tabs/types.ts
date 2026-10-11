@@ -24,6 +24,10 @@ export type TabsProps = {
   defaultValue?: string;
   /** 标签页配置 */
   items: TabItem[];
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
   /** 激活项变更回调（契约事件） */
   onChange?: (value: string) => void;
 };

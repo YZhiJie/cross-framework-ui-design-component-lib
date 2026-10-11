@@ -84,6 +84,13 @@ export const radioMeta: ComponentMeta = {
         default: 'false',
         description: '【Radio 子项】禁用当前选项（与组禁用叠加）',
       },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     events: [
       {

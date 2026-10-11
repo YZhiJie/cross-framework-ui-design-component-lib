@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useImperativeHandle, useRef } from 'react';
-import type { Ref } from 'react';
+import type { CSSProperties, Ref } from 'react';
 import type { SwitchProps } from '@xui/core';
 import { createSwitchLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
@@ -32,6 +32,8 @@ export function Switch(props: SwitchComponentProps) {
     size = 'md',
     disabled = false,
     loading = false,
+    className,
+    style,
     onChange,
     ref,
   } = props;
@@ -76,11 +78,17 @@ export function Switch(props: SwitchComponentProps) {
       ref={buttonRef}
       type="button"
       role="switch"
-      className={cn('xui-switch', `xui-switch--${size}`, {
-        'is-checked': state.checked,
-        'is-disabled': state.disabled,
-        'is-loading': state.loading,
-      })}
+      className={cn(
+        'xui-switch',
+        `xui-switch--${size}`,
+        {
+          'is-checked': state.checked,
+          'is-disabled': state.disabled,
+          'is-loading': state.loading,
+        },
+        className,
+      )}
+      style={style as CSSProperties}
       aria-checked={state.checked}
       aria-disabled={state.disabled || state.loading}
       disabled={state.disabled || state.loading}

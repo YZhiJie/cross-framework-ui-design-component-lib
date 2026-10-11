@@ -63,6 +63,7 @@ const handleChange = () => {
 <template>
   <label
     :class="[
+      className,
       'xui-checkbox',
       {
         'is-checked': state.checked,
@@ -70,6 +71,7 @@ const handleChange = () => {
         'is-indeterminate': state.indeterminate,
       },
     ]"
+    :style="style"
   >
     <input
       class="xui-checkbox__input"

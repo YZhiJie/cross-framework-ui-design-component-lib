@@ -6,6 +6,7 @@
  */
 
 import { useEffect, useRef } from 'react';
+import type { CSSProperties } from 'react';
 import type { PaginationProps } from '@xui/core';
 import { createPageItems, createPaginationLogic } from '@xui/shared';
 import type { PageItem, PaginationLogicInstance } from '@xui/shared';
@@ -19,7 +20,16 @@ export type PaginationComponentProps = PaginationProps;
 const isNumberItem = (item: PageItem): item is number => typeof item === 'number';
 
 export function Pagination(props: PaginationComponentProps) {
-  const { value, defaultValue, total, pageSize = 10, disabled = false, onChange } = props;
+  const {
+    value,
+    defaultValue,
+    total,
+    pageSize = 10,
+    disabled = false,
+    className,
+    style,
+    onChange,
+  } = props;
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
   const callbacksRef = useRef({ onChange });
@@ -50,7 +60,8 @@ export function Pagination(props: PaginationComponentProps) {
 
   return (
     <nav
-      className={cn('xui-pagination', { 'is-disabled': state.disabled })}
+      className={cn('xui-pagination', className, { 'is-disabled': state.disabled })}
+      style={style as CSSProperties}
       role="navigation"
       aria-label="分页"
     >

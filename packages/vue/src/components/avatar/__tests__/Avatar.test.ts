@@ -48,4 +48,13 @@ describe('Avatar (vue)', () => {
     expect(wrapper.classes()).toContain('xui-avatar--lg');
     expect(wrapper.classes()).toContain('xui-avatar--square');
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(Avatar, {
+      props: { className: 'my-x', style: { color: 'red' } },
+    });
+    expect(wrapper.classes()).toContain('xui-avatar');
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

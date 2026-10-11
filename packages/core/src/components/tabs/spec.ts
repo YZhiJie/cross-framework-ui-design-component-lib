@@ -17,6 +17,8 @@ export const tabsSpec = {
       value: String,
       defaultValue: String,
       items: Array,
+      className: String,
+      style: Object,
       onChange: Function,
     },
     defaults: {},

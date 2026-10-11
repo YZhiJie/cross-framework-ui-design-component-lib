@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { AlertProps } from '@xui/core';
 import { createAlertLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
@@ -31,6 +31,8 @@ export function Alert(props: AlertComponentProps) {
     description,
     closable = false,
     showIcon = false,
+    className,
+    style,
     onClose,
     children,
     renderTitle,
@@ -64,7 +66,11 @@ export function Alert(props: AlertComponentProps) {
     (children !== undefined && children !== null) || description !== undefined;
 
   return (
-    <div className={cn('xui-alert', `xui-alert--${type}`)} role="alert">
+    <div
+      className={cn('xui-alert', `xui-alert--${type}`, className)}
+      style={style as CSSProperties}
+      role="alert"
+    >
       {showIcon && (
         <div className="xui-alert__icon" aria-hidden="true">
           {renderIcon ? renderIcon() : <AlertIcon type={type} />}

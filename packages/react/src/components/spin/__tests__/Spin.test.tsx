@@ -63,4 +63,11 @@ describe('Spin (react)', () => {
     rerender(<Spin spinning={true}>content</Spin>);
     expect(container.querySelector('.xui-spin__mask')).not.toBeNull();
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(<Spin className="my-x" style={{ color: 'red' }} />);
+    const root = container.querySelector('.xui-spin') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

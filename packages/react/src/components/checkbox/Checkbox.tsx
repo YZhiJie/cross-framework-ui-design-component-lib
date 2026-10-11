@@ -8,7 +8,7 @@
  */
 
 import { useEffect, useImperativeHandle, useRef } from 'react';
-import type { ReactNode, Ref } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 import type { CheckboxProps } from '@xui/core';
 import { createCheckboxLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
@@ -35,6 +35,8 @@ export function Checkbox(props: CheckboxComponentProps) {
     defaultValue,
     disabled = false,
     indeterminate = false,
+    className,
+    style,
     onChange,
     children,
     ref,
@@ -84,11 +86,16 @@ export function Checkbox(props: CheckboxComponentProps) {
 
   return (
     <label
-      className={cn('xui-checkbox', {
-        'is-checked': state.checked,
-        'is-disabled': state.disabled,
-        'is-indeterminate': state.indeterminate,
-      })}
+      className={cn(
+        'xui-checkbox',
+        {
+          'is-checked': state.checked,
+          'is-disabled': state.disabled,
+          'is-indeterminate': state.indeterminate,
+        },
+        className,
+      )}
+      style={style as CSSProperties}
     >
       <input
         ref={inputRef}

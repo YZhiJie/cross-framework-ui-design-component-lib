@@ -59,6 +59,13 @@ export const avatarMeta: ComponentMeta = {
         description: '图片 alt（未提供时按装饰图处理，读屏跳过）',
       },
       { name: 'onError', type: '() => void', default: '—', description: '图片加载失败回调' },
+      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'style',
+        type: 'Record<string, string>',
+        default: '—',
+        description: '附加到根节点的自定义样式',
+      },
     ],
     events: [{ vue: 'error', react: 'onError', payload: '—', description: '图片加载失败时触发' }],
     slots: [

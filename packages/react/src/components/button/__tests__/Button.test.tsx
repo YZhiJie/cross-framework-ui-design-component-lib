@@ -136,4 +136,15 @@ describe('Button 组件', () => {
       expect(screen.getByRole('button')).toHaveClass('is-loading');
     });
   });
+
+  it('className / style 透传到根元素', () => {
+    const { container } = render(
+      <Button className="my-x" style={{ color: 'red' }}>
+        按钮
+      </Button>,
+    );
+    const root = container.querySelector('.xui-button') as HTMLElement;
+    expect(root).toHaveClass('my-x', 'xui-button');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

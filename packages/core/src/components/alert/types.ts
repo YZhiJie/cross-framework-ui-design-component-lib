@@ -18,6 +18,10 @@ export type AlertProps = {
   closable?: boolean;
   /** 是否显示类型图标 */
   showIcon?: boolean;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
   /** 关闭回调（组件隐藏后触发） */
   onClose?: () => void;
 };

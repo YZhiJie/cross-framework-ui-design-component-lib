@@ -58,4 +58,13 @@ describe('Alert (vue)', () => {
     const wrapper = mount(Alert);
     expect(wrapper.find('.xui-alert__close').exists()).toBe(false);
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(Alert, {
+      props: { className: 'my-x', style: { color: 'red' } },
+    });
+    expect(wrapper.classes()).toContain('xui-alert');
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useImperativeHandle, useRef } from 'react';
-import type { MouseEvent, ReactNode, Ref } from 'react';
+import type { CSSProperties, MouseEvent, ReactNode, Ref } from 'react';
 import type { ButtonProps } from '@xui/core';
 import { createButtonLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
@@ -39,6 +39,8 @@ export function Button(props: ButtonComponentProps) {
     disabled = false,
     loading = false,
     block = false,
+    className,
+    style,
     onClick,
     children,
     renderIcon,
@@ -87,11 +89,18 @@ export function Button(props: ButtonComponentProps) {
     <button
       ref={buttonRef}
       type="button"
-      className={cn('xui-button', `xui-button--${type}`, `xui-button--${size}`, {
-        'is-disabled': state.disabled,
-        'is-loading': state.loading,
-        'is-block': block,
-      })}
+      className={cn(
+        'xui-button',
+        `xui-button--${type}`,
+        `xui-button--${size}`,
+        {
+          'is-disabled': state.disabled,
+          'is-loading': state.loading,
+          'is-block': block,
+        },
+        className,
+      )}
+      style={style as CSSProperties}
       disabled={state.disabled || state.loading}
       onClick={handleClick}
     >

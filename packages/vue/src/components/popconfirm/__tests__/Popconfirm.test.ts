@@ -109,4 +109,14 @@ describe('Popconfirm (vue)', () => {
     expect(wrapper.emitted('cancel')).toBeUndefined();
     wrapper.unmount();
   });
+
+  it('className / style 透传到根元素', () => {
+    const wrapper = mount(Popconfirm, {
+      props: { className: 'my-x', style: { color: 'red' } },
+      slots: { default: '<button type="button">删除</button>' },
+    });
+    expect(wrapper.classes()).toContain('my-x');
+    expect(wrapper.classes()).toContain('xui-popconfirm');
+    expect(wrapper.attributes('style')).toContain('color: red');
+  });
 });

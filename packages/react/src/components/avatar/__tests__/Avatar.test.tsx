@@ -50,4 +50,11 @@ describe('Avatar (react)', () => {
     expect(root.className).toContain('xui-avatar--lg');
     expect(root.className).toContain('xui-avatar--square');
   });
+
+  it('passes className / style to root element', () => {
+    const { container } = render(<Avatar className="my-x" style={{ color: 'red' }} />);
+    const root = container.querySelector('.xui-avatar') as HTMLElement;
+    expect(root).toHaveClass('my-x');
+    expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
 });

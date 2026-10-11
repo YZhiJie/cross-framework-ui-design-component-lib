@@ -66,4 +66,14 @@ describe('Spin (vue)', () => {
     await wrapper.setProps({ spinning: true });
     expect(wrapper.find('.xui-spin__mask').exists()).toBe(true);
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(Spin, {
+      props: { className: 'my-x', style: { color: 'red' } },
+    });
+    const root = wrapper.find('.xui-spin');
+    expect(root.classes()).toContain('xui-spin');
+    expect(root.classes()).toContain('my-x');
+    expect(root.attributes('style')).toContain('color: red');
+  });
 });

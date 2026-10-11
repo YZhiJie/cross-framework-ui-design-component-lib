@@ -283,4 +283,12 @@ describe('Modal 组件（Vue 适配层）', () => {
 
     trigger.remove();
   });
+
+  it('className / style 透传到对话框面板', async () => {
+    await openModal({ props: { className: 'my-x', style: { color: 'red' } } });
+
+    const panel = query<HTMLElement>('.xui-modal__panel')!;
+    expect(panel.classList.contains('my-x')).toBe(true);
+    expect(panel.style.color).toBe('red');
+  });
 });

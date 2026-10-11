@@ -324,4 +324,16 @@ describe('Modal 组件', () => {
       expect(document.activeElement).toBe(trigger);
     });
   });
+
+  describe('className / style 透传', () => {
+    it('className / style 应用到对话框面板', () => {
+      render(
+        <Modal visible className="my-x" style={{ color: 'red' }}>
+          内容
+        </Modal>,
+      );
+      expect(screen.getByRole('dialog')).toHaveClass('xui-modal__panel', 'my-x');
+      expect(screen.getByRole('dialog')).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+    });
+  });
 });

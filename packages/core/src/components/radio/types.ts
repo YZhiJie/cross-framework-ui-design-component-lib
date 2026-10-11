@@ -15,6 +15,10 @@ export type RadioProps = {
   value: string;
   /** 禁用当前选项（与 RadioGroup 的 disabled 叠加生效） */
   disabled?: boolean;
+  /** 自定义类名，追加到组件根元素 */
+  className?: string;
+  /** 自定义内联样式，合并到组件根元素 */
+  style?: Record<string, string>;
 };
 
 /** Radio 事件契约（选中变更统一由 RadioGroup 触发 change） */

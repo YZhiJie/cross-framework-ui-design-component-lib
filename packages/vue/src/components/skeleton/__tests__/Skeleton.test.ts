@@ -55,4 +55,14 @@ describe('Skeleton (vue)', () => {
     expect(wrapper.find('.xui-skeleton__avatar').attributes('aria-hidden')).toBe('true');
     expect(wrapper.find('.xui-skeleton__rows').attributes('aria-hidden')).toBe('true');
   });
+
+  it('className / style 透传到根节点', () => {
+    const wrapper = mount(Skeleton, {
+      props: { className: 'my-x', style: { color: 'red' } },
+    });
+    const root = wrapper.find('.xui-skeleton');
+    expect(root.classes()).toContain('xui-skeleton');
+    expect(root.classes()).toContain('my-x');
+    expect(root.attributes('style')).toContain('color: red');
+  });
 });
