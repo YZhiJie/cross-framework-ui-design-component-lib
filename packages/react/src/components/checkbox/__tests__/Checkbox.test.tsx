@@ -47,6 +47,22 @@ describe('Checkbox (react)', () => {
     expect(label.className).toContain('is-indeterminate');
   });
 
+  it('renderCheckIcon 自定义选中态图标，不渲染内置 svg', () => {
+    const { container } = render(
+      <Checkbox defaultValue renderCheckIcon={() => <i className="custom-check" />} />,
+    );
+    expect(container.querySelector('.custom-check')).not.toBeNull();
+    expect(container.querySelector('.xui-checkbox__icon')).toBeNull();
+  });
+
+  it('renderIndeterminateIcon 自定义半选态图标，不渲染内置 svg', () => {
+    const { container } = render(
+      <Checkbox indeterminate renderIndeterminateIcon={() => <i className="custom-minus" />} />,
+    );
+    expect(container.querySelector('.custom-minus')).not.toBeNull();
+    expect(container.querySelector('.xui-checkbox__icon')).toBeNull();
+  });
+
   it('disabled 时不触发 onChange', () => {
     const onChange = vi.fn();
     const { container } = render(<Checkbox disabled onChange={onChange} />);

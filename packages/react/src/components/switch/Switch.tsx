@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useImperativeHandle, useRef } from 'react';
-import type { CSSProperties, Ref } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 import type { SwitchProps } from '@xui/core';
 import { createSwitchLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
@@ -16,6 +16,8 @@ import { cn } from '../../utils/cn';
 
 /** Switch 组件 Props（在契约 Props 基础上扩展 React 专属属性） */
 export type SwitchComponentProps = SwitchProps & {
+  /** 自定义加载图标（loading 状态时替代内置 spinner） */
+  renderLoadingIcon?: () => ReactNode;
   /** React 19 ref-as-prop */
   ref?: Ref<SwitchRef>;
 };
@@ -32,11 +34,17 @@ export function Switch(props: SwitchComponentProps) {
     size = 'md',
     disabled = false,
     loading = false,
+    checkedText,
+    uncheckedText,
     className,
     style,
     onChange,
+    renderLoadingIcon,
     ref,
   } = props;
+
+  // 双态文本：任一文本提供即进入带文本模式（轨道加宽 + 滑块位移调整）
+  const hasText = Boolean(checkedText || uncheckedText);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -85,6 +93,7 @@ export function Switch(props: SwitchComponentProps) {
           'is-checked': state.checked,
           'is-disabled': state.disabled,
           'is-loading': state.loading,
+          'xui-switch--has-text': hasText,
         },
         className,
       )}
@@ -95,7 +104,25 @@ export function Switch(props: SwitchComponentProps) {
       onClick={() => logic.toggle()}
     >
       <span className="xui-switch__core">
-        <span className="xui-switch__thumb">{state.loading && <LoadingSpinner />}</span>
+        {/* 双态文本：状态已由 role="switch" + aria-checked 传达，文本对读屏隐藏避免重复朗读 */}
+        {(() => {
+          const text = state.checked ? checkedText : uncheckedText;
+          return text ? (
+            <span
+              className={cn(
+                'xui-switch__text',
+                state.checked ? 'xui-switch__text--checked' : 'xui-switch__text--unchecked',
+              )}
+              title={text}
+              aria-hidden="true"
+            >
+              {text}
+            </span>
+          ) : null;
+        })()}
+        <span className="xui-switch__thumb">
+          {state.loading && (renderLoadingIcon ? renderLoadingIcon() : <LoadingSpinner />)}
+        </span>
       </span>
     </button>
   );
@@ -113,6 +140,7 @@ function LoadingSpinner() {
       stroke="currentColor"
       strokeWidth="2.5"
       strokeLinecap="round"
+      aria-hidden="true"
       dangerouslySetInnerHTML={{ __html: icons.loading }}
     />
   );

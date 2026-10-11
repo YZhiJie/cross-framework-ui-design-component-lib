@@ -59,6 +59,14 @@ describe('Switch (react)', () => {
     expect(el.querySelector('.xui-switch__spinner')).not.toBeNull();
   });
 
+  it('renderLoadingIcon 自定义加载图标，不渲染内置 svg', () => {
+    const { container } = render(
+      <Switch loading renderLoadingIcon={() => <i className="custom-loading" />} />,
+    );
+    expect(container.querySelector('.custom-loading')).not.toBeNull();
+    expect(container.querySelector('.xui-switch__spinner')).toBeNull();
+  });
+
   it('size 类名正确', () => {
     const { container } = render(<Switch size="sm" />);
     expect((container.firstElementChild as HTMLElement).className).toContain('xui-switch--sm');
@@ -69,5 +77,44 @@ describe('Switch (react)', () => {
     const root = container.querySelector('.xui-switch') as HTMLElement;
     expect(root).toHaveClass('my-x', 'xui-switch');
     expect(root).toHaveStyle({ color: 'rgb(255, 0, 0)' });
+  });
+
+  it('双态文本：checkedText / uncheckedText 随状态切换渲染', () => {
+    const { container } = render(<Switch checkedText="开" uncheckedText="关" />);
+    const root = container.querySelector('.xui-switch') as HTMLElement;
+    expect(root).toHaveClass('xui-switch--has-text');
+    const textEl = () => container.querySelector('.xui-switch__text') as HTMLElement;
+    expect(textEl()).toBeTruthy();
+    expect(textEl()).toHaveClass('xui-switch__text--unchecked');
+    expect(textEl()).toHaveTextContent('关');
+    // 文本对读屏隐藏（状态由 role="switch" + aria-checked 传达）
+    expect(textEl()).toHaveAttribute('aria-hidden', 'true');
+
+    fireEvent.click(root);
+    expect(textEl()).toHaveClass('xui-switch__text--checked');
+    expect(textEl()).toHaveTextContent('开');
+  });
+
+  it('双态文本：超长文本提供 title 提示，空串兜底不渲染', () => {
+    const { container } = render(
+      <Switch checkedText="" uncheckedText="超长文本超长文本超长文本超长文本" />,
+    );
+    // 空串 checkedText 视为未提供，关闭态仍渲染 uncheckedText 并带 title 提示
+    const textEl = container.querySelector('.xui-switch__text') as HTMLElement;
+    expect(textEl).toBeTruthy();
+    expect(textEl).toHaveClass('xui-switch__text--unchecked');
+    expect(textEl).toHaveAttribute('title', '超长文本超长文本超长文本超长文本');
+
+    // 仅提供 checkedText：关闭态无文本节点
+    const { container: c2 } = render(<Switch checkedText="开启" />);
+    expect(c2.querySelector('.xui-switch')).toHaveClass('xui-switch--has-text');
+    expect(c2.querySelector('.xui-switch__text')).toBeNull();
+  });
+
+  it('不传双态文本时保持纯开关模式（无文本节点与 has-text 类）', () => {
+    const { container } = render(<Switch />);
+    const root = container.querySelector('.xui-switch') as HTMLElement;
+    expect(root).not.toHaveClass('xui-switch--has-text');
+    expect(container.querySelector('.xui-switch__text')).toBeNull();
   });
 });

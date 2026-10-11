@@ -50,6 +50,7 @@ export const modalSpec = {
     default: { description: '弹窗内容' },
     title: { description: '标题区域（覆盖 title prop）' },
     footer: { description: '底部操作区' },
+    closeIcon: { description: '自定义关闭图标' },
   },
   useLogic: (props: ModalProps) =>
     createModalLogic({

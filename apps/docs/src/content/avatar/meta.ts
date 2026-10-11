@@ -70,6 +70,11 @@ export const avatarMeta: ComponentMeta = {
     events: [{ vue: 'error', react: 'onError', payload: '—', description: '图片加载失败时触发' }],
     slots: [
       {
+        vue: 'icon',
+        react: 'renderIcon',
+        description: '自定义占位图标（无 src / 加载失败时替换内置 user 图标）',
+      },
+      {
         vue: 'default',
         react: 'children',
         description: '自定义内容（文字 / 图标；优先级低于成功的图片）',

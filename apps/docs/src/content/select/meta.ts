@@ -147,6 +147,14 @@ export const selectMeta: ComponentMeta = {
         description: 'v-model:value 回写',
       },
     ],
+    slots: [
+      {
+        vue: 'clearIcon',
+        react: 'renderClearIcon',
+        description: '自定义清除图标（触发器 clear 与多选标签删除按钮共用）',
+      },
+      { vue: 'suffixIcon', react: 'renderSuffixIcon', description: '自定义下拉箭头图标' },
+    ],
     types: [
       {
         name: 'SelectOption',

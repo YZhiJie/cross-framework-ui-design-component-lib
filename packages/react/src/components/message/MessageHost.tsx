@@ -41,7 +41,7 @@ export function MessageHost({ manager }: MessageHostProps) {
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden="true"
-            dangerouslySetInnerHTML={{ __html: TYPE_ICONS[item.type] }}
+            dangerouslySetInnerHTML={{ __html: item.icon ?? TYPE_ICONS[item.type] }}
           />
           <span className="xui-message__content">{item.content}</span>
           {item.closable && (

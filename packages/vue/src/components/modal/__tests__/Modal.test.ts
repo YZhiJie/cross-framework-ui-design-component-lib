@@ -291,4 +291,12 @@ describe('Modal 组件（Vue 适配层）', () => {
     expect(panel.classList.contains('my-x')).toBe(true);
     expect(panel.style.color).toBe('red');
   });
+
+  it('closeIcon 插槽替换内置关闭图标', async () => {
+    await openModal({ slots: { closeIcon: '<i class="my-close-x">x</i>' } });
+
+    const close = query<HTMLElement>('.xui-modal__close')!;
+    expect(close.querySelector('.my-close-x')).not.toBeNull();
+    expect(close.querySelector('svg')).toBeNull();
+  });
 });

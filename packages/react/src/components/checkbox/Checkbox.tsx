@@ -20,6 +20,10 @@ import { cn } from '../../utils/cn';
 export type CheckboxComponentProps = CheckboxProps & {
   /** 标签内容 */
   children?: ReactNode;
+  /** 自定义选中态图标（默认渲染内联 SVG） */
+  renderCheckIcon?: () => ReactNode;
+  /** 自定义半选态图标（默认渲染内联 SVG） */
+  renderIndeterminateIcon?: () => ReactNode;
   /** React 19 ref-as-prop */
   ref?: Ref<CheckboxRef>;
 };
@@ -39,6 +43,8 @@ export function Checkbox(props: CheckboxComponentProps) {
     style,
     onChange,
     children,
+    renderCheckIcon,
+    renderIndeterminateIcon,
     ref,
   } = props;
 
@@ -108,9 +114,17 @@ export function Checkbox(props: CheckboxComponentProps) {
       />
       <span className="xui-checkbox__box" aria-hidden="true">
         {state.indeterminate ? (
-          <CheckboxIcon name="minus" />
+          renderIndeterminateIcon ? (
+            renderIndeterminateIcon()
+          ) : (
+            <CheckboxIcon name="minus" />
+          )
         ) : state.checked ? (
-          <CheckboxIcon name="check" />
+          renderCheckIcon ? (
+            renderCheckIcon()
+          ) : (
+            <CheckboxIcon name="check" />
+          )
         ) : null}
       </span>
       {children !== undefined && children !== null && (
@@ -132,6 +146,7 @@ function CheckboxIcon({ name }: { name: 'check' | 'minus' }) {
       stroke="currentColor"
       strokeWidth="3"
       strokeLinecap="round"
+      aria-hidden="true"
       dangerouslySetInnerHTML={{ __html: icons[name] }}
     />
   );

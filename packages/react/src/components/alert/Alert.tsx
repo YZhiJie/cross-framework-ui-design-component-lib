@@ -22,6 +22,8 @@ export type AlertComponentProps = AlertProps & {
   renderTitle?: () => ReactNode;
   /** 自定义类型图标（覆盖默认图标，showIcon 开启时生效） */
   renderIcon?: () => ReactNode;
+  /** 自定义关闭图标（默认渲染内联 SVG） */
+  renderCloseIcon?: () => ReactNode;
 };
 
 export function Alert(props: AlertComponentProps) {
@@ -37,6 +39,7 @@ export function Alert(props: AlertComponentProps) {
     children,
     renderTitle,
     renderIcon,
+    renderCloseIcon,
   } = props;
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
@@ -87,16 +90,21 @@ export function Alert(props: AlertComponentProps) {
           aria-label="close"
           onClick={() => logic.handleClose()}
         >
-          <svg
-            viewBox="0 0 24 24"
-            width="14"
-            height="14"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            dangerouslySetInnerHTML={{ __html: icons.close }}
-          />
+          {renderCloseIcon ? (
+            renderCloseIcon()
+          ) : (
+            <svg
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              aria-hidden="true"
+              dangerouslySetInnerHTML={{ __html: icons.close }}
+            />
+          )}
         </button>
       )}
     </div>
@@ -115,6 +123,7 @@ function AlertIcon({ type }: { type: NonNullable<AlertProps['type']> }) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
+      aria-hidden="true"
       dangerouslySetInnerHTML={{ __html: icons[type] }}
     />
   );

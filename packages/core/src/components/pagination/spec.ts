@@ -31,7 +31,10 @@ export const paginationSpec = {
   events: {
     change: { description: '页码变更时触发', payloadType: 'number' },
   },
-  slots: {},
+  slots: {
+    prevIcon: { description: '自定义上一页图标' },
+    nextIcon: { description: '自定义下一页图标' },
+  },
   useLogic: (props: PaginationProps) =>
     createPaginationLogic({
       value: props.value,

@@ -9,7 +9,7 @@
  */
 
 import { useEffect, useId, useRef } from 'react';
-import type { CSSProperties, KeyboardEvent } from 'react';
+import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
 import type { SelectProps } from '@xui/core';
 import { createSelectLogic, createVirtualListLogic } from '@xui/shared';
 import type { SelectLogicInstance, VirtualListLogicInstance } from '@xui/shared';
@@ -17,8 +17,13 @@ import { icons } from '@xui/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 
-/** Select 组件 Props（契约 Props 原样透传） */
-export type SelectComponentProps = SelectProps;
+/** Select 组件 Props（契约 Props 基础上扩展 React 专属属性） */
+export type SelectComponentProps = SelectProps & {
+  /** 自定义清除图标（触发器 clear 与多选 tag 的 clear 共用，默认渲染内联 SVG） */
+  renderClearIcon?: () => ReactNode;
+  /** 自定义下拉箭头图标（默认渲染内联 SVG） */
+  renderSuffixIcon?: () => ReactNode;
+};
 
 /** 虚拟选项行高：与 CSS 变量 --xui-select-item-height 默认值对齐（虚拟模式要求行高固定） */
 const ITEM_HEIGHT = 30;
@@ -39,6 +44,8 @@ export function Select(props: SelectComponentProps) {
     style,
     onChange,
     onClear,
+    renderClearIcon,
+    renderSuffixIcon,
   } = props;
 
   const rootRef = useRef<HTMLDivElement>(null);
@@ -245,17 +252,21 @@ export function Select(props: SelectComponentProps) {
                     logic.select(tag.value);
                   }}
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    width="10"
-                    height="10"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    aria-hidden="true"
-                    dangerouslySetInnerHTML={{ __html: icons.clear }}
-                  />
+                  {renderClearIcon ? (
+                    renderClearIcon()
+                  ) : (
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="10"
+                      height="10"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      aria-hidden="true"
+                      dangerouslySetInnerHTML={{ __html: icons.clear }}
+                    />
+                  )}
                 </span>
               </span>
             ))}
@@ -278,31 +289,40 @@ export function Select(props: SelectComponentProps) {
               logic.clear();
             }}
           >
-            <svg
-              viewBox="0 0 24 24"
-              width="14"
-              height="14"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              aria-hidden="true"
-              dangerouslySetInnerHTML={{ __html: icons.clear }}
-            />
+            {renderClearIcon ? (
+              renderClearIcon()
+            ) : (
+              <svg
+                viewBox="0 0 24 24"
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                aria-hidden="true"
+                dangerouslySetInnerHTML={{ __html: icons.clear }}
+              />
+            )}
           </span>
         ) : (
           <span className="xui-select__arrow" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              width="14"
-              height="14"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              dangerouslySetInnerHTML={{ __html: icons['arrow-down'] }}
-            />
+            {renderSuffixIcon ? (
+              renderSuffixIcon()
+            ) : (
+              <svg
+                viewBox="0 0 24 24"
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                dangerouslySetInnerHTML={{ __html: icons['arrow-down'] }}
+              />
+            )}
           </span>
         )}
       </div>

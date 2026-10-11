@@ -18,6 +18,12 @@ describe('Avatar (react)', () => {
     expect(container.querySelector('svg.xui-avatar__icon')).toBeNull();
   });
 
+  it('renderIcon 自定义回退图标，不渲染内置 svg', () => {
+    const { container } = render(<Avatar renderIcon={() => <i className="custom-avatar" />} />);
+    expect(container.querySelector('.custom-avatar')).not.toBeNull();
+    expect(container.querySelector('svg.xui-avatar__icon')).toBeNull();
+  });
+
   it('src 渲染图片与 alt', () => {
     const { container } = render(<Avatar src="a.png" alt="头像" />);
     const img = container.querySelector('img.xui-avatar__img') as HTMLImageElement;

@@ -19,6 +19,8 @@ export const switchSpec = {
       size: String,
       disabled: Boolean,
       loading: Boolean,
+      checkedText: String,
+      uncheckedText: String,
       className: String,
       style: Object,
       onChange: Function,
@@ -32,7 +34,7 @@ export const switchSpec = {
   events: {
     change: { description: '选中状态变更时触发', payloadType: 'boolean' },
   },
-  slots: {},
+  slots: { loadingIcon: { description: '自定义加载图标' } },
   useLogic: (props: SwitchProps) =>
     createSwitchLogic({
       value: props.value,

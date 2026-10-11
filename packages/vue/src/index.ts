@@ -56,7 +56,14 @@ export { Popconfirm };
 export { Button, Input, Modal };
 
 // 基础设施：主题运行时 API / 插件系统 / 虚拟滚动原语（re-export 自 @xui/shared）
-export { getTheme, setTheme, subscribeTheme, toggleTheme } from '@xui/shared';
+export {
+  clearThemeTokens,
+  getTheme,
+  setTheme,
+  setThemeTokens,
+  subscribeTheme,
+  toggleTheme,
+} from '@xui/shared';
 export { applyPlugins } from '@xui/shared';
 export { createVirtualListLogic } from '@xui/shared';
 export type { XuiTheme } from '@xui/shared';

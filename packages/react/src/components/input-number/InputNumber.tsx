@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { InputNumberProps } from '@xui/core';
 import { createInputNumberLogic } from '@xui/shared';
 import type { InputNumberLogicInstance } from '@xui/shared';
@@ -15,8 +15,13 @@ import { icons } from '@xui/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 
-/** InputNumber 组件 Props（与契约 Props 一致） */
-export type InputNumberComponentProps = InputNumberProps;
+/** InputNumber 组件 Props（契约 Props 基础上扩展 React 专属属性） */
+export type InputNumberComponentProps = InputNumberProps & {
+  /** 自定义步进向上图标（默认渲染内联 SVG） */
+  renderUpIcon?: () => ReactNode;
+  /** 自定义步进向下图标（默认渲染内联 SVG） */
+  renderDownIcon?: () => ReactNode;
+};
 
 /** 收敛值的显示文本（precision 存在时固定小数位） */
 function formatValue(value: number | null, precision: number | null): string {
@@ -37,6 +42,8 @@ export function InputNumber(props: InputNumberComponentProps) {
     className,
     style,
     onChange,
+    renderUpIcon,
+    renderDownIcon,
   } = props;
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
@@ -125,17 +132,22 @@ export function InputNumber(props: InputNumberComponentProps) {
           disabled={state.disabled}
           onClick={() => stepBy(1)}
         >
-          <svg
-            viewBox="0 0 24 24"
-            width="12"
-            height="12"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            dangerouslySetInnerHTML={{ __html: icons['arrow-up'] }}
-          />
+          {renderUpIcon ? (
+            renderUpIcon()
+          ) : (
+            <svg
+              viewBox="0 0 24 24"
+              width="12"
+              height="12"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              dangerouslySetInnerHTML={{ __html: icons['arrow-up'] }}
+            />
+          )}
         </button>
         <button
           className="xui-input-number__btn"
@@ -144,17 +156,22 @@ export function InputNumber(props: InputNumberComponentProps) {
           disabled={state.disabled}
           onClick={() => stepBy(-1)}
         >
-          <svg
-            viewBox="0 0 24 24"
-            width="12"
-            height="12"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            dangerouslySetInnerHTML={{ __html: icons['arrow-down'] }}
-          />
+          {renderDownIcon ? (
+            renderDownIcon()
+          ) : (
+            <svg
+              viewBox="0 0 24 24"
+              width="12"
+              height="12"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              dangerouslySetInnerHTML={{ __html: icons['arrow-down'] }}
+            />
+          )}
         </button>
       </div>
     </div>

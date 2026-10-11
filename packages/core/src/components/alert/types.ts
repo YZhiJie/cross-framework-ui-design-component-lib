@@ -39,6 +39,8 @@ export type AlertSlots = {
   title: Record<string, never>;
   /** 类型图标（覆盖默认图标，showIcon 开启时生效） */
   icon: Record<string, never>;
+  /** 自定义关闭图标（替换内置 close，内容为任意节点） */
+  closeIcon: Record<string, never>;
 };
 
 /** Alert 状态快照（由逻辑层暴露） */

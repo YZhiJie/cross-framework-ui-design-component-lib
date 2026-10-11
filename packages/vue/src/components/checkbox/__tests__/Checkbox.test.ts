@@ -69,4 +69,22 @@ describe('Checkbox (vue)', () => {
     expect(wrapper.classes()).toContain('xui-checkbox');
     expect(wrapper.attributes('style')).toContain('color: red');
   });
+
+  it('checkIcon 插槽替换选中勾选图标', () => {
+    const wrapper = mount(Checkbox, {
+      props: { value: true },
+      slots: { checkIcon: '<i class="my-check-x">v</i>' },
+    });
+    expect(wrapper.find('.xui-checkbox__box .my-check-x').exists()).toBe(true);
+    expect(wrapper.find('.xui-checkbox__box svg').exists()).toBe(false);
+  });
+
+  it('indeterminateIcon 插槽替换半选图标', () => {
+    const wrapper = mount(Checkbox, {
+      props: { indeterminate: true },
+      slots: { indeterminateIcon: '<i class="my-minus-x">-</i>' },
+    });
+    expect(wrapper.find('.xui-checkbox__box .my-minus-x').exists()).toBe(true);
+    expect(wrapper.find('.xui-checkbox__box svg').exists()).toBe(false);
+  });
 });

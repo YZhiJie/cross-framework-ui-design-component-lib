@@ -56,6 +56,8 @@ export type ModalSlots = {
   title: Record<string, never>;
   /** 底部操作区 */
   footer: Record<string, never>;
+  /** 自定义关闭图标（替换右上角内置 close，内容为任意节点） */
+  closeIcon: Record<string, never>;
 };
 
 /** Modal 状态快照（由逻辑层暴露） */

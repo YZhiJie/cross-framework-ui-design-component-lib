@@ -4,10 +4,14 @@ import BasicVue from './demos/basic.vue';
 import StateVue from './demos/state.vue';
 import BasicReact from './demos/basic';
 import StateReact from './demos/state';
+import TextVue from './demos/text.vue';
+import TextReact from './demos/text';
 
 import basicVueSource from './demos/basic.vue?raw';
 import stateVueSource from './demos/state.vue?raw';
 import basicReactSource from './demos/basic.tsx?raw';
+import textVueSource from './demos/text.vue?raw';
+import textReactSource from './demos/text.tsx?raw';
 import stateReactSource from './demos/state.tsx?raw';
 
 export const switchMeta: ComponentMeta = {
@@ -20,6 +24,7 @@ export const switchMeta: ComponentMeta = {
     '受控 / 非受控双模式（提供 value 即受控），Vue 端支持 v-model:value',
     'sm / md 两种尺寸',
     'disabled 禁用、loading 加载态（加载中切换被忽略，滑块显示 Spinner）',
+    'checkedText / uncheckedText 双态文本：显示在轨道内滑块对侧，超长自动截断（title 提示）',
     '通过 ref 暴露 focus() 命令式聚焦',
   ],
   scenarios: ['通知开关、功能启停、协议同意等布尔设置的即时切换场景。'],
@@ -42,6 +47,15 @@ export const switchMeta: ComponentMeta = {
       vueSource: stateVueSource,
       reactSource: stateReactSource,
     },
+    {
+      id: 'text',
+      title: '双态文本',
+      description: 'checkedText / uncheckedText 显示在轨道内；不传保持纯开关模式。',
+      vueComponent: TextVue,
+      reactComponent: TextReact,
+      vueSource: textVueSource,
+      reactSource: textReactSource,
+    },
   ],
   api: {
     props: [
@@ -50,6 +64,18 @@ export const switchMeta: ComponentMeta = {
       { name: 'size', type: `'sm' | 'md'`, default: `'md'`, description: '尺寸' },
       { name: 'disabled', type: 'boolean', default: 'false', description: '禁用' },
       { name: 'loading', type: 'boolean', default: 'false', description: '加载中（切换被忽略）' },
+      {
+        name: 'checkedText',
+        type: 'string',
+        default: '—',
+        description: '开启态文本（轨道内滑块左侧；空串视为未提供；超长截断 + title）',
+      },
+      {
+        name: 'uncheckedText',
+        type: 'string',
+        default: '—',
+        description: '关闭态文本（轨道内滑块右侧；空串视为未提供；超长截断 + title）',
+      },
       {
         name: 'onChange',
         type: '(value: boolean) => void',
@@ -68,11 +94,18 @@ export const switchMeta: ComponentMeta = {
       { vue: 'change', react: 'onChange', payload: 'boolean', description: '切换后的选中值' },
       { vue: 'update:value', react: '—', payload: 'boolean', description: 'v-model:value 回写' },
     ],
-    slots: [],
+    slots: [
+      {
+        vue: 'loadingIcon',
+        react: 'renderLoadingIcon',
+        description: '自定义加载图标（替换内置 Spinner）',
+      },
+    ],
   },
   notes: [
     '受控模式下组件不自改状态，仅通过 change / update:value 回调通知外部同步。',
     'loading 为 true 时点击切换被忽略，但不禁用样式，适合"切换中等待异步结果"场景。',
+    '双态文本对读屏隐藏（状态由 role="switch" + aria-checked 传达），仅提供 checkedText 时关闭态无文本节点；带文本时轨道自动加宽（md 56px / sm 44px）。',
   ],
   a11y: [
     '渲染为 role="switch" 的按钮，携带 aria-checked；禁用时携带 disabled，支持空格 / 回车切换。',

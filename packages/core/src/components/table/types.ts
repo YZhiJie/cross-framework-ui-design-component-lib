@@ -92,6 +92,8 @@ export type TableEvents = {
 export type TableSlots = {
   /** 空数据内容（Vue #empty ↔ React renderEmpty 回调） */
   empty: Record<string, never>;
+  /** 自定义排序图标（作用域参数 order 为 'asc' | 'desc'，替换内置 arrow-up/arrow-down） */
+  sortIcon: { order: 'asc' | 'desc' };
 };
 
 /** Table 状态快照（由逻辑层暴露） */

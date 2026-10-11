@@ -80,6 +80,34 @@ describe('DatePicker (react)', () => {
     expect(container.querySelector('.xui-date-picker__value')).toBeNull();
   });
 
+  it('自定义图标回调：clear / calendar / prev / next 替换内置 svg', () => {
+    // clear 与 calendar 互斥（clearable 且有值时显示 clear），分两次渲染断言
+    const { container } = render(
+      <DatePicker
+        defaultValue="2026-10-11"
+        clearable
+        renderClearIcon={() => <i className="custom-clear" />}
+        renderPrevIcon={() => <i className="custom-prev" />}
+        renderNextIcon={() => <i className="custom-next" />}
+      />,
+    );
+    expect(container.querySelector('.xui-date-picker__clear .custom-clear')).not.toBeNull();
+    expect(container.querySelector('.xui-date-picker__clear svg')).toBeNull();
+
+    const { container: c2 } = render(
+      <DatePicker renderCalendarIcon={() => <i className="custom-calendar" />} />,
+    );
+    expect(c2.querySelector('.xui-date-picker__icon .custom-calendar')).not.toBeNull();
+    expect(c2.querySelector('.xui-date-picker__icon svg')).toBeNull();
+
+    fireEvent.click(container.querySelector('.xui-date-picker__trigger')!);
+    const navs = container.querySelectorAll('.xui-date-picker__nav');
+    expect(navs[0].querySelector('.custom-prev')).not.toBeNull();
+    expect(navs[1].querySelector('.custom-next')).not.toBeNull();
+    expect(navs[0].querySelector('svg')).toBeNull();
+    expect(navs[1].querySelector('svg')).toBeNull();
+  });
+
   it('受控模式：value 变更驱动显示，选择仅回调', () => {
     const onChange = vi.fn();
     const { container, rerender } = render(<DatePicker value="2026-10-11" onChange={onChange} />);

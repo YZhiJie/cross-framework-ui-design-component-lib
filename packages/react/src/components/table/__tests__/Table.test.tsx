@@ -70,6 +70,21 @@ describe('Table (react)', () => {
     ).not.toBeNull();
   });
 
+  it('renderSortIcon 按 asc / desc 分别调用，不渲染内置 svg', () => {
+    const renderSortIcon = vi.fn((ctx: { order: 'asc' | 'desc' }) => (
+      <i className={`custom-sort-${ctx.order}`} />
+    ));
+    const { container } = render(
+      <Table columns={columns} dataSource={rows} renderSortIcon={renderSortIcon} />,
+    );
+    expect(renderSortIcon).toHaveBeenCalledWith({ order: 'asc' });
+    expect(renderSortIcon).toHaveBeenCalledWith({ order: 'desc' });
+    const icons = container.querySelector('.xui-table__sort-icons')!;
+    expect(icons.querySelector('.custom-sort-asc')).not.toBeNull();
+    expect(icons.querySelector('.custom-sort-desc')).not.toBeNull();
+    expect(icons.querySelector('svg')).toBeNull();
+  });
+
   it('render 回调覆盖单元格显示', () => {
     const withRender: TableColumn[] = [
       { key: 'name', title: '姓名' },

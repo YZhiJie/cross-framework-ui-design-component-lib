@@ -9,7 +9,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { TableColumn, TableProps, TableRow } from '@xui/core';
 import {
   createTableLogic,
@@ -26,6 +26,8 @@ import { cn } from '../../utils/cn';
 export type TableComponentProps = TableProps & {
   /** 空数据内容渲染回调（对应 Vue 具名插槽 #empty） */
   renderEmpty?: () => React.ReactNode;
+  /** 自定义排序图标（asc / desc 各调用一次，默认渲染内联 SVG） */
+  renderSortIcon?: (ctx: { order: 'asc' | 'desc' }) => ReactNode;
 };
 
 const cellStyle = (column: TableColumn): CSSProperties | undefined => {
@@ -60,6 +62,7 @@ export function Table(props: TableComponentProps) {
     onSortChange,
     onRowClick,
     renderEmpty,
+    renderSortIcon,
   } = props;
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
@@ -194,34 +197,47 @@ export function Table(props: TableComponentProps) {
                   >
                     {column.title}
                     <span className="xui-table__sort-icons" aria-hidden="true">
-                      <svg
-                        viewBox="0 0 24 24"
-                        width="10"
-                        height="10"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className={cn({
-                          'is-active': state.sortKey === column.key && state.sortOrder === 'asc',
-                        })}
-                        dangerouslySetInnerHTML={{ __html: icons['arrow-up'] }}
-                      />
-                      <svg
-                        viewBox="0 0 24 24"
-                        width="10"
-                        height="10"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className={cn({
-                          'is-active': state.sortKey === column.key && state.sortOrder === 'desc',
-                        })}
-                        dangerouslySetInnerHTML={{ __html: icons['arrow-down'] }}
-                      />
+                      {renderSortIcon ? (
+                        <>
+                          {renderSortIcon({ order: 'asc' })}
+                          {renderSortIcon({ order: 'desc' })}
+                        </>
+                      ) : (
+                        <>
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="10"
+                            height="10"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                            className={cn({
+                              'is-active':
+                                state.sortKey === column.key && state.sortOrder === 'asc',
+                            })}
+                            dangerouslySetInnerHTML={{ __html: icons['arrow-up'] }}
+                          />
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="10"
+                            height="10"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                            className={cn({
+                              'is-active':
+                                state.sortKey === column.key && state.sortOrder === 'desc',
+                            })}
+                            dangerouslySetInnerHTML={{ __html: icons['arrow-down'] }}
+                          />
+                        </>
+                      )}
                     </span>
                   </button>
                 ) : (

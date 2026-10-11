@@ -71,7 +71,11 @@ export const checkboxMeta: ComponentMeta = {
       { vue: 'change', react: 'onChange', payload: 'value: boolean', description: '选中状态变更' },
       { vue: 'update:value', react: '—', payload: 'boolean', description: 'v-model:value 回写' },
     ],
-    slots: [{ vue: 'default', react: 'children', description: '标签内容' }],
+    slots: [
+      { vue: 'default', react: 'children', description: '标签内容' },
+      { vue: 'checkIcon', react: 'renderCheckIcon', description: '自定义选中勾选图标' },
+      { vue: 'indeterminateIcon', react: 'renderIndeterminateIcon', description: '自定义半选图标' },
+    ],
   },
   notes: [
     '半选（indeterminate）仅是视觉状态，表示"部分选中"；点击后半选消除并切换为全选。',

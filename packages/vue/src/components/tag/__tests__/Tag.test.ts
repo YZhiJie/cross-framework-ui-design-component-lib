@@ -45,4 +45,13 @@ describe('Tag (vue)', () => {
     expect(wrapper.classes()).toContain('my-x');
     expect(wrapper.attributes('style')).toContain('color: red');
   });
+
+  it('closeIcon 插槽替换内置关闭图标', () => {
+    const wrapper = mount(Tag, {
+      props: { closable: true },
+      slots: { closeIcon: '<i class="my-close-x">x</i>' },
+    });
+    expect(wrapper.find('.xui-tag__close .my-close-x').exists()).toBe(true);
+    expect(wrapper.find('.xui-tag__close svg').exists()).toBe(false);
+  });
 });

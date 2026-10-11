@@ -44,7 +44,7 @@ const TYPE_ICONS: Record<MessageType, string> = {
         stroke-linecap="round"
         stroke-linejoin="round"
         aria-hidden="true"
-        v-html="TYPE_ICONS[item.type]"
+        v-html="item.icon ?? TYPE_ICONS[item.type]"
       />
       <span class="xui-message__content">{{ item.content }}</span>
       <button

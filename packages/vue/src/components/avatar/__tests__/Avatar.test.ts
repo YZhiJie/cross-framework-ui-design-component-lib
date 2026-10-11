@@ -57,4 +57,10 @@ describe('Avatar (vue)', () => {
     expect(wrapper.classes()).toContain('my-x');
     expect(wrapper.attributes('style')).toContain('color: red');
   });
+
+  it('icon 插槽替换占位图标', () => {
+    const wrapper = mount(Avatar, { slots: { icon: '<i class="my-avatar-x">U</i>' } });
+    expect(wrapper.find('.my-avatar-x').exists()).toBe(true);
+    expect(wrapper.find('svg.xui-avatar__icon').exists()).toBe(false);
+  });
 });

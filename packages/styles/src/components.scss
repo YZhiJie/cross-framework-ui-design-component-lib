@@ -1890,6 +1890,7 @@
 }
 
 .xui-switch__core {
+  position: relative;
   display: inline-flex;
   align-items: center;
   box-sizing: border-box;
@@ -1927,6 +1928,11 @@
   height: 12px;
 }
 
+/* 带文本时轨道加宽：md 40→56px（与 --sm 同为 (0,2,0)，按特异性升序置于 is-checked 之前） */
+.xui-switch--has-text .xui-switch__core {
+  width: 56px;
+}
+
 .xui-switch.is-checked .xui-switch__core {
   background-color: var(--xui-color-primary, #4f46e5);
 }
@@ -1939,6 +1945,55 @@
    若排在前面，sm 开关会误用 md 的 20px 位移导致滑块溢出轨道右边缘 */
 .xui-switch--sm.is-checked .xui-switch__thumb {
   transform: translateX(12px);
+}
+
+/* 带文本模式（checkedText / uncheckedText）：文本绝对定位在滑块对侧。
+   用 block 而非 inline-flex——text-overflow: ellipsis 在 flex 容器上不生效（文本为匿名 flex item） */
+.xui-switch__text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  overflow: hidden;
+  max-width: 22px;
+  font-size: 12px;
+  line-height: 1;
+  color: #fff;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 开启态文本显示在滑块左侧、关闭态显示在滑块右侧（与滑块位置互补） */
+.xui-switch__text--checked {
+  left: 8px;
+}
+
+.xui-switch__text--unchecked {
+  right: 8px;
+}
+
+/* sm 轨道更短，文本可用宽度相应收窄 */
+.xui-switch--sm .xui-switch__text {
+  max-width: 14px;
+}
+
+/* 带文本选中位移：md = 56 - 2×2(padding) - 16(thumb) = 36px；
+   与 is-checked(20px) 特异性相同(0,3,0)，必须置于其后 */
+
+.xui-switch--has-text.is-checked .xui-switch__thumb {
+  transform: translateX(36px);
+}
+
+/* sm 带文本：轨道 44px，位移 = 44 - 2×2(padding) - 12(thumb) = 28px；
+   与 --sm.is-checked / --has-text.is-checked 特异性相同(0,3,0)，必须置于最后 */
+.xui-switch--sm.xui-switch--has-text .xui-switch__core {
+  width: 44px;
+}
+
+.xui-switch--sm.xui-switch--has-text.is-checked .xui-switch__thumb {
+  transform: translateX(28px);
 }
 
 .xui-switch:focus-visible .xui-switch__core {

@@ -109,4 +109,18 @@ describe('InputNumber (vue)', () => {
     expect(wrapper.find('.xui-input-number').classes()).toContain('my-x');
     expect(wrapper.find('.xui-input-number').attributes('style')).toContain('color: red');
   });
+
+  it('upIcon 插槽替换步进递增图标', () => {
+    const wrapper = mount(InputNumber, { slots: { upIcon: '<i class="my-up-x">u</i>' } });
+    const up = wrapper.findAll('.xui-input-number__btn')[0];
+    expect(up.find('.my-up-x').exists()).toBe(true);
+    expect(up.find('svg').exists()).toBe(false);
+  });
+
+  it('downIcon 插槽替换步进递减图标', () => {
+    const wrapper = mount(InputNumber, { slots: { downIcon: '<i class="my-down-x">d</i>' } });
+    const down = wrapper.findAll('.xui-input-number__btn')[1];
+    expect(down.find('.my-down-x').exists()).toBe(true);
+    expect(down.find('svg').exists()).toBe(false);
+  });
 });

@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { PaginationProps } from '@xui/core';
 import { createPageItems, createPaginationLogic } from '@xui/shared';
 import type { PageItem, PaginationLogicInstance } from '@xui/shared';
@@ -14,8 +14,13 @@ import { icons } from '@xui/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 
-/** Pagination 组件 Props（契约 Props 原样透传） */
-export type PaginationComponentProps = PaginationProps;
+/** Pagination 组件 Props（契约 Props 基础上扩展 React 专属属性） */
+export type PaginationComponentProps = PaginationProps & {
+  /** 自定义上一页图标（默认渲染内联 SVG） */
+  renderPrevIcon?: () => ReactNode;
+  /** 自定义下一页图标（默认渲染内联 SVG） */
+  renderNextIcon?: () => ReactNode;
+};
 
 const isNumberItem = (item: PageItem): item is number => typeof item === 'number';
 
@@ -29,6 +34,8 @@ export function Pagination(props: PaginationComponentProps) {
     className,
     style,
     onChange,
+    renderPrevIcon,
+    renderNextIcon,
   } = props;
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
@@ -72,18 +79,22 @@ export function Pagination(props: PaginationComponentProps) {
         aria-label="上一页"
         onClick={() => logic.prev()}
       >
-        <svg
-          viewBox="0 0 24 24"
-          width="14"
-          height="14"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-          dangerouslySetInnerHTML={{ __html: icons['arrow-left'] }}
-        />
+        {renderPrevIcon ? (
+          renderPrevIcon()
+        ) : (
+          <svg
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            dangerouslySetInnerHTML={{ __html: icons['arrow-left'] }}
+          />
+        )}
       </button>
       {pageItems.map((item, index) =>
         isNumberItem(item) ? (
@@ -110,18 +121,22 @@ export function Pagination(props: PaginationComponentProps) {
         aria-label="下一页"
         onClick={() => logic.next()}
       >
-        <svg
-          viewBox="0 0 24 24"
-          width="14"
-          height="14"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-          dangerouslySetInnerHTML={{ __html: icons['arrow-right'] }}
-        />
+        {renderNextIcon ? (
+          renderNextIcon()
+        ) : (
+          <svg
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            dangerouslySetInnerHTML={{ __html: icons['arrow-right'] }}
+          />
+        )}
       </button>
     </nav>
   );

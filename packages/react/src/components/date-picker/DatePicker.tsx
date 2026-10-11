@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useId, useRef } from 'react';
-import type { CSSProperties, KeyboardEvent } from 'react';
+import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
 import type { DatePickerProps } from '@xui/core';
 import { createDatePickerLogic, DATE_WEEKDAY_LABELS, getMonthMatrix } from '@xui/shared';
 import type { DatePickerLogicInstance } from '@xui/shared';
@@ -15,8 +15,17 @@ import { icons } from '@xui/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 
-/** DatePicker 组件 Props（契约 Props 原样透传） */
-export type DatePickerComponentProps = DatePickerProps;
+/** DatePicker 组件 Props（契约 Props 基础上扩展 React 专属属性） */
+export type DatePickerComponentProps = DatePickerProps & {
+  /** 自定义清除图标（默认渲染内联 SVG） */
+  renderClearIcon?: () => ReactNode;
+  /** 自定义日历图标（默认渲染内联 SVG） */
+  renderCalendarIcon?: () => ReactNode;
+  /** 自定义上一月图标（默认渲染内联 SVG） */
+  renderPrevIcon?: () => ReactNode;
+  /** 自定义下一月图标（默认渲染内联 SVG） */
+  renderNextIcon?: () => ReactNode;
+};
 
 export function DatePicker(props: DatePickerComponentProps) {
   const {
@@ -29,6 +38,10 @@ export function DatePicker(props: DatePickerComponentProps) {
     style,
     onChange,
     onClear,
+    renderClearIcon,
+    renderCalendarIcon,
+    renderPrevIcon,
+    renderNextIcon,
   } = props;
 
   const rootRef = useRef<HTMLDivElement>(null);
@@ -124,31 +137,40 @@ export function DatePicker(props: DatePickerComponentProps) {
               logic.clear();
             }}
           >
-            <svg
-              viewBox="0 0 24 24"
-              width="14"
-              height="14"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              aria-hidden="true"
-              dangerouslySetInnerHTML={{ __html: icons.clear }}
-            />
+            {renderClearIcon ? (
+              renderClearIcon()
+            ) : (
+              <svg
+                viewBox="0 0 24 24"
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                aria-hidden="true"
+                dangerouslySetInnerHTML={{ __html: icons.clear }}
+              />
+            )}
           </span>
         ) : (
           <span className="xui-date-picker__icon" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              width="14"
-              height="14"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              dangerouslySetInnerHTML={{ __html: icons.calendar }}
-            />
+            {renderCalendarIcon ? (
+              renderCalendarIcon()
+            ) : (
+              <svg
+                viewBox="0 0 24 24"
+                width="14"
+                height="14"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                dangerouslySetInnerHTML={{ __html: icons.calendar }}
+              />
+            )}
           </span>
         )}
       </div>
@@ -161,18 +183,22 @@ export function DatePicker(props: DatePickerComponentProps) {
               aria-label="上个月"
               onClick={() => logic.prevMonth()}
             >
-              <svg
-                viewBox="0 0 24 24"
-                width="14"
-                height="14"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-                dangerouslySetInnerHTML={{ __html: icons['arrow-left'] }}
-              />
+              {renderPrevIcon ? (
+                renderPrevIcon()
+              ) : (
+                <svg
+                  viewBox="0 0 24 24"
+                  width="14"
+                  height="14"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  dangerouslySetInnerHTML={{ __html: icons['arrow-left'] }}
+                />
+              )}
             </button>
             <span className="xui-date-picker__title">
               {state.viewYear} 年 {String(state.viewMonth).padStart(2, '0')} 月
@@ -183,18 +209,22 @@ export function DatePicker(props: DatePickerComponentProps) {
               aria-label="下个月"
               onClick={() => logic.nextMonth()}
             >
-              <svg
-                viewBox="0 0 24 24"
-                width="14"
-                height="14"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-                dangerouslySetInnerHTML={{ __html: icons['arrow-right'] }}
-              />
+              {renderNextIcon ? (
+                renderNextIcon()
+              ) : (
+                <svg
+                  viewBox="0 0 24 24"
+                  width="14"
+                  height="14"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  dangerouslySetInnerHTML={{ __html: icons['arrow-right'] }}
+                />
+              )}
             </button>
           </div>
           <div className="xui-date-picker__weekdays" aria-hidden="true">

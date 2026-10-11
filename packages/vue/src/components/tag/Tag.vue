@@ -50,16 +50,19 @@ const handleClose = () => {
       aria-label="close"
       @click="handleClose"
     >
-      <svg
-        viewBox="0 0 24 24"
-        width="12"
-        height="12"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        v-html="icons.close"
-      />
+      <slot name="closeIcon">
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          width="12"
+          height="12"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          v-html="icons.close"
+        />
+      </slot>
     </button>
   </span>
 </template>

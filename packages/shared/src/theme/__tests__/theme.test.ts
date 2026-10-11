@@ -1,9 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getTheme, setTheme, subscribeTheme, toggleTheme } from '../theme';
+import {
+  clearThemeTokens,
+  getTheme,
+  setTheme,
+  setThemeTokens,
+  subscribeTheme,
+  toggleTheme,
+} from '../theme';
 
-/** 最小 <html> document 桩：记录 data-theme 属性变更 */
+/** 最小 <html> document 桩：记录 data-theme 属性变更与 style 内联变量 */
 function stubDocument() {
   const attrs = new Map<string, string>();
+  const styleVars = new Map<string, string>();
   const root = {
     getAttribute: (name: string) => attrs.get(name) ?? null,
     setAttribute: (name: string, value: string) => {
@@ -13,9 +21,17 @@ function stubDocument() {
       attrs.delete(name);
     },
     hasAttribute: (name: string) => attrs.has(name),
+    style: {
+      setProperty: (name: string, value: string) => {
+        styleVars.set(name, value);
+      },
+      removeProperty: (name: string) => {
+        styleVars.delete(name);
+      },
+    },
   };
   vi.stubGlobal('document', { documentElement: root });
-  return attrs;
+  return { attrs, styleVars };
 }
 
 beforeEach(() => {
@@ -96,5 +112,54 @@ describe('theme SSR 降级（无 document）', () => {
     expect(getTheme()).toBe('light');
     expect(() => setTheme('dark')).not.toThrow();
     expect(toggleTheme()).toBe('light');
+  });
+
+  describe('setThemeTokens / clearThemeTokens', () => {
+    it('写入 -- 开头的合法变量到 html style', () => {
+      const { styleVars } = stubDocument();
+      setThemeTokens({ '--xui-color-primary': '#e11d48', '--xui-radius-md': '8px' });
+      expect(styleVars.get('--xui-color-primary')).toBe('#e11d48');
+      expect(styleVars.get('--xui-radius-md')).toBe('8px');
+    });
+
+    it('非法条目静默忽略（非 -- 前缀 / 非字符串值）', () => {
+      const { styleVars } = stubDocument();
+      setThemeTokens({
+        color: '#000',
+        '--ok': '#fff',
+        '--bad': 123 as unknown as string,
+      });
+      expect(styleVars.has('color')).toBe(false);
+      expect(styleVars.get('--ok')).toBe('#fff');
+      expect(styleVars.has('--bad')).toBe(false);
+    });
+
+    it('重复调用按合并语义覆盖，不清除未提及 token', () => {
+      const { styleVars } = stubDocument();
+      setThemeTokens({ '--a': '1', '--b': '2' });
+      setThemeTokens({ '--a': '3' });
+      expect(styleVars.get('--a')).toBe('3');
+      expect(styleVars.get('--b')).toBe('2');
+    });
+
+    it('clearThemeTokens 精确清除已写入 token，不影响其他变量', () => {
+      const { styleVars } = stubDocument();
+      setThemeTokens({ '--a': '1', '--b': '2' });
+      // 模拟应用自身变量（非 setThemeTokens 写入）
+      styleVars.set('--app-own', 'x');
+      clearThemeTokens();
+      expect(styleVars.has('--a')).toBe(false);
+      expect(styleVars.has('--b')).toBe(false);
+      expect(styleVars.get('--app-own')).toBe('x');
+      // 清除后可重新写入
+      setThemeTokens({ '--a': '9' });
+      expect(styleVars.get('--a')).toBe('9');
+    });
+
+    it('SSR 无 DOM 时安全降级不抛错', () => {
+      vi.stubGlobal('document', undefined);
+      expect(() => setThemeTokens({ '--a': '1' })).not.toThrow();
+      expect(() => clearThemeTokens()).not.toThrow();
+    });
   });
 });

@@ -220,6 +220,17 @@ describe('Modal 组件', () => {
       expect(screen.queryByRole('button', { name: '取消' })).not.toBeInTheDocument();
       expect(screen.getByText('自定义底部')).toBeInTheDocument();
     });
+
+    it('renderCloseIcon 自定义关闭图标，不渲染内置 svg', () => {
+      render(
+        <Modal visible renderCloseIcon={() => <i data-testid="custom-close">关</i>}>
+          内容
+        </Modal>,
+      );
+      const closeBtn = screen.getByRole('button', { name: 'close' });
+      expect(closeBtn.querySelector('[data-testid="custom-close"]')).toBeInTheDocument();
+      expect(closeBtn.querySelector('svg')).toBeNull();
+    });
   });
 
   describe('ref 命令式 API', () => {

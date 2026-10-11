@@ -147,6 +147,11 @@ export const tableMeta: ComponentMeta = {
       },
     ],
     slots: [
+      {
+        vue: 'sortIcon',
+        react: 'renderSortIcon',
+        description: "自定义排序图标（作用域参数 order: 'asc' | 'desc'）",
+      },
       { vue: 'empty', react: 'renderEmpty', description: '空数据内容（覆盖默认"暂无数据"）' },
     ],
     types: [

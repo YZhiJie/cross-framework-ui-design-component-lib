@@ -18,6 +18,10 @@ export type SwitchProps = {
   disabled?: boolean;
   /** 加载状态（切换被忽略） */
   loading?: boolean;
+  /** 开启态展示文本（显示在轨道内滑块左侧，超长自动截断；不传保持纯开关模式） */
+  checkedText?: string;
+  /** 关闭态展示文本（显示在轨道内滑块右侧，超长自动截断；不传保持纯开关模式） */
+  uncheckedText?: string;
   /** 自定义类名，追加到组件根元素 */
   className?: string;
   /** 自定义内联样式，合并到组件根元素 */
@@ -32,7 +36,10 @@ export type SwitchEvents = {
 };
 
 /** Switch 插槽契约（无插槽） */
-export type SwitchSlots = Record<string, never>;
+export type SwitchSlots = {
+  /** 自定义加载图标（替换内置 loading spinner，内容为任意节点） */
+  loadingIcon: Record<string, never>;
+};
 
 /** Switch 状态快照（由逻辑层暴露） */
 export type SwitchState = {

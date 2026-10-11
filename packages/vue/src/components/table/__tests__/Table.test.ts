@@ -245,4 +245,17 @@ describe('Table (vue)', () => {
       .map((row) => row.find('td').text());
     expect(texts).toContain('行100');
   });
+
+  it('sortIcon 作用域插槽替换排序图标（order: asc / desc）', () => {
+    const wrapper = mount(Table, {
+      props: { columns, dataSource: rows },
+      slots: {
+        sortIcon: `<template #sortIcon="{ order }"><i :class="'my-sort-' + order">s</i></template>`,
+      },
+    });
+    const sortIcons = wrapper.find('.xui-table__sort-icons');
+    expect(sortIcons.find('.my-sort-asc').exists()).toBe(true);
+    expect(sortIcons.find('.my-sort-desc').exists()).toBe(true);
+    expect(sortIcons.findAll('svg')).toHaveLength(0);
+  });
 });

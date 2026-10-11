@@ -70,4 +70,24 @@ describe('Pagination (vue)', () => {
     expect(wrapper.classes()).toContain('my-x');
     expect(wrapper.attributes('style')).toContain('color: red');
   });
+
+  it('prevIcon 插槽替换上一页图标', () => {
+    const wrapper = mount(Pagination, {
+      props: { total: 95 },
+      slots: { prevIcon: '<i class="my-prev-x">p</i>' },
+    });
+    const prev = wrapper.findAll('.xui-pagination__nav')[0];
+    expect(prev.find('.my-prev-x').exists()).toBe(true);
+    expect(prev.find('svg').exists()).toBe(false);
+  });
+
+  it('nextIcon 插槽替换下一页图标', () => {
+    const wrapper = mount(Pagination, {
+      props: { total: 95 },
+      slots: { nextIcon: '<i class="my-next-x">n</i>' },
+    });
+    const next = wrapper.findAll('.xui-pagination__nav')[1];
+    expect(next.find('.my-next-x').exists()).toBe(true);
+    expect(next.find('svg').exists()).toBe(false);
+  });
 });

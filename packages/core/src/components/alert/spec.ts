@@ -35,7 +35,8 @@ export const alertSpec = {
   slots: {
     default: { description: '描述内容（覆盖 description prop）' },
     title: { description: '标题（覆盖 title prop）' },
-    icon: { description: '类型图标（覆盖默认图标）' },
+    icon: { description: '类型图标（覆盖默认图标，showIcon 开启时生效）' },
+    closeIcon: { description: '自定义关闭图标' },
   },
   useLogic: (props: AlertProps) =>
     createAlertLogic({

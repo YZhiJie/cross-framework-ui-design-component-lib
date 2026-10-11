@@ -25,6 +25,8 @@ export type ModalComponentProps = ModalProps & {
   renderTitle?: () => ReactNode;
   /** 自定义底部操作区 */
   renderFooter?: () => ReactNode;
+  /** 自定义关闭图标（默认渲染内联 SVG） */
+  renderCloseIcon?: () => ReactNode;
   /** React 19 ref-as-prop */
   ref?: Ref<ModalRef>;
 };
@@ -56,6 +58,7 @@ export function Modal(props: ModalComponentProps) {
     children,
     renderTitle,
     renderFooter,
+    renderCloseIcon,
     ref,
   } = props;
 
@@ -180,7 +183,7 @@ export function Modal(props: ModalComponentProps) {
               onClick={handleClose}
               aria-label="close"
             >
-              <CloseIcon />
+              {renderCloseIcon ? renderCloseIcon() : <CloseIcon />}
             </button>
           )}
         </div>
@@ -222,6 +225,7 @@ function CloseIcon() {
       stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
+      aria-hidden="true"
       dangerouslySetInnerHTML={{ __html: icons.close }}
     />
   );

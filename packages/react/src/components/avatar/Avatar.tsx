@@ -19,10 +19,22 @@ import { cn } from '../../utils/cn';
 export type AvatarComponentProps = AvatarProps & {
   /** 自定义内容（文案 / 图标；优先级低于成功的图片，高于默认图标） */
   children?: ReactNode;
+  /** 自定义回退图标（加载失败 / 无 src 且无 children 时替代内置图标） */
+  renderIcon?: () => ReactNode;
 };
 
 export function Avatar(props: AvatarComponentProps) {
-  const { size = 'md', shape = 'circle', src, alt, className, style, onError, children } = props;
+  const {
+    size = 'md',
+    shape = 'circle',
+    src,
+    alt,
+    className,
+    style,
+    onError,
+    renderIcon,
+    children,
+  } = props;
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
   const callbacksRef = useRef({ onError });
@@ -57,6 +69,8 @@ export function Avatar(props: AvatarComponentProps) {
         />
       ) : children !== undefined && children !== null ? (
         <span className="xui-avatar__inner">{children}</span>
+      ) : renderIcon ? (
+        renderIcon()
       ) : (
         <AvatarIcon />
       )}

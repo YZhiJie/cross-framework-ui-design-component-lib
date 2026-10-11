@@ -18,6 +18,8 @@ import { cn } from '../../utils/cn';
 export type TagComponentProps = TagProps & {
   /** 标签内容 */
   children?: ReactNode;
+  /** 自定义关闭图标（默认渲染内联 SVG） */
+  renderCloseIcon?: () => ReactNode;
 };
 
 export function Tag(props: TagComponentProps) {
@@ -28,6 +30,7 @@ export function Tag(props: TagComponentProps) {
     className,
     style,
     onClose,
+    renderCloseIcon,
     children,
   } = props;
 
@@ -66,16 +69,21 @@ export function Tag(props: TagComponentProps) {
           aria-label="close"
           onClick={() => logic.handleClose()}
         >
-          <svg
-            viewBox="0 0 24 24"
-            width="12"
-            height="12"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            dangerouslySetInnerHTML={{ __html: icons.close }}
-          />
+          {renderCloseIcon ? (
+            renderCloseIcon()
+          ) : (
+            <svg
+              viewBox="0 0 24 24"
+              width="12"
+              height="12"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              aria-hidden="true"
+              dangerouslySetInnerHTML={{ __html: icons.close }}
+            />
+          )}
         </button>
       )}
     </span>

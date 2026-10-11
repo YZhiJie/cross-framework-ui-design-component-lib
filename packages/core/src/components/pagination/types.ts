@@ -32,7 +32,12 @@ export type PaginationEvents = {
 };
 
 /** Pagination 插槽契约 */
-export type PaginationSlots = Record<string, never>;
+export type PaginationSlots = {
+  /** 自定义上一页图标（替换内置 arrow-left，内容为任意节点） */
+  prevIcon: Record<string, never>;
+  /** 自定义下一页图标（替换内置 arrow-right，内容为任意节点） */
+  nextIcon: Record<string, never>;
+};
 
 /** Pagination 状态快照（由逻辑层暴露） */
 export type PaginationState = {

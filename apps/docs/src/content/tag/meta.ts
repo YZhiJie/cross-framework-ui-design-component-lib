@@ -74,7 +74,14 @@ export const tagMeta: ComponentMeta = {
     events: [
       { vue: 'close', react: 'onClose', payload: '—', description: '点击关闭按钮、组件隐藏后触发' },
     ],
-    slots: [{ vue: 'default', react: 'children', description: '标签内容' }],
+    slots: [
+      { vue: 'default', react: 'children', description: '标签内容' },
+      {
+        vue: 'closeIcon',
+        react: 'renderCloseIcon',
+        description: '自定义关闭图标（替换内置 close）',
+      },
+    ],
   },
   notes: [
     '点击关闭后组件内部先隐藏再回调；如需"恢复显示"（如重置示例），需重新挂载组件（Vue 用 key、React 重挂载）。',

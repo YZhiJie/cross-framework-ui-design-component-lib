@@ -32,6 +32,7 @@ export const avatarSpec = {
   },
   slots: {
     default: { description: '自定义内容（文案 / 图标）' },
+    icon: { description: '自定义占位图标（无图片/加载失败时）' },
   },
   useLogic: (props: AvatarProps) =>
     createAvatarLogic({

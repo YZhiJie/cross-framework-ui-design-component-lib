@@ -38,7 +38,12 @@ export type InputNumberEvents = {
 };
 
 /** InputNumber 插槽契约（无插槽） */
-export type InputNumberSlots = Record<string, never>;
+export type InputNumberSlots = {
+  /** 自定义步进递增图标（替换内置 arrow-up，内容为任意节点） */
+  upIcon: Record<string, never>;
+  /** 自定义步进递减图标（替换内置 arrow-down，内容为任意节点） */
+  downIcon: Record<string, never>;
+};
 
 /** InputNumber 状态快照（由逻辑层暴露） */
 export type InputNumberState = {

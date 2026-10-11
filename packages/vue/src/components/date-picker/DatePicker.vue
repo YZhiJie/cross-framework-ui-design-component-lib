@@ -121,30 +121,35 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
         aria-label="clear"
         @click.stop="logic.clear()"
       >
-        <svg
-          viewBox="0 0 24 24"
-          width="14"
-          height="14"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          aria-hidden="true"
-          v-html="icons.clear"
-        />
+        <slot name="clearIcon">
+          <svg
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+            v-html="icons.clear"
+          />
+        </slot>
       </span>
       <span v-else class="xui-date-picker__icon" aria-hidden="true">
-        <svg
-          viewBox="0 0 24 24"
-          width="14"
-          height="14"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          v-html="icons.calendar"
-        />
+        <slot name="calendarIcon">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            v-html="icons.calendar"
+          />
+        </slot>
       </span>
     </div>
     <div
@@ -161,18 +166,20 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
           aria-label="上个月"
           @click="logic.prevMonth()"
         >
-          <svg
-            viewBox="0 0 24 24"
-            width="14"
-            height="14"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-            v-html="icons['arrow-left']"
-          />
+          <slot name="prevIcon">
+            <svg
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              v-html="icons['arrow-left']"
+            />
+          </slot>
         </button>
         <span class="xui-date-picker__title">{{ title }}</span>
         <button
@@ -181,18 +188,20 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
           aria-label="下个月"
           @click="logic.nextMonth()"
         >
-          <svg
-            viewBox="0 0 24 24"
-            width="14"
-            height="14"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-            v-html="icons['arrow-right']"
-          />
+          <slot name="nextIcon">
+            <svg
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              v-html="icons['arrow-right']"
+            />
+          </slot>
         </button>
       </div>
       <div class="xui-date-picker__weekdays" aria-hidden="true">

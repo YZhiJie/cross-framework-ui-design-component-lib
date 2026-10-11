@@ -68,6 +68,10 @@ export const paginationMeta: ComponentMeta = {
       { vue: 'change', react: 'onChange', payload: 'page: number', description: '页码变更' },
       { vue: 'update:value', react: '—', payload: 'number', description: 'v-model:value 回写' },
     ],
+    slots: [
+      { vue: 'prevIcon', react: 'renderPrevIcon', description: '自定义上一页图标' },
+      { vue: 'nextIcon', react: 'renderNextIcon', description: '自定义下一页图标' },
+    ],
   },
   notes: [
     '当前页超出总页数时（如 total 变小）会自动 clamp 到有效范围并触发一次 change。',

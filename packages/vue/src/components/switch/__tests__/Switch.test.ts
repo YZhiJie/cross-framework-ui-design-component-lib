@@ -71,4 +71,52 @@ describe('Switch (vue)', () => {
     expect(wrapper.classes()).toContain('xui-switch');
     expect(wrapper.attributes('style')).toContain('color: red');
   });
+
+  it('双态文本：checkedText / uncheckedText 随状态切换渲染', async () => {
+    const wrapper = mount(Switch, {
+      props: { checkedText: '开', uncheckedText: '关' },
+    });
+    expect(wrapper.classes()).toContain('xui-switch--has-text');
+    const textEl = () => wrapper.find('.xui-switch__text');
+    expect(textEl().exists()).toBe(true);
+    expect(textEl().classes()).toContain('xui-switch__text--unchecked');
+    expect(textEl().text()).toBe('关');
+    // 文本对读屏隐藏（状态由 role="switch" + aria-checked 传达）
+    expect(textEl().attributes('aria-hidden')).toBe('true');
+
+    await wrapper.trigger('click');
+    expect(textEl().classes()).toContain('xui-switch__text--checked');
+    expect(textEl().text()).toBe('开');
+  });
+
+  it('双态文本：超长文本提供 title 提示，空串兜底不渲染', () => {
+    const wrapper = mount(Switch, {
+      props: { checkedText: '', uncheckedText: '超长文本超长文本超长文本超长文本' },
+    });
+    // 空串 checkedText 视为未提供，关闭态仍渲染 uncheckedText 并带 title 提示
+    const textEl = wrapper.find('.xui-switch__text');
+    expect(textEl.exists()).toBe(true);
+    expect(textEl.classes()).toContain('xui-switch__text--unchecked');
+    expect(textEl.attributes('title')).toBe('超长文本超长文本超长文本超长文本');
+
+    // 仅提供 checkedText：关闭态无文本节点，切换后渲染
+    const only = mount(Switch, { props: { checkedText: '开启' } });
+    expect(only.classes()).toContain('xui-switch--has-text');
+    expect(only.find('.xui-switch__text').exists()).toBe(false);
+  });
+
+  it('不传双态文本时保持纯开关模式（无文本节点与 has-text 类）', () => {
+    const wrapper = mount(Switch);
+    expect(wrapper.classes()).not.toContain('xui-switch--has-text');
+    expect(wrapper.find('.xui-switch__text').exists()).toBe(false);
+  });
+
+  it('loadingIcon 插槽替换内置 spinner', () => {
+    const wrapper = mount(Switch, {
+      props: { loading: true },
+      slots: { loadingIcon: '<i class="my-loading-x">L</i>' },
+    });
+    expect(wrapper.find('.xui-switch__thumb .my-loading-x').exists()).toBe(true);
+    expect(wrapper.find('.xui-switch__spinner').exists()).toBe(false);
+  });
 });

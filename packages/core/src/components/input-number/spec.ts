@@ -43,7 +43,10 @@ export const inputNumberSpec = {
       payloadType: 'number | null',
     },
   },
-  slots: {},
+  slots: {
+    upIcon: { description: '自定义步进递增图标' },
+    downIcon: { description: '自定义步进递减图标' },
+  },
   useLogic: (props: InputNumberProps) =>
     createInputNumberLogic({
       value: props.value,

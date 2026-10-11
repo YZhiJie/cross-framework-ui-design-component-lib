@@ -124,4 +124,16 @@ describe('message (react)', () => {
     });
     expect(onClose).toHaveBeenCalledTimes(1);
   });
+
+  it('icon 选项渲染自定义类型图标', () => {
+    act(() => {
+      message.open({ content: '自定义', icon: '<circle cx="1" cy="1" r="1" />' });
+    });
+    const icons = document.querySelectorAll('.xui-message__icon');
+    const last = icons[icons.length - 1] as SVGElement;
+    expect(last.innerHTML).toContain('cx="1" cy="1" r="1"');
+    act(() => {
+      message.closeAll();
+    });
+  });
 });

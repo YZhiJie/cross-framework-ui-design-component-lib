@@ -76,18 +76,20 @@ const isNumber = (item: number | 'ellipsis-prev' | 'ellipsis-next'): item is num
       aria-label="上一页"
       @click="logic.prev()"
     >
-      <svg
-        viewBox="0 0 24 24"
-        width="14"
-        height="14"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-        v-html="icons['arrow-left']"
-      />
+      <slot name="prevIcon">
+        <svg
+          viewBox="0 0 24 24"
+          width="14"
+          height="14"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          v-html="icons['arrow-left']"
+        />
+      </slot>
     </button>
     <template v-for="(item, index) in pageItems" :key="`${item}-${index}`">
       <button
@@ -110,18 +112,20 @@ const isNumber = (item: number | 'ellipsis-prev' | 'ellipsis-next'): item is num
       aria-label="下一页"
       @click="logic.next()"
     >
-      <svg
-        viewBox="0 0 24 24"
-        width="14"
-        height="14"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-        v-html="icons['arrow-right']"
-      />
+      <slot name="nextIcon">
+        <svg
+          viewBox="0 0 24 24"
+          width="14"
+          height="14"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          v-html="icons['arrow-right']"
+        />
+      </slot>
     </button>
   </nav>
 </template>

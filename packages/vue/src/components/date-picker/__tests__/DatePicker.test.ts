@@ -101,4 +101,41 @@ describe('DatePicker (vue)', () => {
     expect(wrapper.classes()).toContain('my-x');
     expect(wrapper.attributes('style')).toContain('color: red');
   });
+
+  it('clearIcon 插槽替换清除图标', () => {
+    const wrapper = mount(DatePicker, {
+      props: { defaultValue: '2026-10-11', clearable: true },
+      slots: { clearIcon: '<i class="my-clear-x">c</i>' },
+    });
+    expect(wrapper.find('.xui-date-picker__clear .my-clear-x').exists()).toBe(true);
+    expect(wrapper.find('.xui-date-picker__clear svg').exists()).toBe(false);
+  });
+
+  it('calendarIcon 插槽替换日历图标', () => {
+    const wrapper = mount(DatePicker, {
+      slots: { calendarIcon: '<i class="my-cal-x">k</i>' },
+    });
+    expect(wrapper.find('.xui-date-picker__icon .my-cal-x').exists()).toBe(true);
+    expect(wrapper.find('.xui-date-picker__icon svg').exists()).toBe(false);
+  });
+
+  it('prevIcon 插槽替换上一月图标', async () => {
+    const wrapper = mount(DatePicker, {
+      slots: { prevIcon: '<i class="my-prev-x">p</i>' },
+    });
+    await wrapper.find('.xui-date-picker__trigger').trigger('click');
+    const prev = wrapper.findAll('.xui-date-picker__nav')[0];
+    expect(prev.find('.my-prev-x').exists()).toBe(true);
+    expect(prev.find('svg').exists()).toBe(false);
+  });
+
+  it('nextIcon 插槽替换下一月图标', async () => {
+    const wrapper = mount(DatePicker, {
+      slots: { nextIcon: '<i class="my-next-x">n</i>' },
+    });
+    await wrapper.find('.xui-date-picker__trigger').trigger('click');
+    const next = wrapper.findAll('.xui-date-picker__nav')[1];
+    expect(next.find('.my-next-x').exists()).toBe(true);
+    expect(next.find('svg').exists()).toBe(false);
+  });
 });

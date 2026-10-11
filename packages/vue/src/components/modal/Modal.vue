@@ -149,16 +149,19 @@ defineExpose({ open, close });
             <span class="xui-modal__title">{{ title }}</span>
           </slot>
           <button v-if="state.closable" class="xui-modal__close" @click="close">
-            <svg
-              viewBox="0 0 24 24"
-              width="16"
-              height="16"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              v-html="icons.close"
-            />
+            <slot name="closeIcon">
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                v-html="icons.close"
+              />
+            </slot>
           </button>
         </div>
         <div class="xui-modal__body">

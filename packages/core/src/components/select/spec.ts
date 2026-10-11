@@ -45,7 +45,10 @@ export const selectSpec = {
     },
     clear: { description: '点击清除图标时触发' },
   },
-  slots: {},
+  slots: {
+    clearIcon: { description: '自定义清除图标' },
+    suffixIcon: { description: '自定义下拉箭头图标' },
+  },
   useLogic: (props: SelectProps) =>
     createSelectLogic({
       value: props.value,

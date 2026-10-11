@@ -132,6 +132,11 @@ export const modalMeta: ComponentMeta = {
       },
     ],
     slots: [
+      {
+        vue: 'closeIcon',
+        react: 'renderCloseIcon',
+        description: '自定义关闭图标（替换右上角内置 close）',
+      },
       { vue: 'default', react: 'children', description: '弹窗内容' },
       { vue: 'title', react: 'renderTitle', description: '标题（覆盖 title prop）' },
       { vue: 'footer', react: 'renderFooter', description: '底部操作区' },

@@ -78,6 +78,11 @@ export const alertMeta: ComponentMeta = {
       { vue: 'close', react: 'onClose', payload: '—', description: '点击关闭按钮、提示隐藏后触发' },
     ],
     slots: [
+      {
+        vue: 'closeIcon',
+        react: 'renderCloseIcon',
+        description: '自定义关闭图标（替换内置 close）',
+      },
       { vue: 'default', react: 'children', description: '描述内容（覆盖 description prop）' },
       { vue: 'title', react: 'renderTitle', description: '标题（覆盖 title prop）' },
       {

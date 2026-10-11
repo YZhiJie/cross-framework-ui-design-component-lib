@@ -34,7 +34,12 @@ export const datePickerSpec = {
     change: { description: '选中日期变更时触发', payloadType: 'string' },
     clear: { description: '点击清除图标时触发' },
   },
-  slots: {},
+  slots: {
+    clearIcon: { description: '自定义清除图标' },
+    calendarIcon: { description: '自定义日历图标' },
+    prevIcon: { description: '自定义上一月图标' },
+    nextIcon: { description: '自定义下一月图标' },
+  },
   useLogic: (props: DatePickerProps) =>
     createDatePickerLogic({
       value: props.value,

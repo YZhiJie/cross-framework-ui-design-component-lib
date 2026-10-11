@@ -58,7 +58,12 @@ export type SelectEvents = {
 };
 
 /** Select 插槽契约 */
-export type SelectSlots = Record<string, never>;
+export type SelectSlots = {
+  /** 自定义清除图标（替换触发器与多选标签的内置 clear 图标，内容为任意节点） */
+  clearIcon: Record<string, never>;
+  /** 自定义下拉箭头图标（替换内置 arrow-down，内容为任意节点） */
+  suffixIcon: Record<string, never>;
+};
 
 /** Select 状态快照（由逻辑层暴露） */
 export type SelectState = {

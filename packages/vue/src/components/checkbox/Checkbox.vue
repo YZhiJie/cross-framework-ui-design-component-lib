@@ -83,30 +83,34 @@ const handleChange = () => {
       @change="handleChange"
     />
     <span class="xui-checkbox__box" aria-hidden="true">
-      <svg
-        v-if="state.indeterminate"
-        class="xui-checkbox__icon"
-        viewBox="0 0 24 24"
-        width="12"
-        height="12"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="3"
-        stroke-linecap="round"
-        v-html="icons.minus"
-      />
-      <svg
-        v-else-if="state.checked"
-        class="xui-checkbox__icon"
-        viewBox="0 0 24 24"
-        width="12"
-        height="12"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="3"
-        stroke-linecap="round"
-        v-html="icons.check"
-      />
+      <slot v-if="state.indeterminate" name="indeterminateIcon">
+        <svg
+          class="xui-checkbox__icon"
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          width="12"
+          height="12"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-linecap="round"
+          v-html="icons.minus"
+        />
+      </slot>
+      <slot v-else-if="state.checked" name="checkIcon">
+        <svg
+          class="xui-checkbox__icon"
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          width="12"
+          height="12"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-linecap="round"
+          v-html="icons.check"
+        />
+      </slot>
     </span>
     <span v-if="$slots.default" class="xui-checkbox__label">
       <slot />

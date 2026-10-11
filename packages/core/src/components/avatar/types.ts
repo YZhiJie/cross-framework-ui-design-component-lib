@@ -39,6 +39,8 @@ export type AvatarEvents = {
 export type AvatarSlots = {
   /** 自定义内容（文案 / 图标；优先级低于成功的图片，高于默认图标） */
   default: Record<string, never>;
+  /** 自定义占位图标（无 src / 加载失败时替换内置 user 图标，内容为任意节点） */
+  icon: Record<string, never>;
 };
 
 /** Avatar 状态快照（由逻辑层暴露） */

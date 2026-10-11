@@ -215,4 +215,24 @@ describe('Select (vue)', () => {
     expect(texts).toContain('选项100');
     wrapper.unmount();
   });
+
+  it('clearIcon 插槽替换触发器清除与多选 tag 删除图标', () => {
+    const wrapper = mount(Select, {
+      props: { options: OPTIONS, multiple: true, defaultValue: ['beijing'], clearable: true },
+      slots: { clearIcon: '<i class="my-clear-x">c</i>' },
+    });
+    expect(wrapper.find('.xui-select__clear .my-clear-x').exists()).toBe(true);
+    expect(wrapper.find('.xui-select__clear svg').exists()).toBe(false);
+    expect(wrapper.find('.xui-select__tag-close .my-clear-x').exists()).toBe(true);
+    expect(wrapper.find('.xui-select__tag-close svg').exists()).toBe(false);
+  });
+
+  it('suffixIcon 插槽替换下拉箭头图标', () => {
+    const wrapper = mount(Select, {
+      props: { options: OPTIONS },
+      slots: { suffixIcon: '<i class="my-arrow-x">v</i>' },
+    });
+    expect(wrapper.find('.xui-select__arrow .my-arrow-x').exists()).toBe(true);
+    expect(wrapper.find('.xui-select__arrow svg').exists()).toBe(false);
+  });
 });

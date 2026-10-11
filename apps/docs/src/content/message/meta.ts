@@ -99,6 +99,7 @@ export const messageMeta: ComponentMeta = {
   content: string;        // 必填
   duration?: number;      // 默认 3000，0 表示不自动关闭
   closable?: boolean;     // 默认 false
+  icon?: string;          // 自定义类型图标（内层 SVG 标记，与 @xui/icons 数据源同构）
   key?: string | number;  // 更新键：同 key 再次 open 原地更新该条
   onClose?: () => void;   // 消息移除回调
 };`,
@@ -120,6 +121,7 @@ export const messageMeta: ComponentMeta = {
     'maxCount 超限时连带移除最早消息的自动关闭定时器；closeAll 同时清空全部定时器。',
     'key 更新：content 必填刷新，type / closable 未传保留原值；duration 以最新值重置计时，onClose 传入时替换旧回调。',
     'onClose 触发时机统一：自动关闭 / 手动关闭 / maxCount 挤出 / closeAll 均触发。',
+    'icon 选项传内层 SVG 标记（不含 <svg> 壳，如 icons.close 的值），渲染时替换按 type 的内置图标。',
   ],
   a11y: [
     '消息容器 aria-live="polite"，新消息出现时读屏播报但不打断当前朗读；关闭按钮携带 aria-label。',

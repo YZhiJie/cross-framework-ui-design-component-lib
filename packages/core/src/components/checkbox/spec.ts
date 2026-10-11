@@ -32,6 +32,8 @@ export const checkboxSpec = {
   },
   slots: {
     default: { description: '标签内容' },
+    checkIcon: { description: '自定义选中勾选图标' },
+    indeterminateIcon: { description: '自定义半选图标' },
   },
   useLogic: (props: CheckboxProps) =>
     createCheckboxLogic({

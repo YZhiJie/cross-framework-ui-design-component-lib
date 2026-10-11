@@ -251,4 +251,19 @@ describe('createMessageManager', () => {
       expect(secondClose).toHaveBeenCalledTimes(1);
     });
   });
+
+  it('icon 自定义图标透传到 MessageItem；不传为 undefined', () => {
+    const logic = createMessageManager();
+    logic.open({ content: '自定义图标', icon: '<circle cx="1" cy="1" r="1" />' });
+    expect(logic.getState().items[0].icon).toBe('<circle cx="1" cy="1" r="1" />');
+
+    logic.open({ content: '默认图标' });
+    expect(logic.getState().items[1].icon).toBeUndefined();
+
+    // 同 key 更新：icon 未传保留旧值，传入时替换
+    logic.open({ content: 'a', key: 'k', icon: '<path d="M1 1" />' });
+    logic.open({ content: 'b', key: 'k' });
+    expect(logic.getState().items[2].icon).toBe('<path d="M1 1" />');
+    logic.closeAll();
+  });
 });

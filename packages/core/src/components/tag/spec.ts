@@ -32,6 +32,7 @@ export const tagSpec = {
   },
   slots: {
     default: { description: '标签内容' },
+    closeIcon: { description: '自定义关闭图标' },
   },
   useLogic: (props: TagProps) =>
     createTagLogic({

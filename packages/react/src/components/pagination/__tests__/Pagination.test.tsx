@@ -70,6 +70,22 @@ describe('Pagination (react)', () => {
     expect(container.querySelectorAll('.xui-pagination__page')).toHaveLength(2);
   });
 
+  it('renderPrevIcon / renderNextIcon 自定义翻页图标，不渲染内置 svg', () => {
+    const { container } = render(
+      <Pagination
+        total={95}
+        renderPrevIcon={() => <i className="custom-prev" />}
+        renderNextIcon={() => <i className="custom-next" />}
+      />,
+    );
+    const buttons = container.querySelectorAll('.xui-pagination__nav');
+    expect(buttons).toHaveLength(2);
+    expect(buttons[0].querySelector('.custom-prev')).not.toBeNull();
+    expect(buttons[1].querySelector('.custom-next')).not.toBeNull();
+    expect(buttons[0].querySelector('svg')).toBeNull();
+    expect(buttons[1].querySelector('svg')).toBeNull();
+  });
+
   it('passes className / style to root element', () => {
     const { container } = render(
       <Pagination total={95} className="my-x" style={{ color: 'red' }} />,

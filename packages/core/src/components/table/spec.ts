@@ -43,6 +43,7 @@ export const tableSpec = {
   },
   slots: {
     empty: { description: '空数据内容', fallback: '暂无数据' },
+    sortIcon: { description: "自定义排序图标（作用域参数 order: 'asc' | 'desc'）" },
   },
   useLogic: (props: TableProps) =>
     createTableLogic({

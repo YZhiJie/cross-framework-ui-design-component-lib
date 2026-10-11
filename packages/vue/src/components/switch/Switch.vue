@@ -73,6 +73,8 @@ const handleToggle = () => {
         'is-checked': state.checked,
         'is-disabled': state.disabled,
         'is-loading': state.loading,
+        // 双态文本：任一文本提供即进入带文本模式（轨道加宽 + 滑块位移调整）
+        'xui-switch--has-text': Boolean(props.checkedText || props.uncheckedText),
       },
     ]"
     :style="style"
@@ -82,19 +84,36 @@ const handleToggle = () => {
     @click="handleToggle"
   >
     <span class="xui-switch__core">
+      <!-- 双态文本：状态已由 role="switch" + aria-checked 传达，文本对读屏隐藏避免重复朗读 -->
+      <span
+        v-if="state.checked && props.checkedText"
+        class="xui-switch__text xui-switch__text--checked"
+        :title="props.checkedText"
+        aria-hidden="true"
+        >{{ props.checkedText }}</span
+      >
+      <span
+        v-else-if="!state.checked && props.uncheckedText"
+        class="xui-switch__text xui-switch__text--unchecked"
+        :title="props.uncheckedText"
+        aria-hidden="true"
+        >{{ props.uncheckedText }}</span
+      >
       <span class="xui-switch__thumb">
-        <svg
-          v-if="state.loading"
-          class="xui-switch__spinner"
-          viewBox="0 0 24 24"
-          width="10"
-          height="10"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          v-html="icons.loading"
-        />
+        <slot v-if="state.loading" name="loadingIcon">
+          <svg
+            class="xui-switch__spinner"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            width="10"
+            height="10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            v-html="icons.loading"
+          />
+        </slot>
       </span>
     </span>
   </button>

@@ -278,17 +278,19 @@ const handleSearchKeydown = (event: KeyboardEvent) => {
               aria-label="remove"
               @click.stop="logic.select(tag.value)"
             >
-              <svg
-                viewBox="0 0 24 24"
-                width="10"
-                height="10"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                aria-hidden="true"
-                v-html="icons.clear"
-              />
+              <slot name="clearIcon">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="10"
+                  height="10"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  aria-hidden="true"
+                  v-html="icons.clear"
+                />
+              </slot>
             </span>
           </span>
           <span v-if="selectedTags.length === 0" class="xui-select__placeholder">
@@ -305,30 +307,35 @@ const handleSearchKeydown = (event: KeyboardEvent) => {
         aria-label="clear"
         @click.stop="logic.clear()"
       >
-        <svg
-          viewBox="0 0 24 24"
-          width="14"
-          height="14"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          aria-hidden="true"
-          v-html="icons.clear"
-        />
+        <slot name="clearIcon">
+          <svg
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+            v-html="icons.clear"
+          />
+        </slot>
       </span>
       <span v-else class="xui-select__arrow" aria-hidden="true">
-        <svg
-          viewBox="0 0 24 24"
-          width="14"
-          height="14"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          v-html="icons['arrow-down']"
-        />
+        <slot name="suffixIcon">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            width="14"
+            height="14"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            v-html="icons['arrow-down']"
+          />
+        </slot>
       </span>
     </div>
     <ul

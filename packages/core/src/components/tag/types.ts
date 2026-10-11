@@ -31,6 +31,8 @@ export type TagEvents = {
 export type TagSlots = {
   /** 标签内容 */
   default: Record<string, never>;
+  /** 自定义关闭图标（替换内置 close，内容为任意节点） */
+  closeIcon: Record<string, never>;
 };
 
 /** Tag 状态快照（由逻辑层暴露） */

@@ -174,6 +174,32 @@ describe('Select (react)', () => {
     expect(container.querySelectorAll('.xui-select__tag')).toHaveLength(0);
   });
 
+  it('renderClearIcon 自定义清除图标（触发器与 tag 的 clear 共用）', () => {
+    const { container } = render(
+      <Select
+        options={OPTIONS}
+        multiple
+        defaultValue={['beijing']}
+        clearable
+        renderClearIcon={() => <i className="custom-clear" />}
+      />,
+    );
+    // 触发器 clear
+    expect(container.querySelector('.xui-select__clear .custom-clear')).not.toBeNull();
+    // 多选 tag 的 clear
+    expect(container.querySelector('.xui-select__tag-close .custom-clear')).not.toBeNull();
+    expect(container.querySelector('.xui-select__clear svg')).toBeNull();
+    expect(container.querySelector('.xui-select__tag-close svg')).toBeNull();
+  });
+
+  it('renderSuffixIcon 自定义下拉箭头，不渲染内置 svg', () => {
+    const { container } = render(
+      <Select options={OPTIONS} renderSuffixIcon={() => <i className="custom-arrow" />} />,
+    );
+    expect(container.querySelector('.xui-select__arrow .custom-arrow')).not.toBeNull();
+    expect(container.querySelector('.xui-select__arrow svg')).toBeNull();
+  });
+
   it('可搜索：输入过滤选项，无匹配显示空态', () => {
     const onChange = vi.fn();
     const { container } = render(<Select options={OPTIONS} searchable onChange={onChange} />);

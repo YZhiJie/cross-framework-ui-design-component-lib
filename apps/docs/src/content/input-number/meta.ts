@@ -91,6 +91,10 @@ export const inputNumberMeta: ComponentMeta = {
         description: 'v-model:value 回写',
       },
     ],
+    slots: [
+      { vue: 'upIcon', react: 'renderUpIcon', description: '自定义步进递增图标' },
+      { vue: 'downIcon', react: 'renderDownIcon', description: '自定义步进递减图标' },
+    ],
   },
   notes: [
     '输入文本在失焦或回车时提交：空串 / 非法内容收敛为 null，合法值先 clamp 到 [min, max] 再按 precision 格式化。',

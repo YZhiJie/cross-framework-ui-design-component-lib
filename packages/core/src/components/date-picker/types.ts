@@ -38,7 +38,16 @@ export type DatePickerEvents = {
 };
 
 /** DatePicker 插槽契约 */
-export type DatePickerSlots = Record<string, never>;
+export type DatePickerSlots = {
+  /** 自定义清除图标（替换内置 clear，内容为任意节点） */
+  clearIcon: Record<string, never>;
+  /** 自定义日历图标（替换内置 calendar，内容为任意节点） */
+  calendarIcon: Record<string, never>;
+  /** 自定义上一月图标（替换内置 arrow-left，内容为任意节点） */
+  prevIcon: Record<string, never>;
+  /** 自定义下一月图标（替换内置 arrow-right，内容为任意节点） */
+  nextIcon: Record<string, never>;
+};
 
 /** DatePicker 状态快照（由逻辑层暴露） */
 export type DatePickerState = {

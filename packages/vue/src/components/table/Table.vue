@@ -247,30 +247,36 @@ const arrowDown = icons['arrow-down'];
             >
               {{ column.title }}
               <span class="xui-table__sort-icons" aria-hidden="true">
-                <svg
-                  viewBox="0 0 24 24"
-                  width="10"
-                  height="10"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  :class="sortIconClass(column, 'up')"
-                  v-html="arrowUp"
-                />
-                <svg
-                  viewBox="0 0 24 24"
-                  width="10"
-                  height="10"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  :class="sortIconClass(column, 'down')"
-                  v-html="arrowDown"
-                />
+                <slot name="sortIcon" :order="'asc'">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="10"
+                    height="10"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    :class="sortIconClass(column, 'up')"
+                    v-html="arrowUp"
+                  />
+                </slot>
+                <slot name="sortIcon" :order="'desc'">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="10"
+                    height="10"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    :class="sortIconClass(column, 'down')"
+                    v-html="arrowDown"
+                  />
+                </slot>
               </span>
             </button>
             <span v-else>{{ column.title }}</span>

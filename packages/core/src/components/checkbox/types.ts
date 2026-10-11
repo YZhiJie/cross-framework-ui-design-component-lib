@@ -33,6 +33,10 @@ export type CheckboxEvents = {
 export type CheckboxSlots = {
   /** 标签内容 */
   default: Record<string, never>;
+  /** 自定义选中勾选图标（替换内置 check，内容为任意节点） */
+  checkIcon: Record<string, never>;
+  /** 自定义半选图标（替换内置 minus，内容为任意节点） */
+  indeterminateIcon: Record<string, never>;
 };
 
 /** Checkbox 状态快照（由逻辑层暴露） */

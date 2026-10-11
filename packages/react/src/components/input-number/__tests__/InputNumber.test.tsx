@@ -114,6 +114,20 @@ describe('InputNumber (react)', () => {
     expect((container.querySelector('input') as HTMLInputElement).placeholder).toBe('请输入数量');
   });
 
+  it('renderUpIcon / renderDownIcon 自定义步进图标，不渲染内置 svg', () => {
+    const { container } = render(
+      <InputNumber
+        renderUpIcon={() => <i className="custom-up" />}
+        renderDownIcon={() => <i className="custom-down" />}
+      />,
+    );
+    const btns = container.querySelectorAll('.xui-input-number__btn');
+    expect(btns).toHaveLength(2);
+    expect(btns[0].querySelector('.custom-up')).not.toBeNull();
+    expect(btns[1].querySelector('.custom-down')).not.toBeNull();
+    expect(container.querySelector('.xui-input-number__btn svg')).toBeNull();
+  });
+
   it('passes className / style to root element', () => {
     const { container } = render(<InputNumber className="my-x" style={{ color: 'red' }} />);
     const root = container.querySelector('.xui-input-number') as HTMLElement;

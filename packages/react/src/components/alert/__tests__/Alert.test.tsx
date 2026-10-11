@@ -55,6 +55,14 @@ describe('Alert (react)', () => {
     expect(container.querySelector('.xui-alert__close')).toBeNull();
   });
 
+  it('renderCloseIcon 自定义关闭图标，不渲染内置 svg', () => {
+    const { container } = render(
+      <Alert closable title="x" renderCloseIcon={() => <i className="custom-x" />} />,
+    );
+    expect(container.querySelector('.custom-x')).not.toBeNull();
+    expect(container.querySelector('.xui-alert__close svg')).toBeNull();
+  });
+
   it('passes className / style to root element', () => {
     const { container } = render(<Alert className="my-x" style={{ color: 'red' }} />);
     const root = container.querySelector('.xui-alert') as HTMLElement;

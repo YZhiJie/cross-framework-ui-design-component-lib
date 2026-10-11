@@ -114,17 +114,20 @@ function onStep(direction: 1 | -1) {
         :disabled="state.disabled"
         @click="onStep(1)"
       >
-        <svg
-          viewBox="0 0 24 24"
-          width="12"
-          height="12"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          v-html="icons['arrow-up']"
-        />
+        <slot name="upIcon">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            width="12"
+            height="12"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            v-html="icons['arrow-up']"
+          />
+        </slot>
       </button>
       <button
         class="xui-input-number__btn"
@@ -133,17 +136,20 @@ function onStep(direction: 1 | -1) {
         :disabled="state.disabled"
         @click="onStep(-1)"
       >
-        <svg
-          viewBox="0 0 24 24"
-          width="12"
-          height="12"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          v-html="icons['arrow-down']"
-        />
+        <slot name="downIcon">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            width="12"
+            height="12"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            v-html="icons['arrow-down']"
+          />
+        </slot>
       </button>
     </div>
   </div>

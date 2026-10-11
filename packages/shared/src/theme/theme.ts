@@ -61,3 +61,35 @@ export function subscribeTheme(listener: ThemeListener): () => void {
     listeners.delete(listener);
   };
 }
+
+/** 主题 token 集合：键为 CSS 自定义属性名（-- 开头），值为对应 CSS 值 */
+export type ThemeTokens = Record<string, string>;
+
+/** 已写入 <html> style 的 token 名（供 clearThemeTokens 精确清除） */
+const appliedTokenNames = new Set<string>();
+
+/**
+ * 写入全局主题 token（CSS 自定义变量，作用于 <html>，全站生效）。
+ * 仅接受 -- 开头的变量名与非空字符串值，非法条目静默忽略；
+ * 重复调用按合并语义追加/覆盖，不清除未提及的既有 token。
+ * 组件级定制无需此 API：在组件根元素 style 上直接写 CSS 变量即可（级联仅作用于该子树）。
+ */
+export function setThemeTokens(tokens: ThemeTokens): void {
+  if (!isBrowser()) return;
+  const root = document.documentElement;
+  Object.entries(tokens).forEach(([name, value]) => {
+    if (!name.startsWith('--') || typeof value !== 'string') return;
+    root.style.setProperty(name, value);
+    appliedTokenNames.add(name);
+  });
+}
+
+/** 清除全部通过 setThemeTokens 写入的全局 token（不影响 data-theme 与应用自身变量） */
+export function clearThemeTokens(): void {
+  if (!isBrowser()) return;
+  const root = document.documentElement;
+  appliedTokenNames.forEach((name) => {
+    root.style.removeProperty(name);
+  });
+  appliedTokenNames.clear();
+}

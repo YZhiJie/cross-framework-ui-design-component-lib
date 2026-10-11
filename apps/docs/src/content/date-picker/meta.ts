@@ -80,6 +80,12 @@ export const datePickerMeta: ComponentMeta = {
       { vue: 'clear', react: 'onClear', payload: '—', description: '清空日期' },
       { vue: 'update:value', react: '—', payload: 'string', description: 'v-model:value 回写' },
     ],
+    slots: [
+      { vue: 'clearIcon', react: 'renderClearIcon', description: '自定义清除图标' },
+      { vue: 'calendarIcon', react: 'renderCalendarIcon', description: '自定义日历图标' },
+      { vue: 'prevIcon', react: 'renderPrevIcon', description: '自定义上一月图标' },
+      { vue: 'nextIcon', react: 'renderNextIcon', description: '自定义下一月图标' },
+    ],
   },
   notes: [
     "契约只接受 / 输出 'YYYY-MM-DD' 字符串，不引入 Date 对象；非法字符串回退为 null。",
