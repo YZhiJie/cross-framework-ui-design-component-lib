@@ -78,4 +78,15 @@ describe('Tooltip (vue)', () => {
     expect(wrapper.classes()).toContain('xui-tooltip');
     expect(wrapper.attributes('style')).toContain('color: red');
   });
+
+  it('气泡渲染在 trigger 内部（flex/grid stretch 下定位基准不偏移）', async () => {
+    const wrapper = mount(Tooltip, {
+      props: { content: 'x' },
+      slots: { default: '目标' },
+    });
+    await wrapper.trigger('mouseenter');
+    // popper 必须是 trigger 的后代：trigger 始终贴合触发器，包裹根即使被拉伸也不影响锚定
+    expect(wrapper.find('.xui-tooltip__trigger > .xui-tooltip__popper').exists()).toBe(true);
+    expect(wrapper.find('.xui-tooltip > .xui-tooltip__popper').exists()).toBe(false);
+  });
 });

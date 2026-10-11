@@ -96,4 +96,20 @@ describe('Tooltip (react)', () => {
     expect(root.classList.contains('xui-tooltip')).toBe(true);
     expect(root.style.color).toBe('red');
   });
+
+  it('气泡渲染在 trigger 内部（flex/grid stretch 下定位基准不偏移）', () => {
+    const { container } = render(
+      <Tooltip content="x">
+        <span>目标</span>
+      </Tooltip>,
+    );
+    fireEvent.mouseEnter(container.firstElementChild as Element);
+    const trigger = container.querySelector('.xui-tooltip__trigger') as HTMLElement;
+    expect(trigger.querySelector(':scope > .xui-tooltip__popper')).not.toBeNull();
+    expect(
+      (container.querySelector('.xui-tooltip') as HTMLElement).querySelector(
+        ':scope > .xui-tooltip__popper',
+      ),
+    ).toBeNull();
+  });
 });

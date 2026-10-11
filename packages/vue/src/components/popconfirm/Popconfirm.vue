@@ -55,30 +55,31 @@ watchEffect(() => {
       @click="logic.toggle()"
     >
       <slot />
-    </span>
-    <span
-      v-if="state.open"
-      :id="popperId"
-      class="xui-popconfirm__popper"
-      :class="`is-${state.placement}`"
-      role="tooltip"
-    >
-      <span class="xui-popconfirm__content">
-        <slot name="content">{{ props.content }}</slot>
+      <span
+        v-if="state.open"
+        :id="popperId"
+        class="xui-popconfirm__popper"
+        :class="`is-${state.placement}`"
+        role="tooltip"
+        @click.stop
+      >
+        <span class="xui-popconfirm__content">
+          <slot name="content">{{ props.content }}</slot>
+        </span>
+        <div class="xui-popconfirm__actions">
+          <button class="xui-button xui-button--sm" type="button" @click="logic.cancel()">
+            {{ props.cancelText }}
+          </button>
+          <button
+            class="xui-button xui-button--primary xui-button--sm"
+            type="button"
+            @click="logic.confirm()"
+          >
+            {{ props.confirmText }}
+          </button>
+        </div>
+        <span class="xui-popconfirm__arrow" aria-hidden="true" />
       </span>
-      <div class="xui-popconfirm__actions">
-        <button class="xui-button xui-button--sm" type="button" @click="logic.cancel()">
-          {{ props.cancelText }}
-        </button>
-        <button
-          class="xui-button xui-button--primary xui-button--sm"
-          type="button"
-          @click="logic.confirm()"
-        >
-          {{ props.confirmText }}
-        </button>
-      </div>
-      <span class="xui-popconfirm__arrow" aria-hidden="true" />
     </span>
   </span>
 </template>

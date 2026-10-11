@@ -2,7 +2,8 @@
  * Tooltip - React 19 适配层
  *
  * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
- * CSS 包裹定位（非 portal）：popper 相对根元素绝对定位，
+ * CSS 包裹定位（非 portal）：popper 相对 trigger 元素绝对定位（trigger 始终贴合触发器，
+ * 避免包裹根在 flex/grid stretch 布局中被拉宽导致气泡错位），
  * 监听绑定在根元素上，悬停提示框本身不会触发 leave。
  * renderContent 回调对应 Vue 具名插槽 #content。
  */
@@ -75,13 +76,17 @@ export function Tooltip(props: TooltipComponentProps) {
     >
       <span className="xui-tooltip__trigger" aria-describedby={state.open ? popperId : undefined}>
         {children}
+        {state.open && (
+          <span
+            id={popperId}
+            className={cn('xui-tooltip__popper', `is-${placement}`)}
+            role="tooltip"
+          >
+            {renderContent ? renderContent() : content}
+            <span className="xui-tooltip__arrow" aria-hidden="true" />
+          </span>
+        )}
       </span>
-      {state.open && (
-        <span id={popperId} className={cn('xui-tooltip__popper', `is-${placement}`)} role="tooltip">
-          {renderContent ? renderContent() : content}
-          <span className="xui-tooltip__arrow" aria-hidden="true" />
-        </span>
-      )}
     </span>
   );
 }

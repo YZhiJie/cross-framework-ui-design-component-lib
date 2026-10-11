@@ -149,4 +149,31 @@ describe('Popconfirm (react)', () => {
     expect(root.classList.contains('xui-popconfirm')).toBe(true);
     expect(root.style.color).toBe('red');
   });
+
+  it('气泡渲染在 trigger 内部（定位基准锚定触发器而非被拉伸的包裹根）', () => {
+    const { container } = render(
+      <Popconfirm>
+        <button type="button">删除</button>
+      </Popconfirm>,
+    );
+    openPopper(container);
+    const trigger = container.querySelector('.xui-popconfirm__trigger') as HTMLElement;
+    expect(trigger.querySelector(':scope > .xui-popconfirm__popper')).not.toBeNull();
+    expect(
+      (container.querySelector('.xui-popconfirm') as HTMLElement).querySelector(
+        ':scope > .xui-popconfirm__popper',
+      ),
+    ).toBeNull();
+  });
+
+  it('点击气泡空白区域不触发 toggle（click 冒泡已阻断）', () => {
+    const { container } = render(
+      <Popconfirm>
+        <button type="button">删除</button>
+      </Popconfirm>,
+    );
+    openPopper(container);
+    fireEvent.click(container.querySelector('.xui-popconfirm__content') as Element);
+    expect(container.querySelector('.xui-popconfirm__popper')).not.toBeNull();
+  });
 });

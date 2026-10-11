@@ -80,35 +80,36 @@ export function Popconfirm(props: PopconfirmComponentProps) {
         onClick={() => logic.toggle()}
       >
         {children}
-      </span>
-      {state.open && (
-        <span
-          id={popperId}
-          className={`xui-popconfirm__popper is-${state.placement}`}
-          role="tooltip"
-        >
-          <span className="xui-popconfirm__content">
-            {renderContent ? renderContent() : content}
+        {state.open && (
+          <span
+            id={popperId}
+            className={`xui-popconfirm__popper is-${state.placement}`}
+            role="tooltip"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <span className="xui-popconfirm__content">
+              {renderContent ? renderContent() : content}
+            </span>
+            <div className="xui-popconfirm__actions">
+              <button
+                className="xui-button xui-button--sm"
+                type="button"
+                onClick={() => logic.cancel()}
+              >
+                {cancelText}
+              </button>
+              <button
+                className="xui-button xui-button--primary xui-button--sm"
+                type="button"
+                onClick={() => logic.confirm()}
+              >
+                {confirmText}
+              </button>
+            </div>
+            <span className="xui-popconfirm__arrow" aria-hidden="true" />
           </span>
-          <div className="xui-popconfirm__actions">
-            <button
-              className="xui-button xui-button--sm"
-              type="button"
-              onClick={() => logic.cancel()}
-            >
-              {cancelText}
-            </button>
-            <button
-              className="xui-button xui-button--primary xui-button--sm"
-              type="button"
-              onClick={() => logic.confirm()}
-            >
-              {confirmText}
-            </button>
-          </div>
-          <span className="xui-popconfirm__arrow" aria-hidden="true" />
-        </span>
-      )}
+        )}
+      </span>
     </span>
   );
 }

@@ -119,4 +119,24 @@ describe('Popconfirm (vue)', () => {
     expect(wrapper.classes()).toContain('xui-popconfirm');
     expect(wrapper.attributes('style')).toContain('color: red');
   });
+
+  it('气泡渲染在 trigger 内部（定位基准锚定触发器而非被拉伸的包裹根）', async () => {
+    const wrapper = mount(Popconfirm, {
+      slots: { default: '<button type="button">删除</button>' },
+    });
+    await wrapper.find('.xui-popconfirm__trigger').trigger('click');
+    expect(wrapper.find('.xui-popconfirm__trigger > .xui-popconfirm__popper').exists()).toBe(true);
+    expect(wrapper.find('.xui-popconfirm > .xui-popconfirm__popper').exists()).toBe(false);
+  });
+
+  it('点击气泡空白区域不触发 toggle（click 冒泡已阻断）', async () => {
+    const wrapper = mount(Popconfirm, {
+      slots: { default: '<button type="button">删除</button>' },
+    });
+    await wrapper.find('.xui-popconfirm__trigger').trigger('click');
+    await wrapper.find('.xui-popconfirm__content').trigger('click');
+    expect(wrapper.find('.xui-popconfirm__popper').exists()).toBe(true);
+    expect(wrapper.emitted('confirm')).toBeUndefined();
+    expect(wrapper.emitted('cancel')).toBeUndefined();
+  });
 });

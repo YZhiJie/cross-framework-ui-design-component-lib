@@ -60,16 +60,16 @@ const handleBlur = () => {
   >
     <span class="xui-tooltip__trigger" :aria-describedby="state.open ? popperId : undefined">
       <slot />
-    </span>
-    <span
-      v-if="state.open"
-      :id="popperId"
-      class="xui-tooltip__popper"
-      :class="`is-${props.placement}`"
-      role="tooltip"
-    >
-      <slot name="content">{{ props.content }}</slot>
-      <span class="xui-tooltip__arrow" aria-hidden="true" />
+      <span
+        v-if="state.open"
+        :id="popperId"
+        class="xui-tooltip__popper"
+        :class="`is-${props.placement}`"
+        role="tooltip"
+      >
+        <slot name="content">{{ props.content }}</slot>
+        <span class="xui-tooltip__arrow" aria-hidden="true" />
+      </span>
     </span>
   </span>
 </template>
