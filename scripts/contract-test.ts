@@ -225,6 +225,48 @@ const API_COMPONENTS: ComponentPlan[] = [
     modelProp: 'visible',
     modelCoveredProps: ['defaultVisible'],
   },
+  {
+    name: 'RadioGroup',
+    specKey: 'radioGroupSpec',
+    reactSource: 'packages/react/src/components/radio-group/RadioGroup.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
+  {
+    name: 'Radio',
+    specKey: 'radioSpec',
+    reactSource: 'packages/react/src/components/radio/Radio.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
+  {
+    name: 'Progress',
+    specKey: 'progressSpec',
+    reactSource: 'packages/react/src/components/progress/Progress.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
+  {
+    name: 'Badge',
+    specKey: 'badgeSpec',
+    reactSource: 'packages/react/src/components/badge/Badge.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
+  {
+    name: 'Avatar',
+    specKey: 'avatarSpec',
+    reactSource: 'packages/react/src/components/avatar/Avatar.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
+  {
+    name: 'Empty',
+    specKey: 'emptySpec',
+    reactSource: 'packages/react/src/components/empty/Empty.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
 ];
 
 interface MatrixRow {

@@ -1,6 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, Input, Modal, Switch, Checkbox, Tag, Alert } from '@xui/vue';
+import {
+  Button,
+  Input,
+  Modal,
+  Switch,
+  Checkbox,
+  Tag,
+  Alert,
+  RadioGroup,
+  Radio,
+  Progress,
+  Badge,
+  Avatar,
+  Empty,
+} from '@xui/vue';
 import '@xui/styles';
 
 const name = ref('');
@@ -8,7 +22,16 @@ const modalVisible = ref(false);
 const modalRef = ref<InstanceType<typeof Modal> | null>(null);
 const switchValue = ref(false);
 const checkboxValue = ref(true);
+const radioValue = ref('a');
+const radioCity = ref('beijing');
+const progressValue = ref(60);
 const log = ref<string[]>([]);
+
+const radioCityOptions = [
+  { label: 'Beijing', value: 'beijing' },
+  { label: 'Shanghai', value: 'shanghai' },
+  { label: 'Disabled', value: 'gz', disabled: true },
+];
 
 const pushLog = (msg: string) => {
   log.value.unshift(`[${new Date().toLocaleTimeString()}] ${msg}`);
@@ -147,6 +170,89 @@ const pushLog = (msg: string) => {
         <Button type="primary" @click="modalVisible = false">confirm</Button>
       </template>
     </Modal>
+
+    <section>
+      <h2>RadioGroup / Radio</h2>
+      <div class="row">
+        <RadioGroup v-model:value="radioValue" @change="(v: string) => pushLog(`radio: ${v}`)">
+          <Radio value="a">A</Radio>
+          <Radio value="b">B</Radio>
+          <Radio value="c" disabled>C (disabled)</Radio>
+        </RadioGroup>
+        <span class="hint">v-model:value = {{ radioValue }}</span>
+      </div>
+      <div class="row">
+        <RadioGroup
+          v-model:value="radioCity"
+          :options="radioCityOptions"
+          @change="(v: string) => pushLog(`radio city: ${v}`)"
+        />
+        <span class="hint">options 渲染 = {{ radioCity }}</span>
+      </div>
+      <div class="row">
+        <RadioGroup disabled default-value="b">
+          <Radio value="a">A</Radio>
+          <Radio value="b">B</Radio>
+        </RadioGroup>
+        <span class="hint">整组禁用</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Progress</h2>
+      <Progress :percent="progressValue" />
+      <Progress :percent="100" />
+      <Progress :percent="72" status="error" />
+      <Progress :percent="45" :stroke-width="10" :show-text="false" />
+      <div class="row">
+        <Progress type="circle" :percent="progressValue" />
+        <Progress type="circle" :percent="100" status="success" />
+      </div>
+      <div class="row">
+        <Button size="sm" @click="progressValue = Math.max(0, progressValue - 10)">-10</Button>
+        <Button size="sm" @click="progressValue = Math.min(100, progressValue + 10)">+10</Button>
+        <span class="hint">percent = {{ progressValue }}</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Badge / Avatar</h2>
+      <div class="row">
+        <Badge :count="5">
+          <Button>inbox</Button>
+        </Badge>
+        <Badge :count="120">
+          <Button>overflow 99+</Button>
+        </Badge>
+        <Badge dot>
+          <Button>dot</Button>
+        </Badge>
+        <Badge :count="0" show-zero>
+          <Button>showZero</Button>
+        </Badge>
+        <Badge :count="9" />
+        <span class="hint">独立模式 count=9 ↑</span>
+      </div>
+      <div class="row">
+        <Avatar
+          src="https://i.pravatar.cc/80?img=5"
+          alt="user"
+          @error="pushLog('avatar load error')"
+        />
+        <Avatar size="sm">S</Avatar>
+        <Avatar size="lg">L</Avatar>
+        <Avatar shape="square">SQ</Avatar>
+      </div>
+    </section>
+
+    <section>
+      <h2>Empty</h2>
+      <Empty description="No data yet">
+        <Button size="sm" type="primary" @click="pushLog('empty action clicked')"
+          >Create now</Button
+        >
+      </Empty>
+    </section>
 
     <section>
       <h2>Event log</h2>

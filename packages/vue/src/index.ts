@@ -14,9 +14,21 @@ import { Switch } from './components/switch';
 import { Checkbox } from './components/checkbox';
 import { Tag } from './components/tag';
 import { Alert } from './components/alert';
+import { RadioGroup } from './components/radio-group';
+import { Radio } from './components/radio';
+import { Progress } from './components/progress';
+import { Badge } from './components/badge';
+import { Avatar } from './components/avatar';
+import { Empty } from './components/empty';
 import { Modal } from './components/modal';
 
 export { Switch, Checkbox, Tag, Alert };
+export { RadioGroup };
+export { Radio };
+export { Progress };
+export { Badge };
+export { Avatar };
+export { Empty };
 export { Button, Input, Modal };
 
 export const VUE_VERSION = '0.0.0';
@@ -29,6 +41,12 @@ export default {
     app.component(Checkbox.name ?? 'Checkbox', Checkbox);
     app.component(Tag.name ?? 'Tag', Tag);
     app.component(Alert.name ?? 'Alert', Alert);
+    app.component(RadioGroup.name ?? 'RadioGroup', RadioGroup);
+    app.component(Radio.name ?? 'Radio', Radio);
+    app.component(Progress.name ?? 'Progress', Progress);
+    app.component(Badge.name ?? 'Badge', Badge);
+    app.component(Avatar.name ?? 'Avatar', Avatar);
+    app.component(Empty.name ?? 'Empty', Empty);
     app.component(Modal.name ?? 'Modal', Modal);
   },
 };

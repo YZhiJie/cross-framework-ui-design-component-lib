@@ -245,6 +245,305 @@
 }
 
 
+
+/* ===================== RadioGroup ===================== */
+
+.xui-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  font-size: var(--xui-font-size-md, 14px);
+  color: var(--xui-color-text, #1f2937);
+}
+
+/* ===================== Radio ===================== */
+
+.xui-radio {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.xui-radio__input {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  opacity: 0;
+}
+
+.xui-radio__dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: 50%;
+  background-color: var(--xui-color-bg, #fff);
+  transition: border-color 0.2s;
+}
+
+.xui-radio__dot::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--xui-color-primary, #4f46e5);
+  transform: scale(0);
+  transition: transform 0.15s;
+}
+
+/* 键盘聚焦时在自定义圆点上显示焦点环（原生 input 保持可聚焦） */
+.xui-radio__input:focus-visible + .xui-radio__dot {
+  outline: 2px solid var(--xui-color-primary, #4f46e5);
+  outline-offset: 2px;
+}
+
+.xui-radio.is-checked .xui-radio__dot {
+  border-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-radio.is-checked .xui-radio__dot::after {
+  transform: scale(1);
+}
+
+.xui-radio.is-disabled {
+  cursor: not-allowed;
+  color: var(--xui-color-text-secondary, #6b7280);
+}
+
+.xui-radio.is-disabled .xui-radio__dot {
+  border-color: var(--xui-color-border, #d1d5db);
+  background-color: var(--xui-color-bg-disabled, #f3f4f6);
+}
+
+.xui-radio.is-disabled .xui-radio__dot::after {
+  background-color: var(--xui-color-text-secondary, #6b7280);
+}
+
+.xui-radio:hover:not(.is-disabled) .xui-radio__dot {
+  border-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-radio__label {
+  line-height: 1.5;
+}
+
+/* ===================== Progress ===================== */
+
+.xui-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--xui-font-size-sm, 12px);
+  color: var(--xui-color-text, #1f2937);
+}
+
+.xui-progress__track {
+  flex: 1 1 auto;
+  overflow: hidden;
+  border-radius: 999px;
+  background-color: #e5e7eb;
+}
+
+.xui-progress__bar {
+  height: 100%;
+  border-radius: 999px;
+  background-color: var(--xui-color-primary, #4f46e5);
+  transition: width 0.3s, background-color 0.3s, stroke-dashoffset 0.3s, stroke 0.3s;
+}
+
+.xui-progress__text {
+  flex-shrink: 0;
+  color: var(--xui-color-text-secondary, #6b7280);
+  line-height: 1;
+}
+
+/* circle 类型：相对定位容器 + SVG 圆环 + 居中文本 */
+.xui-progress--circle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+}
+
+.xui-progress__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.xui-progress--circle .xui-progress__track {
+  flex: none;
+  stroke: #e5e7eb;
+}
+
+.xui-progress--circle .xui-progress__bar {
+  fill: none;
+  stroke: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-progress__text--circle {
+  position: relative;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--xui-color-text, #1f2937);
+}
+
+/* 状态色（line 用背景色、circle 用描边色，按类型收窄避免互相污染） */
+.xui-progress.is-success .xui-progress__bar {
+  background-color: #22c55e;
+  stroke: #22c55e;
+}
+
+.xui-progress.is-error .xui-progress__bar {
+  background-color: #ef4444;
+  stroke: #ef4444;
+}
+
+/* ===================== Badge ===================== */
+
+.xui-badge {
+  position: relative;
+  display: inline-flex;
+}
+
+.xui-badge__sup {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background-color: #ef4444;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  text-align: center;
+  white-space: nowrap;
+  transform: translate(50%, -50%);
+}
+
+/* 点状徽标 */
+.xui-badge__sup.is-dot {
+  width: 8px;
+  min-width: 8px;
+  height: 8px;
+  padding: 0;
+  line-height: 1;
+}
+
+/* 独立模式（无包裹内容）：回归文档流 */
+.xui-badge__sup--standalone {
+  position: static;
+  display: inline-block;
+  transform: none;
+}
+
+/* ===================== Avatar ===================== */
+
+.xui-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  background-color: var(--xui-color-bg-disabled, #f3f4f6);
+  color: var(--xui-color-text-secondary, #6b7280);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.xui-avatar--sm {
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+}
+
+.xui-avatar--md {
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+}
+
+.xui-avatar--lg {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+}
+
+.xui-avatar--circle {
+  border-radius: 50%;
+}
+
+.xui-avatar--square {
+  border-radius: var(--xui-radius-md, 6px);
+}
+
+.xui-avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.xui-avatar__inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xui-avatar__icon {
+  width: 55%;
+  height: 55%;
+}
+
+/* ===================== Empty ===================== */
+
+.xui-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 32px 16px;
+  color: var(--xui-color-text, #1f2937);
+}
+
+.xui-empty__image {
+  display: flex;
+  justify-content: center;
+  color: #9ca3af;
+}
+
+.xui-empty__svg {
+  width: 64px;
+  height: 64px;
+}
+
+.xui-empty__description {
+  margin-top: 8px;
+  font-size: var(--xui-font-size-md, 14px);
+  color: var(--xui-color-text-secondary, #6b7280);
+}
+
+.xui-empty__footer {
+  margin-top: 16px;
+}
+
 /* ===================== Modal ===================== */
 
 .xui-modal {

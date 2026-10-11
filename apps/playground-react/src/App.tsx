@@ -1,5 +1,19 @@
 import { useRef, useState } from 'react';
-import { Button, Input, Modal, Switch, Checkbox, Tag, Alert } from '@xui/react';
+import {
+  Button,
+  Input,
+  Modal,
+  Switch,
+  Checkbox,
+  Tag,
+  Alert,
+  RadioGroup,
+  Radio,
+  Progress,
+  Badge,
+  Avatar,
+  Empty,
+} from '@xui/react';
 import type { ModalRef } from '@xui/react';
 import '@xui/styles';
 
@@ -9,7 +23,16 @@ export default function App() {
   const [log, setLog] = useState<string[]>([]);
   const [switchValue, setSwitchValue] = useState(false);
   const [checkboxValue, setCheckboxValue] = useState(true);
+  const [radioValue, setRadioValue] = useState('a');
+  const [radioCity, setRadioCity] = useState('beijing');
+  const [progressValue, setProgressValue] = useState(60);
   const modalRef = useRef<ModalRef>(null);
+
+  const radioCityOptions = [
+    { label: 'Beijing', value: 'beijing' },
+    { label: 'Shanghai', value: 'shanghai' },
+    { label: 'Disabled', value: 'gz', disabled: true },
+  ];
 
   const pushLog = (msg: string) => {
     setLog((prev) => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev].slice(0, 30));
@@ -191,6 +214,104 @@ export default function App() {
           Modal content here. Value from input: <strong>{name || '(empty)'}</strong>
         </p>
       </Modal>
+
+      <section>
+        <h2>RadioGroup / Radio</h2>
+        <div className="row">
+          <RadioGroup
+            value={radioValue}
+            onChange={(v) => {
+              setRadioValue(v);
+              pushLog(`radio: ${v}`);
+            }}
+          >
+            <Radio value="a">A</Radio>
+            <Radio value="b">B</Radio>
+            <Radio value="c" disabled>
+              C (disabled)
+            </Radio>
+          </RadioGroup>
+          <span className="hint">controlled value = {radioValue}</span>
+        </div>
+        <div className="row">
+          <RadioGroup
+            value={radioCity}
+            options={radioCityOptions}
+            onChange={(v) => {
+              setRadioCity(v);
+              pushLog(`radio city: ${v}`);
+            }}
+          />
+          <span className="hint">options 渲染 = {radioCity}</span>
+        </div>
+        <div className="row">
+          <RadioGroup disabled defaultValue="b">
+            <Radio value="a">A</Radio>
+            <Radio value="b">B</Radio>
+          </RadioGroup>
+          <span className="hint">整组禁用</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Progress</h2>
+        <Progress percent={progressValue} />
+        <Progress percent={100} />
+        <Progress percent={72} status="error" />
+        <Progress percent={45} strokeWidth={10} showText={false} />
+        <div className="row">
+          <Progress type="circle" percent={progressValue} />
+          <Progress type="circle" percent={100} status="success" />
+        </div>
+        <div className="row">
+          <Button size="sm" onClick={() => setProgressValue(Math.max(0, progressValue - 10))}>
+            -10
+          </Button>
+          <Button size="sm" onClick={() => setProgressValue(Math.min(100, progressValue + 10))}>
+            +10
+          </Button>
+          <span className="hint">percent = {progressValue}</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Badge / Avatar</h2>
+        <div className="row">
+          <Badge count={5}>
+            <Button>inbox</Button>
+          </Badge>
+          <Badge count={120}>
+            <Button>overflow 99+</Button>
+          </Badge>
+          <Badge dot>
+            <Button>dot</Button>
+          </Badge>
+          <Badge count={0} showZero>
+            <Button>showZero</Button>
+          </Badge>
+          <Badge count={9} />
+          <span className="hint">独立模式 count=9 ↑</span>
+        </div>
+        <div className="row">
+          <Avatar
+            src="https://i.pravatar.cc/80?img=5"
+            alt="user"
+            onError={() => pushLog('avatar load error')}
+          />
+          <Avatar size="sm">S</Avatar>
+          <Avatar size="lg">L</Avatar>
+          <Avatar shape="square">SQ</Avatar>
+        </div>
+      </section>
+
+      <section>
+        <h2>Empty</h2>
+        <Empty description="No data yet">
+          <Button size="sm" type="primary" onClick={() => pushLog('empty action clicked')}>
+            Create now
+          </Button>
+        </Empty>
+      </section>
 
       <section>
         <h2>Event log</h2>

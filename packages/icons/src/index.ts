@@ -24,6 +24,8 @@ export type IconName =
   | 'arrow-up'
   | 'arrow-down'
   | 'calendar'
+  | 'user'
+  | 'inbox'
   | 'info'
   | 'success'
   | 'warning'
@@ -41,6 +43,9 @@ export const icons: Record<IconName, string> = {
   'arrow-up': '<path d="M12 19V5M5 12l7-7 7 7" />',
   'arrow-down': '<path d="M12 5v14M19 12l-7 7-7-7" />',
   calendar: '<rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 11h18" />',
+  user: '<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" /><circle cx="12" cy="7" r="4" />',
+  inbox:
+    '<path d="M22 12h-6l-2 3h-4l-2-3H2" /><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z" />',
   info: '<circle cx="12" cy="12" r="9" /><path d="M12 8h.01" /><path d="M12 11v5" />',
   success: '<circle cx="12" cy="12" r="9" /><path d="M8.5 12.2l2.4 2.4 4.6-5.2" />',
   warning:

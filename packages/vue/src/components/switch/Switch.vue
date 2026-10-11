@@ -4,21 +4,22 @@ import { createSwitchLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
 import type { SwitchProps } from '@xui/core';
 
-const { value, defaultValue, size, disabled, loading } = withDefaults(
-  defineProps<Omit<SwitchProps, 'onChange'>>(),
-  {
-    // 显式 undefined 默认值：跳过 Vue 对缺省 Boolean prop 的 false 转换，
-    // 未绑定 value 时保持 undefined → 逻辑层进入非受控模式（defaultValue 生效），
-    // 与 React 端语义对齐（提供 value 即受控）。
-    // 注意：默认值必须写在 withDefaults 第二参数才会编译进 props 选项，
-    // 解构模式中的等号默认值只是 setup 局部回退（contract-test 会校验）
-    value: undefined,
-    defaultValue: undefined,
-    size: 'md',
-    disabled: false,
-    loading: false,
-  },
-);
+const props = withDefaults(defineProps<Omit<SwitchProps, 'onChange'>>(), {
+  // 显式 undefined 默认值：跳过 Vue 对缺省 Boolean prop 的 false 转换，
+  // 未绑定 value 时保持 undefined → 逻辑层进入非受控模式（defaultValue 生效），
+  // 与 React 端语义对齐（提供 value 即受控）。
+  // 注意：默认值必须写在 withDefaults 第二参数才会编译进 props 选项，
+  // 解构模式中的等号默认值只是 setup 局部回退（contract-test 会校验）
+  value: undefined,
+  defaultValue: undefined,
+  size: 'md',
+  disabled: false,
+  loading: false,
+});
+
+// setup 仅执行一次：解构 props 是一次性快照（withDefaults + 解构会禁用响应式解构），
+// 仅用于逻辑层初始化；后续 Props 变更必须经 props.xxx 响应式访问同步到逻辑层
+const { value, defaultValue, disabled, loading } = props;
 
 const emit = defineEmits<{
   change: [value: boolean];
@@ -49,9 +50,9 @@ onUnmounted(() => {
 // Props 变更同步到逻辑层（受控模式：value 变更 → 逻辑层）
 watchEffect(() => {
   logic.updateOptions({
-    value,
-    disabled,
-    loading,
+    value: props.value,
+    disabled: props.disabled,
+    loading: props.loading,
   });
 });
 
@@ -66,7 +67,7 @@ const handleToggle = () => {
     role="switch"
     :class="[
       'xui-switch',
-      `xui-switch--${size}`,
+      `xui-switch--${props.size}`,
       {
         'is-checked': state.checked,
         'is-disabled': state.disabled,

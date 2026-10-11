@@ -25,6 +25,17 @@ describe('Checkbox (vue)', () => {
     expect(wrapper.classes()).toContain('is-checked');
   });
 
+  it('受控模式：外部 value 变更同步视觉状态', async () => {
+    const wrapper = mount(Checkbox, { props: { value: false } });
+    expect(wrapper.find('input').element.checked).toBe(false);
+    await wrapper.setProps({ value: true });
+    expect(wrapper.find('input').element.checked).toBe(true);
+    expect(wrapper.classes()).toContain('is-checked');
+    await wrapper.setProps({ value: false });
+    expect(wrapper.find('input').element.checked).toBe(false);
+    expect(wrapper.classes()).not.toContain('is-checked');
+  });
+
   it('defaultValue 提供非受控初始状态', () => {
     const wrapper = mount(Checkbox, { props: { defaultValue: true } });
     expect(wrapper.find('input').element.checked).toBe(true);

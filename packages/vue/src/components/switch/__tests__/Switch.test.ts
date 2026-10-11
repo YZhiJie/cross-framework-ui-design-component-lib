@@ -28,6 +28,15 @@ describe('Switch (vue)', () => {
     expect(wrapper.emitted('change')![0]).toEqual([false]);
   });
 
+  it('受控模式：外部 value 变更同步视觉状态', async () => {
+    const wrapper = mount(Switch, { props: { value: false } });
+    expect(wrapper.attributes('aria-checked')).toBe('false');
+    await wrapper.setProps({ value: true });
+    expect(wrapper.attributes('aria-checked')).toBe('true');
+    await wrapper.setProps({ value: false });
+    expect(wrapper.attributes('aria-checked')).toBe('false');
+  });
+
   it('defaultValue 提供非受控初始状态', () => {
     const wrapper = mount(Switch, { props: { defaultValue: true } });
     expect(wrapper.attributes('aria-checked')).toBe('true');

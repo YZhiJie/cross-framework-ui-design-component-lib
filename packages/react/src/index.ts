@@ -21,7 +21,19 @@ export type { TagComponentProps } from './components/tag';
 export { Alert } from './components/alert';
 export type { AlertComponentProps } from './components/alert';
 
+export { RadioGroup } from './components/radio-group';
+export { Radio } from './components/radio';
+export { Progress } from './components/progress';
+export { Badge } from './components/badge';
+export { Avatar } from './components/avatar';
+export { Empty } from './components/empty';
 export { Button } from './components/button';
+export type { RadioGroupComponentProps } from './components/radio-group';
+export type { RadioComponentProps } from './components/radio';
+export type { ProgressComponentProps } from './components/progress';
+export type { BadgeComponentProps } from './components/badge';
+export type { AvatarComponentProps } from './components/avatar';
+export type { EmptyComponentProps } from './components/empty';
 export type { ButtonComponentProps, ButtonRef } from './components/button';
 
 export { Input } from './components/input';
