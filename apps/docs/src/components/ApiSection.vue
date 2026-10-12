@@ -107,7 +107,7 @@ const ui = useUiMessages();
           <tbody>
             <tr v-for="row in api.methods" :key="row.name">
               <td class="api-table__name">{{ row.name }}</td>
-              <td class="api-table__type">{{ row.signature }}</td>
+              <td class="api-table__signature">{{ row.signature }}</td>
               <td>{{ t(row.description) }}</td>
             </tr>
           </tbody>

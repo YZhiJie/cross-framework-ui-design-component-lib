@@ -700,6 +700,12 @@ code {
   vertical-align: top;
 }
 
+// 末列（说明/描述）设置最小可读宽度：窄视口下不被压成窄条导致文本逐字换行，
+// 超出部分由 .api-table-wrap 横向滚动承担
+.api-table td:last-child {
+  min-width: 160px;
+}
+
 .api-table tr:last-child td {
   border-bottom: none;
 }
@@ -718,6 +724,16 @@ code {
 .api-table .api-table__type {
   color: var(--docs-inline-code);
   white-space: nowrap;
+}
+
+// 方法签名列：签名可能很长（如浮层 resolveFloatingPosition），
+// nowrap 会把表格撑爆并把说明列压成窄条导致行高失控，
+// 因此允许换行并设置最小列宽，长签名在任意字符处可断行
+.api-table .api-table__signature {
+  color: var(--docs-inline-code);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  min-width: 280px;
 }
 
 .api-table .api-table__default {
