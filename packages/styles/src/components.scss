@@ -1953,14 +1953,16 @@
 }
 
 /* 带文本模式（checkedText / uncheckedText）：文本绝对定位在滑块对侧。
-   用 block 而非 inline-flex——text-overflow: ellipsis 在 flex 容器上不生效（文本为匿名 flex item） */
+   用 block 而非 inline-flex——text-overflow: ellipsis 在 flex 容器上不生效（文本为匿名 flex item）。
+   max-width = 文本可用宽度 - 2px 间距：checked 态 thumb 在右（位移36+padding2=38px 起），
+   文本 left:8px → 可用到 38px，宽 30px → max-width 28px，容纳 2 字短文本（如“开启”约24px）完整显示 */
 .xui-switch__text {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   display: block;
   overflow: hidden;
-  max-width: 22px;
+  max-width: 28px;
   font-size: 12px;
   line-height: 1;
   color: #fff;
@@ -1979,9 +1981,10 @@
   right: 8px;
 }
 
-/* sm 轨道更短，文本可用宽度相应收窄 */
+/* sm 轨道更短，文本可用宽度相应收窄：checked 态 thumb 在右（位移28+padding2=30px 起），
+   文本 left:8px → 可用到 30px，宽 22px → max-width 20px，容纳 1-2 字短文本完整显示 */
 .xui-switch--sm .xui-switch__text {
-  max-width: 14px;
+  max-width: 20px;
 }
 
 /* 带文本选中位移：md = 56 - 2×2(padding) - 16(thumb) = 36px；
