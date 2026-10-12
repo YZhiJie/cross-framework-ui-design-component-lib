@@ -1983,27 +1983,28 @@
   user-select: none;
 }
 
-/* 开启态文本左对齐，右侧 padding 为滑块预留空间（thumb 16 + offset 2 + gap 2 = 20px） */
+/* 开启态文本左对齐：右侧 padding 为滑块预留空间（thumb 16 + offset 2 + gap 2 = 20px），
+   左侧 8px 为非滑块侧边距，避免文本贴轨道边框 */
 .xui-switch__text--checked {
   justify-self: start;
-  padding-right: 20px;
+  padding: 0 20px 0 8px;
   visibility: hidden;
 }
 
-/* 关闭态文本右对齐，左侧 padding 为滑块预留空间 */
+/* 关闭态文本右对齐：左侧 padding 为滑块预留空间，右侧 8px 为非滑块侧边距 */
 .xui-switch__text--unchecked {
   justify-self: end;
-  padding-left: 20px;
+  padding: 0 8px 0 20px;
   visibility: visible;
 }
 
-/* sm 变体：滑块 12px，padding 缩为 16px */
+/* sm 变体：滑块 12px，滑块侧 padding 缩为 16px，非滑块侧保持 8px */
 .xui-switch--sm .xui-switch__text--checked {
-  padding-right: 16px;
+  padding: 0 16px 0 8px;
 }
 
 .xui-switch--sm .xui-switch__text--unchecked {
-  padding-left: 16px;
+  padding: 0 8px 0 16px;
 }
 
 .is-checked .xui-switch__text--checked {
