@@ -1965,17 +1965,12 @@
 
 /* 带文本模式（checkedText / uncheckedText）：CSS Grid 重叠双文本，列宽取较宽文本。
    不活动文本 visibility:hidden 保持占位，避免切换时宽度抖动。
-   text-wrap padding 为滑块预留两侧空间（thumb 16 + gap 4 = 20px） */
+   padding 移至各文本元素，仅在滑块所在侧预留空间（非对称），减少轨道总宽。 */
 .xui-switch__text-wrap {
   display: inline-grid;
   grid-template-columns: max-content;
   align-items: center;
   height: 100%;
-  padding: 0 20px;
-}
-
-.xui-switch--sm .xui-switch__text-wrap {
-  padding: 0 16px;
 }
 
 .xui-switch__text {
@@ -1988,15 +1983,27 @@
   user-select: none;
 }
 
-/* 开启态文本显示在滑块左侧、关闭态显示在滑块右侧（与滑块位置互补） */
+/* 开启态文本左对齐，右侧 padding 为滑块预留空间（thumb 16 + offset 2 + gap 2 = 20px） */
 .xui-switch__text--checked {
   justify-self: start;
+  padding-right: 20px;
   visibility: hidden;
 }
 
+/* 关闭态文本右对齐，左侧 padding 为滑块预留空间 */
 .xui-switch__text--unchecked {
   justify-self: end;
+  padding-left: 20px;
   visibility: visible;
+}
+
+/* sm 变体：滑块 12px，padding 缩为 16px */
+.xui-switch--sm .xui-switch__text--checked {
+  padding-right: 16px;
+}
+
+.xui-switch--sm .xui-switch__text--unchecked {
+  padding-left: 16px;
 }
 
 .is-checked .xui-switch__text--checked {
