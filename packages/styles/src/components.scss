@@ -1757,33 +1757,44 @@
   gap: 8px;
 }
 
-/* 箭头：旋转 45° 方块，背景继承面板（与 Tooltip 同款，半藏于面板下呈三角形，不再使用双菱形） */
+/* 箭头：旋转 45° 方块，背景填面板色，仅外侧两边显示边框色（呈 < 形指向），
+   内侧两边透明无边框，融入面板。各方位按旋转后映射仅给外侧两条边着色 */
 .xui-popconfirm__arrow {
   position: absolute;
+  box-sizing: border-box;
   width: 8px;
   height: 8px;
   background-color: var(--xui-color-bg, #fff);
+  border: 1px solid transparent;
   transform: rotate(45deg);
 }
 
 .xui-popconfirm__popper.is-top .xui-popconfirm__arrow {
-  bottom: -3px;
+  border-top-color: var(--xui-color-border, #e5e7eb);
+  border-left-color: var(--xui-color-border, #e5e7eb);
+  bottom: -5px;
   left: calc(50% - 4px);
 }
 
 .xui-popconfirm__popper.is-bottom .xui-popconfirm__arrow {
-  top: -3px;
+  border-bottom-color: var(--xui-color-border, #e5e7eb);
+  border-right-color: var(--xui-color-border, #e5e7eb);
+  top: -5px;
   left: calc(50% - 4px);
 }
 
 .xui-popconfirm__popper.is-left .xui-popconfirm__arrow {
+  border-left-color: var(--xui-color-border, #e5e7eb);
+  border-bottom-color: var(--xui-color-border, #e5e7eb);
   top: calc(50% - 4px);
-  right: -3px;
+  right: -5px;
 }
 
 .xui-popconfirm__popper.is-right .xui-popconfirm__arrow {
+  border-top-color: var(--xui-color-border, #e5e7eb);
+  border-right-color: var(--xui-color-border, #e5e7eb);
   top: calc(50% - 4px);
-  left: -3px;
+  left: -5px;
 }
 
 /* ===================== Modal ===================== */
