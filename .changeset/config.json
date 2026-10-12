@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "YZhiJie/cross-framework-ui-design" }],
+  "changelog": ["@changesets/changelog-github", { "repo": "YZhiJie/cross-framework-ui-design-component-lib" }],
   "commit": false,
   "fixed": [],
   "linked": [["@xui/shared", "@xui/core", "@xui/vue", "@xui/react", "@xui/styles", "@xui/icons"]],
