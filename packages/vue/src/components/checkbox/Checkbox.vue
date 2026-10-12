@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted, ref, watchEffect } from 'vue';
+import { onUnmounted, ref, useTemplateRef, watchEffect } from 'vue';
 import { createCheckboxLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
 import type { CheckboxProps } from '@xui/core';
@@ -58,6 +58,19 @@ watchEffect(() => {
 const handleChange = () => {
   logic.toggle();
 };
+
+const inputRef = useTemplateRef<HTMLInputElement>('input');
+
+const focus = () => {
+  inputRef.value?.focus();
+};
+
+const toggle = () => {
+  logic.toggle();
+};
+
+// 暴露命令式 focus / toggle（与 React 适配层的 CheckboxRef 对齐）
+defineExpose({ focus, toggle });
 </script>
 
 <template>
@@ -74,6 +87,7 @@ const handleChange = () => {
     :style="style"
   >
     <input
+      ref="input"
       class="xui-checkbox__input"
       type="checkbox"
       :checked="state.checked"

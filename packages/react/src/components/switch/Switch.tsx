@@ -25,6 +25,8 @@ export type SwitchComponentProps = SwitchProps & {
 /** 通过 ref 暴露的命令式 API */
 export interface SwitchRef {
   focus: () => void;
+  /** 切换选中状态（disabled / loading 时忽略） */
+  toggle: () => void;
 }
 
 export function Switch(props: SwitchComponentProps) {
@@ -76,9 +78,9 @@ export function Switch(props: SwitchComponentProps) {
     ref,
     () => ({
       focus: () => buttonRef.current?.focus(),
+      toggle: () => logic.toggle(),
     }),
-    // 工厂仅引用稳定的 ref；logic 实例只创建一次，依赖数组留空避免多余依赖警告
-    [],
+    [logic],
   );
 
   return (

@@ -5,8 +5,8 @@
  * CSS 包裹定位（复用 Tooltip 模式，popper 锚定 trigger 元素）；点击外部收起且不触发回调。
  * 打开时经 resolveFloatingPosition 做视口避让（翻转方位 + 交叉轴钳制）。
  */
-import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
-import type { CSSProperties, ReactNode } from 'react';
+import { useEffect, useId, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 import type { PopconfirmProps } from '@xui/core';
 import {
   bindViewportUpdate,
@@ -25,7 +25,19 @@ export type PopconfirmComponentProps = PopconfirmProps & {
   children?: ReactNode;
   /** 确认文案内容（覆盖 content prop，对应 Vue content 插槽） */
   renderContent?: () => ReactNode;
+  /** React 19 ref-as-prop */
+  ref?: Ref<PopconfirmRef>;
 };
+
+/** 通过 ref 暴露的命令式 API */
+export interface PopconfirmRef {
+  /** 显示确认气泡（已展开时 no-op） */
+  show: () => void;
+  /** 隐藏确认气泡（不触发回调） */
+  hide: () => void;
+  /** 切换确认气泡展开/收起 */
+  toggle: () => void;
+}
 
 export function Popconfirm(props: PopconfirmComponentProps) {
   const {
@@ -40,6 +52,7 @@ export function Popconfirm(props: PopconfirmComponentProps) {
     onCancel,
     children,
     renderContent,
+    ref,
   } = props;
 
   // 未提供 confirmText / cancelText 时取全局语言包（setLocale / registerLocale 后响应式更新）
@@ -65,6 +78,18 @@ export function Popconfirm(props: PopconfirmComponentProps) {
   }, [logic, placement, disabled]);
 
   const state = useLogicState(logic.subscribe, logic.getState);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      show: () => {
+        if (!state.open) logic.toggle();
+      },
+      hide: () => logic.close(),
+      toggle: () => logic.toggle(),
+    }),
+    [logic, state.open],
+  );
 
   const rootRef = useRef<HTMLSpanElement | null>(null);
   const triggerRef = useRef<HTMLSpanElement | null>(null);

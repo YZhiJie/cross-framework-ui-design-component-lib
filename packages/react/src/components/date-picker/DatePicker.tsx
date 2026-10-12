@@ -6,8 +6,8 @@
  * 键盘 Enter/Space/Escape，点击组件外部收起面板。
  */
 
-import { useEffect, useId, useRef } from 'react';
-import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
+import { useEffect, useId, useImperativeHandle, useRef } from 'react';
+import type { CSSProperties, KeyboardEvent, ReactNode, Ref } from 'react';
 import type { DatePickerProps } from '@xui/core';
 import { createDatePickerLogic, getMonthMatrix } from '@xui/shared';
 import type { DatePickerLogicInstance } from '@xui/shared';
@@ -26,7 +26,19 @@ export type DatePickerComponentProps = DatePickerProps & {
   renderPrevIcon?: () => ReactNode;
   /** 自定义下一月图标（默认渲染内联 SVG） */
   renderNextIcon?: () => ReactNode;
+  /** React 19 ref-as-prop */
+  ref?: Ref<DatePickerRef>;
 };
+
+/** 通过 ref 暴露的命令式 API */
+export interface DatePickerRef {
+  /** 聚焦触发器 */
+  focus: () => void;
+  /** 切换面板展开/收起（disabled 时忽略） */
+  toggleOpen: () => void;
+  /** 收起面板 */
+  close: () => void;
+}
 
 export function DatePicker(props: DatePickerComponentProps) {
   const {
@@ -43,12 +55,14 @@ export function DatePicker(props: DatePickerComponentProps) {
     renderCalendarIcon,
     renderPrevIcon,
     renderNextIcon,
+    ref,
   } = props;
 
   // 占位符 / 面板 aria / 星期标题 / 月份标题取全局语言包（setLocale / registerLocale 后响应式更新）
   const locale = useLocaleData();
 
   const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
   const triggerId = useId();
   const panelId = useId();
 
@@ -75,6 +89,16 @@ export function DatePicker(props: DatePickerComponentProps) {
   }, [logic, value, disabled]);
 
   const state = useLogicState(logic.subscribe, logic.getState);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      focus: () => triggerRef.current?.focus(),
+      toggleOpen: () => logic.toggleOpen(),
+      close: () => logic.close(),
+    }),
+    [logic],
+  );
 
   // 点击组件外部时收起面板（close 内部有未展开守卫，未打开时为 no-op）
   useEffect(() => {
@@ -115,6 +139,7 @@ export function DatePicker(props: DatePickerComponentProps) {
       style={style as CSSProperties}
     >
       <div
+        ref={triggerRef}
         id={triggerId}
         className="xui-date-picker__trigger"
         role="combobox"

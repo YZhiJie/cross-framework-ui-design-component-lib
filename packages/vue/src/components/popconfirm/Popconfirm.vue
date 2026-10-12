@@ -108,6 +108,21 @@ onUnmounted(() => {
 watchEffect(() => {
   logic.updateOptions({ placement: props.placement, disabled: props.disabled });
 });
+
+// 暴露命令式 show / hide / toggle（与 React 适配层的 PopconfirmRef 对齐）
+const show = () => {
+  if (!state.value.open) logic.toggle();
+};
+
+const hide = () => {
+  logic.close();
+};
+
+const toggle = () => {
+  logic.toggle();
+};
+
+defineExpose({ show, hide, toggle });
 </script>
 
 <template>

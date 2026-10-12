@@ -47,6 +47,7 @@ const emit = defineEmits<{
 const locale = useLocaleData();
 
 const rootRef = useTemplateRef<HTMLElement>('root');
+const triggerRef = useTemplateRef<HTMLElement>('trigger');
 const dropdownRef = useTemplateRef<HTMLElement>('dropdown');
 const triggerId = useId();
 const listboxId = useId();
@@ -296,11 +297,27 @@ const handleSearchKeydown = (event: KeyboardEvent) => {
       break;
   }
 };
+
+// 暴露命令式 focus / toggleOpen / close（与 React 适配层的 SelectRef 对齐）
+const focus = () => {
+  triggerRef.value?.focus();
+};
+
+const toggleOpen = () => {
+  logic.toggleOpen();
+};
+
+const close = () => {
+  logic.close();
+};
+
+defineExpose({ focus, toggleOpen, close });
 </script>
 
 <template>
   <div ref="root" class="xui-select" :class="rootClass" :style="rootStyle">
     <div
+      ref="trigger"
       :id="triggerId"
       class="xui-select__trigger"
       role="combobox"

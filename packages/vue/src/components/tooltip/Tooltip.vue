@@ -106,6 +106,17 @@ const handleFocus = () => {
 const handleBlur = () => {
   if (props.trigger === 'focus') logic.hide();
 };
+
+// 暴露命令式 show / hide（与 React 适配层的 TooltipRef 对齐）
+const show = () => {
+  logic.show();
+};
+
+const hide = () => {
+  logic.hide();
+};
+
+defineExpose({ show, hide });
 </script>
 
 <template>

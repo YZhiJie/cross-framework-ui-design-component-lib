@@ -121,6 +121,10 @@ const close = () => {
   logic.close();
 };
 
+const toggle = () => {
+  logic.toggle();
+};
+
 const handleOk = () => {
   logic.handleOk();
 };
@@ -133,9 +137,8 @@ const handleMaskClick = () => {
   logic.handleMaskClick();
 };
 
-// 暴露命令式 open/close（与 React 适配层的 ModalRef 对齐，
-// 使契约中的 open 事件可达）
-defineExpose({ open, close });
+// 暴露命令式 open/close/toggle（与 React 适配层的 ModalRef 对齐）
+defineExpose({ open, close, toggle });
 </script>
 
 <template>

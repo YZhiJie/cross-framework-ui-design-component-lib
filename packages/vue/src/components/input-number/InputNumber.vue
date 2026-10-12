@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted, ref, watchEffect } from 'vue';
+import { onUnmounted, ref, useTemplateRef, watchEffect } from 'vue';
 import { createInputNumberLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
 import type { InputNumberProps } from '@xui/core';
@@ -82,6 +82,24 @@ function onStep(direction: 1 | -1) {
   logic.stepValue(direction);
   inputText.value = formatValue(state.value.value);
 }
+
+const inputRef = useTemplateRef<HTMLInputElement>('input');
+
+// 暴露命令式 focus / blur / stepValue（与 React 适配层的 InputNumberRef 对齐）
+const focus = () => {
+  inputRef.value?.focus();
+};
+
+const blur = () => {
+  inputRef.value?.blur();
+};
+
+const stepValue = (direction: 1 | -1) => {
+  logic.stepValue(direction);
+  inputText.value = formatValue(state.value.value);
+};
+
+defineExpose({ focus, blur, stepValue });
 </script>
 
 <template>
@@ -91,6 +109,7 @@ function onStep(direction: 1 | -1) {
     :style="style"
   >
     <input
+      ref="input"
       v-model="inputText"
       class="xui-input-number__input"
       type="text"

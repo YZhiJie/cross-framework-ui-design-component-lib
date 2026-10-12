@@ -207,6 +207,24 @@ describe('createModalLogic', () => {
     });
   });
 
+  describe('toggle', () => {
+    it('关闭态 toggle 打开并触发 onOpen', () => {
+      const onOpen = vi.fn();
+      const logic = createModalLogic({ onOpen });
+      logic.toggle();
+      expect(logic.getState().visible).toBe(true);
+      expect(onOpen).toHaveBeenCalledTimes(1);
+    });
+
+    it('开启态 toggle 关闭并触发 onClose', () => {
+      const onClose = vi.fn();
+      const logic = createModalLogic({ defaultVisible: true, onClose });
+      logic.toggle();
+      expect(logic.getState().visible).toBe(false);
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('handleOk', () => {
     it('触发 onOk 并关闭', () => {
       const onOk = vi.fn();

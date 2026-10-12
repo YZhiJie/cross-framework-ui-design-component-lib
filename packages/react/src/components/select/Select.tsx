@@ -8,8 +8,8 @@
  * 虚拟滚动（virtual）：固定选项行高 spacer 方案，窗口外选项不渲染。
  */
 
-import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
-import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
+import { useEffect, useId, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
+import type { CSSProperties, KeyboardEvent, ReactNode, Ref } from 'react';
 import type { SelectProps } from '@xui/core';
 import {
   bindViewportUpdate,
@@ -30,7 +30,19 @@ export type SelectComponentProps = SelectProps & {
   renderClearIcon?: () => ReactNode;
   /** 自定义下拉箭头图标（默认渲染内联 SVG） */
   renderSuffixIcon?: () => ReactNode;
+  /** React 19 ref-as-prop */
+  ref?: Ref<SelectRef>;
 };
+
+/** 通过 ref 暴露的命令式 API */
+export interface SelectRef {
+  /** 聚焦触发器 */
+  focus: () => void;
+  /** 切换下拉面板展开/收起（disabled 时忽略） */
+  toggleOpen: () => void;
+  /** 收起下拉面板 */
+  close: () => void;
+}
 
 /** 虚拟选项行高：与 CSS 变量 --xui-select-item-height 默认值对齐（虚拟模式要求行高固定） */
 const ITEM_HEIGHT = 30;
@@ -53,12 +65,14 @@ export function Select(props: SelectComponentProps) {
     onClear,
     renderClearIcon,
     renderSuffixIcon,
+    ref,
   } = props;
 
   // 触发器占位符 / 搜索框 placeholder 与 aria 取全局语言包（setLocale / registerLocale 后响应式更新）
   const locale = useLocaleData();
 
   const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
   const triggerId = useId();
   const listboxId = useId();
@@ -102,6 +116,16 @@ export function Select(props: SelectComponentProps) {
 
   const state = useLogicState(logic.subscribe, logic.getState);
   const vlState = useLogicState(vl.subscribe, vl.getState);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      focus: () => triggerRef.current?.focus(),
+      toggleOpen: () => logic.toggleOpen(),
+      close: () => logic.close(),
+    }),
+    [logic],
+  );
 
   // 视口避让：下方空间不足且上方更充足时下拉面板向上展开
   const [dropUp, setDropUp] = useState(false);
@@ -264,6 +288,7 @@ export function Select(props: SelectComponentProps) {
       style={style as CSSProperties}
     >
       <div
+        ref={triggerRef}
         id={triggerId}
         className="xui-select__trigger"
         role="combobox"

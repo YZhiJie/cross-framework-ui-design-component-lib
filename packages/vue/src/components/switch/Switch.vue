@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted, ref, watchEffect } from 'vue';
+import { onUnmounted, ref, useTemplateRef, watchEffect } from 'vue';
 import { createSwitchLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
 import type { SwitchProps } from '@xui/core';
@@ -59,10 +59,24 @@ watchEffect(() => {
 const handleToggle = () => {
   logic.toggle();
 };
+
+const btnRef = useTemplateRef<HTMLButtonElement>('btn');
+
+const focus = () => {
+  btnRef.value?.focus();
+};
+
+const toggle = () => {
+  logic.toggle();
+};
+
+// 暴露命令式 focus / toggle（与 React 适配层的 SwitchRef 对齐）
+defineExpose({ focus, toggle });
 </script>
 
 <template>
   <button
+    ref="btn"
     type="button"
     role="switch"
     :class="[

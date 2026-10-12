@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted, ref, watchEffect } from 'vue';
+import { onUnmounted, ref, useTemplateRef, watchEffect } from 'vue';
 import { createButtonLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
 import type { ButtonProps } from '@xui/core';
@@ -40,10 +40,25 @@ watchEffect(() => {
 const handleClick = (event: MouseEvent) => {
   logic.handleClick(event);
 };
+
+const btnRef = useTemplateRef<HTMLButtonElement>('btn');
+
+const focus = () => {
+  btnRef.value?.focus();
+};
+
+/** 命令式设置 loading 状态（与 React 适配层的 ButtonRef.setLoading 对齐） */
+const setLoading = (loading: boolean) => {
+  logic.updateOptions({ loading });
+};
+
+// 暴露命令式 focus / setLoading（与 React 适配层的 ButtonRef 对齐）
+defineExpose({ focus, setLoading });
 </script>
 
 <template>
   <button
+    ref="btn"
     :class="[
       className,
       'xui-button',

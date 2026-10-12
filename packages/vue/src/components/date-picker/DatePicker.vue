@@ -22,6 +22,7 @@ const emit = defineEmits<{
 }>();
 
 const rootRef = useTemplateRef<HTMLElement>('root');
+const triggerRef = useTemplateRef<HTMLElement>('trigger');
 const triggerId = useId();
 const panelId = useId();
 
@@ -93,6 +94,21 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
       break;
   }
 };
+
+// 暴露命令式 focus / toggleOpen / close（与 React 适配层的 DatePickerRef 对齐）
+const focus = () => {
+  triggerRef.value?.focus();
+};
+
+const toggleOpen = () => {
+  logic.toggleOpen();
+};
+
+const close = () => {
+  logic.close();
+};
+
+defineExpose({ focus, toggleOpen, close });
 </script>
 
 <template>
@@ -103,6 +119,7 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
     :style="style"
   >
     <div
+      ref="trigger"
       :id="triggerId"
       class="xui-date-picker__trigger"
       role="combobox"

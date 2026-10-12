@@ -41,6 +41,8 @@ export type ModalState = {
 export interface ModalLogicInstance extends LogicInstance<ModalLogicOptions, ModalState> {
   open: () => void;
   close: () => void;
+  /** 切换可见性：当前可见则关闭，否则打开 */
+  toggle: () => void;
   /** 确认：触发 onOk 后关闭 */
   handleOk: () => void;
   /** 取消：触发 onCancel 后关闭 */
@@ -117,6 +119,8 @@ export function createModalLogic(options: ModalLogicOptions = {}): ModalLogicIns
     open: () => setVisible(true),
 
     close: () => setVisible(false),
+
+    toggle: () => setVisible(!state.visible),
 
     handleOk() {
       onOk?.();

@@ -36,6 +36,7 @@ export type ModalComponentProps = ModalProps & {
 export interface ModalRef {
   open: () => void;
   close: () => void;
+  toggle: () => void;
 }
 
 export function Modal(props: ModalComponentProps) {
@@ -106,6 +107,7 @@ export function Modal(props: ModalComponentProps) {
     () => ({
       open: () => logic.open(),
       close: () => logic.close(),
+      toggle: () => logic.toggle(),
     }),
     [logic],
   );

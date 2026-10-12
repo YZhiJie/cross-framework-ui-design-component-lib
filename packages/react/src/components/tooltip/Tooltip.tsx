@@ -8,8 +8,8 @@
  * 监听绑定在根元素上，悬停提示框本身不会触发 leave。
  * renderContent 回调对应 Vue 具名插槽 #content。
  */
-import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
-import type { CSSProperties, ReactNode } from 'react';
+import { useEffect, useId, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 import type { TooltipProps } from '@xui/core';
 import {
   bindViewportUpdate,
@@ -27,7 +27,17 @@ export type TooltipComponentProps = TooltipProps & {
   children?: ReactNode;
   /** 提示内容渲染回调（对应 Vue 具名插槽 #content，覆盖 content prop） */
   renderContent?: () => ReactNode;
+  /** React 19 ref-as-prop */
+  ref?: Ref<TooltipRef>;
 };
+
+/** 通过 ref 暴露的命令式 API */
+export interface TooltipRef {
+  /** 显示提示框（disabled 时不展开） */
+  show: () => void;
+  /** 隐藏提示框（未展开时为 no-op） */
+  hide: () => void;
+}
 
 export function Tooltip(props: TooltipComponentProps) {
   const {
@@ -39,6 +49,7 @@ export function Tooltip(props: TooltipComponentProps) {
     style,
     children,
     renderContent,
+    ref,
   } = props;
   const popperId = useId();
 
@@ -54,6 +65,15 @@ export function Tooltip(props: TooltipComponentProps) {
   }, [logic, disabled]);
 
   const state = useLogicState(logic.subscribe, logic.getState);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      show: () => logic.show(),
+      hide: () => logic.hide(),
+    }),
+    [logic],
+  );
 
   // 视口避让：实际方位（可能翻转）与交叉轴 shift（px）
   const triggerRef = useRef<HTMLSpanElement | null>(null);

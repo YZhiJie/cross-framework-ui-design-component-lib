@@ -6,8 +6,8 @@
  * 受控值（value 非 undefined，null 也是有效值）变化时由 effect 对齐显示。
  */
 
-import { useEffect, useRef, useState } from 'react';
-import type { CSSProperties, ReactNode } from 'react';
+import { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 import type { InputNumberProps } from '@xui/core';
 import { createInputNumberLogic } from '@xui/shared';
 import type { InputNumberLogicInstance } from '@xui/shared';
@@ -21,7 +21,19 @@ export type InputNumberComponentProps = InputNumberProps & {
   renderUpIcon?: () => ReactNode;
   /** 自定义步进向下图标（默认渲染内联 SVG） */
   renderDownIcon?: () => ReactNode;
+  /** React 19 ref-as-prop */
+  ref?: Ref<InputNumberRef>;
 };
+
+/** 通过 ref 暴露的命令式 API */
+export interface InputNumberRef {
+  /** 聚焦输入框 */
+  focus: () => void;
+  /** 使输入框失焦（会触发 onBlur 提交） */
+  blur: () => void;
+  /** 步进：direction 为 1（加 step）/ -1（减 step）；disabled / 值不变时 no-op */
+  stepValue: (direction: 1 | -1) => void;
+}
 
 /** 收敛值的显示文本（precision 存在时固定小数位） */
 function formatValue(value: number | null, precision: number | null): string {
@@ -44,12 +56,14 @@ export function InputNumber(props: InputNumberComponentProps) {
     onChange,
     renderUpIcon,
     renderDownIcon,
+    ref,
   } = props;
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
   const callbacksRef = useRef({ onChange });
   callbacksRef.current = { onChange };
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const logicRef = useRef<InputNumberLogicInstance | null>(null);
   if (logicRef.current === null) {
     logicRef.current = createInputNumberLogic({
@@ -70,6 +84,16 @@ export function InputNumber(props: InputNumberComponentProps) {
   }, [logic, value, min, max, step, precision, disabled]);
 
   const state = useLogicState(logic.subscribe, logic.getState);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      focus: () => inputRef.current?.focus(),
+      blur: () => inputRef.current?.blur(),
+      stepValue: (direction) => logic.stepValue(direction),
+    }),
+    [logic],
+  );
 
   // 输入框显示文本：编辑期自由文本，提交 / 步进后与逻辑收敛值对齐
   const [inputText, setInputText] = useState(() => formatValue(state.value, state.precision));
@@ -99,6 +123,7 @@ export function InputNumber(props: InputNumberComponentProps) {
       style={style as CSSProperties}
     >
       <input
+        ref={inputRef}
         className="xui-input-number__input"
         type="text"
         inputMode="decimal"
