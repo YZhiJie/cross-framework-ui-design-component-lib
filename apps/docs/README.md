@@ -119,6 +119,92 @@ pnpm dev
 - 路由切换后 `watch(route.fullPath)` 重新扫描(等待 `nextTick`)。
 - 视口宽度不足时隐藏:`@media (width <= 1400px) { .docs-toc { display: none } }`(stylelint 要求新记法,见避坑点④)。
 
+## GitHub Pages 部署
+
+线上地址:**https://yzhijie.github.io/xui-design-docs/**
+
+### 部署架构
+
+文档站通过独立仓库 [YZhiJie/xui-design-docs](https://github.com/YZhiJie/xui-design-docs) 部署,与主仓库分离:
+
+```
+主仓库 apps/docs ──build──> dist/ ──推送──> YZhiJie/xui-design-docs (main)
+                                                    │
+                                            .github/workflows/deploy.yml
+                                            (upload-pages-artifact + deploy-pages)
+                                                    │
+                                            GitHub Pages 自动发布
+```
+
+- 部署仓库内容为**构建产物本身**(`index.html` + `assets/` + 图标文件),不含源码;`.github/workflows/deploy.yml` 负责发布,push 到 main 即触发。
+- Pages 的 build type 为 `workflow`(GitHub Actions 模式),无需 gh-pages 分支。
+- 仓库根含 `.nojekyll`,禁用 Jekyll 处理,保证 Vite 产物原样服务。
+
+### base 路径与 hash 路由
+
+项目站点 URL 带仓库名前缀(`/xui-design-docs/`),构建时必须注入相同的 Vite `base`,否则资源 404:
+
+```bash
+cd apps/docs
+DOCS_BASE=/xui-design-docs/ pnpm build
+```
+
+`vite.config.ts` 中 `base: process.env.DOCS_BASE ?? '/'`——不传 `DOCS_BASE` 时保持 `/`,本地 dev / preview 不受影响。构建后 `dist/index.html` 中的资源引用(favicon、CSS、JS)均带 `/xui-design-docs/` 前缀,可通过 `grep -o 'href="[^"]*"' dist/index.html` 验证。
+
+路由使用 `createWebHashHistory`(hash 模式),所有路由在 `#/` 之后,GitHub Pages 无需配置 SPA rewrite 规则,直接支持任意路由直达与刷新。
+
+### 更新流程
+
+文档内容(含 meta、demo、页面组件、图标)改动后,执行以下指令更新线上文档(假设部署仓库已 clone 到 `~/Desktop/github_repositories/xui-design-docs`):
+
+```bash
+# 0. 首次:克隆部署仓库(只做一次)
+git clone https://github.com/YZhiJie/xui-design-docs.git ~/Desktop/github_repositories/xui-design-docs
+
+# 1. 构建文档站(注入 GitHub Pages base 前缀)
+cd ~/Desktop/github_repositories/cross-framework-ui-design/apps/docs
+DOCS_BASE=/xui-design-docs/ pnpm build
+
+# 2. 验证构建产物的资源前缀(应全部带 /xui-design-docs/)
+grep -o 'href="[^"]*"' dist/index.html
+
+# 3. 清理部署仓库旧产物(保留 .git 与 .github,防过期 hash 文件残留)
+cd ~/Desktop/github_repositories/xui-design-docs
+git rm -rq assets 2>/dev/null; rm -rf assets index.html *.png *.jpg .nojekyll
+
+# 4. 复制新产物
+cp -R ~/Desktop/github_repositories/cross-framework-ui-design/apps/docs/dist/. .
+touch .nojekyll
+
+# 5. 提交并推送(push 后 Actions 自动部署,约 1 分钟生效)
+git add -A
+git commit -m "docs: 更新文档站内容"
+git push origin main
+
+# 6. 验证部署结果
+gh run list --repo YZhiJie/xui-design-docs --limit 1   # 确认 deploy run 成功
+curl -sL -o /dev/null -w "%{http_code}\n" https://yzhijie.github.io/xui-design-docs/   # 期望 200
+```
+
+注意事项:
+
+- 第 1 步的 `DOCS_BASE` 必须与仓库名一致,否则线上资源 404
+- 第 3 步保留 `.github/workflows/deploy.yml`(发布流水线)和 `.git`
+- 本机 git 凭据已配置(osxkeychain),推送无需内嵌 token
+
+### 站点图标
+
+`public/` 下的图标文件会被 Vite 原样复制到 `dist/` 根:
+
+| 文件 | 用途 | 引用方式 |
+|------|------|----------|
+| `favicon-32x32.png` | 浏览器标签页图标 | `index.html` 的 `rel="icon"` |
+| `apple-touch-icon.png` | iOS 主屏图标 | `index.html` 的 `rel="apple-touch-icon"` |
+| `logo-512.png` | 高清 logo 资源 | 备用 |
+| `logo.jpg` | 原始生成图(1920×1920) | 源文件,未直接引用 |
+
+`index.html` 中图标引用写 `/favicon-32x32.png` 形式的根相对路径,构建时由 Vite 自动注入 `base` 前缀。
+
 ## 关键避坑点
 
 源自 `project_memory` 与源码注释,均需在新增文档/demo 时遵守:
