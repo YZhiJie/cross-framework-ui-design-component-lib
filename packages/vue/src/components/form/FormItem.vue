@@ -188,6 +188,16 @@ const injectedChild = computed<VNode | null>(() => {
   return cloneVNode(child, injectedProps);
 });
 
+/**
+ * 子树渲染器（函数式组件），引用必须保持稳定。
+ * 模板中直接写 `:is="() => injectedChild"` 会在每次渲染生成新函数，
+ * Vue 将其视为不同组件类型而整体重挂载子树，导致输入框每次键入后失焦；
+ * vnode 通过 props 传入，保证值变化时渲染器随之重渲染、子树走原地 patch。
+ */
+const InjectedChildRenderer = Object.assign((props: { node: VNode | null }) => props.node, {
+  props: ['node'],
+});
+
 // ────────── 命令式 API ──────────
 
 defineExpose<FormItemRef>({
@@ -230,7 +240,7 @@ defineExpose<FormItemRef>({
       <slot name="label">{{ props.label }}</slot>
     </label>
     <div class="xui-form-item__content">
-      <component :is="() => injectedChild" v-if="injectedChild" />
+      <component :is="InjectedChildRenderer" :node="injectedChild" v-if="injectedChild" />
       <div v-if="props.extra || $slots.extra" class="xui-form-item__extra">
         <slot name="extra">{{ props.extra }}</slot>
       </div>

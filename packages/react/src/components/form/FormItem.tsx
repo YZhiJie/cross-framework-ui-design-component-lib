@@ -51,16 +51,21 @@ export function FormItem(props: FormItemComponentProps) {
   const ctx = useFormContext();
 
   // 注册 / 注销字段
+  // 依赖必须取 ctx?.logic（实例稳定）而非 ctx：Form 每次重渲染都会生成新的
+  // contextValue 对象，若依赖 ctx，effect 会在每次键入后重跑，cleanup 调用
+  // unregisterField 触发 notify → Form 重渲染 → 新 ctx → effect 再重跑，
+  // 形成无限更新循环（Maximum update depth exceeded）。
+  const logic = ctx?.logic;
   useEffect(() => {
-    if (name && ctx) {
-      ctx.logic.registerField(name, rules ?? []);
+    if (name && logic) {
+      logic.registerField(name, rules ?? []);
     }
     return () => {
-      if (name && ctx) {
-        ctx.logic.unregisterField(name);
+      if (name && logic) {
+        logic.unregisterField(name);
       }
     };
-  }, [name, ctx, rules]);
+  }, [name, logic, rules]);
 
   // 订阅表单状态（用于触发本 FormItem 重渲染）
   const state = useLogicState(
