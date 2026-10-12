@@ -1,6 +1,6 @@
 {
   "name": "@xui-design/vue",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "跨框架组件库 - Vue 3 适配层",
   "type": "module",
   "main": "./dist/index.cjs",
