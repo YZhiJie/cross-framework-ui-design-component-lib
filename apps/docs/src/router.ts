@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import HomePage from './pages/HomePage.vue';
 import ThemePage from './pages/ThemePage.vue';
 import I18nPage from './pages/I18nPage.vue';
+import FloatingPage from './pages/FloatingPage.vue';
 import ComponentPage from './pages/ComponentPage.vue';
 
 export const router = createRouter({
@@ -11,6 +12,7 @@ export const router = createRouter({
     { path: '/', name: 'home', component: HomePage },
     { path: '/theme', name: 'theme', component: ThemePage },
     { path: '/i18n', name: 'i18n', component: I18nPage },
+    { path: '/floating', name: 'floating', component: FloatingPage },
     { path: '/components/:slug', name: 'component', component: ComponentPage },
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],

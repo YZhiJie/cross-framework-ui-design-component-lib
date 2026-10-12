@@ -41,6 +41,14 @@ const isActive = (slug: string) => route.name === 'component' && route.params.sl
           国际化
           <span class="side-nav__en">Internationalization</span>
         </RouterLink>
+        <RouterLink
+          to="/floating"
+          class="side-nav__link"
+          :class="{ 'is-active': route.name === 'floating' }"
+        >
+          浮层视口避让
+          <span class="side-nav__en">Floating</span>
+        </RouterLink>
 
         <template v-for="group in groups" :key="group.category.key">
           <div class="side-nav__group-title">{{ group.category.title }}</div>
