@@ -417,12 +417,17 @@ code {
   font-size: 22px;
   font-weight: 650;
   border-bottom: 1px solid var(--docs-border);
+
+  // 锚点跳转时避开 sticky 顶栏（52px），保留 24px 视觉间距；
+  // 落点（76px）需在 TOC 激活线（100px）之上，保证点击项保持激活
+  scroll-margin-top: 76px;
 }
 
 .docs-subsection-title {
   margin: 28px 0 12px;
   font-size: 16px;
   font-weight: 650;
+  scroll-margin-top: 76px;
 }
 
 .docs-list {
@@ -499,6 +504,7 @@ code {
 .demo-block__title {
   font-size: 15px;
   font-weight: 650;
+  scroll-margin-top: 76px;
 }
 
 .demo-block__desc {
