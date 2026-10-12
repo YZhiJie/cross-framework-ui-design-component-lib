@@ -17,6 +17,33 @@
 | 性能开销 | 框架包装层额外运行时开销 < 1KB gzip / 组件 |
 | 测试覆盖 | 核心逻辑层 ≥ 90%，适配层 ≥ 80% |
 
+## 在线文档
+
+文档站已部署至 GitHub Pages：**https://yzhijie.github.io/xui-design-docs/**
+
+包含 24 个组件的交互式文档（Vue / React 双端 demo 实时切换）、主题定制（/theme）、国际化（/i18n）、浮层视口避让（/floating）等指南页。本地预览：`pnpm --filter @xui-design/docs dev`（端口 5175）。
+
+## npm 安装
+
+组件库已发布至 npm（scope：`@xui-design`，public access），按端安装对应适配层包即可：
+
+```bash
+# Vue 项目
+pnpm add @xui-design/vue @xui-design/styles
+
+# React 项目（需 React ≥ 19）
+pnpm add @xui-design/react @xui-design/styles
+```
+
+| 包 | 说明 |
+|------|------|
+| `@xui-design/vue` | Vue 3 适配层（peer: vue ≥ 3.5） |
+| `@xui-design/react` | React 适配层（peer: react / react-dom ≥ 19） |
+| `@xui-design/core` | 框架无关契约层（Props / Events / Slots 定义） |
+| `@xui-design/shared` | 纯逻辑核心层（状态 / 交互 / locale / theme / floating / virtual-list） |
+| `@xui-design/styles` | 共享样式包（BEM + CSS 变量主题，双端单一来源） |
+| `@xui-design/icons` | 图标包（双端共用 SVG 数据源） |
+
 ## 文档目录
 
 | 序号 | 文档 | 内容概述 |
@@ -80,6 +107,38 @@
 - 架构理解 → 从 [02-分层架构设计](docs/02-分层架构设计.md) 开始
 - 遇到问题 → 查看 [06-避坑指南](docs/06-避坑指南.md)
 - 贡献组件 → 阅读 [03-统一组件规范](docs/03-统一组件规范.md)
+
+## 发布与部署
+
+### 组件库发版（Changesets + GitHub Actions）
+
+```bash
+pnpm changeset          # 1. 记录变更（选择包与 semver 级别，生成 .changeset/*.md）
+git push origin main    # 2. 推送后自动执行后续流程
+```
+
+后续流程全自动：CI（build / test / lint / type-check / 契约测试）成功后触发 Release workflow（`changesets/action`）——存在 changeset 时创建 Version Packages PR，合并后自动 `changeset publish` 发版；无 changeset 时直接检查并发布未发布版本。
+
+发布相关配置要点：
+
+- 6 个发布包均声明 `publishConfig.access: public`（scoped 包必需）
+- 版本联动：`.changeset/config.json` 中 `linked` 组保证 6 包同版本发布
+- GitHub Secret `NPM_TOKEN` 需使用 **Granular Access Token**（勾选 bypass 2FA，经典 token 在开启 2FA 的账号下无法发布）
+- `@changesets/cli` 使用 v3：v2 的 `isAlreadyPublishedError` 对无 `.message` 的错误对象会崩溃（`Cannot read properties of undefined (reading 'includes')`），掩盖真实发布错误
+
+### 文档站部署（GitHub Pages）
+
+文档站通过独立仓库 [YZhiJie/xui-design-docs](https://github.com/YZhiJie/xui-design-docs) 部署，内容为构建产物 + Pages workflow，push 后 Actions 自动发布。
+
+更新流程：
+
+```bash
+cd apps/docs
+DOCS_BASE=/xui-design-docs/ pnpm build   # 产物 base 前缀必须与仓库名一致
+# 将 dist/ 全部内容推送至 xui-design-docs 仓库 main 分支
+```
+
+说明：`DOCS_BASE` 环境变量注入 Vite `base`（本地 dev 默认为 `/`，不受影响）；路由使用 hash 模式，GitHub Pages 无需额外 rewrite 规则；`.nojekyll` 已随产物提交以禁用 Jekyll 处理。
 
 ## License
 
