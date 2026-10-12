@@ -1,6 +1,6 @@
 {
   "name": "@xui/core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "跨框架组件库 - 框架无关抽象层",
   "type": "module",
   "main": "./dist/index.cjs",
