@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import HomePage from './pages/HomePage.vue';
+import ThemePage from './pages/ThemePage.vue';
 import ComponentPage from './pages/ComponentPage.vue';
 
 export const router = createRouter({
@@ -7,6 +8,7 @@ export const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     { path: '/', name: 'home', component: HomePage },
+    { path: '/theme', name: 'theme', component: ThemePage },
     { path: '/components/:slug', name: 'component', component: ComponentPage },
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],

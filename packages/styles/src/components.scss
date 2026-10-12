@@ -79,8 +79,8 @@
 }
 
 .xui-button--danger {
-  background-color: #dc2626;
-  border-color: #dc2626;
+  background-color: var(--xui-color-danger, #dc2626);
+  border-color: var(--xui-color-danger, #dc2626);
   color: #fff;
 }
 

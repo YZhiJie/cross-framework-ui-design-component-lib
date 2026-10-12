@@ -25,6 +25,14 @@ const isActive = (slug: string) => route.name === 'component' && route.params.sl
           介绍
           <span class="side-nav__en">Introduction</span>
         </RouterLink>
+        <RouterLink
+          to="/theme"
+          class="side-nav__link"
+          :class="{ 'is-active': route.name === 'theme' }"
+        >
+          主题定制
+          <span class="side-nav__en">Theming</span>
+        </RouterLink>
 
         <template v-for="group in groups" :key="group.category.key">
           <div class="side-nav__group-title">{{ group.category.title }}</div>
