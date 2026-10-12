@@ -28,16 +28,20 @@ export default defineConfig({
         `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
-      external: [
-        'react',
-        'react-dom',
-        'react/jsx-runtime',
-        'use-sync-external-store',
-        '@xui/core',
-        '@xui/shared',
-        '@xui/styles',
-        '@xui/icons',
-      ],
+      // 函数式 external：匹配包名及其所有子路径（如 react-dom/client、react/jsx-runtime）
+      // 字符串数组只能精确匹配，react-dom/client 会被打包进产物导致体积暴涨
+      external: (id: string) =>
+        [
+          'react',
+          'react-dom',
+          'react/jsx-runtime',
+          'use-sync-external-store',
+          'scheduler',
+          '@xui/core',
+          '@xui/shared',
+          '@xui/styles',
+          '@xui/icons',
+        ].some((pkg) => id === pkg || id.startsWith(`${pkg}/`)),
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',
