@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SideNav from './components/SideNav.vue';
+import TableOfContents from './components/TableOfContents.vue';
 </script>
 
 <template>
@@ -10,5 +11,6 @@ import SideNav from './components/SideNav.vue';
            Vue/React tab 状态与 React createRoot 实例残留（显示成上一个组件的 demo） -->
       <RouterView :key="$route.fullPath" />
     </main>
+    <TableOfContents />
   </div>
 </template>
