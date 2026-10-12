@@ -1,17 +1,17 @@
 /**
  * Avatar - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * 内容优先级：成功的图片 > children 自定义内容 > 默认图标；
  * 图片加载失败时进入失败态（逻辑层管理），换新 src 自动重置重试。
  */
 
 import { useEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { AvatarProps } from '@xui/core';
-import { createAvatarLogic } from '@xui/shared';
-import type { AvatarLogicInstance } from '@xui/shared';
-import { icons } from '@xui/icons';
+import type { AvatarProps } from '@xui-design/core';
+import { createAvatarLogic } from '@xui-design/shared';
+import type { AvatarLogicInstance } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 
@@ -78,7 +78,7 @@ export function Avatar(props: AvatarComponentProps) {
   );
 }
 
-/** 默认头像图标（数据来自 @xui/icons） */
+/** 默认头像图标（数据来自 @xui-design/icons） */
 function AvatarIcon() {
   return (
     <svg

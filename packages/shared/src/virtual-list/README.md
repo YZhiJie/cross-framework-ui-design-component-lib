@@ -1,4 +1,4 @@
-# @xui/shared/virtual-list
+# @xui-design/shared/virtual-list
 
 虚拟滚动纯逻辑原语（框架无关），为 Table（行）/ Select（选项）等长列表场景统一提供固定行高窗口计算、状态快照与滚动控制能力。
 
@@ -70,7 +70,7 @@ export interface VirtualListLogicInstance extends LogicInstance<
 }
 ```
 
-其中 `LogicInstance<P, S>` 来自 `@xui/shared/types`，提供：
+其中 `LogicInstance<P, S>` 来自 `@xui-design/shared/types`，提供：
 
 ```ts
 export interface LogicInstance<P extends Record<string, unknown>, S = unknown> {
@@ -144,7 +144,7 @@ export type Unsubscribe = () => void;
 ## 使用示例
 
 ```ts
-import { createVirtualListLogic } from '@xui/shared/virtual-list';
+import { createVirtualListLogic } from '@xui-design/shared/virtual-list';
 
 // 1) 创建实例（一万条数据，每条 32px）
 const list = createVirtualListLogic({

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, Modal } from '@xui/vue';
+import { Button, Modal } from '@xui-design/vue';
 
 const visible = ref(false);
 </script>

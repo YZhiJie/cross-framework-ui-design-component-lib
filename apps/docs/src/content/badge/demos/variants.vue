@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Badge } from '@xui/vue';
+import { Badge } from '@xui-design/vue';
 </script>
 
 <template>

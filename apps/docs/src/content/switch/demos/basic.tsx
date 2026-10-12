@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Switch } from '@xui/react';
+import { Switch } from '@xui-design/react';
 
 export default function SwitchBasicDemo() {
   const [enabled, setEnabled] = useState(false);

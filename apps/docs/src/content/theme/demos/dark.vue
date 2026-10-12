@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { getTheme, setTheme, toggleTheme } from '@xui/vue';
-import { Alert, Button, Input, Switch, Tag } from '@xui/vue';
+import { getTheme, setTheme, toggleTheme } from '@xui-design/vue';
+import { Alert, Button, Input, Switch, Tag } from '@xui-design/vue';
 
 const current = ref(getTheme());
 const enabled = ref(true);

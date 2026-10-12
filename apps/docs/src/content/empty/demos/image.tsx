@@ -1,4 +1,4 @@
-import { Empty } from '@xui/react';
+import { Empty } from '@xui-design/react';
 
 export default function EmptyImageDemo() {
   return (

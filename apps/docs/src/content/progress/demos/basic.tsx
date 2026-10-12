@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Progress } from '@xui/react';
+import { Button, Progress } from '@xui-design/react';
 
 export default function ProgressBasicDemo() {
   const [percent, setPercent] = useState(35);

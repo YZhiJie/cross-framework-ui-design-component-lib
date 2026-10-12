@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Input } from '@xui/vue';
+import { Input } from '@xui-design/vue';
 
 const value = ref('');
 </script>

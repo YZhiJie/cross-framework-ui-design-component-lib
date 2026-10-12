@@ -1,4 +1,4 @@
-import { Avatar } from '@xui/react';
+import { Avatar } from '@xui-design/react';
 
 const avatarSrc =
   "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><rect width='80' height='80' fill='%236366f1'/><text x='40' y='52' font-size='36' fill='white' text-anchor='middle'>X</text></svg>";

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Checkbox } from '@xui/react';
+import { Checkbox } from '@xui-design/react';
 
 export default function CheckboxStateDemo() {
   const [indeterminate, setIndeterminate] = useState(true);

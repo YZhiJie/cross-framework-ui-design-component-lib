@@ -1,12 +1,12 @@
 /**
  * Breadcrumb 组件规格
  *
- * useLogic 指向 @xui/shared 的 createBreadcrumbLogic 逻辑工厂，
+ * useLogic 指向 @xui-design/shared 的 createBreadcrumbLogic 逻辑工厂，
  * Vue / React 适配层通过同一份规格驱动组件状态。
  * ARIA 导航模式：nav + ol/li，末项 aria-current="page"。
  */
 
-import { createBreadcrumbLogic } from '@xui/shared';
+import { createBreadcrumbLogic } from '@xui-design/shared';
 
 import type { ComponentSpec } from '../../spec';
 import type { BreadcrumbEvents, BreadcrumbLogic, BreadcrumbProps, BreadcrumbSlots } from './types';

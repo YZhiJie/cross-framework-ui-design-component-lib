@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, useId, useTemplateRef, watchEffect } from 'vue';
-import { createDatePickerLogic, getMonthMatrix } from '@xui/shared';
-import { icons } from '@xui/icons';
+import { createDatePickerLogic, getMonthMatrix } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
 import { useLocaleData } from '../../hooks/use-locale';
-import type { DatePickerProps } from '@xui/core';
+import type { DatePickerProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<DatePickerProps, 'onChange' | 'onClear'>>(), {
   // 显式 undefined 默认值：未绑定 value 时保持 undefined → 逻辑层进入非受控模式

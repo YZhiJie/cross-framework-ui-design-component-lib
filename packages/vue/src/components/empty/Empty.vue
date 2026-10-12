@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watchEffect } from 'vue';
-import { createEmptyLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { EmptyProps } from '@xui/core';
+import { createEmptyLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { EmptyProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<EmptyProps>(), {
   description: undefined,

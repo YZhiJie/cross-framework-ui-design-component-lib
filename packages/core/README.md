@@ -1,8 +1,8 @@
-# @xui/core
+# @xui-design/core
 
-> 跨框架组件库的**框架无关抽象层**：定义所有组件的 Props / Events / Slots 类型契约与 `ComponentSpec` 规格契约，被 `@xui/vue` 与 `@xui/react` 共同引用，确保双端 API 逐字一致。
+> 跨框架组件库的**框架无关抽象层**：定义所有组件的 Props / Events / Slots 类型契约与 `ComponentSpec` 规格契约，被 `@xui-design/vue` 与 `@xui-design/react` 共同引用，确保双端 API 逐字一致。
 
-- 包名：`@xui/core`
+- 包名：`@xui-design/core`
 - 版本：`0.1.0`
 - 入口：`dist/index.mjs`（ESM）/ `dist/index.cjs`（CJS）/ `dist/types/index.d.ts`（类型）
 - 子路径导出：`./spec`、`./types`、`./components/*`（按组件细粒度引用）
@@ -12,28 +12,28 @@
 ### 这个包做什么
 
 - 定义组件契约的**基础类型原语**（`Constructor` / `PropType` / `LogicInstance` 等）。
-- 定义 `ComponentSpec` 组件规格契约：将一个组件的 `props`（运行时 schema + 默认值）、`events`、`slots`、`useLogic`（指向 `@xui/shared` 的逻辑工厂）聚合为一份“共享合同”。
+- 定义 `ComponentSpec` 组件规格契约：将一个组件的 `props`（运行时 schema + 默认值）、`events`、`slots`、`useLogic`（指向 `@xui-design/shared` 的逻辑工厂）聚合为一份“共享合同”。
 - 为 25 个组件分别定义 `XxxProps` / `XxxEvents` / `XxxSlots` / `XxxState` / `XxxLogic` 类型别名与 `xxxSpec` 规格常量。
 - 定义各组件 Props 的**默认值**（统一收口在 core 层 spec 的 `defaults` 中）。
-- 重导出 Message 命令式 API 的默认值契约 `messageDefaults`（单一来源为 `@xui/shared`）。
+- 重导出 Message 命令式 API 的默认值契约 `messageDefaults`（单一来源为 `@xui-design/shared`）。
 
 ### 这个包不做什么
 
-- **不实现任何组件逻辑**：`useLogic` 仅指向 `@xui/shared` 的 `createXxxLogic` 工厂，core 自身不包含状态机。
+- **不实现任何组件逻辑**：`useLogic` 仅指向 `@xui-design/shared` 的 `createXxxLogic` 工厂，core 自身不包含状态机。
 - **不产出任何 DOM / 渲染产物**：纯类型 + 规格常量，`sideEffects: false`。
 - **不依赖 Vue / React**：零框架运行时依赖，可被双端安全引用。
-- **不定义逻辑层的 Options/State/LogicInstance 形状**：该形状由 `@xui/shared` 的 `LogicInstance` 提供，core 的 `LogicInstance` 与其结构兼容（由 `satisfies ComponentSpec<...>` 编译期校验保证一致）。
+- **不定义逻辑层的 Options/State/LogicInstance 形状**：该形状由 `@xui-design/shared` 的 `LogicInstance` 提供，core 的 `LogicInstance` 与其结构兼容（由 `satisfies ComponentSpec<...>` 编译期校验保证一致）。
 
 ## 依赖关系
 
-### 它依赖哪些 @xui/* 包
+### 它依赖哪些 @xui-design/* 包
 
-- `@xui/shared`（`workspace:*`，运行时依赖）：core 的 spec 在 `useLogic` 中调用 shared 的 `createXxxLogic` / `createMessageManager`，并从 shared 重导出 `messageDefaults`。
+- `@xui-design/shared`（`workspace:*`，运行时依赖）：core 的 spec 在 `useLogic` 中调用 shared 的 `createXxxLogic` / `createMessageManager`，并从 shared 重导出 `messageDefaults`。
 
 ### 被哪些包依赖
 
-- `@xui/vue`：Vue 3 适配层，按 core 契约实现 `<Xxx>` 组件与 props/slots 桥接。
-- `@xui/react`：React 19 适配层，按 core 契约实现 `<Xxx>` 组件与 renderXxx 回调桥接。
+- `@xui-design/vue`：Vue 3 适配层，按 core 契约实现 `<Xxx>` 组件与 props/slots 桥接。
+- `@xui-design/react`：React 19 适配层，按 core 契约实现 `<Xxx>` 组件与 renderXxx 回调桥接。
 - 适配层**不得**新增 core 契约之外的额外 Props / 事件 / 插槽。
 
 ## 模块结构
@@ -53,7 +53,7 @@ packages/core/src/
 
 25 个组件目录（与 `src/index.ts` 的重导出顺序一致）：
 
-| # | 组件 | spec 常量 | useLogic 绑定（@xui/shared） |
+| # | 组件 | spec 常量 | useLogic 绑定（@xui-design/shared） |
 |---|------|-----------|------------------------------|
 | 1 | button | `buttonSpec` | `createButtonLogic` |
 | 2 | input | `inputSpec` | `createInputLogic` |
@@ -132,7 +132,7 @@ export interface LogicInstance<P extends Record<string, unknown>, S = unknown> {
   updateOptions: (options: Partial<P>) => void;
 }
 ```
-逻辑实例通用形状——所有组件逻辑工厂的返回值都满足该接口（与 `@xui/shared` 的 `LogicInstance` 结构兼容）。
+逻辑实例通用形状——所有组件逻辑工厂的返回值都满足该接口（与 `@xui-design/shared` 的 `LogicInstance` 结构兼容）。
 
 ### 组件规格契约（来自 `src/spec.ts`）
 
@@ -208,7 +208,7 @@ export interface ComponentSpec<
   events: EventsDefinition<E>;
   /** 插槽定义 */
   slots: SlotsDefinition<S>;
-  /** 核心 hook 工厂（指向 @xui/shared 的逻辑工厂） */
+  /** 核心 hook 工厂（指向 @xui-design/shared 的逻辑工厂） */
   useLogic: (options: P) => L;
 }
 ```
@@ -608,7 +608,7 @@ export type MessageOptions = {
   duration?: number;
   /** 是否显示关闭按钮（默认 false） */
   closable?: boolean;
-  /** 自定义类型图标：内层 SVG 标记（与 @xui/icons 数据源同构，不含 <svg> 壳）；不传使用按 type 内置图标 */
+  /** 自定义类型图标：内层 SVG 标记（与 @xui-design/icons 数据源同构，不含 <svg> 壳）；不传使用按 type 内置图标 */
   icon?: string;
   /** 更新键：相同 key 再次 open 时原地更新该条消息（不新增、重置计时） */
   key?: string | number;
@@ -656,7 +656,7 @@ export type MessageLogic = LogicInstance<MessageManagerOptions, MessageState> & 
 };
 ```
 规格常量：`messageSpec`（`props` / `events` / `slots` 均为空，`useLogic: () => createMessageManager()`）。
-额外导出：`export { messageDefaults };`（重导出自 `@xui/shared`，命令式 API 默认值契约单一来源）。
+额外导出：`export { messageDefaults };`（重导出自 `@xui-design/shared`，命令式 API 默认值契约单一来源）。
 说明：Message 不属于声明式挂载组件，对外是 `message.info/success/...` 形态的命令式 API，双端适配层各自实现挂载容器并导出 `message` 单例。Message 不进 contract-test 矩阵。
 
 #### Tooltip
@@ -804,7 +804,7 @@ export type TableProps = {
 ```
 关联类型：`TableEvents`（`sortChange: (sort: TableSort) => void` / `rowClick: (record: TableRow, index: number) => void`）、`TableSlots`（`empty` / `sortIcon: { order: 'asc' | 'desc' }` 作用域插槽）、`TableState`（`sortKey` / `sortOrder` / `sortedData` / `selectedRowKeys` / `allSelected` / `indeterminate`）、`TableLogic`（含 `toggleSort` / `toggleRow` / `toggleAll`）。
 规格常量：`tableSpec`。
-说明：排序为非受控内部排序（客户端比较）；虚拟滚动由适配层基于 `@xui/shared` 的 `createVirtualListLogic` 组合，行选择由逻辑层维护。
+说明：排序为非受控内部排序（客户端比较）；虚拟滚动由适配层基于 `@xui-design/shared` 的 `createVirtualListLogic` 组合，行选择由逻辑层维护。
 
 #### Spin
 
@@ -985,7 +985,7 @@ import {
   type ButtonProps,
   type ButtonLogic,
   type ComponentSpec,
-} from '@xui/core';
+} from '@xui-design/core';
 
 // 读取 core 层统一定义的默认值
 const defaults = buttonSpec.props.defaults;
@@ -995,7 +995,7 @@ const defaults = buttonSpec.props.defaults;
 const typeSchema = buttonSpec.props.type;
 //    ^? { type: StringConstructor; size: StringConstructor; ... }
 
-// 通过 useLogic 创建逻辑实例（实际由 @xui/shared 的 createButtonLogic 实现）
+// 通过 useLogic 创建逻辑实例（实际由 @xui-design/shared 的 createButtonLogic 实现）
 const logic: ButtonLogic = buttonSpec.useLogic({
   type: 'primary',
   disabled: false,
@@ -1010,31 +1010,31 @@ const state = logic.getState();
 ### 按子路径细粒度引用
 
 ```ts
-import { buttonSpec } from '@xui/core/components/button';
-import type { ComponentSpec } from '@xui/core/spec';
-import type { LogicInstance } from '@xui/core/types';
+import { buttonSpec } from '@xui-design/core/components/button';
+import type { ComponentSpec } from '@xui-design/core/spec';
+import type { LogicInstance } from '@xui-design/core/types';
 ```
 
 ### Message 命令式 API 默认值契约
 
 ```ts
-import { messageDefaults } from '@xui/core';
+import { messageDefaults } from '@xui-design/core';
 
-// messageDefaults 由 @xui/shared 单一来源定义，core 重导出
+// messageDefaults 由 @xui-design/shared 单一来源定义，core 重导出
 // { type: 'info'; duration: 3000; closable: false; maxCount: 5 }
 const { duration, maxCount } = messageDefaults;
 ```
 
-> Message 的 `message.info/success/warning/error/open/closeAll` 单例由 `@xui/vue` 与 `@xui/react` 各自实现挂载容器后导出，core 仅提供类型与默认值契约。
+> Message 的 `message.info/success/warning/error/open/closeAll` 单例由 `@xui-design/vue` 与 `@xui-design/react` 各自实现挂载容器后导出，core 仅提供类型与默认值契约。
 
 ## 关键设计约定
 
 1. **core 是唯一契约基准**：Vue / React 适配层不得新增 core 契约之外的额外 Props / 事件 / 插槽；双端 API 一致性由 `satisfies ComponentSpec<...>` 编译期保证。
-2. **shared 不允许 import @xui/core**：逻辑层类型（`SelectOption` / `TabItem` / `MessageType` / `BreadcrumbItem` / `TableRow` 等）在 `@xui/shared` 本地定义并导出，core 复用 / 对齐（结构一致，core 侧为同一类型别名）。
+2. **shared 不允许 import @xui-design/core**：逻辑层类型（`SelectOption` / `TabItem` / `MessageType` / `BreadcrumbItem` / `TableRow` 等）在 `@xui-design/shared` 本地定义并导出，core 复用 / 对齐（结构一致，core 侧为同一类型别名）。
 3. **受控模式统一约定**：受控值统一通过 `value` prop 传入（Select 多选为 `value: string[]`、Modal 为 `visible`、InputNumber 允许 `null` 空值），值变更回调按语义命名为 `onChange` / `onInput` / `onClear` / `onConfirm` / `onCancel` / `onSortChange` / `onRowClick` / `onItemClick` / `onOpen` / `onClose` / `onOk` / `onError` 等；**默认值统一定义在 core 层** spec 的 `defaults` 中。
 4. **插槽映射规则**：Vue 具名插槽对应 React `renderXxx` 回调；作用域插槽（如 Tabs `default: { item: TabItem }`、Table `sortIcon: { order: 'asc' | 'desc' }`）对应回调函数类型 Props。
 5. **类型别名优先**：所有组件契约类型使用 `type`（而非 `interface`）声明，以保证与 `Record<string, unknown>` 约束的结构兼容性。
-6. **Message 为命令式 API**：`message.info/success/warning/error/open/closeAll` 不进 contract-test 矩阵；其默认值契约 `messageDefaults` 由 `@xui/shared` 单一来源定义，core 重导出。
+6. **Message 为命令式 API**：`message.info/success/warning/error/open/closeAll` 不进 contract-test 矩阵；其默认值契约 `messageDefaults` 由 `@xui-design/shared` 单一来源定义，core 重导出。
 
 ## 新增组件流程
 
@@ -1043,7 +1043,7 @@ const { duration, maxCount } = messageDefaults;
 1. **core 契约定义**：在 `packages/core/src/components/<name>/` 下新增 `types.ts`（`XxxProps` / `XxxEvents` / `XxxSlots` / `XxxState` / `XxxLogic`）与 `spec.ts`（`xxxSpec satisfies ComponentSpec<...>`，`useLogic` 指向待实现的 `createXxxLogic`）；在 `src/index.ts` 追加 `export * from './components/<name>'`。
 2. **shared 核心逻辑实现**：在 `packages/shared/src/components/<name>/` 下实现 `create-xxx-logic.ts`（返回 `XxxLogicInstance`，含 `subscribe` / `getState` / `updateOptions` + 交互方法），并在 `shared/src/index.ts` 追加导出。
 3. **核心层单元测试**：为 shared 的 `create-xxx-logic` 编写纯逻辑单测（不依赖 DOM / 框架）。
-4. **双端适配**：`@xui/vue` 与 `@xui/react` 各自按 core 契约实现 `<Xxx>` 组件，桥接 props / 事件 / 插槽到框架原语。
+4. **双端适配**：`@xui-design/vue` 与 `@xui-design/react` 各自按 core 契约实现 `<Xxx>` 组件，桥接 props / 事件 / 插槽到框架原语。
 5. **双端组件测试**：为 Vue / React 适配组件编写渲染与交互测试。
 6. **双端契约对齐校验**：跑 contract-test 矩阵，校验双端 Props / 事件 / 插槽行为一致（Message 命令式 API 不进该矩阵）。
 

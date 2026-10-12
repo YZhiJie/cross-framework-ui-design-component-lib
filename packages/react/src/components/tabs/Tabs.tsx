@@ -1,16 +1,16 @@
 /**
  * Tabs - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * ARIA tabs 模式：role="tablist"/"tab"/"tabpanel"，键盘左右箭头切换（焦点跟随）。
  * renderPanel 回调对应 Vue 作用域插槽 default（参数为当前激活项）。
  */
 
 import { useEffect, useId, useRef } from 'react';
 import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
-import type { TabItem, TabsProps } from '@xui/core';
-import { createTabsLogic } from '@xui/shared';
-import type { TabsLogicInstance } from '@xui/shared';
+import type { TabItem, TabsProps } from '@xui-design/core';
+import { createTabsLogic } from '@xui-design/shared';
+import type { TabsLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 

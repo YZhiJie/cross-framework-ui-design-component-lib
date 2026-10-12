@@ -3,7 +3,7 @@
  *
  * 每个组件一份 meta.ts，结构化描述组件的特性、演示与 API 表格，
  * 由 ComponentPage / DemoBlock / ApiSection 等通用组件统一渲染。
- * API 口径必须与 @xui/core 的 ComponentSpec 契约保持一致。
+ * API 口径必须与 @xui-design/core 的 ComponentSpec 契约保持一致。
  */
 import type { Component } from 'vue';
 import type { ComponentType } from 'react';

@@ -1,8 +1,8 @@
 /**
- * @xui/shared - 通用类型原语
+ * @xui-design/shared - 通用类型原语
  *
- * 逻辑实例的基础契约形状，@xui/core 与各框架适配层复用此定义。
- * @xui/shared 保持零框架依赖，仅含类型与纯逻辑。
+ * 逻辑实例的基础契约形状，@xui-design/core 与各框架适配层复用此定义。
+ * @xui-design/shared 保持零框架依赖，仅含类型与纯逻辑。
  */
 
 /** 取消订阅函数 */

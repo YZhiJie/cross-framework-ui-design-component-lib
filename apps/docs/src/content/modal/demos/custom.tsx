@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Modal } from '@xui/react';
+import { Button, Modal } from '@xui-design/react';
 
 export default function ModalCustomDemo() {
   const [visible, setVisible] = useState(false);

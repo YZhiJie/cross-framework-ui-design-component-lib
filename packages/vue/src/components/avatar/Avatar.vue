@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watchEffect } from 'vue';
-import { createAvatarLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { AvatarProps } from '@xui/core';
+import { createAvatarLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { AvatarProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<AvatarProps, 'onError'>>(), {
   size: 'md',

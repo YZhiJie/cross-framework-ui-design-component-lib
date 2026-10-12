@@ -9,8 +9,8 @@
 
 import { getCurrentScope, onScopeDispose, ref } from 'vue';
 import type { Ref } from 'vue';
-import { getLocaleData, subscribeLocale } from '@xui/shared';
-import type { XuiLocaleData } from '@xui/shared';
+import { getLocaleData, subscribeLocale } from '@xui-design/shared';
+import type { XuiLocaleData } from '@xui-design/shared';
 
 export function useLocaleData(): Ref<XuiLocaleData> {
   const data = ref(getLocaleData()) as Ref<XuiLocaleData>;

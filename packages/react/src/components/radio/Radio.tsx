@@ -9,9 +9,9 @@
 
 import { useContext, useEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { RadioProps } from '@xui/core';
-import { createRadioLogic } from '@xui/shared';
-import type { RadioLogicInstance } from '@xui/shared';
+import type { RadioProps } from '@xui-design/core';
+import { createRadioLogic } from '@xui-design/shared';
+import type { RadioLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 import { RadioGroupContext } from '../radio-group/context';

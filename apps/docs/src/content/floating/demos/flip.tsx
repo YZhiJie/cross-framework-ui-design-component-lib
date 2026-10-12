@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Tooltip, Popconfirm, Button } from '@xui/react';
+import { Tooltip, Popconfirm, Button } from '@xui-design/react';
 
 export default function FloatingFlipDemo() {
   const topAnchor = useRef<HTMLDivElement>(null);

@@ -1,12 +1,12 @@
 /**
  * Radio 组件规格
  *
- * useLogic 指向 @xui/shared 的 createRadioLogic 逻辑工厂。
+ * useLogic 指向 @xui-design/shared 的 createRadioLogic 逻辑工厂。
  * Radio 通过组上下文（Vue provide/inject、React Context）受 RadioGroup 控制，
  * 选中变更统一由 RadioGroup 触发 change 事件，本组件无契约事件。
  */
 
-import { createRadioLogic } from '@xui/shared';
+import { createRadioLogic } from '@xui-design/shared';
 
 import type { ComponentSpec } from '../../spec';
 import type { RadioEvents, RadioLogic, RadioProps, RadioSlots } from './types';

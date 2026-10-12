@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watchEffect } from 'vue';
-import { createTagLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { TagProps } from '@xui/core';
+import { createTagLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { TagProps } from '@xui-design/core';
 
 const {
   type = 'default',

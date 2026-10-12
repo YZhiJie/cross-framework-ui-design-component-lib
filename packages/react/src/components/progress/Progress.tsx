@@ -1,15 +1,15 @@
 /**
  * Progress - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑。
  * percent 收敛与 status 派生在逻辑层完成；纯展示组件，无交互回调。
  */
 
 import { useEffect, useRef } from 'react';
 import type { CSSProperties } from 'react';
-import type { ProgressProps } from '@xui/core';
-import { createProgressLogic } from '@xui/shared';
-import type { ProgressLogicInstance } from '@xui/shared';
+import type { ProgressProps } from '@xui-design/core';
+import { createProgressLogic } from '@xui-design/shared';
+import type { ProgressLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 

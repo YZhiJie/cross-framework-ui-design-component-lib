@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watchEffect } from 'vue';
-import { createProgressLogic } from '@xui/shared';
-import type { ProgressProps } from '@xui/core';
+import { createProgressLogic } from '@xui-design/shared';
+import type { ProgressProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<ProgressProps>(), {
   percent: 0,

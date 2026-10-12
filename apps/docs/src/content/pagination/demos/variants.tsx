@@ -1,4 +1,4 @@
-import { Pagination } from '@xui/react';
+import { Pagination } from '@xui-design/react';
 
 export default function PaginationVariantsDemo() {
   return (

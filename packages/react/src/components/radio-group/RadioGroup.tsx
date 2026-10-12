@@ -1,16 +1,16 @@
 /**
  * RadioGroup - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * value 提供即受控（由 useEffect 同步到逻辑层），否则 defaultValue 非受控。
  * 组内原生 input 共用 name（useId 生成）以获得浏览器原生互斥与方向键导航。
  */
 
 import { useEffect, useId, useMemo, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { RadioGroupProps } from '@xui/core';
-import { createRadioGroupLogic } from '@xui/shared';
-import type { RadioGroupLogicInstance } from '@xui/shared';
+import type { RadioGroupProps } from '@xui-design/core';
+import { createRadioGroupLogic } from '@xui-design/shared';
+import type { RadioGroupLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 import { Radio } from '../radio/Radio';

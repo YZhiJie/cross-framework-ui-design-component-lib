@@ -9,9 +9,9 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      '@xui/vue': resolve(rootDir, '../../packages/vue/src/index.ts'),
-      '@xui/core': resolve(rootDir, '../../packages/core/src/index.ts'),
-      '@xui/styles': resolve(rootDir, '../../packages/styles/src/index.scss'),
+      '@xui-design/vue': resolve(rootDir, '../../packages/vue/src/index.ts'),
+      '@xui-design/core': resolve(rootDir, '../../packages/core/src/index.ts'),
+      '@xui-design/styles': resolve(rootDir, '../../packages/styles/src/index.scss'),
     },
   },
   server: {

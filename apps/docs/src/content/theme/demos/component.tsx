@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import { Button, Switch } from '@xui/react';
+import { Button, Switch } from '@xui-design/react';
 
 export default function ThemeScopedDemo() {
   return (

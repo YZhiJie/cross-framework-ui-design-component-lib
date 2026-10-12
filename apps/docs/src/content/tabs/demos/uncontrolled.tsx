@@ -1,4 +1,4 @@
-import { Tabs } from '@xui/react';
+import { Tabs } from '@xui-design/react';
 
 const items = [
   { label: '章节一', value: 'ch1' },

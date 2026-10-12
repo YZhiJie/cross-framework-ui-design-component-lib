@@ -1,4 +1,4 @@
-import { Tooltip, Input, Button } from '@xui/react';
+import { Tooltip, Input, Button } from '@xui-design/react';
 
 export default function TooltipTriggerDemo() {
   return (

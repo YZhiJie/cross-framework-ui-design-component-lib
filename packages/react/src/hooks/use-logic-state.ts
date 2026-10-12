@@ -1,5 +1,5 @@
 /**
- * useLogicState - 将 @xui/shared 的逻辑实例状态桥接到 React
+ * useLogicState - 将 @xui-design/shared 的逻辑实例状态桥接到 React
  *
  * 关键点：logic.getState() 每次返回新的对象引用（浅拷贝），
  * 直接用于 useSyncExternalStore 的 getSnapshot 会因 Object.is 比较失败
@@ -8,7 +8,7 @@
  */
 
 import { useCallback, useRef, useSyncExternalStore } from 'react';
-import type { StateListener, Unsubscribe } from '@xui/shared';
+import type { StateListener, Unsubscribe } from '@xui-design/shared';
 
 export function useLogicState<S extends object>(
   subscribe: (listener: StateListener<S>) => Unsubscribe,

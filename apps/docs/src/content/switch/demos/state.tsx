@@ -1,4 +1,4 @@
-import { Switch } from '@xui/react';
+import { Switch } from '@xui-design/react';
 
 export default function SwitchStateDemo() {
   return (

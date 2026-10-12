@@ -1,8 +1,8 @@
-# @xui/react
+# @xui-design/react
 
-跨框架组件库的 **React 19 适配层**：将 `@xui/shared` 的框架无关核心逻辑桥接到 React 状态系统，对外暴露一组与 Vue 适配层行为对齐的声明式函数组件。
+跨框架组件库的 **React 19 适配层**：将 `@xui-design/shared` 的框架无关核心逻辑桥接到 React 状态系统，对外暴露一组与 Vue 适配层行为对齐的声明式函数组件。
 
-> 类型契约来自 `@xui/core`，纯逻辑来自 `@xui/shared`，样式来自 `@xui/styles`，图标来自 `@xui/icons`。本包不重复实现任何核心逻辑。
+> 类型契约来自 `@xui-design/core`，纯逻辑来自 `@xui-design/shared`，样式来自 `@xui-design/styles`，图标来自 `@xui-design/icons`。本包不重复实现任何核心逻辑。
 
 ## 职责边界
 
@@ -16,19 +16,19 @@
 
 **适配层不做什么：**
 
-- 不实现任何业务/状态机逻辑（按钮 disabled 态、Select 高亮规则、Modal 焦点 trap 算法等均在 `@xui/shared`）
-- 不定义 Props 契约（`ButtonProps` / `SelectProps` / `TabsProps` / `MessageOptions` 等类型来自 `@xui/core`）
+- 不实现任何业务/状态机逻辑（按钮 disabled 态、Select 高亮规则、Modal 焦点 trap 算法等均在 `@xui-design/shared`）
+- 不定义 Props 契约（`ButtonProps` / `SelectProps` / `TabsProps` / `MessageOptions` 等类型来自 `@xui-design/core`）
 - 不维护样式（`packages/styles` 是组件样式唯一来源）
-- 不维护图标资源（`@xui/icons` 提供 `icons.loading` / `icons.close` / `icons.clear` 等原始 SVG 字符串）
+- 不维护图标资源（`@xui-design/icons` 提供 `icons.loading` / `icons.close` / `icons.clear` 等原始 SVG 字符串）
 
 ## 依赖关系
 
 | 依赖 | 角色 |
 | --- | --- |
-| `@xui/core` | 类型契约来源（`ButtonProps`、`SelectProps`、`ModalProps`、`TabsProps`、`TabItem`、`MessageOptions`、`MessageHandle` 等） |
-| `@xui/shared` | 纯逻辑实例（`createButtonLogic` / `createModalLogic` / `createSelectLogic` / `createTabsLogic` 等）+ 主题 / 国际化运行时 + 虚拟滚动原语 + 浮动定位工具 + `StateListener` / `Unsubscribe` 类型 |
-| `@xui/styles` | 组件样式单一来源，`import '@xui/styles'` 即获得全部样式 |
-| `@xui/icons` | 内联 SVG 图标数据（`icons.loading`、`icons.close`、`icons.clear`、`icons['arrow-down']` 等） |
+| `@xui-design/core` | 类型契约来源（`ButtonProps`、`SelectProps`、`ModalProps`、`TabsProps`、`TabItem`、`MessageOptions`、`MessageHandle` 等） |
+| `@xui-design/shared` | 纯逻辑实例（`createButtonLogic` / `createModalLogic` / `createSelectLogic` / `createTabsLogic` 等）+ 主题 / 国际化运行时 + 虚拟滚动原语 + 浮动定位工具 + `StateListener` / `Unsubscribe` 类型 |
+| `@xui-design/styles` | 组件样式单一来源，`import '@xui-design/styles'` 即获得全部样式 |
+| `@xui-design/icons` | 内联 SVG 图标数据（`icons.loading`、`icons.close`、`icons.clear`、`icons['arrow-down']` 等） |
 | `react` / `react-dom` | peerDependency `>=19.0.0`（依赖 `useSyncExternalStore`、`useId`、ref-as-prop 等 19 API）；均为必选（`optional: false`） |
 
 > 开发依赖 `clsx` 仅用于测试参照，运行时 className 合并由本包自带 `cn`（`src/utils/cn.ts`）实现，**不依赖任何外部 className 库**。
@@ -73,7 +73,7 @@
 
 | Hook | 来源 | 用途 |
 | --- | --- | --- |
-| `useLogicState` | `src/hooks/use-logic-state.ts` | 把 `@xui/shared` 逻辑实例状态桥接到 React：内部用 ref 缓存最新快照 + `useSyncExternalStore` 订阅，**保证 getSnapshot 引用稳定**，避免无限重渲染 |
+| `useLogicState` | `src/hooks/use-logic-state.ts` | 把 `@xui-design/shared` 逻辑实例状态桥接到 React：内部用 ref 缓存最新快照 + `useSyncExternalStore` 订阅，**保证 getSnapshot 引用稳定**，避免无限重渲染 |
 | `useLocaleData` | `src/hooks/use-locale.ts` | 订阅当前语言包，返回 `XuiLocaleData`；复用 `useLogicState` 基座，语言切换 / 当前包重新注册时自动重渲染 |
 
 ### 工具
@@ -82,12 +82,12 @@
 | --- | --- | --- |
 | `cn` | `src/utils/cn.ts` | 框架无关的 className 拼接：支持 string/number、对象（键值为真取键名）、数组（递归展开），自动跳过 `false`/`null`/`undefined`。不依赖 clsx 等外部库 |
 
-### 主题运行时 API（re-export 自 `@xui/shared`）
+### 主题运行时 API（re-export 自 `@xui-design/shared`）
 
 - 函数：`clearThemeTokens`、`getTheme`、`setTheme`、`setThemeTokens`、`subscribeTheme`、`toggleTheme`、`applyPlugins`、`createVirtualListLogic`
 - 类型：`XuiTheme`、`XuiPlugin`、`PluginInstallContext`、`VirtualListLogicInstance`、`VirtualListOptions`、`VirtualListState`
 
-### 国际化运行时 API（re-export 自 `@xui/shared`）
+### 国际化运行时 API（re-export 自 `@xui-design/shared`）
 
 - 函数：`DEFAULT_LOCALE`、`getLocale`、`getLocaleData`、`registerLocale`、`setLocale`、`subscribeLocale`
 - 类型：`LocaleListener`、`XuiLocaleData`、`XuiLocaleInput`
@@ -100,7 +100,7 @@
 
 ### 1. `useSyncExternalStore` + 快照缓存模式（核心，否则无限重渲染）
 
-`@xui/shared` 的逻辑实例 `logic.getState()` 每次返回**新的对象引用**（浅拷贝）。若直接把它作为 `useSyncExternalStore` 的 `getSnapshot`，React 会在每次渲染时调用 `getSnapshot`，`Object.is(prev, next)` 比较恒为 `false`，触发无限重渲染。
+`@xui-design/shared` 的逻辑实例 `logic.getState()` 每次返回**新的对象引用**（浅拷贝）。若直接把它作为 `useSyncExternalStore` 的 `getSnapshot`，React 会在每次渲染时调用 `getSnapshot`，`Object.is(prev, next)` 比较恒为 `false`，触发无限重渲染。
 
 `useLogicState` 通过 ref 缓存最新快照解决此问题：
 
@@ -247,9 +247,9 @@ Modal 的 `ModalRef` 暴露 `open` / `close`，与 Vue `defineExpose({ open, clo
 
 ```tsx
 import { useRef } from 'react';
-import { Button, Modal, Select, message } from '@xui/react';
-import type { ButtonRef, ModalRef } from '@xui/react';
-import '@xui/styles';   // 一次性引入全部组件样式
+import { Button, Modal, Select, message } from '@xui-design/react';
+import type { ButtonRef, ModalRef } from '@xui-design/react';
+import '@xui-design/styles';   // 一次性引入全部组件样式
 
 const options = [
   { label: '杭州', value: 'hangzhou' },
@@ -282,7 +282,7 @@ export function Demo() {
 ### 自定义渲染回调（对应 Vue 具名插槽）
 
 ```tsx
-import { Modal } from '@xui/react';
+import { Modal } from '@xui-design/react';
 
 <Modal
   visible={visible}
@@ -307,7 +307,7 @@ import { Modal } from '@xui/react';
 
 3. **回调引用更新会触发 `useEffect` 重跑，导致受控状态回退竞态**。`onChange` / `onOk` / `onOpen` 等回调必须经 `callbacksRef` 间接调用（latest-ref 模式），`updateOptions` 的 effect 依赖数组只列状态类 props，不含回调。Button 是例外（无受控状态，`onClick` 可直接进依赖）。
 
-4. **契约类型（`TableColumn` / `BreadcrumbItem` / `TabItem` / `SelectOption` 等）统一从 `@xui/core` 导入**，`@xui/react` 只 re-export 适配层自身的 props 类型（`XxxComponentProps` / `XxxRef`），不重新定义契约类型。`XxxComponentProps` = 契约 Props `&` React 专属属性（`children` / `renderXxx` / `ref`）。
+4. **契约类型（`TableColumn` / `BreadcrumbItem` / `TabItem` / `SelectOption` 等）统一从 `@xui-design/core` 导入**，`@xui-design/react` 只 re-export 适配层自身的 props 类型（`XxxComponentProps` / `XxxRef`），不重新定义契约类型。`XxxComponentProps` = 契约 Props `&` React 专属属性（`children` / `renderXxx` / `ref`）。
 
 5. **`useImperativeHandle` 工厂仅引用 `logic`（稳定引用）时依赖数组用 `[logic]`**。注意 `eslint-plugin-react-hooks@4.6.0` 与 ESLint 9 不兼容，工厂内即使引用了 `buttonRef` 也不必把它加入依赖（ref 对象引用稳定）。
 

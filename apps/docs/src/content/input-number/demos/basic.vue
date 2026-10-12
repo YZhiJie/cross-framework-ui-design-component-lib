@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { InputNumber } from '@xui/vue';
+import { InputNumber } from '@xui-design/vue';
 
 const value = ref(3.5);
 </script>

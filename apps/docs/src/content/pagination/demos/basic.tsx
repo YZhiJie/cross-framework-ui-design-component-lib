@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pagination } from '@xui/react';
+import { Pagination } from '@xui-design/react';
 
 export default function PaginationBasicDemo() {
   const [page, setPage] = useState(3);

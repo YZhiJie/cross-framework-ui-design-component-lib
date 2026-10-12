@@ -1,4 +1,4 @@
-import { Empty, Button } from '@xui/react';
+import { Empty, Button } from '@xui-design/react';
 
 export default function EmptyBasicDemo() {
   return (

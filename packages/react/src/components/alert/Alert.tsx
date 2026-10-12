@@ -1,16 +1,16 @@
 /**
  * Alert - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * 关闭后由逻辑层隐藏（visible 状态驱动），与 Vue 端行为对齐。
  */
 
 import { useEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { AlertProps } from '@xui/core';
-import { createAlertLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { AlertLogicInstance } from '@xui/shared';
+import type { AlertProps } from '@xui-design/core';
+import { createAlertLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { AlertLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 
@@ -111,7 +111,7 @@ export function Alert(props: AlertComponentProps) {
   );
 }
 
-/** 类型图标（数据来自 @xui/icons，图标名与 type 同名） */
+/** 类型图标（数据来自 @xui-design/icons，图标名与 type 同名） */
 function AlertIcon({ type }: { type: NonNullable<AlertProps['type']> }) {
   return (
     <svg

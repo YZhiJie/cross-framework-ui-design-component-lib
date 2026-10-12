@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { RadioGroup, Radio } from '@xui/vue';
+import { RadioGroup, Radio } from '@xui-design/vue';
 
 const value = ref('a');
 </script>

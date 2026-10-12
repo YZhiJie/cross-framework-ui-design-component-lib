@@ -1,7 +1,7 @@
 /**
  * Select - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * ARIA combobox 模式：trigger role="combobox"，面板 role="listbox"，
  * 键盘 Enter/Space/Escape/ArrowDown/ArrowUp，点击组件外部收起面板。
  * 多选（multiple）：tag 列表展示，select 为切换语义；可搜索（searchable）：面板顶部搜索框；
@@ -10,16 +10,16 @@
 
 import { useEffect, useId, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties, KeyboardEvent, ReactNode, Ref } from 'react';
-import type { SelectProps } from '@xui/core';
+import type { SelectProps } from '@xui-design/core';
 import {
   bindViewportUpdate,
   createSelectLogic,
   createVirtualListLogic,
   getViewport,
   resolveFloatingPosition,
-} from '@xui/shared';
-import type { SelectLogicInstance, VirtualListLogicInstance } from '@xui/shared';
-import { icons } from '@xui/icons';
+} from '@xui-design/shared';
+import type { SelectLogicInstance, VirtualListLogicInstance } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';

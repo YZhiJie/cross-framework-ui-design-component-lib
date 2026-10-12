@@ -1,5 +1,5 @@
 /**
- * @xui/styles - 主题 tokens（单一来源）
+ * @xui-design/styles - 主题 tokens（单一来源）
  *
  * 分层结构：
  * 1. 基础 token（:root）：浅色主题为默认值，未引入本文件时组件降级值兜底；
@@ -7,7 +7,7 @@
  * 3. 组件级 token：components.scss 内按需下沉（.xui-xxx { --xui-xxx-* }），
  *    支持按组件实例覆盖（style="--xui-button-height: 40px"）。
  *
- * 运行时切换统一走 @xui/shared 的 setTheme / getTheme / toggleTheme（写入 <html data-theme>）。
+ * 运行时切换统一走 @xui-design/shared 的 setTheme / getTheme / toggleTheme（写入 <html data-theme>）。
  */
 
 :root {

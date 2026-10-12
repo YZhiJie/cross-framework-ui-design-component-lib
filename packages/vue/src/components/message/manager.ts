@@ -7,8 +7,8 @@
  */
 
 import { createApp } from 'vue';
-import { createMessageManager } from '@xui/shared';
-import type { MessageLogicInstance } from '@xui/shared';
+import { createMessageManager } from '@xui-design/shared';
+import type { MessageLogicInstance } from '@xui-design/shared';
 import MessageHost from './MessageHost.vue';
 
 let manager: MessageLogicInstance | null = null;

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watchEffect } from 'vue';
-import { createPageItems, createPaginationLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
+import { createPageItems, createPaginationLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
 import { useLocaleData } from '../../hooks/use-locale';
-import type { PaginationProps } from '@xui/core';
+import type { PaginationProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<PaginationProps, 'onChange'>>(), {
   // 显式 undefined 默认值：未绑定 value 时保持 undefined → 逻辑层进入非受控模式

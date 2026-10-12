@@ -28,10 +28,10 @@ export default defineConfig({
     rollupOptions: {
       external: [
         'vue',
-        '@xui/core',
-        '@xui/shared',
-        '@xui/styles',
-        '@xui/icons',
+        '@xui-design/core',
+        '@xui-design/shared',
+        '@xui-design/styles',
+        '@xui-design/icons',
       ],
       output: {
         preserveModules: true,

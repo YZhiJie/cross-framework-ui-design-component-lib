@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Switch } from '@xui/vue';
+import { Switch } from '@xui-design/vue';
 
 const enabled = ref(false);
 </script>

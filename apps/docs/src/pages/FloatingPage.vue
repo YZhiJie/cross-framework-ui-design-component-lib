@@ -31,7 +31,7 @@ const demos = [
     id: 'multi',
     title: '三组件共用避让逻辑',
     description:
-      'Tooltip / Popconfirm / Select 双端共用 @xui/shared/floating 的翻转与钳制算法，不重复实现。',
+      'Tooltip / Popconfirm / Select 双端共用 @xui-design/shared/floating 的翻转与钳制算法，不重复实现。',
     vueComponent: MultiVue,
     reactComponent: MultiReact,
     vueSource: multiVueSource,
@@ -117,7 +117,7 @@ const notes = [
         <span class="doc-tag">指南</span>
       </h1>
       <p class="page-head__summary">
-        Tooltip / Popconfirm / Select 等浮层组件双端共用 @xui/shared/floating 的纯逻辑避让模块：
+        Tooltip / Popconfirm / Select 等浮层组件双端共用 @xui-design/shared/floating 的纯逻辑避让模块：
         首选方位空间不足时自动翻转（flip），交叉轴溢出视口时自动钳制（shift），
         滚动与窗口 resize 时经 rAF 合并实时重算。
       </p>
@@ -163,7 +163,7 @@ const notes = [
     <section>
       <h2 class="docs-section-title">API 文档</h2>
       <p style="margin-bottom: 16px; color: var(--docs-text-secondary); font-size: 13px">
-        浮层避让 API 由 <code class="inline-code">@xui/shared/floating</code> 提供（框架无关纯逻辑），
+        浮层避让 API 由 <code class="inline-code">@xui-design/shared/floating</code> 提供（框架无关纯逻辑），
         Tooltip / Popconfirm / Select 双端适配层桥接调用，不直接暴露给应用层。
       </p>
       <ApiSection :api="api" />

@@ -1,4 +1,4 @@
-import { Select } from '@xui/react';
+import { Select } from '@xui-design/react';
 
 const options = [
   { label: '选项一', value: '1' },

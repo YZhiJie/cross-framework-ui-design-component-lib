@@ -26,8 +26,8 @@ import {
   InputNumber,
   Popconfirm,
   message,
-} from '@xui/vue';
-import '@xui/styles';
+} from '@xui-design/vue';
+import '@xui-design/styles';
 import type {
   BreadcrumbItem,
   SelectValue,
@@ -35,7 +35,7 @@ import type {
   TableRow,
   TableRowKey,
   TableSort,
-} from '@xui/core';
+} from '@xui-design/core';
 
 const name = ref('');
 const modalVisible = ref(false);

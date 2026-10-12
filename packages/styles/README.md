@@ -1,19 +1,19 @@
-# @xui/styles
+# @xui-design/styles
 
-跨框架组件库(Vue 3 + React 19)的**共享样式单一来源**包——基础重置 + 主题 tokens(含暗色)+ 全部组件 BEM 样式,由 `@xui/vue` 与 `@xui/react` 共同引用,确保双端视觉一致、不漂移。
+跨框架组件库(Vue 3 + React 19)的**共享样式单一来源**包——基础重置 + 主题 tokens(含暗色)+ 全部组件 BEM 样式,由 `@xui-design/vue` 与 `@xui-design/react` 共同引用,确保双端视觉一致、不漂移。
 
 ## 职责边界
 
 - ✅ 提供:全局 CSS 变量 tokens(浅色/暗色)、基础重置、所有组件的 BEM 类名样式
 - ✅ 保证:双端(Vue / React)共用**同一套类名**,避免各自维护样式导致视觉漂移
-- ❌ 不提供:组件逻辑、JS 运行时、框架适配层(在 `@xui/vue` / `@xui/react`)
-- ❌ 不提供:主题切换的 JS API(由 `@xui/shared/theme` 通过写入 `<html data-theme="dark">` 完成)
+- ❌ 不提供:组件逻辑、JS 运行时、框架适配层(在 `@xui-design/vue` / `@xui-design/react`)
+- ❌ 不提供:主题切换的 JS API(由 `@xui-design/shared/theme` 通过写入 `<html data-theme="dark">` 完成)
 
 ## 依赖关系
 
 - 运行时依赖:无
 - 开发依赖:`sass ^1.70.0`(用于编译 `.scss`)
-- 被依赖方:`@xui/icons`(workspace)、`@xui/vue`、`@xui/react` 等消费组件类名与 token
+- 被依赖方:`@xui-design/icons`(workspace)、`@xui-design/vue`、`@xui-design/react` 等消费组件类名与 token
 
 ## 模块 / 文件结构
 
@@ -128,7 +128,7 @@ packages/styles/
 ## 暗色主题机制
 
 - 暗色变量由 `tokens.scss` 的 `[data-theme='dark']` 选择器提供,**仅覆盖语义色**,结构 token 不变
-- 运行时切换统一走 `@xui/shared/theme` 模块(`setTheme` / `getTheme` / `toggleTheme`),由其向 `<html>` 写入 `data-theme="dark"` 属性触发
+- 运行时切换统一走 `@xui-design/shared/theme` 模块(`setTheme` / `getTheme` / `toggleTheme`),由其向 `<html>` 写入 `data-theme="dark"` 属性触发
 - 组件样式不感知主题,只消费 `var(--xui-color-*)`,主题切换时自动重算
 
 ### 主题自定义三层配置
@@ -143,7 +143,7 @@ packages/styles/
 
 ```ts
 // 应用入口(任意框架通用)
-import '@xui/styles/index.css';
+import '@xui-design/styles/index.css';
 ```
 
 一行即获得 reset + 浅色/暗色 tokens + 全部组件样式。
@@ -151,7 +151,7 @@ import '@xui/styles/index.css';
 ### 2. 切换暗色主题
 
 ```ts
-import { setTheme, toggleTheme } from '@xui/shared/theme';
+import { setTheme, toggleTheme } from '@xui-design/shared/theme';
 
 setTheme('dark');   // <html data-theme="dark"> → tokens.scss 暗色块生效
 toggleTheme();       // dark ⇄ light 切换
@@ -160,7 +160,7 @@ toggleTheme();       // dark ⇄ light 切换
 ### 3. 全局 token 覆盖(临时改品牌色)
 
 ```ts
-import { setThemeTokens, clearThemeTokens } from '@xui/shared/theme';
+import { setThemeTokens, clearThemeTokens } from '@xui-design/shared/theme';
 
 setThemeTokens({ '--xui-color-primary': '#2563eb' });
 // 用完恢复
@@ -184,7 +184,7 @@ clearThemeTokens();
 
 ## 关键约定
 
-1. **单一来源**:组件样式统一由 `@xui/styles` 输出,双端共用同一套类名,禁止 Vue / React 各自维护组件样式导致漂移。
+1. **单一来源**:组件样式统一由 `@xui-design/styles` 输出,双端共用同一套类名,禁止 Vue / React 各自维护组件样式导致漂移。
 2. **语义 token 优先**:组件新增变体或状态时必须消费语义 token(`var(--xui-color-*)`),禁止硬编码色值(已有的少量硬编码如 Tag/Alert 的浅色背景为历史遗留)。
 3. **降级值兜底**:所有 `var(--xui-*, fallback)` 均带降级值,未引入 tokens 时组件仍可独立可用。
 4. **stylelint:no-descending-specificity**——同前缀下高特异性选择器必须排在低特异性规则之后:

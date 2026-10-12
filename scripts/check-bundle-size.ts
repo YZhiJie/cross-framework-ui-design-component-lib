@@ -2,12 +2,12 @@
  * 体积检查脚本
  *
  * 检查各包构建产物是否符合体积预算：
- * - @xui/shared: < 50KB (gzip)
- * - @xui/core: < 30KB (gzip)
- * - @xui/vue: < 100KB (gzip, 不含 vue)
- * - @xui/react: < 100KB (gzip, 不含 react)
- * - @xui/styles: < 20KB (gzip)
- * - @xui/icons: < 50KB (gzip)
+ * - @xui-design/shared: < 50KB (gzip)
+ * - @xui-design/core: < 30KB (gzip)
+ * - @xui-design/vue: < 100KB (gzip, 不含 vue)
+ * - @xui-design/react: < 100KB (gzip, 不含 react)
+ * - @xui-design/styles: < 20KB (gzip)
+ * - @xui-design/icons: < 50KB (gzip)
  */
 
 import { readdirSync, statSync } from 'node:fs';
@@ -27,37 +27,37 @@ interface SizeBudget {
 
 const budgets: SizeBudget[] = [
   {
-    packageName: '@xui/shared',
+    packageName: '@xui-design/shared',
     distDir: 'packages/shared/dist',
     maxGzipKB: 50,
     description: '纯逻辑核心层',
   },
   {
-    packageName: '@xui/core',
+    packageName: '@xui-design/core',
     distDir: 'packages/core/dist',
     maxGzipKB: 30,
     description: '框架无关抽象层',
   },
   {
-    packageName: '@xui/vue',
+    packageName: '@xui-design/vue',
     distDir: 'packages/vue/dist',
     maxGzipKB: 100,
     description: 'Vue 适配层（不含 vue）',
   },
   {
-    packageName: '@xui/react',
+    packageName: '@xui-design/react',
     distDir: 'packages/react/dist',
     maxGzipKB: 100,
     description: 'React 适配层（不含 react）',
   },
   {
-    packageName: '@xui/styles',
+    packageName: '@xui-design/styles',
     distDir: 'packages/styles/dist',
     maxGzipKB: 20,
     description: '共享样式包',
   },
   {
-    packageName: '@xui/icons',
+    packageName: '@xui-design/icons',
     distDir: 'packages/icons/dist',
     maxGzipKB: 50,
     description: '图标包',

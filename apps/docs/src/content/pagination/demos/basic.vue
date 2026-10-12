@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Pagination } from '@xui/vue';
+import { Pagination } from '@xui-design/vue';
 
 const page = ref(3);
 </script>

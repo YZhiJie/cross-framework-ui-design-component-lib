@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DatePicker } from '@xui/react';
+import { DatePicker } from '@xui-design/react';
 
 export default function DatePickerBasicDemo() {
   const [value, setValue] = useState('2026-10-01');

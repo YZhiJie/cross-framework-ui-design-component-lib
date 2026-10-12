@@ -1,8 +1,8 @@
-# @xui/vue
+# @xui-design/vue
 
-跨框架组件库的 **Vue 3 适配层**：将 `@xui/shared` 的框架无关核心逻辑桥接到 Vue 3.5+ 的响应式系统，对外暴露一组与 React 适配层行为对齐的声明式 SFC 组件。
+跨框架组件库的 **Vue 3 适配层**：将 `@xui-design/shared` 的框架无关核心逻辑桥接到 Vue 3.5+ 的响应式系统，对外暴露一组与 React 适配层行为对齐的声明式 SFC 组件。
 
-> 类型契约来自 `@xui/core`，纯逻辑来自 `@xui/shared`，样式来自 `@xui/styles`，图标来自 `@xui/icons`。本包不重复实现任何核心逻辑。
+> 类型契约来自 `@xui-design/core`，纯逻辑来自 `@xui-design/shared`，样式来自 `@xui-design/styles`，图标来自 `@xui-design/icons`。本包不重复实现任何核心逻辑。
 
 ## 职责边界
 
@@ -15,19 +15,19 @@
 
 **适配层不做什么：**
 
-- 不实现任何业务/状态机逻辑（按钮 disabled 态、Select 高亮规则、Modal 焦点 trap 算法等均在 `@xui/shared`）
-- 不定义 Props 契约（`ButtonProps` / `SelectProps` / `TabsProps` 等类型来自 `@xui/core`）
+- 不实现任何业务/状态机逻辑（按钮 disabled 态、Select 高亮规则、Modal 焦点 trap 算法等均在 `@xui-design/shared`）
+- 不定义 Props 契约（`ButtonProps` / `SelectProps` / `TabsProps` 等类型来自 `@xui-design/core`）
 - 不维护样式（`packages/styles` 是组件样式唯一来源，SFC 内仅 Button 保留内联样式作历史示例）
-- 不维护图标资源（`@xui/icons` 提供 `icons.loading` / `icons.close` / `icons.clear` 等原始 SVG 字符串）
+- 不维护图标资源（`@xui-design/icons` 提供 `icons.loading` / `icons.close` / `icons.clear` 等原始 SVG 字符串）
 
 ## 依赖关系
 
 | 依赖 | 角色 |
 | --- | --- |
-| `@xui/core` | 类型契约来源（`ButtonProps`、`SelectProps`、`ModalProps`、`TabsProps`、`MessageOptions`、`MessageHandle`、`SelectValue` 等） |
-| `@xui/shared` | 纯逻辑实例（`createButtonLogic` / `createModalLogic` / `createSelectLogic` / `createTabsLogic` / `createInputLogic` 等）+ 主题 / 国际化运行时 + 虚拟滚动原语 + 浮动定位工具 |
-| `@xui/styles` | 组件样式单一来源，`import '@xui/styles'` 即获得全部样式 |
-| `@xui/icons` | 内联 SVG 图标数据（`icons.loading`、`icons.close`、`icons.clear`、`icons['arrow-down']` 等） |
+| `@xui-design/core` | 类型契约来源（`ButtonProps`、`SelectProps`、`ModalProps`、`TabsProps`、`MessageOptions`、`MessageHandle`、`SelectValue` 等） |
+| `@xui-design/shared` | 纯逻辑实例（`createButtonLogic` / `createModalLogic` / `createSelectLogic` / `createTabsLogic` / `createInputLogic` 等）+ 主题 / 国际化运行时 + 虚拟滚动原语 + 浮动定位工具 |
+| `@xui-design/styles` | 组件样式单一来源，`import '@xui-design/styles'` 即获得全部样式 |
+| `@xui-design/icons` | 内联 SVG 图标数据（`icons.loading`、`icons.close`、`icons.clear`、`icons['arrow-down']` 等） |
 | `vue` | peerDependency `>=3.5.0`（依赖 `defineModel`、`useId`、`useTemplateRef` 等 3.5 API） |
 
 ## 完整导出清单
@@ -74,12 +74,12 @@
 
 > Vue 适配层**没有** `useLogicState` 这个统一 hook。每个 SFC 内部直接采用 `const state = ref(logic.getState())` + `logic.subscribe((next) => { state.value = next })` + `onUnmounted(unsubscribe)` 的固定三段式订阅核心状态。
 
-### 主题运行时 API（re-export 自 `@xui/shared`）
+### 主题运行时 API（re-export 自 `@xui-design/shared`）
 
 - 函数：`clearThemeTokens`、`getTheme`、`setTheme`、`setThemeTokens`、`subscribeTheme`、`toggleTheme`、`applyPlugins`、`createVirtualListLogic`
 - 类型：`XuiTheme`、`XuiPlugin`、`PluginInstallContext`、`VirtualListLogicInstance`、`VirtualListOptions`、`VirtualListState`
 
-### 国际化运行时 API（re-export 自 `@xui/shared`）
+### 国际化运行时 API（re-export 自 `@xui-design/shared`）
 
 - 函数：`DEFAULT_LOCALE`、`getLocale`、`getLocaleData`、`registerLocale`、`setLocale`、`subscribeLocale`
 - 类型：`LocaleListener`、`XuiLocaleData`、`XuiLocaleInput`
@@ -89,7 +89,7 @@
 默认导出一个带 `install(app: App)` 的对象，可一次性全局注册 24 个声明式组件（不含命令式 `message`）：
 
 ```ts
-import XuiVue from '@xui/vue';
+import XuiVue from '@xui-design/vue';
 const app = createApp(App);
 app.use(XuiVue);
 ```
@@ -159,7 +159,7 @@ const emit = defineEmits<{
 
 ### 3. Props 类型从 core 导入时用 Omit 过滤回调字段
 
-`@xui/core` 的契约 Props（如 `ButtonProps`、`ModalProps`、`SelectProps`）同时包含状态字段与 `onXxx` 回调字段。Vue 端**不能**直接把含 `onXxx` 的完整 Props 类型喂给 `defineProps`——否则回调会被编译进 props 选项，导致回调被当作 prop 处理。必须用 `Omit` 剔除回调字段，回调改由 `defineEmits` 表达：
+`@xui-design/core` 的契约 Props（如 `ButtonProps`、`ModalProps`、`SelectProps`）同时包含状态字段与 `onXxx` 回调字段。Vue 端**不能**直接把含 `onXxx` 的完整 Props 类型喂给 `defineProps`——否则回调会被编译进 props 选项，导致回调被当作 prop 处理。必须用 `Omit` 剔除回调字段，回调改由 `defineEmits` 表达：
 
 ```ts
 // Button.vue：剔除 onClick
@@ -220,8 +220,8 @@ const okLabel = computed(() => okText ?? locale.value.modal.ok);
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, Modal, Select, message } from '@xui/vue';
-import '@xui/styles';   // 一次性引入全部组件样式
+import { Button, Modal, Select, message } from '@xui-design/vue';
+import '@xui-design/styles';   // 一次性引入全部组件样式
 
 const visible = ref(false);
 const city = ref<string>('hangzhou');
@@ -257,8 +257,8 @@ function onConfirm() {
 
 ```ts
 import { createApp } from 'vue';
-import XuiVue from '@xui/vue';
-import '@xui/styles';
+import XuiVue from '@xui-design/vue';
+import '@xui-design/styles';
 import App from './App.vue';
 
 createApp(App).use(XuiVue).mount('#app');
@@ -276,7 +276,7 @@ createApp(App).use(XuiVue).mount('#app');
 
 5. **SFC 默认值必须写在 `withDefaults` 第二参数**才会编译进 props 选项；写在解构默认值（`const { x = 1 } = defineProps<T>()`）不会进 props 选项，非受控模式判断拿不到。
 
-6. **契约类型（`TableColumn` / `BreadcrumbItem` / `TabItem` / `SelectOption` 等）统一从 `@xui/core` 导入**，Vue 适配层不重新定义契约类型，只 re-export 适配层自身的 props 类型（如 `MessageShortcutOptions`）。
+6. **契约类型（`TableColumn` / `BreadcrumbItem` / `TabItem` / `SelectOption` 等）统一从 `@xui-design/core` 导入**，Vue 适配层不重新定义契约类型，只 re-export 适配层自身的 props 类型（如 `MessageShortcutOptions`）。
 
 7. **Vue Tabs 面板作用域插槽是 default 插槽**（`#default="{ item }"`），具名 `#item` 不会被消费；React 端对应 `renderPanel` 回调。
 

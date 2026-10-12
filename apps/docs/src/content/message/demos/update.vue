@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, message } from '@xui/vue';
+import { Button, message } from '@xui-design/vue';
 
 let progress = 0;
 const closed = ref(false);

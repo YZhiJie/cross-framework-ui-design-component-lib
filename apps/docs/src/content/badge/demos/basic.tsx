@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Badge, Button } from '@xui/react';
+import { Badge, Button } from '@xui-design/react';
 
 export default function BadgeBasicDemo() {
   const [count, setCount] = useState(5);

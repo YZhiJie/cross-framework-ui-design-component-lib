@@ -10,7 +10,7 @@
 
 import type { LogicInstance, StateListener } from '../../types';
 
-/** 标签页项（与 @xui/core 的 TabItem 结构一致；shared 不依赖 core，本地定义） */
+/** 标签页项（与 @xui-design/core 的 TabItem 结构一致；shared 不依赖 core，本地定义） */
 export type TabItem = {
   /** 标签文案 */
   label: string;

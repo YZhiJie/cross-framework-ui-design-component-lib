@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Popconfirm, Button } from '@xui/react';
+import { Popconfirm, Button } from '@xui-design/react';
 
 export default function PopconfirmBasicDemo() {
   const [result, setResult] = useState('（待操作）');

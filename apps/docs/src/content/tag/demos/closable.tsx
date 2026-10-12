@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Tag } from '@xui/react';
+import { Button, Tag } from '@xui-design/react';
 
 const INITIAL_TAGS = ['前端', 'Vue', 'React', 'TypeScript'];
 

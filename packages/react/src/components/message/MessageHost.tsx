@@ -5,8 +5,8 @@
  * 订阅单例管理器状态并渲染消息队列（不作为公共组件导出）。
  */
 
-import { icons } from '@xui/icons';
-import type { MessageLogicInstance, MessageState } from '@xui/shared';
+import { icons } from '@xui-design/icons';
+import type { MessageLogicInstance, MessageState } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 
@@ -15,7 +15,7 @@ export interface MessageHostProps {
   manager: MessageLogicInstance;
 }
 
-/** 消息类型图标映射（数据来自 @xui/icons，与 Vue 端一致） */
+/** 消息类型图标映射（数据来自 @xui-design/icons，与 Vue 端一致） */
 const TYPE_ICONS: Record<string, string> = {
   info: icons.info,
   success: icons.success,

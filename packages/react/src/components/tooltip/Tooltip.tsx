@@ -1,7 +1,7 @@
 /**
  * Tooltip - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * CSS 包裹定位（非 portal）：popper 相对 trigger 元素绝对定位（trigger 始终贴合触发器，
  * 避免包裹根在 flex/grid stretch 布局中被拉宽导致气泡错位）；
  * 打开时经 resolveFloatingPosition 做视口避让（空间不足翻转方位 + 交叉轴钳制），
@@ -10,14 +10,14 @@
  */
 import { useEffect, useId, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties, ReactNode, Ref } from 'react';
-import type { TooltipProps } from '@xui/core';
+import type { TooltipProps } from '@xui-design/core';
 import {
   bindViewportUpdate,
   createTooltipLogic,
   getViewport,
   resolveFloatingPosition,
-} from '@xui/shared';
-import type { FloatingPlacement, TooltipLogicInstance } from '@xui/shared';
+} from '@xui-design/shared';
+import type { FloatingPlacement, TooltipLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 

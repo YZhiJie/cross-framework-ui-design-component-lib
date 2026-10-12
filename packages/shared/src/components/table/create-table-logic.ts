@@ -13,22 +13,22 @@
 
 import type { LogicInstance, StateListener } from '../../types';
 
-/** 表格行（与 @xui/core 的 TableRow 结构一致；shared 不依赖 core，本地定义） */
+/** 表格行（与 @xui-design/core 的 TableRow 结构一致；shared 不依赖 core，本地定义） */
 export type TableRow = Record<string, unknown>;
 
-/** 行唯一键类型（与 @xui/core 的 TableRowKey 对齐） */
+/** 行唯一键类型（与 @xui-design/core 的 TableRowKey 对齐） */
 export type TableRowKey = string | number;
 
-/** 排序方向（与 @xui/core 的 TableSortOrder 对齐） */
+/** 排序方向（与 @xui-design/core 的 TableSortOrder 对齐） */
 export type TableSortOrder = 'asc' | 'desc' | null;
 
-/** 排序变更事件载荷（与 @xui/core 的 TableSort 对齐） */
+/** 排序变更事件载荷（与 @xui-design/core 的 TableSort 对齐） */
 export type TableSort = {
   key: string;
   order: TableSortOrder;
 };
 
-/** 行选择配置（与 @xui/core 的 TableRowSelection 对齐） */
+/** 行选择配置（与 @xui-design/core 的 TableRowSelection 对齐） */
 export type TableRowSelection = {
   /** 受控选中行键集合（提供时进入受控模式） */
   selectedRowKeys?: TableRowKey[];

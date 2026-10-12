@@ -1,4 +1,4 @@
-import { Button, message } from '@xui/react';
+import { Button, message } from '@xui-design/react';
 
 export default function MessageOptionsDemo() {
   const openPersistent = () => {

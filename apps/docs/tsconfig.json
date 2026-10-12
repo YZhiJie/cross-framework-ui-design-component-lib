@@ -5,10 +5,10 @@
     "outDir": "dist",
     "types": ["vue", "react", "react-dom"],
     "paths": {
-      "@xui/vue": ["../../packages/vue/src/index.ts"],
-      "@xui/react": ["../../packages/react/src/index.ts"],
-      "@xui/core": ["../../packages/core/src/index.ts"],
-      "@xui/styles": ["../../packages/styles/src/index.ts"]
+      "@xui-design/vue": ["../../packages/vue/src/index.ts"],
+      "@xui-design/react": ["../../packages/react/src/index.ts"],
+      "@xui-design/core": ["../../packages/core/src/index.ts"],
+      "@xui-design/styles": ["../../packages/styles/src/index.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],

@@ -24,7 +24,7 @@ export default defineConfig({
         `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['@xui/styles'],
+      external: ['@xui-design/styles'],
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',

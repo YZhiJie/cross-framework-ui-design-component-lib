@@ -1,4 +1,4 @@
-# @xui/shared/locale
+# @xui-design/shared/locale
 
 国际化运行时核心（框架无关），为 Vue 3 / React 19 双端组件库提供统一的语言包注册、切换与订阅能力。
 
@@ -133,7 +133,7 @@ import {
   registerLocale,
   setLocale,
   subscribeLocale,
-} from '@xui/shared/locale';
+} from '@xui-design/shared/locale';
 
 // 1) 读取默认语言
 getLocale(); // 'zh-CN'

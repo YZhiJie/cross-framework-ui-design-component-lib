@@ -1,4 +1,4 @@
-# @xui/core
+# @xui-design/core
 
 ## 0.1.0
 
@@ -9,4 +9,4 @@
 ### Patch Changes
 
 - Updated dependencies []:
-  - @xui/shared@0.1.0
+  - @xui-design/shared@0.1.0

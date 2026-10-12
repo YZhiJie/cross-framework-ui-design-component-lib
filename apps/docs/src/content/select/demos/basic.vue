@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Select } from '@xui/vue';
-import type { SelectOption } from '@xui/core';
+import { Select } from '@xui-design/vue';
+import type { SelectOption } from '@xui-design/core';
 
 const value = ref('');
 const options: SelectOption[] = [

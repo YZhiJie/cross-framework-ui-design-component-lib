@@ -9,9 +9,9 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@xui/react': resolve(rootDir, '../../packages/react/src/index.ts'),
-      '@xui/core': resolve(rootDir, '../../packages/core/src/index.ts'),
-      '@xui/styles': resolve(rootDir, '../../packages/styles/src/index.scss'),
+      '@xui-design/react': resolve(rootDir, '../../packages/react/src/index.ts'),
+      '@xui-design/core': resolve(rootDir, '../../packages/core/src/index.ts'),
+      '@xui-design/styles': resolve(rootDir, '../../packages/styles/src/index.scss'),
     },
   },
   server: {

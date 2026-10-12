@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onUnmounted, ref, useTemplateRef, watchEffect } from 'vue';
-import { createSwitchLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { SwitchProps } from '@xui/core';
+import { createSwitchLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { SwitchProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<SwitchProps, 'onChange'>>(), {
   // 显式 undefined 默认值：跳过 Vue 对缺省 Boolean prop 的 false 转换，

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Select } from '@xui/react';
-import type { SelectOption } from '@xui/core';
+import { Select } from '@xui-design/react';
+import type { SelectOption } from '@xui-design/core';
 
 const options: SelectOption[] = [
   { label: '北京', value: 'beijing' },

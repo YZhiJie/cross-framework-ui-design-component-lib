@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { RadioGroup } from '@xui/react';
-import type { RadioOption } from '@xui/core';
+import { RadioGroup } from '@xui-design/react';
+import type { RadioOption } from '@xui-design/core';
 
 const options: RadioOption[] = [
   { label: '每天', value: 'daily' },

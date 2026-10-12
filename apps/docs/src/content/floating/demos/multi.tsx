@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Tooltip, Popconfirm, Select, Button } from '@xui/react';
+import { Tooltip, Popconfirm, Select, Button } from '@xui-design/react';
 
 const options = Array.from({ length: 1000 }, (_, i) => ({
   label: `选项 ${i + 1}`,
@@ -24,7 +24,7 @@ export default function FloatingMultiDemo() {
         </Button>
       </div>
       <p style={{ color: 'var(--docs-text-secondary, #888)', fontSize: '13px', margin: '8px 0 16px' }}>
-        Tooltip / Popconfirm / Select 三组件共用 @xui/shared/floating 的翻转与钳制逻辑。滚动到视口顶部后操作各组件，观察气泡 / 面板自动翻转到下方。
+        Tooltip / Popconfirm / Select 三组件共用 @xui-design/shared/floating 的翻转与钳制逻辑。滚动到视口顶部后操作各组件，观察气泡 / 面板自动翻转到下方。
       </p>
       <div ref={anchor} className="demo-row" style={{ padding: '8px 0', gap: '16px' }}>
         <Tooltip content="Tooltip 共用避让逻辑" placement="top">

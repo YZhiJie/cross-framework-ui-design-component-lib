@@ -5,11 +5,11 @@
  * 例如：pnpm exec tsx scripts/create-component.ts Select
  *
  * 按既有组件（Button/Input/Modal）的固定模式，在四层生成骨架并自动注册导出：
- *   1. @xui/core    契约（types + spec）
- *   2. @xui/shared  纯逻辑工厂 + 逻辑测试
- *   3. @xui/vue     SFC 适配 + 组件测试
- *   4. @xui/react   适配层 + 组件测试
- *   5. @xui/styles  BEM 样式占位注释（样式需在 components.scss 中补充）
+ *   1. @xui-design/core    契约（types + spec）
+ *   2. @xui-design/shared  纯逻辑工厂 + 逻辑测试
+ *   3. @xui-design/vue     SFC 适配 + 组件测试
+ *   4. @xui-design/react   适配层 + 组件测试
+ *   5. @xui-design/styles  BEM 样式占位注释（样式需在 components.scss 中补充）
  *
  * 生成的骨架立即可通过 lint / type-check / test，业务字段按 TODO 注释扩展。
  * 完成后请同步更新 scripts/contract-test.ts 的双端对齐矩阵。
@@ -66,7 +66,7 @@ function appendAfterMarker(file: string, marker: string, line: string): void {
   writeFileSync(file, `${source.slice(0, index)}${line}\n${indent}${source.slice(index)}`);
 }
 
-// ---------- 1. @xui/core 契约 ----------
+// ---------- 1. @xui-design/core 契约 ----------
 
 write(
   p('core', 'types.ts'),
@@ -115,11 +115,11 @@ write(
   `/**
  * ${Name} 组件规格
  *
- * useLogic 指向 @xui/shared 的 ${logicName} 逻辑工厂，
+ * useLogic 指向 @xui-design/shared 的 ${logicName} 逻辑工厂，
  * Vue / React 适配层通过同一份规格驱动组件状态。
  */
 
-import { ${logicName} } from '@xui/shared';
+import { ${logicName} } from '@xui-design/shared';
 
 import type { ComponentSpec } from '../../spec';
 import type { ${Name}Events, ${Name}Logic, ${Name}Props, ${Name}Slots } from './types';
@@ -152,7 +152,7 @@ export const ${camel}Spec = {
 
 write(p('core', 'index.ts'), `export * from './types';\nexport * from './spec';\n`);
 
-// ---------- 2. @xui/shared 逻辑工厂 ----------
+// ---------- 2. @xui-design/shared 逻辑工厂 ----------
 
 write(
   p('shared', `create-${kebab}-logic.ts`),
@@ -268,15 +268,15 @@ describe('${logicName}', () => {
 
 write(p('shared', 'index.ts'), `export * from './create-${kebab}-logic';\n`);
 
-// ---------- 3. @xui/vue SFC ----------
+// ---------- 3. @xui-design/vue SFC ----------
 
 write(
   p('vue', `${Name}.vue`),
   `<script setup lang="ts">
 // TODO：按业务扩展（参照 packages/vue/src/components/modal/Modal.vue 的受控/命令式模式）
 import { onUnmounted, ref, watchEffect } from 'vue';
-import { ${logicName} } from '@xui/shared';
-import type { ${Name}Props } from '@xui/core';
+import { ${logicName} } from '@xui-design/shared';
+import type { ${Name}Props } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<${Name}Props, 'onActivate'>>(), {
   disabled: false,
@@ -344,22 +344,22 @@ describe('${Name} (vue)', () => {
 `,
 );
 
-// ---------- 4. @xui/react 适配层 ----------
+// ---------- 4. @xui-design/react 适配层 ----------
 
 write(
   p('react', `${Name}.tsx`),
   `/**
  * ${Name} - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * TODO：按业务扩展（参照 packages/react/src/components/modal/Modal.tsx 的受控/ref 模式）。
  */
 
 import { useEffect, useRef } from 'react';
 import type { ReactNode } from 'react';
-import type { ${Name}Props } from '@xui/core';
-import { ${logicName} } from '@xui/shared';
-import type { ${Name}LogicInstance } from '@xui/shared';
+import type { ${Name}Props } from '@xui-design/core';
+import { ${logicName} } from '@xui-design/shared';
+import type { ${Name}LogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 

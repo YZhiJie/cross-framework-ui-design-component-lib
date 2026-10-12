@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import { Button, Modal } from '@xui/react';
-import type { ModalRef } from '@xui/react';
+import { Button, Modal } from '@xui-design/react';
+import type { ModalRef } from '@xui-design/react';
 
 export default function ModalRefDemo() {
   const modalRef = useRef<ModalRef>(null);

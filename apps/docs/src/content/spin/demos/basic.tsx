@@ -1,4 +1,4 @@
-import { Spin } from '@xui/react';
+import { Spin } from '@xui-design/react';
 
 export default function SpinBasicDemo() {
   return (

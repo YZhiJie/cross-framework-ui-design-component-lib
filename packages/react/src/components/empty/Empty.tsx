@@ -1,17 +1,17 @@
 /**
  * Empty - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑。
  * description 归一化（空白 → null，不渲染描述区）在逻辑层完成；
  * 纯展示组件，无交互回调。
  */
 
 import { useEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { EmptyProps } from '@xui/core';
-import { createEmptyLogic } from '@xui/shared';
-import type { EmptyLogicInstance } from '@xui/shared';
-import { icons } from '@xui/icons';
+import type { EmptyProps } from '@xui-design/core';
+import { createEmptyLogic } from '@xui-design/shared';
+import type { EmptyLogicInstance } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 
@@ -51,7 +51,7 @@ export function Empty(props: EmptyComponentProps) {
   );
 }
 
-/** 默认插画（数据来自 @xui/icons，细线化以适配放大展示） */
+/** 默认插画（数据来自 @xui-design/icons，细线化以适配放大展示） */
 function EmptyIllustration() {
   return (
     <svg

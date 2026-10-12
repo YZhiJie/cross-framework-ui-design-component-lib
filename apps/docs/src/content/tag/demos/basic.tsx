@@ -1,4 +1,4 @@
-import { Tag } from '@xui/react';
+import { Tag } from '@xui-design/react';
 
 export default function TagBasicDemo() {
   return (

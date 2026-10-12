@@ -1,5 +1,5 @@
 {
-  "name": "@xui/playground-react",
+  "name": "@xui-design/playground-react",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -13,9 +13,9 @@
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@xui/react": "workspace:*",
-    "@xui/core": "workspace:*",
-    "@xui/styles": "workspace:*"
+    "@xui-design/react": "workspace:*",
+    "@xui-design/core": "workspace:*",
+    "@xui-design/styles": "workspace:*"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",

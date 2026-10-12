@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DatePicker } from '@xui/vue';
+import { DatePicker } from '@xui-design/vue';
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Tooltip, Popconfirm, Button } from '@xui/vue';
+import { Tooltip, Popconfirm, Button } from '@xui-design/vue';
 
 const topAnchor = ref<HTMLElement>();
 const bottomAnchor = ref<HTMLElement>();

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { getTheme, setTheme, toggleTheme } from '@xui/react';
-import { Alert, Button, Input, Switch, Tag } from '@xui/react';
+import { getTheme, setTheme, toggleTheme } from '@xui-design/react';
+import { Alert, Button, Input, Switch, Tag } from '@xui-design/react';
 
 export default function ThemeDarkDemo() {
   const [current, setCurrent] = useState(getTheme());

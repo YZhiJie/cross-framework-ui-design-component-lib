@@ -1,4 +1,4 @@
-import { Skeleton } from '@xui/react';
+import { Skeleton } from '@xui-design/react';
 
 export default function SkeletonVariantsDemo() {
   return (

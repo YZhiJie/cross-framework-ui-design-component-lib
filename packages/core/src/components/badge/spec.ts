@@ -1,11 +1,11 @@
 /**
  * Badge 组件规格
  *
- * useLogic 指向 @xui/shared 的 createBadgeLogic 逻辑工厂，
+ * useLogic 指向 @xui-design/shared 的 createBadgeLogic 逻辑工厂，
  * Vue / React 适配层通过同一份规格驱动组件状态。
  */
 
-import { createBadgeLogic } from '@xui/shared';
+import { createBadgeLogic } from '@xui-design/shared';
 
 import type { ComponentSpec } from '../../spec';
 import type { BadgeEvents, BadgeLogic, BadgeProps, BadgeSlots } from './types';

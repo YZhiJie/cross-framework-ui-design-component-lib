@@ -1,4 +1,4 @@
-import { Alert } from '@xui/react';
+import { Alert } from '@xui-design/react';
 
 export default function AlertClosableDemo() {
   return (

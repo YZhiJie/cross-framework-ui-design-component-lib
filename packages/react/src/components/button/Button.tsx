@@ -1,16 +1,16 @@
 /**
  * Button - React 19 适配层
  *
- * 使用 ref-as-prop（无需 forwardRef）+ useSyncExternalStore 桥接 @xui/shared 逻辑。
+ * 使用 ref-as-prop（无需 forwardRef）+ useSyncExternalStore 桥接 @xui-design/shared 逻辑。
  * 通过 useImperativeHandle 暴露 focus / setLoading。
  */
 
 import { useEffect, useImperativeHandle, useRef } from 'react';
 import type { CSSProperties, MouseEvent, ReactNode, Ref } from 'react';
-import type { ButtonProps } from '@xui/core';
-import { createButtonLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { ButtonLogicInstance } from '@xui/shared';
+import type { ButtonProps } from '@xui-design/core';
+import { createButtonLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { ButtonLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 
@@ -119,7 +119,7 @@ export function Button(props: ButtonComponentProps) {
   );
 }
 
-/** 加载图标（数据来自 @xui/icons，旋转动画由 CSS 驱动） */
+/** 加载图标（数据来自 @xui-design/icons，旋转动画由 CSS 驱动） */
 function LoadingSpinner() {
   return (
     <svg

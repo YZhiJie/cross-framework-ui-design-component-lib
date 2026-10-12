@@ -1,16 +1,16 @@
 /**
  * Tag - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * 关闭后由逻辑层隐藏（visible 状态驱动），与 Vue 端行为对齐。
  */
 
 import { useEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { TagProps } from '@xui/core';
-import { createTagLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { TagLogicInstance } from '@xui/shared';
+import type { TagProps } from '@xui-design/core';
+import { createTagLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { TagLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 

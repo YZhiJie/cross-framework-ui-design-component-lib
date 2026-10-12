@@ -1,11 +1,11 @@
 /**
  * Empty 组件规格
  *
- * useLogic 指向 @xui/shared 的 createEmptyLogic 逻辑工厂，
+ * useLogic 指向 @xui-design/shared 的 createEmptyLogic 逻辑工厂，
  * Vue / React 适配层通过同一份规格驱动组件状态。
  */
 
-import { createEmptyLogic } from '@xui/shared';
+import { createEmptyLogic } from '@xui-design/shared';
 
 import type { ComponentSpec } from '../../spec';
 import type { EmptyEvents, EmptyLogic, EmptyProps, EmptySlots } from './types';

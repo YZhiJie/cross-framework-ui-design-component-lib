@@ -5,9 +5,9 @@ import {
   createTooltipLogic,
   getViewport,
   resolveFloatingPosition,
-} from '@xui/shared';
-import type { FloatingPlacement } from '@xui/shared';
-import type { TooltipProps } from '@xui/core';
+} from '@xui-design/shared';
+import type { FloatingPlacement } from '@xui-design/shared';
+import type { TooltipProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<TooltipProps>(), {
   content: undefined,

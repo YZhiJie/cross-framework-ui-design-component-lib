@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { Button, Progress } from '@xui/vue';
+import { Button, Progress } from '@xui-design/vue';
 
 const percent = ref(35);
 const add = (delta: number) => {

@@ -1,7 +1,7 @@
 /**
  * Checkbox - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * value 提供即受控（由 useEffect 同步到逻辑层），否则 defaultValue 非受控。
  * 原生 <input type="checkbox"> 保证键盘与读屏可访问性；indeterminate 为 DOM 属性，
  * 通过 ref 同步（React 不支持以 prop 形式传递）。
@@ -9,10 +9,10 @@
 
 import { useEffect, useImperativeHandle, useRef } from 'react';
 import type { CSSProperties, ReactNode, Ref } from 'react';
-import type { CheckboxProps } from '@xui/core';
-import { createCheckboxLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { CheckboxLogicInstance } from '@xui/shared';
+import type { CheckboxProps } from '@xui-design/core';
+import { createCheckboxLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { CheckboxLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 
@@ -136,7 +136,7 @@ export function Checkbox(props: CheckboxComponentProps) {
   );
 }
 
-/** 选中 / 半选图标（数据来自 @xui/icons） */
+/** 选中 / 半选图标（数据来自 @xui-design/icons） */
 function CheckboxIcon({ name }: { name: 'check' | 'minus' }) {
   return (
     <svg

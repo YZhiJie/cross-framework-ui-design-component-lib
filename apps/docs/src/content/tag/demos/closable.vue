@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button, Tag } from '@xui/vue';
+import { Button, Tag } from '@xui-design/vue';
 
 const tags = ref(['前端', 'Vue', 'React', 'TypeScript']);
 

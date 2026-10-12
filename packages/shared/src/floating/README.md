@@ -1,4 +1,4 @@
-# @xui/shared/floating
+# @xui-design/shared/floating
 
 浮层视口避让纯逻辑（框架无关），为 Tooltip / Popconfirm / Select 等浮层组件统一提供方位翻转与交叉轴偏移钳制计算，并订阅滚动 / resize 事件触发重算。
 
@@ -154,7 +154,7 @@ import {
   bindViewportUpdate,
   getViewport,
   resolveFloatingPosition,
-} from '@xui/shared/floating';
+} from '@xui-design/shared/floating';
 
 // 1) 单次计算：给定触发器 / 浮层 / 视口矩形
 const trigger = triggerEl.getBoundingClientRect();

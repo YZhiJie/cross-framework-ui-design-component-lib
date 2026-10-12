@@ -5,7 +5,7 @@
     "rootDir": "src",
     "baseUrl": ".",
     "paths": {
-      "@xui/utils": ["../utils/src/index.ts"]
+      "@xui-design/utils": ["../utils/src/index.ts"]
     }
   },
   "include": ["src/**/*.ts"],

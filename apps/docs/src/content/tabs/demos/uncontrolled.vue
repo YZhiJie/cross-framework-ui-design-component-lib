@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Tabs } from '@xui/vue';
+import { Tabs } from '@xui-design/vue';
 
 const items = [
   { label: '章节一', value: 'ch1' },

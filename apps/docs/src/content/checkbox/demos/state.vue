@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Checkbox } from '@xui/vue';
+import { Checkbox } from '@xui-design/vue';
 
 const indeterminate = ref(true);
 </script>

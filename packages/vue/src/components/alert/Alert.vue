@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watchEffect } from 'vue';
-import { createAlertLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { AlertProps } from '@xui/core';
+import { createAlertLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { AlertProps } from '@xui-design/core';
 
 const {
   type = 'info',

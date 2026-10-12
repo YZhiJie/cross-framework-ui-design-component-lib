@@ -99,7 +99,7 @@ export const messageMeta: ComponentMeta = {
   content: string;        // 必填
   duration?: number;      // 默认 3000，0 表示不自动关闭
   closable?: boolean;     // 默认 false
-  icon?: string;          // 自定义类型图标（内层 SVG 标记，与 @xui/icons 数据源同构）
+  icon?: string;          // 自定义类型图标（内层 SVG 标记，与 @xui-design/icons 数据源同构）
   key?: string | number;  // 更新键：同 key 再次 open 原地更新该条
   onClose?: () => void;   // 消息移除回调
 };`,
@@ -117,7 +117,7 @@ export const messageMeta: ComponentMeta = {
   },
   notes: [
     'Message 是命令式 API 而非声明式组件：双端均未导出 Message 组件，也不进 contract-test 声明式校验矩阵。',
-    'Vue 与 React 各自导出独立的 message 单例（@xui/vue / @xui/react），在对应框架入口直接调用即可。',
+    'Vue 与 React 各自导出独立的 message 单例（@xui-design/vue / @xui-design/react），在对应框架入口直接调用即可。',
     'maxCount 超限时连带移除最早消息的自动关闭定时器；closeAll 同时清空全部定时器。',
     'key 更新：content 必填刷新，type / closable 未传保留原值；duration 以最新值重置计时，onClose 传入时替换旧回调。',
     'onClose 触发时机统一：自动关闭 / 手动关闭 / maxCount 挤出 / closeAll 均触发。',

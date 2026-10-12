@@ -25,10 +25,10 @@ import {
   InputNumber,
   Popconfirm,
   message,
-} from '@xui/react';
-import type { ModalRef } from '@xui/react';
-import type { BreadcrumbItem, TableColumn } from '@xui/core';
-import '@xui/styles';
+} from '@xui-design/react';
+import type { ModalRef } from '@xui-design/react';
+import type { BreadcrumbItem, TableColumn } from '@xui-design/core';
+import '@xui-design/styles';
 
 export default function App() {
   const [name, setName] = useState('');

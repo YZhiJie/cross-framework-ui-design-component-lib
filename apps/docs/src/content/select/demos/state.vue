@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Select } from '@xui/vue';
+import { Select } from '@xui-design/vue';
 
 const options = [
   { label: '选项一', value: '1' },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Empty, Button } from '@xui/vue';
+import { Empty, Button } from '@xui-design/vue';
 </script>
 
 <template>

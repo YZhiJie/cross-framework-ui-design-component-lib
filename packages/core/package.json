@@ -1,5 +1,5 @@
 {
-  "name": "@xui/core",
+  "name": "@xui-design/core",
   "version": "0.1.0",
   "description": "跨框架组件库 - 框架无关抽象层",
   "type": "module",
@@ -39,6 +39,6 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@xui/shared": "workspace:*"
+    "@xui-design/shared": "workspace:*"
   }
 }

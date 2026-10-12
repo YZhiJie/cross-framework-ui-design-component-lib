@@ -1,5 +1,5 @@
-import { Table } from '@xui/react';
-import type { TableColumn } from '@xui/core';
+import { Table } from '@xui-design/react';
+import type { TableColumn } from '@xui-design/core';
 
 const columns: TableColumn[] = [
   { key: 'name', title: '姓名' },

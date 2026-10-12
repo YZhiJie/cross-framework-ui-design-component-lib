@@ -1,4 +1,4 @@
-# @xui/styles
+# @xui-design/styles
 
 ## 0.1.0
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Spin, Button } from '@xui/react';
+import { Spin, Button } from '@xui-design/react';
 
 export default function SpinWrapperDemo() {
   const [spinning, setSpinning] = useState(true);

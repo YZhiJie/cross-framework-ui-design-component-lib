@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watchEffect } from 'vue';
-import { createBadgeLogic } from '@xui/shared';
-import type { BadgeProps } from '@xui/core';
+import { createBadgeLogic } from '@xui-design/shared';
+import type { BadgeProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<BadgeProps>(), {
   count: undefined,

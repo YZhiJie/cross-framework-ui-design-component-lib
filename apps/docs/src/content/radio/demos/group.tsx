@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { RadioGroup, Radio } from '@xui/react';
+import { RadioGroup, Radio } from '@xui-design/react';
 
 export default function RadioGroupDemo() {
   const [value, setValue] = useState('a');

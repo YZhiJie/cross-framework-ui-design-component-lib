@@ -1,4 +1,4 @@
-import { InputNumber } from '@xui/react';
+import { InputNumber } from '@xui-design/react';
 
 export default function InputNumberStateDemo() {
   return (

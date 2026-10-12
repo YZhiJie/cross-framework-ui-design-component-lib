@@ -1,16 +1,16 @@
 /**
  * Badge - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑。
  * 可见性与文本派生在逻辑层完成；纯展示组件，无交互回调。
  * 有 children 时为包裹模式（徽标叠加在内容右上角），否则独立渲染。
  */
 
 import { useEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { BadgeProps } from '@xui/core';
-import { createBadgeLogic } from '@xui/shared';
-import type { BadgeLogicInstance } from '@xui/shared';
+import type { BadgeProps } from '@xui-design/core';
+import { createBadgeLogic } from '@xui-design/shared';
+import type { BadgeLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 

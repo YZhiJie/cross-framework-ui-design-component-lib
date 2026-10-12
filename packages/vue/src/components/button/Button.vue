@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onUnmounted, ref, useTemplateRef, watchEffect } from 'vue';
-import { createButtonLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { ButtonProps } from '@xui/core';
+import { createButtonLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { ButtonProps } from '@xui-design/core';
 
 const {
   type = 'default',

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, onUnmounted, ref, watchEffect } from 'vue';
-import { createRadioLogic } from '@xui/shared';
-import type { RadioProps } from '@xui/core';
+import { createRadioLogic } from '@xui-design/shared';
+import type { RadioProps } from '@xui-design/core';
 import { RADIO_GROUP_KEY } from '../radio-group/context';
 
 const props = withDefaults(defineProps<RadioProps>(), {

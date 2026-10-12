@@ -3,7 +3,7 @@
  * 组件 API 文档区
  *
  * 按 Props / Events / Slots / 命令式方法 / 契约类型分块渲染表格，
- * 数据全部来自组件 meta.ts，口径对齐 @xui/core 的 ComponentSpec。
+ * 数据全部来自组件 meta.ts，口径对齐 @xui-design/core 的 ComponentSpec。
  */
 import type { ComponentMeta } from '../content/types';
 import CodeBlock from './CodeBlock.vue';

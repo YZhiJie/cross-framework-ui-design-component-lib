@@ -1,8 +1,8 @@
 /**
- * @xui/core - 通用类型定义
+ * @xui-design/core - 通用类型定义
  *
  * 契约层的基础类型原语，所有组件契约与 ComponentSpec 复用。
- * 与 @xui/shared 的 LogicInstance 结构兼容（由 spec 的 satisfies 校验保证一致性）。
+ * 与 @xui-design/shared 的 LogicInstance 结构兼容（由 spec 的 satisfies 校验保证一致性）。
  */
 
 /** 属性运行时类型构造器（供 Vue props 校验等运行时 schema 使用） */

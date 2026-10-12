@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, ref, useId, useTemplateRef, watchEffect } from 'vue';
-import { createTabsLogic } from '@xui/shared';
-import type { TabsProps } from '@xui/core';
+import { createTabsLogic } from '@xui-design/shared';
+import type { TabsProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<TabsProps, 'onChange'>>(), {
   // 显式 undefined 默认值：未绑定 value 时保持 undefined → 逻辑层进入非受控模式

@@ -1,12 +1,12 @@
 /**
  * InputNumber 组件规格
  *
- * useLogic 指向 @xui/shared 的 createInputNumberLogic 逻辑工厂，
+ * useLogic 指向 @xui-design/shared 的 createInputNumberLogic 逻辑工厂，
  * Vue / React 适配层通过同一份规格驱动组件状态。
  * ARIA spinbutton 模式；number | null 契约（空值 / 非法输入均为 null）。
  */
 
-import { createInputNumberLogic } from '@xui/shared';
+import { createInputNumberLogic } from '@xui-design/shared';
 
 import type { ComponentSpec } from '../../spec';
 import type {

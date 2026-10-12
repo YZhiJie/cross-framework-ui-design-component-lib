@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watchEffect } from 'vue';
-import { createSkeletonLogic } from '@xui/shared';
+import { createSkeletonLogic } from '@xui-design/shared';
 import { useLocaleData } from '../../hooks/use-locale';
-import type { SkeletonProps } from '@xui/core';
+import type { SkeletonProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<SkeletonProps>(), {
   loading: true,

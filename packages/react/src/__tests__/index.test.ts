@@ -1,5 +1,5 @@
 /**
- * @xui/react 包入口测试
+ * @xui-design/react 包入口测试
  *
  * 覆盖根 index.ts 的导出声明与版本常量。
  */
@@ -7,7 +7,7 @@
 import { describe, expect, it } from 'vitest';
 import * as XuiReact from '../index';
 
-describe('@xui/react 入口导出', () => {
+describe('@xui-design/react 入口导出', () => {
   it('导出 Button / Input / Modal 组件', () => {
     expect(typeof XuiReact.Button).toBe('function');
     expect(typeof XuiReact.Input).toBe('function');

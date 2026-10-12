@@ -5,7 +5,7 @@
  * 遮罩点击关闭（maskClosable）、ESC 关闭（closeOnEsc）、onOk/onCancel、
  * closable、renderTitle/renderFooter、width、ref 命令式 API（open/close）。
  *
- * 契约说明：当前 @xui/core 的 Modal onClose 回调不携带 source 载荷（无参调用），
+ * 契约说明：当前 @xui-design/core 的 Modal onClose 回调不携带 source 载荷（无参调用），
  * ESC 配置项为 closeOnEsc，断言均按实际契约编写。
  */
 

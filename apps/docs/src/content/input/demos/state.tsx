@@ -1,4 +1,4 @@
-import { Input } from '@xui/react';
+import { Input } from '@xui-design/react';
 
 export default function InputStateDemo() {
   return (

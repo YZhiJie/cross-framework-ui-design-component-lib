@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onUnmounted, provide, ref, watchEffect } from 'vue';
-import { createRadioGroupLogic } from '@xui/shared';
-import type { RadioGroupProps } from '@xui/core';
+import { createRadioGroupLogic } from '@xui-design/shared';
+import type { RadioGroupProps } from '@xui-design/core';
 import Radio from '../radio/Radio.vue';
 import { RADIO_GROUP_KEY, createRadioGroupName } from './context';
 

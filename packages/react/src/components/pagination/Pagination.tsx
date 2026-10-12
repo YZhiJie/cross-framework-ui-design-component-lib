@@ -1,16 +1,16 @@
 /**
  * Pagination - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * role="navigation" + aria-current="page"，页码序列由 createPageItems 纯函数生成。
  */
 
 import { useEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { PaginationProps } from '@xui/core';
-import { createPageItems, createPaginationLogic } from '@xui/shared';
-import type { PageItem, PaginationLogicInstance } from '@xui/shared';
-import { icons } from '@xui/icons';
+import type { PaginationProps } from '@xui-design/core';
+import { createPageItems, createPaginationLogic } from '@xui-design/shared';
+import type { PageItem, PaginationLogicInstance } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';

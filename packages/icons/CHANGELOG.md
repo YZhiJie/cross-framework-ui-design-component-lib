@@ -1,4 +1,4 @@
-# @xui/icons
+# @xui-design/icons
 
 ## 0.1.0
 
@@ -9,4 +9,4 @@
 ### Patch Changes
 
 - Updated dependencies []:
-  - @xui/styles@0.1.0
+  - @xui-design/styles@0.1.0

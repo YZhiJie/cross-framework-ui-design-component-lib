@@ -1,17 +1,17 @@
 /**
  * Input - React 19 适配层
  *
- * 使用 ref-as-prop + useSyncExternalStore 桥接 @xui/shared 逻辑。
+ * 使用 ref-as-prop + useSyncExternalStore 桥接 @xui-design/shared 逻辑。
  * 支持受控（value prop）/ 非受控（defaultValue）双模式。
  * 通过 useImperativeHandle 暴露 focus / blur / clear。
  */
 
 import { useEffect, useImperativeHandle, useRef } from 'react';
 import type { ChangeEvent, CSSProperties, FocusEvent, InputEvent, ReactNode, Ref } from 'react';
-import type { InputProps } from '@xui/core';
-import { createInputLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { InputLogicInstance } from '@xui/shared';
+import type { InputProps } from '@xui-design/core';
+import { createInputLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { InputLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 
@@ -168,7 +168,7 @@ export function Input(props: InputComponentProps) {
   );
 }
 
-/** 清除图标（数据来自 @xui/icons，与 Vue 端圆圈 X 样式一致） */
+/** 清除图标（数据来自 @xui-design/icons，与 Vue 端圆圈 X 样式一致） */
 function ClearIcon() {
   return (
     <svg

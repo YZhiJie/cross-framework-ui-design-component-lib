@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Table } from '@xui/react';
-import type { TableColumn, TableRowKey } from '@xui/core';
+import { Table } from '@xui-design/react';
+import type { TableColumn, TableRowKey } from '@xui-design/core';
 
 type UserRow = {
   id: number;

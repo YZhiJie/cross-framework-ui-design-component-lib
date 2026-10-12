@@ -52,7 +52,7 @@ const categoryTitle = computed(
     <section>
       <h2 class="docs-section-title">API 文档</h2>
       <p style="margin-bottom: 16px; color: var(--docs-text-secondary); font-size: 13px">
-        API 以 <code class="inline-code">@xui/core</code> 的 ComponentSpec
+        API 以 <code class="inline-code">@xui-design/core</code> 的 ComponentSpec
         为唯一契约基准，双端一致。
       </p>
       <ApiSection :api="meta.api" />

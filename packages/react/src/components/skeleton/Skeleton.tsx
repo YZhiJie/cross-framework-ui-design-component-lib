@@ -1,15 +1,15 @@
 /**
  * Skeleton - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑。
  * rows 收敛在逻辑层完成；纯展示组件，无交互回调。
  */
 
 import { useEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { SkeletonProps } from '@xui/core';
-import { createSkeletonLogic } from '@xui/shared';
-import type { SkeletonLogicInstance } from '@xui/shared';
+import type { SkeletonProps } from '@xui-design/core';
+import { createSkeletonLogic } from '@xui-design/shared';
+import type { SkeletonLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';

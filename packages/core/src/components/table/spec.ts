@@ -1,13 +1,13 @@
 /**
  * Table 组件规格
  *
- * useLogic 指向 @xui/shared 的 createTableLogic 逻辑工厂，
+ * useLogic 指向 @xui-design/shared 的 createTableLogic 逻辑工厂，
  * Vue / React 适配层通过同一份规格驱动组件状态。
  * 排序为非受控内部排序（客户端比较），sortChange 回调同步结果。
  * 虚拟滚动由适配层基于 createVirtualListLogic 组合，行选择由逻辑层维护。
  */
 
-import { createTableLogic } from '@xui/shared';
+import { createTableLogic } from '@xui-design/shared';
 
 import type { ComponentSpec } from '../../spec';
 import type { TableEvents, TableLogic, TableProps, TableSlots } from './types';

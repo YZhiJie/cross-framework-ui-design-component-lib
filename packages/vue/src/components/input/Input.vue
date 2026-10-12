@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onUnmounted, ref, useId, useTemplateRef, watchEffect } from 'vue';
-import { createInputLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { InputProps } from '@xui/core';
+import { createInputLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { InputProps } from '@xui-design/core';
 
 const {
   type = 'text',

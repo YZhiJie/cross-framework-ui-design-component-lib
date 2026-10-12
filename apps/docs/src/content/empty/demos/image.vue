@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Empty } from '@xui/vue';
+import { Empty } from '@xui-design/vue';
 </script>
 
 <template>

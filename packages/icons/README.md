@@ -1,4 +1,4 @@
-# @xui/icons
+# @xui-design/icons
 
 跨框架组件库(Vue 3 + React 19)的**框架无关 SVG 图标数据源**包——以原始 SVG 标记数据 + 渲染工具函数形式提供,Vue / React 双端共用同一套数据源,颜色跟随文本色。
 
@@ -6,13 +6,13 @@
 
 - ✅ 提供:图标名 → 内层 SVG 标记的映射(`icons`)、完整 `<svg>` 字符串渲染(`getIconSvg`)、DOM 元素渲染(`createIconElement`)
 - ✅ 保证:统一 SVG 壳约定(`viewBox` / `fill` / `stroke` 等),双端视觉一致、可由各框架适配层自由内联渲染
-- ❌ 不提供:Vue / React 组件封装(由 `@xui/vue` / `@xui/react` 各自的 Icon 适配层基于本包数据实现)
+- ❌ 不提供:Vue / React 组件封装(由 `@xui-design/vue` / `@xui-design/react` 各自的 Icon 适配层基于本包数据实现)
 - ❌ 不提供:打包后的雪碧图 / 字体图标 / 图标字体 CSS
 
 ## 依赖关系
 
-- 运行时依赖:`@xui/styles`(workspace,组件渲染时复用 `.xui-button__spinner` 等类名,如 loading 图标)
-- 构建配置:`vite` + `vite-plugin-dts`,外部化 `@xui/styles`(`rollupOptions.external`)
+- 运行时依赖:`@xui-design/styles`(workspace,组件渲染时复用 `.xui-button__spinner` 等类名,如 loading 图标)
+- 构建配置:`vite` + `vite-plugin-dts`,外部化 `@xui-design/styles`(`rollupOptions.external`)
 - 测试:`vitest`
 
 ## 模块 / 文件结构
@@ -169,7 +169,7 @@ export function createIconElement(name: IconName, options?: IconOptions): SVGSVG
 
 ```vue
 <script setup lang="ts">
-import { icons, type IconName } from '@xui/icons';
+import { icons, type IconName } from '@xui-design/icons';
 defineProps<{ name: IconName }>();
 </script>
 
@@ -186,7 +186,7 @@ defineProps<{ name: IconName }>();
 ### 2. 在 React 适配层内联渲染
 
 ```tsx
-import { icons, type IconName } from '@xui/icons';
+import { icons, type IconName } from '@xui-design/icons';
 
 export function Icon({ name, size = 16, className }: { name: IconName; size?: number; className?: string }) {
   return (
@@ -204,7 +204,7 @@ export function Icon({ name, size = 16, className }: { name: IconName; size?: nu
 ### 3. SSR / 文档场景(直接拿 `<svg>` 字符串)
 
 ```ts
-import { getIconSvg } from '@xui/icons';
+import { getIconSvg } from '@xui-design/icons';
 
 const html = getIconSvg('check', { size: 24, className: 'my-check' });
 // → <svg viewBox="0 0 24 24" width="24" height="24" ... class="my-check"><path d="M4 12l5 5L20 7" /></svg>
@@ -213,7 +213,7 @@ const html = getIconSvg('check', { size: 24, className: 'my-check' });
 ### 4. 浏览器直接拿 DOM 元素
 
 ```ts
-import { createIconElement } from '@xui/icons';
+import { createIconElement } from '@xui-design/icons';
 
 const el = createIconElement('loading', { size: 14, className: 'xui-button__spinner' });
 document.body.appendChild(el); // el 为 SVGSVGElement,可直接插入 DOM
@@ -229,7 +229,7 @@ document.body.appendChild(el); // el 为 SVGSVGElement,可直接插入 DOM
 
 ## 关键约定
 
-1. **单一数据源**:图标统一由 `@xui/icons` 提供,双端共用同一套 SVG 数据,避免 Vue / React 各自维护图标导致漂移。
+1. **单一数据源**:图标统一由 `@xui-design/icons` 提供,双端共用同一套 SVG 数据,避免 Vue / React 各自维护图标导致漂移。
 2. **数据不含 `<svg>` 壳**:`icons` 值仅为内层标记,壳属性由渲染函数 / 框架适配层统一注入,保证壳约定一致。
 3. **颜色策略**:`stroke="currentColor"`,图标颜色随父元素 `color` 继承,主题切换时无需为图标单独配色。
 4. **viewBox 统一**:`0 0 24 24`,所有图标在同一 24×24 画布设计。

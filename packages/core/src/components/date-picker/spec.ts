@@ -1,12 +1,12 @@
 /**
  * DatePicker 组件规格
  *
- * useLogic 指向 @xui/shared 的 createDatePickerLogic 逻辑工厂，
+ * useLogic 指向 @xui-design/shared 的 createDatePickerLogic 逻辑工厂，
  * Vue / React 适配层通过同一份规格驱动组件状态。
  * ARIA combobox 模式：trigger role="combobox"，面板 role="dialog"。
  */
 
-import { createDatePickerLogic } from '@xui/shared';
+import { createDatePickerLogic } from '@xui-design/shared';
 
 import type { ComponentSpec } from '../../spec';
 import type { DatePickerEvents, DatePickerLogic, DatePickerProps, DatePickerSlots } from './types';

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Skeleton, Button } from '@xui/vue';
+import { Skeleton, Button } from '@xui-design/vue';
 
 const loading = ref(true);
 </script>

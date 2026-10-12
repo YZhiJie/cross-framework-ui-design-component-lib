@@ -1,20 +1,20 @@
 /**
  * Popconfirm - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * CSS 包裹定位（复用 Tooltip 模式，popper 锚定 trigger 元素）；点击外部收起且不触发回调。
  * 打开时经 resolveFloatingPosition 做视口避让（翻转方位 + 交叉轴钳制）。
  */
 import { useEffect, useId, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 import type { CSSProperties, ReactNode, Ref } from 'react';
-import type { PopconfirmProps } from '@xui/core';
+import type { PopconfirmProps } from '@xui-design/core';
 import {
   bindViewportUpdate,
   createPopconfirmLogic,
   getViewport,
   resolveFloatingPosition,
-} from '@xui/shared';
-import type { FloatingPlacement, PopconfirmLogicInstance } from '@xui/shared';
+} from '@xui-design/shared';
+import type { FloatingPlacement, PopconfirmLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Popconfirm, Button } from '@xui/vue';
+import { Popconfirm, Button } from '@xui-design/vue';
 </script>
 
 <template>

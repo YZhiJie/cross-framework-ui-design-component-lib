@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Spin } from '@xui/vue';
+import { Spin } from '@xui-design/vue';
 </script>
 
 <template>

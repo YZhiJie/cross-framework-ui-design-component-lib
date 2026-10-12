@@ -1,7 +1,7 @@
 /**
  * Table - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * 非受控内部排序：点击可排序列表头循环 升序 → 降序 → 取消，
  * aria-sort 同步表头状态，renderEmpty 回调对应 Vue 具名插槽 #empty。
  * 虚拟滚动由 createVirtualListLogic 驱动（spacer 行 + 可视窗口切片），
@@ -10,15 +10,15 @@
 
 import { useEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { TableColumn, TableProps, TableRow } from '@xui/core';
+import type { TableColumn, TableProps, TableRow } from '@xui-design/core';
 import {
   createTableLogic,
   createVirtualListLogic,
   formatTableCellValue,
   getRowKeyOf,
-} from '@xui/shared';
-import type { TableLogicInstance } from '@xui/shared';
-import { icons } from '@xui/icons';
+} from '@xui-design/shared';
+import type { TableLogicInstance } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';

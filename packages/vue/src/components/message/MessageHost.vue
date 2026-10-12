@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onUnmounted, ref } from 'vue';
-import { icons } from '@xui/icons';
-import type { MessageType } from '@xui/core';
-import type { MessageLogicInstance } from '@xui/shared';
+import { icons } from '@xui-design/icons';
+import type { MessageType } from '@xui-design/core';
+import type { MessageLogicInstance } from '@xui-design/shared';
 
 // Message 全局宿主组件：由 manager.ts 挂载到 document.body，
 // 订阅单例管理器状态并渲染消息队列（不作为公共组件导出）。

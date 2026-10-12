@@ -14,7 +14,7 @@
 
 import type { LogicInstance, StateListener } from '../../types';
 
-/** 下拉选项（与 @xui/core 的 SelectOption 结构一致；shared 不依赖 core，本地定义） */
+/** 下拉选项（与 @xui-design/core 的 SelectOption 结构一致；shared 不依赖 core，本地定义） */
 export type SelectOption = {
   /** 选项文案 */
   label: string;

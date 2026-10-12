@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Spin, Button } from '@xui/vue';
+import { Spin, Button } from '@xui-design/vue';
 
 const spinning = ref(true);
 </script>

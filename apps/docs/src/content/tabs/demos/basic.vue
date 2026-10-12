@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Tabs } from '@xui/vue';
-import type { TabItem } from '@xui/core';
+import { Tabs } from '@xui-design/vue';
+import type { TabItem } from '@xui-design/core';
 
 const active = ref('overview');
 const items: TabItem[] = [

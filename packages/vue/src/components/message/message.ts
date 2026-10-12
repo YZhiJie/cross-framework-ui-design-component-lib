@@ -5,7 +5,7 @@
  * 首次调用时自动挂载全局容器（见 manager.ts）。
  */
 
-import type { MessageHandle, MessageOptions } from '@xui/core';
+import type { MessageHandle, MessageOptions } from '@xui-design/core';
 import { getManager } from './manager';
 
 /** 打开消息的快捷方法选项（type/content 由快捷方法注入） */

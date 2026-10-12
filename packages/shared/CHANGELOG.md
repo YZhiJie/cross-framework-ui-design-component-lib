@@ -1,4 +1,4 @@
-# @xui/shared
+# @xui-design/shared
 
 ## 0.1.0
 

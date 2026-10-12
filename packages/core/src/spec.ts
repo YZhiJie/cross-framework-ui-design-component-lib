@@ -1,9 +1,9 @@
 /**
- * @xui/core - ComponentSpec 组件规格契约
+ * @xui-design/core - ComponentSpec 组件规格契约
  *
  * ComponentSpec 描述一个组件的完整契约（props schema + events + slots + useLogic），
  * 是 Vue 适配层与 React 适配层的"共享合同"。
- * useLogic 指向 @xui/shared 的逻辑工厂，双端通过相同的规格驱动状态。
+ * useLogic 指向 @xui-design/shared 的逻辑工厂，双端通过相同的规格驱动状态。
  */
 
 import type { PropType, Subscribe } from './types';
@@ -77,6 +77,6 @@ export interface ComponentSpec<
   events: EventsDefinition<E>;
   /** 插槽定义 */
   slots: SlotsDefinition<S>;
-  /** 核心 hook 工厂（指向 @xui/shared 的逻辑工厂） */
+  /** 核心 hook 工厂（指向 @xui-design/shared 的逻辑工厂） */
   useLogic: (options: P) => L;
 }

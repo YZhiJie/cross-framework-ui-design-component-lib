@@ -5,10 +5,10 @@ import {
   createPopconfirmLogic,
   getViewport,
   resolveFloatingPosition,
-} from '@xui/shared';
-import type { FloatingPlacement } from '@xui/shared';
+} from '@xui-design/shared';
+import type { FloatingPlacement } from '@xui-design/shared';
 import { useLocaleData } from '../../hooks/use-locale';
-import type { PopconfirmProps } from '@xui/core';
+import type { PopconfirmProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<PopconfirmProps, 'onConfirm' | 'onCancel'>>(), {
   content: undefined,

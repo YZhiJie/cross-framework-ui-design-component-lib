@@ -1,5 +1,5 @@
 {
-  "name": "@xui/shared",
+  "name": "@xui-design/shared",
   "version": "0.1.0",
   "description": "跨框架组件库 - 纯逻辑核心层",
   "type": "module",
@@ -40,6 +40,6 @@
     "type-check": "tsc --noEmit"
   },
   "devDependencies": {
-    "@xui/utils": "workspace:*"
+    "@xui-design/utils": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Pagination } from '@xui/vue';
+import { Pagination } from '@xui-design/vue';
 </script>
 
 <template>

@@ -19,7 +19,7 @@ export type MessageOptions = {
   duration?: number;
   /** 是否显示关闭按钮（默认 false） */
   closable?: boolean;
-  /** 自定义类型图标：内层 SVG 标记（与 @xui/icons 数据源同构，不含 <svg> 壳）；不传使用按 type 内置图标 */
+  /** 自定义类型图标：内层 SVG 标记（与 @xui-design/icons 数据源同构，不含 <svg> 壳）；不传使用按 type 内置图标 */
   icon?: string;
   /** 更新键：相同 key 再次 open 时原地更新该条消息（不新增、重置计时） */
   key?: string | number;

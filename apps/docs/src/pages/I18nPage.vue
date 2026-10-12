@@ -124,7 +124,7 @@ const notes = [
       </h1>
       <p class="page-head__summary">
         组件库内置中文（zh-CN）与英文（en-US）语言包：setLocale 一行切换全部组件文案，
-        registerLocale 支持扩展任意语言，双端（@xui/vue / @xui/react）共享同一套运行时 API。
+        registerLocale 支持扩展任意语言，双端（@xui-design/vue / @xui-design/react）共享同一套运行时 API。
       </p>
     </header>
 
@@ -172,9 +172,9 @@ const notes = [
     <section>
       <h2 class="docs-section-title">API 文档</h2>
       <p style="margin-bottom: 16px; color: var(--docs-text-secondary); font-size: 13px">
-        国际化 API 由 <code class="inline-code">@xui/shared</code> 提供（框架无关实现），
-        <code class="inline-code">@xui/vue</code> 与
-        <code class="inline-code">@xui/react</code> 同名导出，行为完全一致。
+        国际化 API 由 <code class="inline-code">@xui-design/shared</code> 提供（框架无关实现），
+        <code class="inline-code">@xui-design/vue</code> 与
+        <code class="inline-code">@xui-design/react</code> 同名导出，行为完全一致。
       </p>
       <ApiSection :api="api" />
     </section>

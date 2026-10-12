@@ -1,11 +1,11 @@
 /**
  * Button 组件规格
  *
- * useLogic 指向 @xui/shared 的 createButtonLogic 逻辑工厂，
+ * useLogic 指向 @xui-design/shared 的 createButtonLogic 逻辑工厂，
  * Vue / React 适配层通过同一份规格驱动组件状态。
  */
 
-import { createButtonLogic } from '@xui/shared';
+import { createButtonLogic } from '@xui-design/shared';
 
 import type { ComponentSpec } from '../../spec';
 import type { ButtonEvents, ButtonLogic, ButtonProps, ButtonSlots } from './types';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Switch } from '@xui/vue';
+import { Switch } from '@xui-design/vue';
 </script>
 
 <template>

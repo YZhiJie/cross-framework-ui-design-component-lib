@@ -1,8 +1,8 @@
-# @xui/shared
+# @xui-design/shared
 
 > 跨框架组件库的**纯逻辑核心层**：框架无关的组件逻辑工厂 + 主题 / 国际化 / 浮层定位 / 虚拟滚动 / 插件系统 / DOM 辅助等基础设施，不依赖任何框架运行时，双端（Vue 3 / React 19）共用同一份逻辑。
 
-- 包名：`@xui/shared`
+- 包名：`@xui-design/shared`
 - 版本：`0.1.0`
 - 入口：`dist/index.mjs`（ESM）/ `dist/index.cjs`（CJS）/ `dist/types/index.d.ts`（类型）
 - 子路径导出：`./components/*`、`./hooks`、`./utils`
@@ -19,26 +19,26 @@
 - 提供 **虚拟滚动原语**（`createVirtualListLogic`）：固定行高窗口计算，供 Table / Select 长列表复用，不触碰 DOM。
 - 提供 **插件系统**（`applyPlugins` / `XuiPlugin`）：逻辑实例级别的标准扩展点与生命周期钩子，组件核心代码零改动接入。
 - 提供 **DOM 辅助**（`trapFocus`）：Modal 等浮层的 Tab 焦点循环约束。
-- 本地定义并导出逻辑层共用类型（`SelectOption` / `TabItem` / `MessageType` / `BreadcrumbItem` / `TableRow` / `TableSort` 等），供 `@xui/core` 复用对齐。
+- 本地定义并导出逻辑层共用类型（`SelectOption` / `TabItem` / `MessageType` / `BreadcrumbItem` / `TableRow` / `TableSort` 等），供 `@xui-design/core` 复用对齐。
 
 ### 这个包不做什么
 
 - **不依赖任何框架运行时**（不 import Vue / React），零框架依赖。
-- **不允许 import `@xui/core`**：逻辑层类型在 shared 本地定义并导出，core 复用 / 对齐，依赖方向为 `core → shared`。
+- **不允许 import `@xui-design/core`**：逻辑层类型在 shared 本地定义并导出，core 复用 / 对齐，依赖方向为 `core → shared`。
 - **不触碰 DOM 渲染**：逻辑工厂仅维护状态快照与交互方法，DOM 事件绑定、元素创建由适配层桥接（仅 `trapFocus` / `bindViewportUpdate` / 主题 / 语言包等基础设施直接操作 DOM 属性）。
-- **不声明组件 Props 契约**：Props / Events / Slots 契约由 `@xui/core` 定义，shared 仅提供 `XxxLogicOptions`（配置注入）与 `XxxState`（状态快照）。
+- **不声明组件 Props 契约**：Props / Events / Slots 契约由 `@xui-design/core` 定义，shared 仅提供 `XxxLogicOptions`（配置注入）与 `XxxState`（状态快照）。
 
 ## 依赖关系
 
-### 它依赖哪些 @xui/* 包
+### 它依赖哪些 @xui-design/* 包
 
-- **运行时无 @xui/* 依赖**：`package.json` 的 `dependencies` 为空，源码不 import 任何 `@xui/*` 包。
-- `@xui/utils`（`workspace:*`）仅声明为 **devDependency**，源码未引用（构建期 / 类型校验辅助，不进入运行时）。
+- **运行时无 @xui-design/* 依赖**：`package.json` 的 `dependencies` 为空，源码不 import 任何 `@xui-design/*` 包。
+- `@xui-design/utils`（`workspace:*`）仅声明为 **devDependency**，源码未引用（构建期 / 类型校验辅助，不进入运行时）。
 
 ### 被哪些包依赖
 
-- `@xui/core`：spec 的 `useLogic` 调用 shared 的 `createXxxLogic` / `createMessageManager`，并从 shared 重导出 `messageDefaults`（命令式 API 默认值单一来源）。
-- `@xui/vue` / `@xui/react`：适配层按 core 契约桥接，内部调用 shared 的逻辑工厂创建状态、订阅快照、调用交互方法；直接使用 shared 的主题 / 国际化 / 浮层定位 / 虚拟滚动 / 插件 / 焦点陷阱等基础设施。
+- `@xui-design/core`：spec 的 `useLogic` 调用 shared 的 `createXxxLogic` / `createMessageManager`，并从 shared 重导出 `messageDefaults`（命令式 API 默认值单一来源）。
+- `@xui-design/vue` / `@xui-design/react`：适配层按 core 契约桥接，内部调用 shared 的逻辑工厂创建状态、订阅快照、调用交互方法；直接使用 shared 的主题 / 国际化 / 浮层定位 / 虚拟滚动 / 插件 / 焦点陷阱等基础设施。
 
 ## 模块结构
 
@@ -67,7 +67,7 @@ packages/shared/src/
 │   └── apply-plugins.ts
 ├── utils/
 │   └── focus-trap.ts # trapFocus（Tab 焦点循环，Modal 等浮层共用）
-└── components/       # 25 个组件逻辑工厂（与 @xui/core 契约一一对应）
+└── components/       # 25 个组件逻辑工厂（与 @xui-design/core 契约一一对应）
     └── <component>/
         ├── index.ts                # export * from './create-xxx-logic'
         ├── create-xxx-logic.ts      # createXxxLogic 工厂 + XxxLogicOptions/XxxState/XxxLogicInstance 类型
@@ -119,7 +119,7 @@ export interface LogicInstance<P extends Record<string, unknown>, S = unknown> {
   updateOptions: (options: Partial<P>) => void;
 }
 ```
-逻辑实例通用形状（与 `@xui/core` 的 `LogicInstance` 结构兼容）。
+逻辑实例通用形状（与 `@xui-design/core` 的 `LogicInstance` 结构兼容）。
 
 ### 主题运行时 API（来自 `src/theme/theme.ts`）
 
@@ -563,7 +563,7 @@ export type MessageOptions = {
 export type MessageItem = { id: number; type: MessageType; content: string; closable: boolean; icon?: string; key?: string | number; };
 export type MessageHandle = { close: () => void };
 export type MessageManagerOptions = { maxCount?: number };
-/** Message 命令式 API 默认值（契约单一来源，@xui/core 的 messageSpec 复用此定义） */
+/** Message 命令式 API 默认值（契约单一来源，@xui-design/core 的 messageSpec 复用此定义） */
 export const messageDefaults = {
   type: 'info',
   duration: 3000,
@@ -598,7 +598,7 @@ export type PopconfirmPlacement = 'top' | 'bottom' | 'left' | 'right';
 ### 1. 组件逻辑工厂（以 Button / Select 为例）
 
 ```ts
-import { createButtonLogic, createSelectLogic } from '@xui/shared';
+import { createButtonLogic, createSelectLogic } from '@xui-design/shared';
 
 // Button：非受控模式
 const button = createButtonLogic({
@@ -639,7 +639,7 @@ select.getState().filteredOptions;    // 过滤后的选项列表（引用变化
 ### 2. 主题运行时 API
 
 ```ts
-import { getTheme, setTheme, toggleTheme, subscribeTheme, setThemeTokens } from '@xui/shared';
+import { getTheme, setTheme, toggleTheme, subscribeTheme, setThemeTokens } from '@xui-design/shared';
 
 const unsubscribe = subscribeTheme((theme) => {
   // theme: 'light' | 'dark'
@@ -666,7 +666,7 @@ import {
   getLocaleData,
   zhCN,
   enUS,
-} from '@xui/shared';
+} from '@xui-design/shared';
 
 setLocale('en-US');                 // 切换到英文
 getLocale();                        // 'en-US'
@@ -685,7 +685,7 @@ subscribeLocale((data) => {
 ### 4. 浮层视口避让
 
 ```ts
-import { resolveFloatingPosition, getViewport, bindViewportUpdate } from '@xui/shared';
+import { resolveFloatingPosition, getViewport, bindViewportUpdate } from '@xui-design/shared';
 
 const trigger = document.querySelector<HTMLElement>('.trigger')!.getBoundingClientRect();
 const popper = document.querySelector<HTMLElement>('.popper')!.getBoundingClientRect();
@@ -708,7 +708,7 @@ const unbind = bindViewportUpdate(() => {
 ### 5. 虚拟滚动原语
 
 ```ts
-import { createVirtualListLogic } from '@xui/shared';
+import { createVirtualListLogic } from '@xui-design/shared';
 
 const list = createVirtualListLogic({
   itemCount: 1000,
@@ -731,7 +731,7 @@ list.scrollToIndex(500, 'start');
 ### 6. 插件系统
 
 ```ts
-import { applyPlugins, type XuiPlugin } from '@xui/shared';
+import { applyPlugins, type XuiPlugin } from '@xui-design/shared';
 import { createCounterLogic } from './my-logic'; // 假设的逻辑工厂
 
 const logPlugin: XuiPlugin<MyOptions, MyState> = {
@@ -753,7 +753,7 @@ enhanced.dispose();                   // 触发插件 destroy（幂等）
 ### 7. 焦点陷阱（Modal 等浮层共用）
 
 ```ts
-import { trapFocus } from '@xui/shared';
+import { trapFocus } from '@xui-design/shared';
 
 // 适配层在容器 keydown 时调用
 dialogEl.addEventListener('keydown', (e) => {
@@ -764,7 +764,7 @@ dialogEl.addEventListener('keydown', (e) => {
 ## 关键设计约定
 
 1. **零框架依赖**：shared 不 import Vue / React / 任何框架运行时；所有状态管理通过闭包 + `subscribe` 模式实现，可被双端安全复用。
-2. **shared 不允许 import @xui/core**：依赖方向严格为 `core → shared`。逻辑层共用类型（`SelectOption` / `TabItem` / `MessageType` / `BreadcrumbItem` / `TableRow` / `TableSort` / `TableRowKey` / `TableRowSelection` / `TableSortOrder` / `PopconfirmPlacement` / `SpinSize` / `ProgressStatus` 等）在 shared 本地定义并导出，core 复用 / 对齐（结构一致）。
+2. **shared 不允许 import @xui-design/core**：依赖方向严格为 `core → shared`。逻辑层共用类型（`SelectOption` / `TabItem` / `MessageType` / `BreadcrumbItem` / `TableRow` / `TableSort` / `TableRowKey` / `TableRowSelection` / `TableSortOrder` / `PopconfirmPlacement` / `SpinSize` / `ProgressStatus` 等）在 shared 本地定义并导出，core 复用 / 对齐（结构一致）。
 3. **双端共用同一逻辑**：locale / theme / floating / virtual-list / plugin / focus-trap 等模块框架无关，Vue / React 适配层仅做 DOM 桥接（绑定事件、读取 `getBoundingClientRect`、写 `data-theme` 属性等）。
 4. **受控模式约定**：受控判定为 `options.value !== undefined`（`InputNumber` / `Modal` 的 `null` / `false` 也是有效受控值）；受控模式仅回调 `onXxx`、不更新内部状态，由适配层通过 `updateOptions` 同步外部值；`Message` / `Tooltip` / `Popconfirm` / `Tag` / `Alert` / `Avatar` / `Breadcrumb` 等非 `value` 驱动组件按各自语义（`visible` / `open` / `failed` / 内部 `Set`）实现受控 / 非受控。
 5. **稳定引用语义**：`getLocaleData()` 恒返回缓存引用（仅语言切换 / 当前包重新注册时重建），满足 React `useSyncExternalStore` 快照语义；逻辑工厂的 `getState()` 返回浅拷贝，`items` / `filteredOptions` / `selectedRowKeys` 等数组字段每次变更均生成新引用，适配层可直接依赖引用变化驱动重渲染。
@@ -776,10 +776,10 @@ dialogEl.addEventListener('keydown', (e) => {
 
 新增组件固定流程（四层骨架，可通过官方脚手架 `create-component.ts` 一键生成）中，shared 承担第 2、3 步：
 
-1. **core 契约定义** →（在 `@xui/core` 完成 Props / Events / Slots / State / Logic 契约与 `xxxSpec`）
+1. **core 契约定义** →（在 `@xui-design/core` 完成 Props / Events / Slots / State / Logic 契约与 `xxxSpec`）
 2. **shared 核心逻辑实现**：在 `packages/shared/src/components/<name>/` 下新增 `create-xxx-logic.ts`，实现 `createXxxLogic(options?: XxxLogicOptions): XxxLogicInstance`，返回值满足 `LogicInstance` + 组件特有交互方法；共用类型（如选项 / 行 / 标签项）在本地定义并导出；在 `shared/src/index.ts` 追加 `export * from './components/<name>'`。
 3. **核心层单元测试**：在 `__tests__/create-xxx-logic.test.ts` 中为纯逻辑编写单测（vitest，不依赖 DOM / 框架），覆盖受控 / 非受控、边界值、键盘导航等。
-4. **双端适配** →（在 `@xui/vue` / `@xui/react` 完成）
+4. **双端适配** →（在 `@xui-design/vue` / `@xui-design/react` 完成）
 5. **双端组件测试** →
 6. **双端契约对齐校验** →
 

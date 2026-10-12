@@ -1,11 +1,11 @@
 /**
  * Checkbox 组件规格
  *
- * useLogic 指向 @xui/shared 的 createCheckboxLogic 逻辑工厂，
+ * useLogic 指向 @xui-design/shared 的 createCheckboxLogic 逻辑工厂，
  * Vue / React 适配层通过同一份规格驱动组件状态。
  */
 
-import { createCheckboxLogic } from '@xui/shared';
+import { createCheckboxLogic } from '@xui-design/shared';
 
 import type { ComponentSpec } from '../../spec';
 import type { CheckboxEvents, CheckboxLogic, CheckboxProps, CheckboxSlots } from './types';

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, ref, useTemplateRef, watch, watchEffect } from 'vue';
-import { createModalLogic, trapFocus as trapFocusIn } from '@xui/shared';
+import { createModalLogic, trapFocus as trapFocusIn } from '@xui-design/shared';
 import { useLocaleData } from '../../hooks/use-locale';
-import { icons } from '@xui/icons';
-import type { ModalProps } from '@xui/core';
+import { icons } from '@xui-design/icons';
+import type { ModalProps } from '@xui-design/core';
 
 const {
   title,

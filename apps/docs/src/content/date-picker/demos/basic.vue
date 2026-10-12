@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { DatePicker } from '@xui/vue';
+import { DatePicker } from '@xui-design/vue';
 
 const value = ref('2026-10-01');
 </script>

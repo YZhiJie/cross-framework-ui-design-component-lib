@@ -1,4 +1,4 @@
-import { DatePicker } from '@xui/react';
+import { DatePicker } from '@xui-design/react';
 
 export default function DatePickerStateDemo() {
   return (

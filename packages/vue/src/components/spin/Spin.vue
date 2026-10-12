@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watchEffect } from 'vue';
-import { createSpinLogic } from '@xui/shared';
-import type { SpinProps } from '@xui/core';
+import { createSpinLogic } from '@xui-design/shared';
+import type { SpinProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<SpinProps>(), {
   size: 'md',

@@ -1,7 +1,7 @@
 /**
  * 主题运行时 API（框架无关）
  *
- * 与 @xui/styles 的 tokens.scss 联动：切换主题 = 写入 <html data-theme="dark">，
+ * 与 @xui-design/styles 的 tokens.scss 联动：切换主题 = 写入 <html data-theme="dark">，
  * 浅色为默认（移除属性）。SSR 环境下安全降级（无 DOM 不写入，getTheme 返回 light）。
  * 状态通知基于内存 listener 集合，供双端订阅主题变化。
  */

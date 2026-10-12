@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { getLocale, setLocale } from '@xui/react';
-import { Button, DatePicker, Modal, Table, Tag } from '@xui/react';
+import { getLocale, setLocale } from '@xui-design/react';
+import { Button, DatePicker, Modal, Table, Tag } from '@xui-design/react';
 
 const columns = [
   { key: 'name', title: '名称' },

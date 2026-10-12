@@ -16,10 +16,10 @@ import {
   createVirtualListLogic,
   getViewport,
   resolveFloatingPosition,
-} from '@xui/shared';
-import { icons } from '@xui/icons';
+} from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
 import { useLocaleData } from '../../hooks/use-locale';
-import type { SelectProps, SelectValue } from '@xui/core';
+import type { SelectProps, SelectValue } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<SelectProps, 'onChange' | 'onClear'>>(), {
   // 显式 undefined 默认值：未绑定 value 时保持 undefined → 逻辑层进入非受控模式

@@ -1,5 +1,5 @@
 /**
- * @xui/icons - 图标包
+ * @xui-design/icons - 图标包
  *
  * 框架无关的 SVG 图标基础设施：
  * - icons：图标名 → 内层 SVG 标记（不含 <svg> 壳），供各框架适配层内联渲染
@@ -78,7 +78,7 @@ function svgAttrs({ size = 16, className }: IconOptions = {}): string {
 export function getIconSvg(name: IconName, options?: IconOptions): string {
   const markup = icons[name];
   if (markup === undefined) {
-    throw new Error(`@xui/icons: 未知图标 "${name}"，可用图标：${ICON_NAMES.join(', ')}`);
+    throw new Error(`@xui-design/icons: 未知图标 "${name}"，可用图标：${ICON_NAMES.join(', ')}`);
   }
   return `<svg ${svgAttrs(options)}>${markup}</svg>`;
 }
@@ -86,7 +86,7 @@ export function getIconSvg(name: IconName, options?: IconOptions): string {
 /** 渲染为 DOM SVGSVGElement（仅浏览器环境；SSR 请使用 getIconSvg） */
 export function createIconElement(name: IconName, options?: IconOptions): SVGSVGElement {
   if (typeof document === 'undefined') {
-    throw new Error('@xui/icons: createIconElement 仅支持浏览器环境，SSR 请使用 getIconSvg');
+    throw new Error('@xui-design/icons: createIconElement 仅支持浏览器环境，SSR 请使用 getIconSvg');
   }
   const template = document.createElement('template');
   template.innerHTML = getIconSvg(name, options);

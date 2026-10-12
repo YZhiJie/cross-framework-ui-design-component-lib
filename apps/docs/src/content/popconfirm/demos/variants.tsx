@@ -1,4 +1,4 @@
-import { Popconfirm, Button } from '@xui/react';
+import { Popconfirm, Button } from '@xui-design/react';
 
 export default function PopconfirmVariantsDemo() {
   return (

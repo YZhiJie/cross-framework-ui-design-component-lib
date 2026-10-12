@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Alert } from '@xui/vue';
+import { Alert } from '@xui-design/vue';
 </script>
 
 <template>

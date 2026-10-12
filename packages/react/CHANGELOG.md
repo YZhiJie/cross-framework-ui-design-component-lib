@@ -1,4 +1,4 @@
-# @xui/react
+# @xui-design/react
 
 ## 0.1.0
 
@@ -9,7 +9,7 @@
 ### Patch Changes
 
 - Updated dependencies []:
-  - @xui/shared@0.1.0
-  - @xui/core@0.1.0
-  - @xui/styles@0.1.0
-  - @xui/icons@0.1.0
+  - @xui-design/shared@0.1.0
+  - @xui-design/core@0.1.0
+  - @xui-design/styles@0.1.0
+  - @xui-design/icons@0.1.0

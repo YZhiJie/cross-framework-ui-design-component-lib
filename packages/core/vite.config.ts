@@ -24,7 +24,7 @@ export default defineConfig({
         `${entryName}.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['@xui/shared', '@xui/utils'],
+      external: ['@xui-design/shared', '@xui-design/utils'],
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',

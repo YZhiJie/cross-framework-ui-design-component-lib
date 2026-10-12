@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { RadioGroup } from '@xui/vue';
-import type { RadioOption } from '@xui/core';
+import { RadioGroup } from '@xui-design/vue';
+import type { RadioOption } from '@xui-design/core';
 
 const value = ref('weekly');
 const options: RadioOption[] = [

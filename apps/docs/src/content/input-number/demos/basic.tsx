@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InputNumber } from '@xui/react';
+import { InputNumber } from '@xui-design/react';
 
 export default function InputNumberBasicDemo() {
   const [value, setValue] = useState<number | null>(3.5);

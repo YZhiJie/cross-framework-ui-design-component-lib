@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Progress } from '@xui/vue';
+import { Progress } from '@xui-design/vue';
 </script>
 
 <template>

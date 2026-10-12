@@ -1,12 +1,12 @@
 /**
- * @xui/react - React 19 适配层
+ * @xui-design/react - React 19 适配层
  *
- * 将 @xui/shared 核心逻辑桥接到 React 状态系统。
+ * 将 @xui-design/shared 核心逻辑桥接到 React 状态系统。
  * - React 19+：ref-as-prop（无需 forwardRef）
  * - useSyncExternalStore：订阅逻辑层状态，保证引用稳定
  *
- * 类型契约来自 @xui/core，纯逻辑来自 @xui/shared。
- * 样式由 @xui/styles 统一提供（组件样式单一来源），导入 '@xui/styles' 即可获得全部样式。
+ * 类型契约来自 @xui-design/core，纯逻辑来自 @xui-design/shared。
+ * 样式由 @xui-design/styles 统一提供（组件样式单一来源），导入 '@xui-design/styles' 即可获得全部样式。
  */
 
 export { Switch } from './components/switch';
@@ -68,7 +68,7 @@ export type { ModalComponentProps, ModalRef } from './components/modal';
 export { useLogicState } from './hooks/use-logic-state';
 export { cn } from './utils/cn';
 
-// 基础设施：主题运行时 API / 插件系统 / 虚拟滚动原语（re-export 自 @xui/shared）
+// 基础设施：主题运行时 API / 插件系统 / 虚拟滚动原语（re-export 自 @xui-design/shared）
 export {
   clearThemeTokens,
   getTheme,
@@ -76,14 +76,14 @@ export {
   setThemeTokens,
   subscribeTheme,
   toggleTheme,
-} from '@xui/shared';
-export { applyPlugins } from '@xui/shared';
-export { createVirtualListLogic } from '@xui/shared';
-export type { XuiTheme } from '@xui/shared';
-export type { XuiPlugin, PluginInstallContext } from '@xui/shared';
-export type { VirtualListLogicInstance, VirtualListOptions, VirtualListState } from '@xui/shared';
+} from '@xui-design/shared';
+export { applyPlugins } from '@xui-design/shared';
+export { createVirtualListLogic } from '@xui-design/shared';
+export type { XuiTheme } from '@xui-design/shared';
+export type { XuiPlugin, PluginInstallContext } from '@xui-design/shared';
+export type { VirtualListLogicInstance, VirtualListOptions, VirtualListState } from '@xui-design/shared';
 
-// 基础设施：国际化运行时 API（re-export 自 @xui/shared）
+// 基础设施：国际化运行时 API（re-export 自 @xui-design/shared）
 export {
   DEFAULT_LOCALE,
   getLocale,
@@ -91,8 +91,8 @@ export {
   registerLocale,
   setLocale,
   subscribeLocale,
-} from '@xui/shared';
+} from '@xui-design/shared';
 export { useLocaleData } from './hooks/use-locale';
-export type { LocaleListener, XuiLocaleData, XuiLocaleInput } from '@xui/shared';
+export type { LocaleListener, XuiLocaleData, XuiLocaleInput } from '@xui-design/shared';
 
 export const REACT_VERSION = '0.0.0';

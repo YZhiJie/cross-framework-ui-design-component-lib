@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, message } from '@xui/vue';
+import { Button, message } from '@xui-design/vue';
 
 const openPersistent = () => {
   message.open({

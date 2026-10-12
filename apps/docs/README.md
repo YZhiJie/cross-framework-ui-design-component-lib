@@ -1,4 +1,4 @@
-# @xui/docs
+# @xui-design/docs
 
 XUI 跨框架组件库的文档站——一个自研 Vue 3 SPA,基于 vue-router hash 模式,内容由 `src/content` 下结构化 TS 元数据驱动,双端(Vue / React)demo 经 DemoBlock 双 tab 实时挂载。
 
@@ -22,7 +22,7 @@ dev 默认端口由 `vite.config.ts` 的 `server.port: 5175` 指定,`strictPort`
 
 ```
 apps/docs/src/
-├── main.ts                       # 入口:createApp(App).use(router).mount('#app'),引入 @xui/styles 与 docs.scss
+├── main.ts                       # 入口:createApp(App).use(router).mount('#app'),引入 @xui-design/styles 与 docs.scss
 ├── App.vue                       # 布局骨架:SideNav + <RouterView :key="$route.fullPath"> + TableOfContents
 ├── router.ts                     # createWebHashHistory,路由:/、/theme、/i18n、/components/:slug
 ├── env.d.ts
@@ -58,11 +58,11 @@ apps/docs/src/
 - **Vue** `^3.5.0` + **vue-router** `^4.6.4`(hash 模式)
 - **React** `^19.0.0` + **react-dom** `^19.0.0`(仅用于双端 demo 实时挂载,非应用主体)
 - **prismjs** `^1.30.0`(代码高亮,按需语言组件)
-- workspace 依赖:`@xui/core`、`@xui/vue`、`@xui/react`、`@xui/styles`
+- workspace 依赖:`@xui-design/core`、`@xui-design/vue`、`@xui-design/react`、`@xui-design/styles`
 
 devDependencies 关键项:`@vitejs/plugin-vue` `^5.0.0`、`@vitejs/plugin-react` `^4.0.0`、`vue-tsc` `^2.1.0`。
 
-`vite.config.ts` 同时启用 `vue()` 与 `react()` 插件,并通过 `resolve.alias` 将 `@xui/*` 直接指向兄弟包 `packages/*/src/index.ts`(源码直链,免预构建)。
+`vite.config.ts` 同时启用 `vue()` 与 `react()` 插件,并通过 `resolve.alias` 将 `@xui-design/*` 直接指向兄弟包 `packages/*/src/index.ts`(源码直链,免预构建)。
 
 ## 使用说明
 
@@ -137,4 +137,4 @@ pnpm dev
 
 7. **IDE 内置浏览器自动化不稳定**:连续 navigate 易触发 "IDE Command timeout";新建 tab 的首次导航成功率最高。验证 docs 站时:① 视口外元素首次点击会静默失效,须先 `scrollIntoView` + wait 1s 再点击;② 切换 demo tab 等导致无障碍树位移的操作后,旧快照 ref 会指错元素,跨快照复用 ref 前必须重新 snapshot。
 
-8. **Vite dev server 与 @xui 兄弟包 dist 产物**:长期驻留的 dev server 若在 `@xui/core` 的 `dist/types` 重建前启动,`compiler-sfc` 类型解析缓存会被污染(重启 dev server 即恢复);若 workspace 内 `@xui` 兄弟包 dist 被重建,Vite 默认忽略 `node_modules` 变更会加载旧代码,遇到此类异常优先重启 dev server。
+8. **Vite dev server 与 @xui 兄弟包 dist 产物**:长期驻留的 dev server 若在 `@xui-design/core` 的 `dist/types` 重建前启动,`compiler-sfc` 类型解析缓存会被污染(重启 dev server 即恢复);若 workspace 内 `@xui` 兄弟包 dist 被重建,Vite 默认忽略 `node_modules` 变更会加载旧代码,遇到此类异常优先重启 dev server。

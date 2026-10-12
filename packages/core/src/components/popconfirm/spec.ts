@@ -1,12 +1,12 @@
 /**
  * Popconfirm 组件规格
  *
- * useLogic 指向 @xui/shared 的 createPopconfirmLogic 逻辑工厂，
+ * useLogic 指向 @xui-design/shared 的 createPopconfirmLogic 逻辑工厂，
  * Vue / React 适配层通过同一份规格驱动组件状态。
  * CSS 包裹定位（复用 Tooltip 模式）；点击外部收起且不触发回调。
  */
 
-import { createPopconfirmLogic } from '@xui/shared';
+import { createPopconfirmLogic } from '@xui-design/shared';
 
 import type { ComponentSpec } from '../../spec';
 import type { PopconfirmEvents, PopconfirmLogic, PopconfirmProps, PopconfirmSlots } from './types';

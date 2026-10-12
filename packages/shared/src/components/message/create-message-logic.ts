@@ -13,7 +13,7 @@
 
 import type { LogicInstance, StateListener } from '../../types';
 
-/** 消息类型（与 @xui/core 的 MessageType 结构一致；shared 不依赖 core，本地定义） */
+/** 消息类型（与 @xui-design/core 的 MessageType 结构一致；shared 不依赖 core，本地定义） */
 export type MessageType = 'info' | 'success' | 'warning' | 'error';
 
 /** 打开消息的选项 */
@@ -26,7 +26,7 @@ export type MessageOptions = {
   duration?: number;
   /** 是否显示关闭按钮（默认 false） */
   closable?: boolean;
-  /** 自定义类型图标：内层 SVG 标记（与 @xui/icons 数据源同构，不含 <svg> 壳）；不传使用按 type 内置图标 */
+  /** 自定义类型图标：内层 SVG 标记（与 @xui-design/icons 数据源同构，不含 <svg> 壳）；不传使用按 type 内置图标 */
   icon?: string;
   /** 更新键：相同 key 再次 open 时原地更新该条消息（不新增、重置计时） */
   key?: string | number;
@@ -65,7 +65,7 @@ export type MessageState = {
   items: MessageItem[];
 };
 
-/** Message 命令式 API 默认值（契约单一来源，@xui/core 的 messageSpec 复用此定义） */
+/** Message 命令式 API 默认值（契约单一来源，@xui-design/core 的 messageSpec 复用此定义） */
 export const messageDefaults = {
   type: 'info',
   duration: 3000,

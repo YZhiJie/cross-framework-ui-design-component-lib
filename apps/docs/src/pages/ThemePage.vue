@@ -104,7 +104,7 @@ const api = {
 const notes = [
   '三层机制可叠加：明暗主题（data-theme）与全局 token（setThemeTokens）作用于全站，组件级 style 变量仅作用子树；作用域越小子树优先级越高。',
   'setThemeTokens 具备合并语义：重复调用只追加 / 覆盖提及的 token，不会清除未提及的既有 token；clearThemeTokens 只回收该 API 自己写入的键。',
-  'token 名即 @xui/styles 暴露的 CSS 变量（如 --xui-color-primary / --xui-color-danger / --xui-color-radius-*），定制前请先查阅 tokens.scss 的完整清单。',
+  'token 名即 @xui-design/styles 暴露的 CSS 变量（如 --xui-color-primary / --xui-color-danger / --xui-color-radius-*），定制前请先查阅 tokens.scss 的完整清单。',
   '主题状态写在 <html> 上，对 Modal / Message 等挂载于 body 的浮层组件同样生效；SSR 环境下全部 API 安全降级（不写 DOM、getTheme 返回 light）。',
   '全局主题切换影响整个文档站演示区的所有组件示例，离开本页后主题状态仍保留，可在 demo 中一键恢复默认。',
 ];
@@ -120,7 +120,7 @@ const notes = [
       </h1>
       <p class="page-head__summary">
         基于 CSS 变量的三层主题体系：全局明暗主题切换、全站品牌 token 定制、单组件作用域覆盖，
-        双端（@xui/vue / @xui/react）共享同一套运行时 API。
+        双端（@xui-design/vue / @xui-design/react）共享同一套运行时 API。
       </p>
     </header>
 
@@ -154,8 +154,8 @@ const notes = [
     <section>
       <h2 class="docs-section-title">API 文档</h2>
       <p style="margin-bottom: 16px; color: var(--docs-text-secondary); font-size: 13px">
-        主题 API 由 <code class="inline-code">@xui/shared</code> 提供（框架无关实现），
-        <code class="inline-code">@xui/vue</code> 与 <code class="inline-code">@xui/react</code> 同名导出，行为完全一致。
+        主题 API 由 <code class="inline-code">@xui-design/shared</code> 提供（框架无关实现），
+        <code class="inline-code">@xui-design/vue</code> 与 <code class="inline-code">@xui-design/react</code> 同名导出，行为完全一致。
       </p>
       <ApiSection :api="api" />
     </section>

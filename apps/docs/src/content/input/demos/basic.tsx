@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Input } from '@xui/react';
+import { Input } from '@xui-design/react';
 
 export default function InputBasicDemo() {
   const [value, setValue] = useState('');

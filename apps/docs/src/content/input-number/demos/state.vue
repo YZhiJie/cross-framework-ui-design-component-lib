@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { InputNumber } from '@xui/vue';
+import { InputNumber } from '@xui-design/vue';
 </script>
 
 <template>

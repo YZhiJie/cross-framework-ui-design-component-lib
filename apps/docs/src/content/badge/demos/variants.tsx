@@ -1,4 +1,4 @@
-import { Badge } from '@xui/react';
+import { Badge } from '@xui-design/react';
 
 const anchorStyle = {
   padding: '6px 12px',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Badge, Button } from '@xui/vue';
+import { Badge, Button } from '@xui-design/vue';
 
 const count = ref(5);
 </script>

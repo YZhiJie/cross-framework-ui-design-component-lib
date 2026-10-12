@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, clearThemeTokens, setThemeTokens, Switch, Tag } from '@xui/vue';
+import { Button, clearThemeTokens, setThemeTokens, Switch, Tag } from '@xui-design/vue';
 import { ref } from 'vue';
 
 const enabled = ref(true);

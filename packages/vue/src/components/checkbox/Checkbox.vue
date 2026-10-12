@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onUnmounted, ref, useTemplateRef, watchEffect } from 'vue';
-import { createCheckboxLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { CheckboxProps } from '@xui/core';
+import { createCheckboxLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { CheckboxProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<CheckboxProps, 'onChange'>>(), {
   // 显式 undefined 默认值：跳过 Vue 对缺省 Boolean prop 的 false 转换，

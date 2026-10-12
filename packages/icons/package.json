@@ -1,5 +1,5 @@
 {
-  "name": "@xui/icons",
+  "name": "@xui-design/icons",
   "version": "0.1.0",
   "description": "跨框架组件库 - 图标包",
   "type": "module",
@@ -30,6 +30,6 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@xui/styles": "workspace:*"
+    "@xui-design/styles": "workspace:*"
   }
 }

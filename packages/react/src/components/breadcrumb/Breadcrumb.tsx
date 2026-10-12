@@ -1,15 +1,15 @@
 /**
  * Breadcrumb - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * 末项判定 / 可点击守卫在逻辑层完成；href 导航由 <a> 原生完成。
  */
 
 import { useEffect, useRef } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { BreadcrumbProps } from '@xui/core';
-import { createBreadcrumbLogic } from '@xui/shared';
-import type { BreadcrumbLogicInstance } from '@xui/shared';
+import type { BreadcrumbProps } from '@xui-design/core';
+import { createBreadcrumbLogic } from '@xui-design/shared';
+import type { BreadcrumbLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';

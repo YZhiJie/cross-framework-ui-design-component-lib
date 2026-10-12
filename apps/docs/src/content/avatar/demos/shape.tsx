@@ -1,4 +1,4 @@
-import { Avatar } from '@xui/react';
+import { Avatar } from '@xui-design/react';
 
 export default function AvatarShapeDemo() {
   return (

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Skeleton, Button } from '@xui/react';
+import { Skeleton, Button } from '@xui-design/react';
 
 export default function SkeletonBasicDemo() {
   const [loading, setLoading] = useState(true);

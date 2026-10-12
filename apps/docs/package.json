@@ -1,5 +1,5 @@
 {
-  "name": "@xui/docs",
+  "name": "@xui-design/docs",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -11,10 +11,10 @@
     "lint": "eslint \"src/**/*.{ts,tsx,vue}\""
   },
   "dependencies": {
-    "@xui/core": "workspace:*",
-    "@xui/react": "workspace:*",
-    "@xui/styles": "workspace:*",
-    "@xui/vue": "workspace:*",
+    "@xui-design/core": "workspace:*",
+    "@xui-design/react": "workspace:*",
+    "@xui-design/styles": "workspace:*",
+    "@xui-design/vue": "workspace:*",
     "prismjs": "^1.30.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

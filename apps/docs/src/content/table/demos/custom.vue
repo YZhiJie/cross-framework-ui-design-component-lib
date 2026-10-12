@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Table } from '@xui/vue';
-import type { TableColumn } from '@xui/core';
+import { Table } from '@xui-design/vue';
+import type { TableColumn } from '@xui-design/core';
 
 const columns: TableColumn[] = [
   { key: 'name', title: '姓名' },

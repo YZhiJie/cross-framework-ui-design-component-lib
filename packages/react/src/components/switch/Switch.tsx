@@ -1,16 +1,16 @@
 /**
  * Switch - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * value 提供即受控（由 useEffect 同步到逻辑层），否则 defaultValue 非受控。
  */
 
 import { useEffect, useImperativeHandle, useRef } from 'react';
 import type { CSSProperties, ReactNode, Ref } from 'react';
-import type { SwitchProps } from '@xui/core';
-import { createSwitchLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { SwitchLogicInstance } from '@xui/shared';
+import type { SwitchProps } from '@xui-design/core';
+import { createSwitchLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { SwitchLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 
@@ -138,7 +138,7 @@ export function Switch(props: SwitchComponentProps) {
   );
 }
 
-/** 加载图标（数据来自 @xui/icons，旋转动画由 CSS 驱动） */
+/** 加载图标（数据来自 @xui-design/icons，旋转动画由 CSS 驱动） */
 function LoadingSpinner() {
   return (
     <svg

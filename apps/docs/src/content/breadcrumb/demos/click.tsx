@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Breadcrumb } from '@xui/react';
-import type { BreadcrumbItem } from '@xui/core';
+import { Breadcrumb } from '@xui-design/react';
+import type { BreadcrumbItem } from '@xui-design/core';
 
 const items: BreadcrumbItem[] = [
   { label: '首页' },

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { fireEvent, render } from '@testing-library/react';
 import { Table } from '../Table';
-import type { TableColumn } from '@xui/core';
+import type { TableColumn } from '@xui-design/core';
 
 const rows = [
   { id: 1, name: '张三', age: 30 },

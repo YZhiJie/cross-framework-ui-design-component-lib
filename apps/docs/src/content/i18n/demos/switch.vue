@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { getLocale, setLocale } from '@xui/vue';
-import { Button, DatePicker, Modal, Table, Tag } from '@xui/vue';
+import { getLocale, setLocale } from '@xui-design/vue';
+import { Button, DatePicker, Modal, Table, Tag } from '@xui-design/vue';
 
 const current = ref(getLocale());
 const visible = ref(false);

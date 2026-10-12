@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Breadcrumb } from '@xui/vue';
-import type { BreadcrumbItem } from '@xui/core';
+import { Breadcrumb } from '@xui-design/vue';
+import type { BreadcrumbItem } from '@xui-design/core';
 
 const lastClick = ref('（点击前级项试试）');
 const items: BreadcrumbItem[] = [

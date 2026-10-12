@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onUnmounted, ref, useTemplateRef, watchEffect } from 'vue';
-import { createInputNumberLogic } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { InputNumberProps } from '@xui/core';
+import { createInputNumberLogic } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { InputNumberProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<InputNumberProps, 'onChange'>>(), {
   value: undefined,

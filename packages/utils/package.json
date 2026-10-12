@@ -1,5 +1,5 @@
 {
-  "name": "@xui/utils",
+  "name": "@xui-design/utils",
   "version": "0.0.0",
   "description": "跨框架组件库 - 通用工程工具（内部使用）",
   "private": true,

@@ -6,7 +6,7 @@
  * 2. CJS require 可用
  * 3. 类型声明文件存在
  * 4. 包间依赖链可正确解析
- * 5. API 对齐：以 @xui/core 运行时 spec 为契约基准，
+ * 5. API 对齐：以 @xui-design/core 运行时 spec 为契约基准，
  *    对比 Vue（运行时 props/emits）与 React（源码静态解析）的
  *    Props、事件名、默认值，任何不一致即失败
  */
@@ -28,37 +28,37 @@ interface ContractCheck {
 
 const checks: ContractCheck[] = [
   {
-    packageName: '@xui/shared',
+    packageName: '@xui-design/shared',
     distDir: 'packages/shared/dist',
     expectedFiles: ['index.mjs', 'index.cjs', 'types/index.d.ts'],
     description: '纯逻辑核心层',
   },
   {
-    packageName: '@xui/core',
+    packageName: '@xui-design/core',
     distDir: 'packages/core/dist',
     expectedFiles: ['index.mjs', 'index.cjs', 'types/index.d.ts'],
     description: '框架无关抽象层',
   },
   {
-    packageName: '@xui/vue',
+    packageName: '@xui-design/vue',
     distDir: 'packages/vue/dist',
     expectedFiles: ['index.mjs', 'index.cjs', 'types/index.d.ts'],
     description: 'Vue 适配层',
   },
   {
-    packageName: '@xui/react',
+    packageName: '@xui-design/react',
     distDir: 'packages/react/dist',
     expectedFiles: ['index.mjs', 'index.cjs', 'types/index.d.ts'],
     description: 'React 适配层',
   },
   {
-    packageName: '@xui/styles',
+    packageName: '@xui-design/styles',
     distDir: 'packages/styles/dist',
     expectedFiles: ['index.css'],
     description: '共享样式包',
   },
   {
-    packageName: '@xui/icons',
+    packageName: '@xui-design/icons',
     distDir: 'packages/icons/dist',
     expectedFiles: ['index.mjs', 'index.cjs', 'types/index.d.ts'],
     description: '图标包',
@@ -135,10 +135,10 @@ for (const check of checks) {
 /* ==========================================================================
  * Part 2: API 对齐校验
  *
- * 以 @xui/core 的运行时 spec（buttonSpec / inputSpec / modalSpec）为契约基准：
+ * 以 @xui-design/core 的运行时 spec（buttonSpec / inputSpec / modalSpec）为契约基准：
  * - Vue 端（运行时）：读取已构建的 packages/vue/dist/index.mjs，
  *   编译后的 SFC 带 props 选项（含 default 值）与 emits 数组，可直接读取。
- *   ⚠️ Vue 端数据来自 dist：修改 Vue 源码后请先 `pnpm build --filter @xui/vue`。
+ *   ⚠️ Vue 端数据来自 dist：修改 Vue 源码后请先 `pnpm build --filter @xui-design/vue`。
  * - React 端（静态）：函数组件无运行时 props 元数据，
  *   用轻量正则从 .tsx 源码的函数签名解构中提取 props 键与内联默认值。
  * - 事件映射：契约事件 E → Vue emits 含 E（允许额外的 update:* 语法糖）；
@@ -165,7 +165,7 @@ interface VueComponentLike {
 
 interface ComponentPlan {
   name: string;
-  /** @xui/core 运行时导出的 spec 键名 */
+  /** @xui-design/core 运行时导出的 spec 键名 */
   specKey: string;
   /** React 组件源码路径（相对仓库根目录） */
   reactSource: string;
@@ -447,7 +447,7 @@ async function runApiAlignment(): Promise<void> {
       pathToFileURL(resolve(rootDir, 'packages/core/dist/index.mjs')).href
     )) as Record<string, unknown>;
   } catch (err) {
-    console.error(`❌ 无法加载 @xui/core dist（请先构建）：${(err as Error).message}`);
+    console.error(`❌ 无法加载 @xui-design/core dist（请先构建）：${(err as Error).message}`);
     process.exit(1);
   }
 
@@ -458,7 +458,7 @@ async function runApiAlignment(): Promise<void> {
     )) as Record<string, unknown>;
   } catch (err) {
     console.error(
-      `❌ 无法加载 @xui/vue dist（请先 pnpm build --filter @xui/vue）：${(err as Error).message}`,
+      `❌ 无法加载 @xui-design/vue dist（请先 pnpm build --filter @xui-design/vue）：${(err as Error).message}`,
     );
     process.exit(1);
   }

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watchEffect } from 'vue';
-import { createBreadcrumbLogic } from '@xui/shared';
+import { createBreadcrumbLogic } from '@xui-design/shared';
 import { useLocaleData } from '../../hooks/use-locale';
-import type { BreadcrumbItem, BreadcrumbProps } from '@xui/core';
+import type { BreadcrumbItem, BreadcrumbProps } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<BreadcrumbProps, 'onItemClick'>>(), {
   items: undefined,

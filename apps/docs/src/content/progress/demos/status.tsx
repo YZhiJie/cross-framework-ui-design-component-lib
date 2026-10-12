@@ -1,4 +1,4 @@
-import { Progress } from '@xui/react';
+import { Progress } from '@xui-design/react';
 
 export default function ProgressStatusDemo() {
   return (

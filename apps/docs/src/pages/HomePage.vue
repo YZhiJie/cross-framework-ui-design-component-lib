@@ -19,7 +19,7 @@ const availableCount = componentMetas.length;
 
 const features = [
   {
-    title: '单一契约 @xui/core',
+    title: '单一契约 @xui-design/core',
     desc: 'ComponentSpec 是双端唯一合同，Props / Events / Slots 由契约层定义，适配层不得新增分歧。',
   },
   {
@@ -28,30 +28,30 @@ const features = [
   },
   {
     title: '样式单一来源',
-    desc: '@xui/styles 统一输出 BEM 类名与 CSS 变量主题，双端零样式漂移。',
+    desc: '@xui-design/styles 统一输出 BEM 类名与 CSS 变量主题，双端零样式漂移。',
   },
   {
     title: '核心逻辑单份实现',
-    desc: '@xui/shared 承载状态与交互逻辑，双端只做薄适配；TypeScript 严格模式全量类型贯通。',
+    desc: '@xui-design/shared 承载状态与交互逻辑，双端只做薄适配；TypeScript 严格模式全量类型贯通。',
   },
 ];
 
 const installCode = computed(() =>
   framework.value === 'vue'
-    ? `pnpm add @xui/vue
+    ? `pnpm add @xui-design/vue
 
 # 如需直接引用契约类型（TableColumn 等），再安装类型包
-pnpm add @xui/core
+pnpm add @xui-design/core
 
 # 应用入口引入一次样式
-# main.ts:  import '@xui/styles'`
-    : `pnpm add @xui/react
+# main.ts:  import '@xui-design/styles'`
+    : `pnpm add @xui-design/react
 
 # 如需直接引用契约类型（TableColumn 等），再安装类型包
-pnpm add @xui/core
+pnpm add @xui-design/core
 
 # 应用入口引入一次样式
-# main.tsx: import '@xui/styles'`,
+# main.tsx: import '@xui-design/styles'`,
 );
 
 // 三段拼接出 script 元素的闭合标签：SFC 解析器会按字面序列截断 script 块，
@@ -61,15 +61,15 @@ const SCRIPT_CLOSE_TAG = '<' + '/script' + '>';
 const quickStartCode = computed(() =>
   framework.value === 'vue'
     ? `<script setup lang="ts">
-import { Button } from '@xui/vue';
-import '@xui/styles';
+import { Button } from '@xui-design/vue';
+import '@xui-design/styles';
 ${SCRIPT_CLOSE_TAG}
 
 <template>
   <Button type="primary">Hello XUI</Button>
 </template>`
-    : `import { Button } from '@xui/react';
-import '@xui/styles';
+    : `import { Button } from '@xui-design/react';
+import '@xui-design/styles';
 
 export default function App() {
   return (

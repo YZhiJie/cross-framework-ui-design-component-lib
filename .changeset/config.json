@@ -3,9 +3,9 @@
   "changelog": ["@changesets/changelog-github", { "repo": "YZhiJie/cross-framework-ui-design-component-lib" }],
   "commit": false,
   "fixed": [],
-  "linked": [["@xui/shared", "@xui/core", "@xui/vue", "@xui/react", "@xui/styles", "@xui/icons"]],
+  "linked": [["@xui-design/shared", "@xui-design/core", "@xui-design/vue", "@xui-design/react", "@xui-design/styles", "@xui-design/icons"]],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@xui/playground-vue", "@xui/playground-react", "@xui/docs", "@xui/utils"]
+  "ignore": ["@xui-design/playground-vue", "@xui-design/playground-react", "@xui-design/docs", "@xui-design/utils"]
 }

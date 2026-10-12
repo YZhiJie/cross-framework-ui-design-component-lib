@@ -4,7 +4,7 @@
  * 覆盖：渲染与占位、非受控/受控双模式、onInput/onChange 回调、
  * disabled/readonly、onFocus/onBlur、clearable、ref 命令式 API（focus/blur/clear）。
  *
- * 契约说明：@xui/core 的 Input 使用 onInput（每次键入）/ onChange（值变更提交），
+ * 契约说明：@xui-design/core 的 Input 使用 onInput（每次键入）/ onChange（值变更提交），
  * 而非 onValueChange，断言按实际契约编写。
  */
 

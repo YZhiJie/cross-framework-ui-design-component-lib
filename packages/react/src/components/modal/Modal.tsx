@@ -1,7 +1,7 @@
 /**
  * Modal - React 19 适配层
  *
- * 使用 ref-as-prop + useSyncExternalStore 桥接 @xui/shared 逻辑。
+ * 使用 ref-as-prop + useSyncExternalStore 桥接 @xui-design/shared 逻辑。
  * 通过 createPortal 渲染到 document.body，ESC / 遮罩点击关闭由逻辑层判断。
  * 通过 useImperativeHandle 暴露 open / close。
  */
@@ -9,11 +9,11 @@
 import { useEffect, useImperativeHandle, useRef } from 'react';
 import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent, ReactNode, Ref } from 'react';
 import { createPortal } from 'react-dom';
-import type { ModalProps } from '@xui/core';
-import { createModalLogic } from '@xui/shared';
-import { trapFocus as trapFocusIn } from '@xui/shared';
-import { icons } from '@xui/icons';
-import type { ModalLogicInstance } from '@xui/shared';
+import type { ModalProps } from '@xui-design/core';
+import { createModalLogic } from '@xui-design/shared';
+import { trapFocus as trapFocusIn } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
+import type { ModalLogicInstance } from '@xui-design/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';
@@ -220,7 +220,7 @@ export function Modal(props: ModalComponentProps) {
   );
 }
 
-/** 关闭图标（数据来自 @xui/icons） */
+/** 关闭图标（数据来自 @xui-design/icons） */
 function CloseIcon() {
   return (
     <svg

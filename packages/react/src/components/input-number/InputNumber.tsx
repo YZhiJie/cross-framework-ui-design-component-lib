@@ -1,17 +1,17 @@
 /**
  * InputNumber - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * 输入显示文本为适配层本地编辑态：提交 / 步进后与逻辑收敛值对齐，
  * 受控值（value 非 undefined，null 也是有效值）变化时由 effect 对齐显示。
  */
 
 import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import type { CSSProperties, ReactNode, Ref } from 'react';
-import type { InputNumberProps } from '@xui/core';
-import { createInputNumberLogic } from '@xui/shared';
-import type { InputNumberLogicInstance } from '@xui/shared';
-import { icons } from '@xui/icons';
+import type { InputNumberProps } from '@xui-design/core';
+import { createInputNumberLogic } from '@xui-design/shared';
+import type { InputNumberLogicInstance } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { cn } from '../../utils/cn';
 

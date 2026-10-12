@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Button } from '@xui/vue';
+import { Button } from '@xui-design/vue';
 
 const loading = ref(false);
 const submit = () => {

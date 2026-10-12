@@ -1,5 +1,5 @@
 {
-  "name": "@xui/styles",
+  "name": "@xui-design/styles",
   "version": "0.1.0",
   "description": "跨框架组件库 - 共享样式包",
   "type": "module",

@@ -5,10 +5,10 @@ import {
   createVirtualListLogic,
   formatTableCellValue,
   getRowKeyOf,
-} from '@xui/shared';
-import { icons } from '@xui/icons';
+} from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
 import { useLocaleData } from '../../hooks/use-locale';
-import type { TableColumn, TableProps, TableRow, TableSortOrder } from '@xui/core';
+import type { TableColumn, TableProps, TableRow, TableSortOrder } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<TableProps, 'onSortChange' | 'onRowClick'>>(), {
   columns: undefined,

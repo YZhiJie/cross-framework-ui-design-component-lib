@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Tabs } from '@xui/react';
-import type { TabItem } from '@xui/core';
+import { Tabs } from '@xui-design/react';
+import type { TabItem } from '@xui-design/core';
 
 const items: TabItem[] = [
   { label: '概览', value: 'overview' },

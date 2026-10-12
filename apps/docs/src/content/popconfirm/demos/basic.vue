@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Popconfirm, Button } from '@xui/vue';
+import { Popconfirm, Button } from '@xui-design/vue';
 
 const result = ref('（待操作）');
 </script>

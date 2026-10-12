@@ -1,10 +1,10 @@
 /**
  * Modal 组件规格
  *
- * useLogic 指向 @xui/shared 的 createModalLogic 逻辑工厂。
+ * useLogic 指向 @xui-design/shared 的 createModalLogic 逻辑工厂。
  */
 
-import { createModalLogic } from '@xui/shared';
+import { createModalLogic } from '@xui-design/shared';
 
 import type { ComponentSpec } from '../../spec';
 import type { ModalEvents, ModalLogic, ModalProps, ModalSlots } from './types';

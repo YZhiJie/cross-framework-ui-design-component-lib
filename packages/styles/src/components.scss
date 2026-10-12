@@ -1,8 +1,8 @@
 /**
  * 组件样式（BEM）— 单一来源
  *
- * 所有组件的 BEM 样式（button / input / switch / checkbox / tag / alert / modal），由 @xui/styles 统一提供，
- * @xui/vue 与 @xui/react 共用同一套类名，确保双端视觉一致。
+ * 所有组件的 BEM 样式（button / input / switch / checkbox / tag / alert / modal），由 @xui-design/styles 统一提供，
+ * @xui-design/vue 与 @xui-design/react 共用同一套类名，确保双端视觉一致。
  * 主题 token 来自 reset.scss 的 :root CSS 变量；未引入 tokens 时使用降级值。
  */
 

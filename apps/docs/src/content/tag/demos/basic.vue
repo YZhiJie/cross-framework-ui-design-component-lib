@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Tag } from '@xui/vue';
+import { Tag } from '@xui-design/vue';
 </script>
 
 <template>

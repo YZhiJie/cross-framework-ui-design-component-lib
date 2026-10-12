@@ -7,8 +7,8 @@
  */
 
 import { createRoot } from 'react-dom/client';
-import { createMessageManager } from '@xui/shared';
-import type { MessageLogicInstance } from '@xui/shared';
+import { createMessageManager } from '@xui-design/shared';
+import type { MessageLogicInstance } from '@xui-design/shared';
 import { MessageHost } from './MessageHost';
 
 let manager: MessageLogicInstance | null = null;

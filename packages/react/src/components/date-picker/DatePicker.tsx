@@ -1,17 +1,17 @@
 /**
  * DatePicker - React 19 适配层
  *
- * useSyncExternalStore 桥接 @xui/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
+ * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
  * ARIA combobox 模式：trigger role="combobox"，面板 role="dialog"，
  * 键盘 Enter/Space/Escape，点击组件外部收起面板。
  */
 
 import { useEffect, useId, useImperativeHandle, useRef } from 'react';
 import type { CSSProperties, KeyboardEvent, ReactNode, Ref } from 'react';
-import type { DatePickerProps } from '@xui/core';
-import { createDatePickerLogic, getMonthMatrix } from '@xui/shared';
-import type { DatePickerLogicInstance } from '@xui/shared';
-import { icons } from '@xui/icons';
+import type { DatePickerProps } from '@xui-design/core';
+import { createDatePickerLogic, getMonthMatrix } from '@xui-design/shared';
+import type { DatePickerLogicInstance } from '@xui-design/shared';
+import { icons } from '@xui-design/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
 import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';

@@ -1,4 +1,4 @@
-# @xui/shared/theme
+# @xui-design/shared/theme
 
 主题定制运行时核心（框架无关），为 Vue 3 / React 19 双端组件库提供统一的浅色 / 深色主题切换、全局 token 覆盖与订阅能力。
 
@@ -7,7 +7,7 @@
 - **纯逻辑 + 最小 DOM 写入**：仅在 `setTheme` / `setThemeTokens` 时写入 `<html>` 的 `data-theme` 属性或 `style` CSS 变量，不渲染组件、不读布局。
 - **框架无关**：不引入 Vue / React，状态通知基于内存 `Set<ThemeListener>`，供任意适配层桥接。
 - **SSR 安全降级**：所有 DOM 写入前判定 `typeof document !== 'undefined'` / `typeof window`；无 DOM 时 `getTheme` 返回 `'light'`、写入 API 直接 return，不抛错。
-- **与样式层契约联动**：`data-theme` 属性名与 `@xui/styles` 的 `tokens.scss` 选择器 `[data-theme='dark']` 对齐；浅色为默认（移除属性）。
+- **与样式层契约联动**：`data-theme` 属性名与 `@xui-design/styles` 的 `tokens.scss` 选择器 `[data-theme='dark']` 对齐；浅色为默认（移除属性）。
 
 ## 导出 API 清单（index.ts）
 
@@ -110,7 +110,7 @@ import {
   setThemeTokens,
   subscribeTheme,
   toggleTheme,
-} from '@xui/shared/theme';
+} from '@xui-design/shared/theme';
 
 // 1) 切换到深色
 setTheme('dark'); // <html data-theme="dark">

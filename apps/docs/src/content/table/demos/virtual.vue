@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Table } from '@xui/vue';
-import type { TableColumn, TableRowKey } from '@xui/core';
+import { Table } from '@xui-design/vue';
+import type { TableColumn, TableRowKey } from '@xui-design/core';
 
 type UserRow = {
   id: number;

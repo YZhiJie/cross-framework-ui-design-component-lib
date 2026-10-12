@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, clearThemeTokens, setThemeTokens, Switch, Tag } from '@xui/react';
+import { Button, clearThemeTokens, setThemeTokens, Switch, Tag } from '@xui-design/react';
 
 const PRESETS: Record<string, Record<string, string>> = {
   emerald: {
