@@ -1,5 +1,11 @@
 # @xui-design/styles
 
+## 0.2.1
+
+### Patch Changes
+
+- [`4b3dfbf`](https://github.com/YZhiJie/cross-framework-ui-design-component-lib/commit/4b3dfbfabfb831fa56113443abe511e4d13cf9fe) - 补齐 publishConfig.access: public 配置，修复 CI 自动发布时 scoped 包被拒绝的问题。
+
 ## 0.2.0
 
 ### Minor Changes
