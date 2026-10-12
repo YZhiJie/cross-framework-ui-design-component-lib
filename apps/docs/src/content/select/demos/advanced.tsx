@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import { Select } from '@xui-design/react';
 import type { SelectOption, SelectValue } from '@xui-design/core';
-
-const basicOptions: SelectOption[] = [
-  { label: '北京', value: 'beijing' },
-  { label: '上海', value: 'shanghai' },
-  { label: '广州', value: 'guangzhou' },
-  { label: '深圳', value: 'shenzhen' },
-];
-
-const bigOptions: SelectOption[] = Array.from({ length: 1000 }, (_, i) => ({
-  label: `选项 ${i + 1}`,
-  value: `opt-${i + 1}`,
-}));
+import { useIsZh } from '../../../i18n/use-docs-locale';
 
 export default function SelectAdvancedDemo() {
+  const isZh = useIsZh();
   const [cities, setCities] = useState<string[]>(['beijing']);
   const [searched, setSearched] = useState('');
   const [virtualValue, setVirtualValue] = useState('');
+  const basicOptions: SelectOption[] = [
+    { label: isZh ? '北京' : 'Beijing', value: 'beijing' },
+    { label: isZh ? '上海' : 'Shanghai', value: 'shanghai' },
+    { label: isZh ? '广州' : 'Guangzhou', value: 'guangzhou' },
+    { label: isZh ? '深圳' : 'Shenzhen', value: 'shenzhen' },
+  ];
+  const bigOptions: SelectOption[] = Array.from({ length: 1000 }, (_, i) => ({
+    label: isZh ? `选项 ${i + 1}` : `Option ${i + 1}`,
+    value: `opt-${i + 1}`,
+  }));
 
   return (
     <div className="demo-column">
@@ -26,9 +26,12 @@ export default function SelectAdvancedDemo() {
         onChange={(v: SelectValue) => setCities(Array.isArray(v) ? v : [v])}
         options={basicOptions}
         multiple
-        placeholder="多选城市"
+        placeholder={isZh ? '多选城市' : 'Multi-select cities'}
       />
-      <p className="demo-text">多选已选：{cities.join('、') || '（无）'}</p>
+      <p className="demo-text">
+        {isZh ? '多选已选' : 'Multi-selected'}：
+        {cities.join(isZh ? '、' : ', ') || (isZh ? '（无）' : '(none)')}
+      </p>
 
       <Select
         value={searched}
@@ -36,9 +39,12 @@ export default function SelectAdvancedDemo() {
         options={basicOptions}
         searchable
         clearable
-        placeholder="输入关键字过滤"
+        placeholder={isZh ? '输入关键字过滤' : 'Type a keyword to filter'}
       />
-      <p className="demo-text">可搜索当前选中：{searched || '（未选择）'}</p>
+      <p className="demo-text">
+        {isZh ? '可搜索当前选中' : 'Searchable selected'}：
+        {searched || (isZh ? '（未选择）' : '(none)')}
+      </p>
 
       <Select
         value={virtualValue}
@@ -46,9 +52,12 @@ export default function SelectAdvancedDemo() {
         options={bigOptions}
         virtual
         maxHeight={200}
-        placeholder="虚拟滚动 · 1000 项"
+        placeholder={isZh ? '虚拟滚动 · 1000 项' : 'Virtual scroll · 1000 items'}
       />
-      <p className="demo-text">虚拟滚动当前选中：{virtualValue || '（未选择）'}</p>
+      <p className="demo-text">
+        {isZh ? '虚拟滚动当前选中' : 'Virtual scroll selected'}：
+        {virtualValue || (isZh ? '（未选择）' : '(none)')}
+      </p>
     </div>
   );
 }

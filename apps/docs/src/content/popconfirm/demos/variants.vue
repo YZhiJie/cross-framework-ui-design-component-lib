@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { Popconfirm, Button } from '@xui-design/vue';
+import { isZh } from '../../../i18n';
 </script>
 
 <template>
   <div class="demo-row">
     <Popconfirm
-      content="右侧弹出的气泡确认"
+      :content="isZh() ? '右侧弹出的气泡确认' : 'Popover confirm on the right'"
       placement="right"
-      confirm-text="好的"
-      cancel-text="再想想"
+      :confirm-text="isZh() ? '好的' : 'OK'"
+      :cancel-text="isZh() ? '再想想' : 'Think again'"
     >
-      <Button>右侧 + 自定义按钮</Button>
+      <Button>{{ isZh() ? '右侧 + 自定义按钮' : 'Right + custom buttons' }}</Button>
     </Popconfirm>
-    <Popconfirm content="禁用后点击无效" disabled>
-      <Button>禁用</Button>
+    <Popconfirm :content="isZh() ? '禁用后点击无效' : 'No effect when disabled'" disabled>
+      <Button>{{ isZh() ? '禁用' : 'Disabled' }}</Button>
     </Popconfirm>
   </div>
 </template>

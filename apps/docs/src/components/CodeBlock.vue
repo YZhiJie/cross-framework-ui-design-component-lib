@@ -9,6 +9,9 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-bash';
+import { useUiMessages } from '../i18n/ui-messages';
+
+const ui = useUiMessages();
 
 type CodeLang = 'vue' | 'react' | 'bash';
 
@@ -53,7 +56,7 @@ const copyCode = async () => {
     <div class="code-block__bar">
       <span class="code-block__lang">{{ langLabel[lang] }}</span>
       <button type="button" class="code-block__copy" @click="copyCode">
-        {{ copied ? '已复制' : '复制' }}
+        {{ copied ? ui.code.copied : ui.code.copy }}
       </button>
     </div>
     <pre class="code-block__pre"><code

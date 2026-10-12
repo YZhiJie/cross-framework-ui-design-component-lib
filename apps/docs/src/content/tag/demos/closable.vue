@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Button, Tag } from '@xui-design/vue';
+import { isZh } from '../../../i18n';
 
-const tags = ref(['前端', 'Vue', 'React', 'TypeScript']);
+const initialTags = () =>
+  isZh() ? ['前端', 'Vue', 'React', 'TypeScript'] : ['Frontend', 'Vue', 'React', 'TypeScript'];
+
+const tags = ref(initialTags());
 
 const remove = (index: number) => {
   tags.value.splice(index, 1);
 };
 
 const reset = () => {
-  tags.value = ['前端', 'Vue', 'React', 'TypeScript'];
+  tags.value = initialTags();
 };
 </script>
 
@@ -20,6 +24,6 @@ const reset = () => {
         {{ tag }}
       </Tag>
     </div>
-    <Button size="sm" @click="reset">重置标签</Button>
+    <Button size="sm" @click="reset">{{ isZh() ? '重置标签' : 'Reset tags' }}</Button>
   </div>
 </template>

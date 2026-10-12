@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { getLocale, registerLocale, setLocale } from '@xui-design/vue';
 import { Button, Modal, Popconfirm, Table, Tag } from '@xui-design/vue';
+import { isZh } from '../../../i18n';
 
 const current = ref(getLocale());
 const visible = ref(false);
 const registered = ref(false);
 
-const columns = [
-  { key: 'name', title: '名称' },
-  { key: 'age', title: '年龄' },
-];
+const columns = computed(() => [
+  { key: 'name', title: isZh() ? '名称' : 'Name' },
+  { key: 'age', title: isZh() ? '年龄' : 'Age' },
+]);
 
 const registerJapanese = () => {
   registerLocale('ja-JP', {
@@ -32,19 +33,35 @@ const apply = (locale: string) => {
   <div class="demo-column">
     <div class="demo-row">
       <Button type="primary" :disabled="registered" @click="registerJapanese">
-        {{ registered ? '已注册 ja-JP' : '注册日语语言包' }}
+        {{
+          registered
+            ? isZh()
+              ? '已注册 ja-JP'
+              : 'ja-JP registered'
+            : isZh()
+              ? '注册日语语言包'
+              : 'Register Japanese locale'
+        }}
       </Button>
-      <Button @click="apply('zh-CN')">回到中文</Button>
+      <Button @click="apply('zh-CN')">{{ isZh() ? '回到中文' : 'Back to Chinese' }}</Button>
       <Tag type="primary">{{ current }}</Tag>
     </div>
     <div class="demo-row">
-      <Button type="link" @click="visible = true">打开 Modal</Button>
-      <Popconfirm content="确认删除这条数据吗？">
-        <Button>删除</Button>
+      <Button type="link" @click="visible = true">{{
+        isZh() ? '打开 Modal' : 'Open Modal'
+      }}</Button>
+      <Popconfirm
+        :content="isZh() ? '确认删除这条数据吗？' : 'Are you sure you want to delete this record?'"
+      >
+        <Button>{{ isZh() ? '删除' : 'Delete' }}</Button>
       </Popconfirm>
     </div>
-    <Modal v-model:visible="visible" title="自定义语言包">
-      注册后所有组件文案按新语言渲染，未覆盖的分组回退注册时的基底包。
+    <Modal v-model:visible="visible" :title="isZh() ? '自定义语言包' : 'Custom Locale'">
+      {{
+        isZh()
+          ? '注册后所有组件文案按新语言渲染，未覆盖的分组回退注册时的基底包。'
+          : 'After registration, all component text renders in the new language; uncovered groups fall back to the base pack at registration time.'
+      }}
     </Modal>
     <Table :columns="columns" :data-source="[]" />
   </div>

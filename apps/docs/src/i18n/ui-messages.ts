@@ -38,6 +38,10 @@ export interface UiMessages {
     showCode: string;
     hideCode: string;
   };
+  code: {
+    copy: string;
+    copied: string;
+  };
   api: {
     prop: string;
     type: string;
@@ -102,6 +106,10 @@ const zhCN: UiMessages = {
   demo: {
     showCode: '查看代码',
     hideCode: '隐藏代码',
+  },
+  code: {
+    copy: '复制',
+    copied: '已复制',
   },
   api: {
     prop: '属性',
@@ -186,6 +194,10 @@ const enUS: UiMessages = {
   demo: {
     showCode: 'Show Code',
     hideCode: 'Hide Code',
+  },
+  code: {
+    copy: 'Copy',
+    copied: 'Copied',
   },
   api: {
     prop: 'Prop',

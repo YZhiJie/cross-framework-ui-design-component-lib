@@ -1,4 +1,5 @@
 import { Badge } from '@xui-design/react';
+import { useIsZh } from '../../../i18n/use-docs-locale';
 
 const anchorStyle = {
   padding: '6px 12px',
@@ -7,16 +8,17 @@ const anchorStyle = {
 };
 
 export default function BadgeVariantsDemo() {
+  const isZh = useIsZh();
   return (
     <div className="demo-row">
       <Badge dot>
-        <span style={anchorStyle}>小红点</span>
+        <span style={anchorStyle}>{isZh ? '小红点' : 'Dot'}</span>
       </Badge>
       <Badge count={0} showZero>
         <span style={anchorStyle}>showZero</span>
       </Badge>
       <Badge count={0}>
-        <span style={anchorStyle}>零值隐藏</span>
+        <span style={anchorStyle}>{isZh ? '零值隐藏' : 'Hidden when zero'}</span>
       </Badge>
       <Badge count={8} />
     </div>

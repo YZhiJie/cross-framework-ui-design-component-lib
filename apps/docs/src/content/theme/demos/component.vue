@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { Button, Switch } from '@xui-design/vue';
+import { isZh } from '../../../i18n';
 </script>
 
 <template>
   <div class="demo-column">
-    <p class="demo-text">在组件 style 上写 CSS 变量即可覆盖主题，仅作用于该组件子树：</p>
+    <p class="demo-text">
+      {{
+        isZh()
+          ? '在组件 style 上写 CSS 变量即可覆盖主题，仅作用于该组件子树：'
+          : 'Write CSS variables in the component style to override the theme, scoped to that component subtree only:'
+      }}
+    </p>
     <div
       class="demo-row"
       style="
@@ -13,12 +20,14 @@ import { Button, Switch } from '@xui-design/vue';
         --xui-color-primary-active: #5b21b6;
       "
     >
-      <Button type="primary">紫色子树</Button>
+      <Button type="primary">{{ isZh() ? '紫色子树' : 'Purple subtree' }}</Button>
       <Switch :value="true" />
     </div>
     <div class="demo-row" style="--xui-color-danger: #0ea5e9">
-      <Button type="danger">danger 覆盖为天蓝</Button>
-      <Button type="primary">不受影响</Button>
+      <Button type="danger">{{
+        isZh() ? 'danger 覆盖为天蓝' : 'danger overridden to sky blue'
+      }}</Button>
+      <Button type="primary">{{ isZh() ? '不受影响' : 'Unaffected' }}</Button>
     </div>
   </div>
 </template>

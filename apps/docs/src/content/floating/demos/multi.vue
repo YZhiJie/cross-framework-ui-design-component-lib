@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { Tooltip, Popconfirm, Select, Button } from '@xui-design/vue';
+import { isZh } from '../../../i18n';
 
 const anchor = ref<HTMLElement>();
 
@@ -11,34 +12,49 @@ const scrollToTopEdge = () => {
   window.scrollTo({ top: window.scrollY + rect.top - 12, behavior: 'smooth' });
 };
 
-const options = Array.from({ length: 1000 }, (_, i) => ({
-  label: `选项 ${i + 1}`,
-  value: String(i + 1),
-}));
+const options = computed(() =>
+  Array.from({ length: 1000 }, (_, i) => ({
+    label: isZh() ? `选项 ${i + 1}` : `Option ${i + 1}`,
+    value: String(i + 1),
+  })),
+);
 </script>
 
 <template>
   <div class="demo-column">
     <div class="demo-row">
-      <Button type="primary" @click="scrollToTopEdge">滚动到视口顶部</Button>
+      <Button type="primary" @click="scrollToTopEdge">
+        {{ isZh() ? '滚动到视口顶部' : 'Scroll to viewport top' }}
+      </Button>
     </div>
     <p style="color: var(--docs-text-secondary, #888); font-size: 13px; margin: 8px 0 16px">
-      Tooltip / Popconfirm / Select 三组件共用 @xui-design/shared/floating
-      的翻转与钳制逻辑。滚动到视口顶部后操作各组件，观察气泡 / 面板自动翻转到下方。
+      {{
+        isZh()
+          ? 'Tooltip / Popconfirm / Select 三组件共用 @xui-design/shared/floating 的翻转与钳制逻辑。滚动到视口顶部后操作各组件，观察气泡 / 面板自动翻转到下方。'
+          : 'Tooltip / Popconfirm / Select share the flip and clamp logic of @xui-design/shared/floating. Scroll to the viewport top, then interact with each component to see the popover / panel auto-flip downward.'
+      }}
     </p>
     <div ref="anchor" class="demo-row" style="padding: 8px 0; gap: 16px">
-      <Tooltip content="Tooltip 共用避让逻辑" placement="top">
+      <Tooltip
+        :content="isZh() ? 'Tooltip 共用避让逻辑' : 'Tooltip shares the avoidance logic'"
+        placement="top"
+      >
         <Button>Tooltip</Button>
       </Tooltip>
       <Popconfirm
-        content="Popconfirm 共用避让逻辑"
+        :content="isZh() ? 'Popconfirm 共用避让逻辑' : 'Popconfirm shares the avoidance logic'"
         placement="top"
-        confirm-text="确定"
-        cancel-text="取消"
+        :confirm-text="isZh() ? '确定' : 'OK'"
+        :cancel-text="isZh() ? '取消' : 'Cancel'"
       >
         <Button type="primary">Popconfirm</Button>
       </Popconfirm>
-      <Select :options="options" virtual placeholder="Select（虚拟滚动）" style="width: 200px" />
+      <Select
+        :options="options"
+        virtual
+        :placeholder="isZh() ? 'Select（虚拟滚动）' : 'Select (virtual scroll)'"
+        style="width: 200px"
+      />
     </div>
   </div>
 </template>

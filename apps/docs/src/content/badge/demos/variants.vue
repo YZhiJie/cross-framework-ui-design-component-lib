@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { Badge } from '@xui-design/vue';
+import { isZh } from '../../../i18n';
 </script>
 
 <template>
   <div class="demo-row">
     <Badge dot>
-      <span class="demo-anchor">小红点</span>
+      <span class="demo-anchor">{{ isZh() ? '小红点' : 'Dot' }}</span>
     </Badge>
     <Badge :count="0" show-zero>
       <span class="demo-anchor">showZero</span>
     </Badge>
     <Badge :count="0">
-      <span class="demo-anchor">零值隐藏</span>
+      <span class="demo-anchor">{{ isZh() ? '零值隐藏' : 'Hidden when zero' }}</span>
     </Badge>
     <Badge :count="8" />
   </div>

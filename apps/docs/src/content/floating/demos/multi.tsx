@@ -1,12 +1,9 @@
 import { useRef } from 'react';
 import { Tooltip, Popconfirm, Select, Button } from '@xui-design/react';
-
-const options = Array.from({ length: 1000 }, (_, i) => ({
-  label: `选项 ${i + 1}`,
-  value: String(i + 1),
-}));
+import { useIsZh } from '../../../i18n/use-docs-locale';
 
 export default function FloatingMultiDemo() {
+  const isZh = useIsZh();
   const anchor = useRef<HTMLDivElement>(null);
 
   const scrollToTopEdge = () => {
@@ -16,11 +13,16 @@ export default function FloatingMultiDemo() {
     window.scrollTo({ top: window.scrollY + rect.top - 12, behavior: 'smooth' });
   };
 
+  const options = Array.from({ length: 1000 }, (_, i) => ({
+    label: isZh ? `选项 ${i + 1}` : `Option ${i + 1}`,
+    value: String(i + 1),
+  }));
+
   return (
     <div className="demo-column">
       <div className="demo-row">
         <Button type="primary" onClick={scrollToTopEdge}>
-          滚动到视口顶部
+          {isZh ? '滚动到视口顶部' : 'Scroll to viewport top'}
         </Button>
       </div>
       <p
@@ -30,25 +32,29 @@ export default function FloatingMultiDemo() {
           margin: '8px 0 16px',
         }}
       >
-        Tooltip / Popconfirm / Select 三组件共用 @xui-design/shared/floating
-        的翻转与钳制逻辑。滚动到视口顶部后操作各组件，观察气泡 / 面板自动翻转到下方。
+        {isZh
+          ? 'Tooltip / Popconfirm / Select 三组件共用 @xui-design/shared/floating 的翻转与钳制逻辑。滚动到视口顶部后操作各组件，观察气泡 / 面板自动翻转到下方。'
+          : 'Tooltip / Popconfirm / Select share the flip and clamp logic of @xui-design/shared/floating. Scroll to the viewport top, then interact with each component to see the popover / panel auto-flip downward.'}
       </p>
       <div ref={anchor} className="demo-row" style={{ padding: '8px 0', gap: '16px' }}>
-        <Tooltip content="Tooltip 共用避让逻辑" placement="top">
+        <Tooltip
+          content={isZh ? 'Tooltip 共用避让逻辑' : 'Tooltip shares the avoidance logic'}
+          placement="top"
+        >
           <Button>Tooltip</Button>
         </Tooltip>
         <Popconfirm
-          content="Popconfirm 共用避让逻辑"
+          content={isZh ? 'Popconfirm 共用避让逻辑' : 'Popconfirm shares the avoidance logic'}
           placement="top"
-          confirmText="确定"
-          cancelText="取消"
+          confirmText={isZh ? '确定' : 'OK'}
+          cancelText={isZh ? '取消' : 'Cancel'}
         >
           <Button type="primary">Popconfirm</Button>
         </Popconfirm>
         <Select
           options={options}
           virtual
-          placeholder="Select（虚拟滚动）"
+          placeholder={isZh ? 'Select（虚拟滚动）' : 'Select (virtual scroll)'}
           style={{ width: '200px' }}
         />
       </div>

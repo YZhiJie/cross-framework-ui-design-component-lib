@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@xui-design/vue';
+import { isZh } from '../../../i18n';
 </script>
 
 <template>
@@ -9,6 +10,6 @@ import { Button } from '@xui-design/vue';
       <Button size="md">Medium</Button>
       <Button size="lg">Large</Button>
     </div>
-    <Button block>Block（宽度撑满容器）</Button>
+    <Button block>{{ isZh() ? 'Block（宽度撑满容器）' : 'Block (full width)' }}</Button>
   </div>
 </template>

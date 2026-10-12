@@ -1,19 +1,28 @@
 import { useState } from 'react';
 import { Popconfirm, Button } from '@xui-design/react';
+import { useIsZh } from '../../../i18n/use-docs-locale';
 
 export default function PopconfirmBasicDemo() {
-  const [result, setResult] = useState('（待操作）');
+  const isZh = useIsZh();
+  const [result, setResult] = useState(isZh ? '（待操作）' : '(pending)');
 
   return (
     <div className="demo-column">
       <Popconfirm
-        content="确定要删除这条记录吗？删除后不可恢复。"
-        onConfirm={() => setResult('已确认删除')}
-        onCancel={() => setResult('已取消')}
+        content={
+          isZh
+            ? '确定要删除这条记录吗？删除后不可恢复。'
+            : 'Are you sure you want to delete this record? This cannot be undone.'
+        }
+        onConfirm={() => setResult(isZh ? '已确认删除' : 'Deletion confirmed')}
+        onCancel={() => setResult(isZh ? '已取消' : 'Cancelled')}
       >
-        <Button type="danger">删除记录</Button>
+        <Button type="danger">{isZh ? '删除记录' : 'Delete record'}</Button>
       </Popconfirm>
-      <p className="demo-text">操作结果：{result}</p>
+      <p className="demo-text">
+        {isZh ? '操作结果：' : 'Result: '}
+        {result}
+      </p>
     </div>
   );
 }

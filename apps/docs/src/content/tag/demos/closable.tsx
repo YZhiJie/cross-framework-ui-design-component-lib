@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Button, Tag } from '@xui-design/react';
-
-const INITIAL_TAGS = ['前端', 'Vue', 'React', 'TypeScript'];
+import { useIsZh } from '../../../i18n/use-docs-locale';
 
 export default function TagClosableDemo() {
-  const [tags, setTags] = useState(INITIAL_TAGS);
+  const isZh = useIsZh();
+  const buildTags = () =>
+    isZh ? ['前端', 'Vue', 'React', 'TypeScript'] : ['Frontend', 'Vue', 'React', 'TypeScript'];
+  const [tags, setTags] = useState(buildTags);
   const remove = (index: number) => {
     setTags((prev) => prev.filter((_, i) => i !== index));
   };
@@ -18,8 +20,8 @@ export default function TagClosableDemo() {
           </Tag>
         ))}
       </div>
-      <Button size="sm" onClick={() => setTags(INITIAL_TAGS)}>
-        重置标签
+      <Button size="sm" onClick={() => setTags(buildTags)}>
+        {isZh ? '重置标签' : 'Reset tags'}
       </Button>
     </div>
   );

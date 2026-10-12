@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Table } from '@xui-design/vue';
 import type { TableColumn, TableRowKey } from '@xui-design/core';
+import { isZh } from '../../../i18n';
 
 type UserRow = {
   id: number;
@@ -10,18 +11,20 @@ type UserRow = {
   city: string;
 };
 
-const bigRows: UserRow[] = Array.from({ length: 1000 }, (_, i) => ({
-  id: i + 1,
-  name: `用户${i + 1}`,
-  age: 20 + (i % 40),
-  city: `城市${(i % 20) + 1}`,
-}));
+const bigRows = computed<UserRow[]>(() =>
+  Array.from({ length: 1000 }, (_, i) => ({
+    id: i + 1,
+    name: isZh() ? `用户${i + 1}` : `User ${i + 1}`,
+    age: 20 + (i % 40),
+    city: isZh() ? `城市${(i % 20) + 1}` : `City ${(i % 20) + 1}`,
+  })),
+);
 
-const columns: TableColumn[] = [
-  { key: 'name', title: '姓名' },
-  { key: 'age', title: '年龄', width: 100, align: 'center' },
-  { key: 'city', title: '城市' },
-];
+const columns = computed<TableColumn[]>(() => [
+  { key: 'name', title: isZh() ? '姓名' : 'Name' },
+  { key: 'age', title: isZh() ? '年龄' : 'Age', width: 100, align: 'center' },
+  { key: 'city', title: isZh() ? '城市' : 'City' },
+]);
 
 const selectedRowKeys = ref<TableRowKey[]>([]);
 
@@ -43,8 +46,11 @@ const handleSelectionChange = (keys: TableRowKey[]) => {
       :row-selection="{ onChange: handleSelectionChange }"
     />
     <p class="demo-text">
-      虚拟滚动 · 1000 行仅渲染可视窗口；当前选中
-      {{ selectedRowKeys.length }} 行（滚动时勾选状态保持）。
+      {{
+        isZh()
+          ? `虚拟滚动 · 1000 行仅渲染可视窗口；当前选中 ${selectedRowKeys.length} 行（滚动时勾选状态保持）。`
+          : `Virtual scroll · only the visible window of 1000 rows is rendered; ${selectedRowKeys.length} row(s) selected (selection preserved on scroll).`
+      }}
     </p>
   </div>
 </template>

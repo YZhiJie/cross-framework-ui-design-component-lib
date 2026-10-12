@@ -1,18 +1,20 @@
 import { Popconfirm, Button } from '@xui-design/react';
+import { useIsZh } from '../../../i18n/use-docs-locale';
 
 export default function PopconfirmVariantsDemo() {
+  const isZh = useIsZh();
   return (
     <div className="demo-row">
       <Popconfirm
-        content="右侧弹出的气泡确认"
+        content={isZh ? '右侧弹出的气泡确认' : 'Popover confirm on the right'}
         placement="right"
-        confirmText="好的"
-        cancelText="再想想"
+        confirmText={isZh ? '好的' : 'OK'}
+        cancelText={isZh ? '再想想' : 'Think again'}
       >
-        <Button>右侧 + 自定义按钮</Button>
+        <Button>{isZh ? '右侧 + 自定义按钮' : 'Right + custom buttons'}</Button>
       </Popconfirm>
-      <Popconfirm content="禁用后点击无效" disabled>
-        <Button>禁用</Button>
+      <Popconfirm content={isZh ? '禁用后点击无效' : 'No effect when disabled'} disabled>
+        <Button>{isZh ? '禁用' : 'Disabled'}</Button>
       </Popconfirm>
     </div>
   );

@@ -33,9 +33,27 @@ export const t = (text: LText): string => text[state.locale];
 /** 判断当前是否为中文（模板条件渲染用） */
 export const isZh = (): boolean => state.locale === 'zh-CN';
 
+// ---------- 框架无关订阅（供 React demo 通过 useSyncExternalStore 跨框架订阅） ----------
+
+type LocaleListener = (locale: DocsLocale) => void;
+
+const listeners = new Set<LocaleListener>();
+
+/** 订阅文档语言变化（返回取消订阅函数） */
+export const subscribeDocsLocale = (listener: LocaleListener): (() => void) => {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+};
+
+/** 获取当前语言快照（useSyncExternalStore 的 getSnapshot 参数） */
+export const getDocsLocaleSnapshot = (): DocsLocale => state.locale;
+
 /** 应用语言副作用：持久化 + <html lang> + 页面标题 + 组件库 locale 联动 */
 const applyLocale = (locale: DocsLocale): void => {
   state.locale = locale;
+  listeners.forEach((listener) => listener(locale));
   document.documentElement.lang = locale;
   document.title = locale === 'zh-CN' ? 'XUI - 跨框架组件库文档' : 'XUI - Cross-Framework UI Docs';
   localStorage.setItem(STORAGE_KEY, locale);

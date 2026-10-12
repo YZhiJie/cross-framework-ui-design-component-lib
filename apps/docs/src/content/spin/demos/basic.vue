@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Spin } from '@xui-design/vue';
+import { isZh } from '../../../i18n';
 </script>
 
 <template>
@@ -7,6 +8,6 @@ import { Spin } from '@xui-design/vue';
     <Spin size="sm" />
     <Spin />
     <Spin size="lg" />
-    <Spin size="lg" tip="加载中..." />
+    <Spin size="lg" :tip="isZh() ? '加载中...' : 'Loading...'" />
   </div>
 </template>

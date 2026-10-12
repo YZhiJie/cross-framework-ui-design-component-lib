@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button, clearThemeTokens, setThemeTokens, Switch, Tag } from '@xui-design/react';
+import { useIsZh } from '../../../i18n/use-docs-locale';
 
 const PRESETS: Record<string, Record<string, string>> = {
   emerald: {
@@ -19,7 +20,14 @@ const PRESETS: Record<string, Record<string, string>> = {
   },
 };
 
+const PRESET_LABELS: Record<string, { zh: string; en: string }> = {
+  emerald: { zh: '翡翠绿', en: 'Emerald' },
+  amber: { zh: '琥珀橙', en: 'Amber' },
+  rose: { zh: '玫红', en: 'Rose' },
+};
+
 export default function ThemeTokensDemo() {
+  const isZh = useIsZh();
   const [enabled, setEnabled] = useState(true);
 
   return (
@@ -27,16 +35,16 @@ export default function ThemeTokensDemo() {
       <div className="demo-row">
         {Object.keys(PRESETS).map((name) => (
           <Button key={name} onClick={() => setThemeTokens(PRESETS[name])}>
-            {name === 'emerald' ? '翡翠绿' : name === 'amber' ? '琥珀橙' : '玫红'}
+            {isZh ? PRESET_LABELS[name].zh : PRESET_LABELS[name].en}
           </Button>
         ))}
         <Button type="link" onClick={() => clearThemeTokens()}>
-          恢复默认品牌色
+          {isZh ? '恢复默认品牌色' : 'Reset to default brand color'}
         </Button>
       </div>
       <div className="demo-row">
-        <Button type="primary">主色按钮</Button>
-        <Tag type="primary">主色标签</Tag>
+        <Button type="primary">{isZh ? '主色按钮' : 'Primary button'}</Button>
+        <Tag type="primary">{isZh ? '主色标签' : 'Primary tag'}</Tag>
         <Switch value={enabled} onChange={setEnabled} />
       </div>
     </div>
