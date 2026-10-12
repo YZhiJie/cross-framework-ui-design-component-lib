@@ -105,7 +105,7 @@ export const switchMeta: ComponentMeta = {
   notes: [
     '受控模式下组件不自改状态，仅通过 change / update:value 回调通知外部同步。',
     'loading 为 true 时点击切换被忽略，但不禁用样式，适合"切换中等待异步结果"场景。',
-    '双态文本对读屏隐藏（状态由 role="switch" + aria-checked 传达），仅提供 checkedText 时关闭态无文本节点；带文本时轨道自动加宽（md 56px / sm 44px）。',
+    '双态文本对读屏隐藏（状态由 role="switch" + aria-checked 传达），两文本常驻 DOM 并以 CSS Grid 重叠，轨道宽度自适应较宽文本，切换时无宽度抖动。',
   ],
   a11y: [
     '渲染为 role="switch" 的按钮，携带 aria-checked；禁用时携带 disabled，支持空格 / 回车切换。',

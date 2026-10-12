@@ -84,21 +84,24 @@ const handleToggle = () => {
     @click="handleToggle"
   >
     <span class="xui-switch__core">
-      <!-- 双态文本：状态已由 role="switch" + aria-checked 传达，文本对读屏隐藏避免重复朗读 -->
-      <span
-        v-if="state.checked && props.checkedText"
-        class="xui-switch__text xui-switch__text--checked"
-        :title="props.checkedText"
-        aria-hidden="true"
-        >{{ props.checkedText }}</span
-      >
-      <span
-        v-else-if="!state.checked && props.uncheckedText"
-        class="xui-switch__text xui-switch__text--unchecked"
-        :title="props.uncheckedText"
-        aria-hidden="true"
-        >{{ props.uncheckedText }}</span
-      >
+      <!-- 双态文本：两文本常驻 DOM，CSS Grid 重叠 + visibility 切换实现宽度自适应较宽文本。
+           状态已由 role="switch" + aria-checked 传达，文本对读屏隐藏避免重复朗读 -->
+      <span v-if="props.checkedText || props.uncheckedText" class="xui-switch__text-wrap">
+        <span
+          v-if="props.checkedText"
+          class="xui-switch__text xui-switch__text--checked"
+          :title="props.checkedText"
+          aria-hidden="true"
+          >{{ props.checkedText }}</span
+        >
+        <span
+          v-if="props.uncheckedText"
+          class="xui-switch__text xui-switch__text--unchecked"
+          :title="props.uncheckedText"
+          aria-hidden="true"
+          >{{ props.uncheckedText }}</span
+        >
+      </span>
       <span class="xui-switch__thumb">
         <slot v-if="state.loading" name="loadingIcon">
           <svg

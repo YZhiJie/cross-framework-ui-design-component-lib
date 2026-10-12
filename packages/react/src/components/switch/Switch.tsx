@@ -104,22 +104,30 @@ export function Switch(props: SwitchComponentProps) {
       onClick={() => logic.toggle()}
     >
       <span className="xui-switch__core">
-        {/* 双态文本：状态已由 role="switch" + aria-checked 传达，文本对读屏隐藏避免重复朗读 */}
-        {(() => {
-          const text = state.checked ? checkedText : uncheckedText;
-          return text ? (
-            <span
-              className={cn(
-                'xui-switch__text',
-                state.checked ? 'xui-switch__text--checked' : 'xui-switch__text--unchecked',
-              )}
-              title={text}
-              aria-hidden="true"
-            >
-              {text}
-            </span>
-          ) : null;
-        })()}
+        {/* 双态文本：两文本常驻 DOM，CSS Grid 重叠 + visibility 切换实现宽度自适应较宽文本。
+             状态已由 role="switch" + aria-checked 传达，文本对读屏隐藏避免重复朗读 */}
+        {hasText && (
+          <span className="xui-switch__text-wrap">
+            {checkedText && (
+              <span
+                className="xui-switch__text xui-switch__text--checked"
+                title={checkedText}
+                aria-hidden="true"
+              >
+                {checkedText}
+              </span>
+            )}
+            {uncheckedText && (
+              <span
+                className="xui-switch__text xui-switch__text--unchecked"
+                title={uncheckedText}
+                aria-hidden="true"
+              >
+                {uncheckedText}
+              </span>
+            )}
+          </span>
+        )}
         <span className="xui-switch__thumb">
           {state.loading && (renderLoadingIcon ? renderLoadingIcon() : <LoadingSpinner />)}
         </span>

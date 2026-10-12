@@ -1933,9 +1933,20 @@
   height: 12px;
 }
 
-/* 带文本时轨道加宽：md 40→56px（与 --sm 同为 (0,2,0)，按特异性升序置于 is-checked 之前） */
+/* 带文本时轨道自适应文本宽度（min-width 保底不窄于纯开关） */
 .xui-switch--has-text .xui-switch__core {
-  width: 56px;
+  width: auto;
+  min-width: 56px;
+}
+
+/* 带文本滑块改为 absolute 定位 + left 过渡（轨道宽度动态，translateX 固定位移不再适用）。
+   必须排在 is-checked (0,3,0) 之前（本规则 (0,2,0)），选中态位移由 is-checked 变体覆盖。 */
+.xui-switch--has-text .xui-switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transform: none;
+  transition: left 0.2s ease;
 }
 
 .xui-switch.is-checked .xui-switch__core {
@@ -1952,56 +1963,71 @@
   transform: translateX(12px);
 }
 
-/* 带文本模式（checkedText / uncheckedText）：文本绝对定位在滑块对侧。
-   用 block 而非 inline-flex——text-overflow: ellipsis 在 flex 容器上不生效（文本为匿名 flex item）。
-   max-width = 文本可用宽度 - 2px 间距：checked 态 thumb 在右（位移36+padding2=38px 起），
-   文本 left:8px → 可用到 38px，宽 30px → max-width 28px，容纳 2 字短文本（如“开启”约24px）完整显示 */
+/* 带文本模式（checkedText / uncheckedText）：CSS Grid 重叠双文本，列宽取较宽文本。
+   不活动文本 visibility:hidden 保持占位，避免切换时宽度抖动。
+   text-wrap padding 为滑块预留两侧空间（thumb 16 + gap 4 = 20px） */
+.xui-switch__text-wrap {
+  display: inline-grid;
+  grid-template-columns: max-content;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+}
+
+.xui-switch--sm .xui-switch__text-wrap {
+  padding: 0 16px;
+}
+
 .xui-switch__text {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  display: block;
-  overflow: hidden;
-  max-width: 28px;
+  grid-area: 1 / 1;
   font-size: 12px;
   line-height: 1;
   color: #fff;
   white-space: nowrap;
-  text-overflow: ellipsis;
   pointer-events: none;
   user-select: none;
 }
 
 /* 开启态文本显示在滑块左侧、关闭态显示在滑块右侧（与滑块位置互补） */
 .xui-switch__text--checked {
-  left: 8px;
+  justify-self: start;
+  visibility: hidden;
 }
 
 .xui-switch__text--unchecked {
-  right: 8px;
+  justify-self: end;
+  visibility: visible;
 }
 
-/* sm 轨道更短，文本可用宽度相应收窄：checked 态 thumb 在右（位移28+padding2=30px 起），
-   文本 left:8px → 可用到 30px，宽 22px → max-width 20px，容纳 1-2 字短文本完整显示 */
-.xui-switch--sm .xui-switch__text {
-  max-width: 20px;
+.is-checked .xui-switch__text--checked {
+  visibility: visible;
 }
 
-/* 带文本选中位移：md = 56 - 2×2(padding) - 16(thumb) = 36px；
-   与 is-checked(20px) 特异性相同(0,3,0)，必须置于其后 */
+.is-checked .xui-switch__text--unchecked {
+  visibility: hidden;
+}
 
 .xui-switch--has-text.is-checked .xui-switch__thumb {
-  transform: translateX(36px);
+  left: calc(100% - 16px - 2px);
+  transform: none;
 }
 
-/* sm 带文本：轨道 44px，位移 = 44 - 2×2(padding) - 12(thumb) = 28px；
-   与 --sm.is-checked / --has-text.is-checked 特异性相同(0,3,0)，必须置于最后 */
 .xui-switch--sm.xui-switch--has-text .xui-switch__core {
-  width: 44px;
+  width: auto;
+  min-width: 44px;
+}
+
+.xui-switch--sm.xui-switch--has-text .xui-switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transform: none;
+  transition: left 0.2s ease;
 }
 
 .xui-switch--sm.xui-switch--has-text.is-checked .xui-switch__thumb {
-  transform: translateX(28px);
+  left: calc(100% - 12px - 2px);
+  transform: none;
 }
 
 .xui-switch:focus-visible .xui-switch__core {
