@@ -1757,44 +1757,33 @@
   gap: 8px;
 }
 
-/* 箭头：外层 border 色菱形 + 内层背景色菱形（双菱形消除旋转后边线与面板边框的错位缝隙） */
+/* 箭头：旋转 45° 方块，背景继承面板（与 Tooltip 同款，半藏于面板下呈三角形，不再使用双菱形） */
 .xui-popconfirm__arrow {
   position: absolute;
   width: 8px;
   height: 8px;
-  background-color: var(--xui-color-border, #e5e7eb);
+  background-color: var(--xui-color-bg, #fff);
   transform: rotate(45deg);
 }
 
-.xui-popconfirm__arrow::before {
-  position: absolute;
-  inset: 1px;
-  background-color: var(--xui-color-bg, #fff);
-  content: '';
-}
-
 .xui-popconfirm__popper.is-top .xui-popconfirm__arrow {
-  bottom: -5px;
-  left: 50%;
-  margin-left: -4px;
+  bottom: -3px;
+  left: calc(50% - 4px);
 }
 
 .xui-popconfirm__popper.is-bottom .xui-popconfirm__arrow {
-  top: -5px;
-  left: 50%;
-  margin-left: -4px;
+  top: -3px;
+  left: calc(50% - 4px);
 }
 
 .xui-popconfirm__popper.is-left .xui-popconfirm__arrow {
-  top: 50%;
-  right: -5px;
-  margin-top: -4px;
+  top: calc(50% - 4px);
+  right: -3px;
 }
 
 .xui-popconfirm__popper.is-right .xui-popconfirm__arrow {
-  top: 50%;
-  left: -5px;
-  margin-top: -4px;
+  top: calc(50% - 4px);
+  left: -3px;
 }
 
 /* ===================== Modal ===================== */
