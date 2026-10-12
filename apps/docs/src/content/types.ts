@@ -4,9 +4,12 @@
  * 每个组件一份 meta.ts，结构化描述组件的特性、演示与 API 表格，
  * 由 ComponentPage / DemoBlock / ApiSection 等通用组件统一渲染。
  * API 口径必须与 @xui-design/core 的 ComponentSpec 契约保持一致。
+ *
+ * 全部展示文案使用 LText 双语结构（zh-CN / en-US），渲染层经 t() 按当前语言取值。
  */
 import type { Component } from 'vue';
 import type { ComponentType } from 'react';
+import type { LText } from '../i18n';
 
 /** 组件分类 key（驱动侧边栏分组与首页总览） */
 export type CategoryKey = 'basic' | 'form' | 'display' | 'navigation' | 'feedback';
@@ -20,7 +23,7 @@ export interface ApiPropRow {
   /** 默认值（无默认值用 '—'） */
   default: string;
   /** 说明 */
-  description: string;
+  description: LText;
   /** 是否必填 */
   required?: boolean;
 }
@@ -34,7 +37,7 @@ export interface ApiEventRow {
   /** 载荷类型 */
   payload: string;
   /** 说明 */
-  description: string;
+  description: LText;
 }
 
 /** Slots API 表格行（Vue 插槽 ↔ React 渲染回调映射） */
@@ -44,7 +47,7 @@ export interface ApiSlotRow {
   /** React 对应回调名（如 renderTitle），无用 '—' */
   react: string;
   /** 说明 */
-  description: string;
+  description: LText;
 }
 
 /** 命令式方法表格行（Message 等命令式 API） */
@@ -54,7 +57,7 @@ export interface ApiMethodRow {
   /** 函数签名 */
   signature: string;
   /** 说明 */
-  description: string;
+  description: LText;
 }
 
 /** 附加契约类型块（TableColumn / MessageOptions 等） */
@@ -64,7 +67,7 @@ export interface ApiTypeBlock {
   /** 类型定义（TS 源码文本） */
   definition: string;
   /** 说明 */
-  description?: string;
+  description?: LText;
 }
 
 /** 单个可交互 demo（双端各一份真实组件 + 源码） */
@@ -72,9 +75,9 @@ export interface DemoDefinition {
   /** demo 唯一 id（锚点用） */
   id: string;
   /** demo 标题 */
-  title: string;
+  title: LText;
   /** demo 说明 */
-  description?: string;
+  description?: LText;
   /** Vue 端 demo 组件（实时挂载） */
   vueComponent: Component;
   /** React 端 demo 组件（实时挂载） */
@@ -96,11 +99,11 @@ export interface ComponentMeta {
   /** 分类 */
   category: CategoryKey;
   /** 一句话摘要 */
-  summary: string;
+  summary: LText;
   /** 功能特性列表 */
-  features: string[];
+  features: LText[];
   /** 使用场景 */
-  scenarios?: string[];
+  scenarios?: LText[];
   /** demo 列表 */
   demos: DemoDefinition[];
   /** API 表格数据 */
@@ -112,9 +115,9 @@ export interface ComponentMeta {
     types?: ApiTypeBlock[];
   };
   /** 边界场景 / 注意事项 */
-  notes?: string[];
+  notes?: LText[];
   /** 无障碍说明 */
-  a11y?: string[];
+  a11y?: LText[];
 }
 
 /** 组件清单条目（驱动导航与首页卡片，含尚未落地文档的组件） */

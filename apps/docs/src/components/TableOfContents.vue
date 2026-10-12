@@ -12,6 +12,8 @@
  */
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { useUiMessages } from '../i18n/ui-messages';
+import { docsLocale } from '../i18n';
 
 interface TocItem {
   id: string;
@@ -19,6 +21,7 @@ interface TocItem {
 }
 
 const route = useRoute();
+const ui = useUiMessages();
 const items = ref<TocItem[]>([]);
 const activeId = ref<string>('');
 
@@ -119,11 +122,17 @@ watch(
   () => route.fullPath,
   () => nextTick(scan),
 );
+
+// 语言切换后章节标题文本变化，重新扫描目录
+watch(
+  () => docsLocale.locale,
+  () => nextTick(scan),
+);
 </script>
 
 <template>
   <nav v-if="items.length > 0" class="docs-toc" aria-label="页面目录">
-    <div class="docs-toc__title">目录</div>
+    <div class="docs-toc__title">{{ ui.toc.title }}</div>
     <ul class="docs-toc__list">
       <li
         v-for="item in items"

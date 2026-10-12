@@ -15,19 +15,47 @@ export const datePickerMeta: ComponentMeta = {
   slug: 'date-picker',
   title: '日期选择',
   category: 'form',
-  summary: '点击弹出月历面板选择单个日期，值统一为 YYYY-MM-DD 字符串，零日期依赖。',
+  summary: {
+    'zh-CN': '点击弹出月历面板选择单个日期，值统一为 YYYY-MM-DD 字符串，零日期依赖。',
+    'en-US':
+      'Click to open a month calendar and pick a single date; the value is always a YYYY-MM-DD string, with zero date dependencies.',
+  },
   features: [
-    '受控 / 非受控双模式，Vue 端支持 v-model:value',
-    "值格式统一为 'YYYY-MM-DD' 字符串（序列化友好），非法值回退 null",
-    '月历面板支持上个月 / 下个月切换（跨年自动滚动），42 格完整周视图',
-    'clearable 清空、disabled 禁用；点击外部或选中后自动收起',
+    {
+      'zh-CN': '受控 / 非受控双模式，Vue 端支持 v-model:value',
+      'en-US': 'Controlled and uncontrolled modes; supports v-model:value on the Vue side',
+    },
+    {
+      'zh-CN': "值格式统一为 'YYYY-MM-DD' 字符串（序列化友好），非法值回退 null",
+      'en-US':
+        "Values are always 'YYYY-MM-DD' strings (serialization-friendly); invalid values fall back to null",
+    },
+    {
+      'zh-CN': '月历面板支持上个月 / 下个月切换（跨年自动滚动），42 格完整周视图',
+      'en-US':
+        'The calendar panel switches between previous / next month (scrolling across years automatically), with a full 42-cell week view',
+    },
+    {
+      'zh-CN': 'clearable 清空、disabled 禁用；点击外部或选中后自动收起',
+      'en-US':
+        'A clearable clear button and disabled state; the panel closes on outside click or after selection',
+    },
   ],
-  scenarios: ['生日、预约、查询时间范围等需要选择某一天的表单场景。'],
+  scenarios: [
+    {
+      'zh-CN': '生日、预约、查询时间范围等需要选择某一天的表单场景。',
+      'en-US':
+        'Form scenarios that pick a specific day, such as birthdays, reservations, or date-range queries.',
+    },
+  ],
   demos: [
     {
       id: 'basic',
-      title: '受控选择',
-      description: '外部维护 YYYY-MM-DD 字符串，可一键清空。',
+      title: { 'zh-CN': '受控选择', 'en-US': 'Controlled Selection' },
+      description: {
+        'zh-CN': '外部维护 YYYY-MM-DD 字符串，可一键清空。',
+        'en-US': 'The YYYY-MM-DD string is maintained externally and can be cleared in one click.',
+      },
       vueComponent: BasicVue,
       reactComponent: BasicReact,
       vueSource: basicVueSource,
@@ -35,8 +63,11 @@ export const datePickerMeta: ComponentMeta = {
     },
     {
       id: 'state',
-      title: '默认值与禁用',
-      description: 'defaultValue 定位初始日期；disabled 下不可打开面板。',
+      title: { 'zh-CN': '默认值与禁用', 'en-US': 'Default Value & Disabled' },
+      description: {
+        'zh-CN': 'defaultValue 定位初始日期；disabled 下不可打开面板。',
+        'en-US': 'defaultValue sets the initial date; the panel cannot be opened when disabled.',
+      },
       vueComponent: StateVue,
       reactComponent: StateReact,
       vueSource: stateVueSource,
@@ -45,51 +76,139 @@ export const datePickerMeta: ComponentMeta = {
   ],
   api: {
     props: [
-      { name: 'value', type: 'string', default: '—', description: "受控选中日期（'YYYY-MM-DD'）" },
+      {
+        name: 'value',
+        type: 'string',
+        default: '—',
+        description: {
+          'zh-CN': "受控选中日期（'YYYY-MM-DD'）",
+          'en-US': "Controlled selected date ('YYYY-MM-DD')",
+        },
+      },
       {
         name: 'defaultValue',
         type: 'string',
         default: '—',
-        description: "非受控初始日期（'YYYY-MM-DD'）",
+        description: {
+          'zh-CN': "非受控初始日期（'YYYY-MM-DD'）",
+          'en-US': "Uncontrolled initial date ('YYYY-MM-DD')",
+        },
       },
-      { name: 'placeholder', type: 'string', default: '—', description: '占位文案' },
-      { name: 'disabled', type: 'boolean', default: 'false', description: '禁用状态' },
+      {
+        name: 'placeholder',
+        type: 'string',
+        default: '—',
+        description: { 'zh-CN': '占位文案', 'en-US': 'Placeholder text' },
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        default: 'false',
+        description: { 'zh-CN': '禁用状态', 'en-US': 'Disabled state' },
+      },
       {
         name: 'clearable',
         type: 'boolean',
         default: 'false',
-        description: '是否显示清空按钮（仅已选中时）',
+        description: {
+          'zh-CN': '是否显示清空按钮（仅已选中时）',
+          'en-US': 'Whether to show the clear button (only when a date is selected)',
+        },
       },
       {
         name: 'onChange',
         type: '(value: string) => void',
         default: '—',
-        description: '选中值变更回调',
+        description: {
+          'zh-CN': '选中值变更回调',
+          'en-US': 'Callback when the selected value changes',
+        },
       },
-      { name: 'onClear', type: '() => void', default: '—', description: '清空回调' },
-      { name: 'className', type: 'string', default: '—', description: '附加到根节点的自定义类名' },
+      {
+        name: 'onClear',
+        type: '() => void',
+        default: '—',
+        description: { 'zh-CN': '清空回调', 'en-US': 'Callback on clear' },
+      },
+      {
+        name: 'className',
+        type: 'string',
+        default: '—',
+        description: {
+          'zh-CN': '附加到根节点的自定义类名',
+          'en-US': 'Custom class name appended to the root element',
+        },
+      },
       {
         name: 'style',
         type: 'Record<string, string>',
         default: '—',
-        description: '附加到根节点的自定义样式',
+        description: {
+          'zh-CN': '附加到根节点的自定义样式',
+          'en-US': 'Custom styles appended to the root element',
+        },
       },
     ],
     events: [
-      { vue: 'change', react: 'onChange', payload: 'value: string', description: '选中日期变更' },
-      { vue: 'clear', react: 'onClear', payload: '—', description: '清空日期' },
-      { vue: 'update:value', react: '—', payload: 'string', description: 'v-model:value 回写' },
+      {
+        vue: 'change',
+        react: 'onChange',
+        payload: 'value: string',
+        description: { 'zh-CN': '选中日期变更', 'en-US': 'Fired when the selected date changes' },
+      },
+      {
+        vue: 'clear',
+        react: 'onClear',
+        payload: '—',
+        description: { 'zh-CN': '清空日期', 'en-US': 'Fired when the date is cleared' },
+      },
+      {
+        vue: 'update:value',
+        react: '—',
+        payload: 'string',
+        description: { 'zh-CN': 'v-model:value 回写', 'en-US': 'v-model:value write-back' },
+      },
     ],
     slots: [
-      { vue: 'clearIcon', react: 'renderClearIcon', description: '自定义清除图标' },
-      { vue: 'calendarIcon', react: 'renderCalendarIcon', description: '自定义日历图标' },
-      { vue: 'prevIcon', react: 'renderPrevIcon', description: '自定义上一月图标' },
-      { vue: 'nextIcon', react: 'renderNextIcon', description: '自定义下一月图标' },
+      {
+        vue: 'clearIcon',
+        react: 'renderClearIcon',
+        description: { 'zh-CN': '自定义清除图标', 'en-US': 'Custom clear icon' },
+      },
+      {
+        vue: 'calendarIcon',
+        react: 'renderCalendarIcon',
+        description: { 'zh-CN': '自定义日历图标', 'en-US': 'Custom calendar icon' },
+      },
+      {
+        vue: 'prevIcon',
+        react: 'renderPrevIcon',
+        description: { 'zh-CN': '自定义上一月图标', 'en-US': 'Custom previous-month icon' },
+      },
+      {
+        vue: 'nextIcon',
+        react: 'renderNextIcon',
+        description: { 'zh-CN': '自定义下一月图标', 'en-US': 'Custom next-month icon' },
+      },
     ],
   },
   notes: [
-    "契约只接受 / 输出 'YYYY-MM-DD' 字符串，不引入 Date 对象；非法字符串回退为 null。",
-    '面板打开时视图自动定位到选中日期所在月份，无选中值时定位到当前月。',
+    {
+      'zh-CN': "契约只接受 / 输出 'YYYY-MM-DD' 字符串，不引入 Date 对象；非法字符串回退为 null。",
+      'en-US':
+        "The contract only accepts / emits 'YYYY-MM-DD' strings with no Date objects involved; invalid strings fall back to null.",
+    },
+    {
+      'zh-CN': '面板打开时视图自动定位到选中日期所在月份，无选中值时定位到当前月。',
+      'en-US':
+        'When the panel opens, the view jumps to the month of the selected date, or to the current month when nothing is selected.',
+    },
   ],
-  a11y: ['日期按钮可通过键盘聚焦与选择，月份切换与日期格具备可读的文本语义。'],
+  a11y: [
+    {
+      'zh-CN': '日期按钮可通过键盘聚焦与选择，月份切换与日期格具备可读的文本语义。',
+      'en-US':
+        'Date buttons are keyboard-focusable and selectable; month switches and date cells carry readable text semantics.',
+    },
+  ],
 };

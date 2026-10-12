@@ -11,8 +11,12 @@ import type { Root } from 'react-dom/client';
 import type { DemoDefinition } from '../content/types';
 import { mountReactDemo } from './react-mount';
 import CodeBlock from './CodeBlock.vue';
+import { t } from '../i18n';
+import { useUiMessages } from '../i18n/ui-messages';
 
 const props = defineProps<{ demo: DemoDefinition }>();
+
+const ui = useUiMessages();
 
 const framework = ref<'vue' | 'react'>('vue');
 const showCode = ref(true);
@@ -42,7 +46,7 @@ onBeforeUnmount(unmountReact);
 <template>
   <section class="demo-block">
     <div class="demo-block__header">
-      <h3 class="demo-block__title">{{ demo.title }}</h3>
+      <h3 class="demo-block__title">{{ t(demo.title) }}</h3>
       <div class="demo-block__tabs" role="tablist">
         <button
           type="button"
@@ -66,14 +70,14 @@ onBeforeUnmount(unmountReact);
         </button>
       </div>
     </div>
-    <p v-if="demo.description" class="demo-block__desc">{{ demo.description }}</p>
+    <p v-if="demo.description" class="demo-block__desc">{{ t(demo.description) }}</p>
     <div class="demo-block__stage">
       <component :is="demo.vueComponent" v-if="framework === 'vue'" />
       <div v-else ref="reactHost" class="demo-block__react-host" />
     </div>
     <div class="demo-block__footer">
       <button type="button" class="demo-block__toggle" @click="showCode = !showCode">
-        {{ showCode ? '隐藏代码' : '查看代码' }}
+        {{ showCode ? ui.demo.hideCode : ui.demo.showCode }}
       </button>
     </div>
     <div v-show="showCode" class="demo-block__code">

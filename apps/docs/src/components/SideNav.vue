@@ -2,14 +2,22 @@
 /**
  * 左侧导航：介绍入口 + 按分类分组的组件清单
  * 未上线组件渲染为置灰条目，保持规划全貌可见
+ * 文案随文档语言切换：中文模式主显中文名（副标英文名），英文模式反之
  */
 import { useRoute } from 'vue-router';
 import { getComponentsByCategory } from '../content/registry';
+import { isZh, t } from '../i18n';
+import { useUiMessages } from '../i18n/ui-messages';
 
 const route = useRoute();
+const ui = useUiMessages();
 const groups = getComponentsByCategory();
 
 const isActive = (slug: string) => route.name === 'component' && route.params.slug === slug;
+
+// 组件条目的主 / 副标题按语言互换（中文名 ↔ 英文名）；模板调用即收集 locale 依赖
+const primaryOf = (item: { name: string; title: string }) => (isZh() ? item.title : item.name);
+const secondaryOf = (item: { name: string; title: string }) => (isZh() ? item.name : item.title);
 </script>
 
 <template>
@@ -20,38 +28,38 @@ const isActive = (slug: string) => route.name === 'component' && route.params.sl
         <span class="side-nav__version">v0.1.0</span>
       </div>
       <div class="side-nav__groups">
-        <div class="side-nav__group-title">开始</div>
+        <div class="side-nav__group-title">{{ ui.nav.start }}</div>
         <RouterLink to="/" class="side-nav__link" :class="{ 'is-active': route.name === 'home' }">
-          介绍
-          <span class="side-nav__en">Introduction</span>
+          {{ ui.nav.intro }}
+          <span v-if="isZh()" class="side-nav__en">Introduction</span>
         </RouterLink>
         <RouterLink
           to="/theme"
           class="side-nav__link"
           :class="{ 'is-active': route.name === 'theme' }"
         >
-          主题定制
-          <span class="side-nav__en">Theming</span>
+          {{ ui.nav.theme }}
+          <span v-if="isZh()" class="side-nav__en">Theming</span>
         </RouterLink>
         <RouterLink
           to="/i18n"
           class="side-nav__link"
           :class="{ 'is-active': route.name === 'i18n' }"
         >
-          国际化
-          <span class="side-nav__en">Internationalization</span>
+          {{ ui.nav.i18n }}
+          <span v-if="isZh()" class="side-nav__en">i18n</span>
         </RouterLink>
         <RouterLink
           to="/floating"
           class="side-nav__link"
           :class="{ 'is-active': route.name === 'floating' }"
         >
-          浮层视口避让
-          <span class="side-nav__en">Floating</span>
+          {{ ui.nav.floating }}
+          <span v-if="isZh()" class="side-nav__en">Floating</span>
         </RouterLink>
 
         <template v-for="group in groups" :key="group.category.key">
-          <div class="side-nav__group-title">{{ group.category.title }}</div>
+          <div class="side-nav__group-title">{{ t(group.category.title) }}</div>
           <template v-for="item in group.components" :key="item.slug">
             <RouterLink
               v-if="item.available"
@@ -59,12 +67,12 @@ const isActive = (slug: string) => route.name === 'component' && route.params.sl
               class="side-nav__link"
               :class="{ 'is-active': isActive(item.slug) }"
             >
-              {{ item.title }}
-              <span class="side-nav__en">{{ item.name }}</span>
+              {{ primaryOf(item) }}
+              <span class="side-nav__en">{{ secondaryOf(item) }}</span>
             </RouterLink>
             <span v-else class="side-nav__item-disabled">
-              {{ item.title }}
-              <span class="side-nav__soon">待补充</span>
+              {{ primaryOf(item) }}
+              <span class="side-nav__soon">{{ ui.nav.soon }}</span>
             </span>
           </template>
         </template>

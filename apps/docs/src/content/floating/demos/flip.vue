@@ -36,7 +36,12 @@ const scrollToBottomEdge = () => {
       <Tooltip content="上方空间不足 → 翻转到下方" placement="top">
         <Button>Tooltip top（近顶部）</Button>
       </Tooltip>
-      <Popconfirm content="确认删除此条记录？" placement="top" confirm-text="删除" cancel-text="取消">
+      <Popconfirm
+        content="确认删除此条记录？"
+        placement="top"
+        confirm-text="删除"
+        cancel-text="取消"
+      >
         <Button type="danger">Popconfirm top</Button>
       </Popconfirm>
     </div>
@@ -45,7 +50,12 @@ const scrollToBottomEdge = () => {
       <Tooltip content="下方空间不足 → 翻转到上方" placement="bottom">
         <Button>Tooltip bottom（近底部）</Button>
       </Tooltip>
-      <Popconfirm content="底部确认提交？" placement="bottom" confirm-text="提交" cancel-text="取消">
+      <Popconfirm
+        content="底部确认提交？"
+        placement="bottom"
+        confirm-text="提交"
+        cancel-text="取消"
+      >
         <Button type="primary">Popconfirm bottom</Button>
       </Popconfirm>
     </div>

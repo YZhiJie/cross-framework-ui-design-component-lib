@@ -6,6 +6,7 @@
  * - componentMetas / componentMetaMap：已上线组件的结构化元数据
  */
 import type { CategoryKey, ComponentEntry, ComponentMeta } from './types';
+import type { LText } from '../i18n';
 
 import { buttonMeta } from './button/meta';
 import { switchMeta } from './switch/meta';
@@ -32,12 +33,12 @@ import { tooltipMeta } from './tooltip/meta';
 import { spinMeta } from './spin/meta';
 import { popconfirmMeta } from './popconfirm/meta';
 
-export const CATEGORIES: { key: CategoryKey; title: string }[] = [
-  { key: 'basic', title: '基础组件' },
-  { key: 'form', title: '表单交互' },
-  { key: 'display', title: '数据展示' },
-  { key: 'navigation', title: '导航布局' },
-  { key: 'feedback', title: '反馈提示' },
+export const CATEGORIES: { key: CategoryKey; title: LText }[] = [
+  { key: 'basic', title: { 'zh-CN': '基础组件', 'en-US': 'Basic' } },
+  { key: 'form', title: { 'zh-CN': '表单交互', 'en-US': 'Form' } },
+  { key: 'display', title: { 'zh-CN': '数据展示', 'en-US': 'Data Display' } },
+  { key: 'navigation', title: { 'zh-CN': '导航布局', 'en-US': 'Navigation' } },
+  { key: 'feedback', title: { 'zh-CN': '反馈提示', 'en-US': 'Feedback' } },
 ];
 
 export const COMPONENT_LIST: ComponentEntry[] = [

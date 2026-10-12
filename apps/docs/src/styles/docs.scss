@@ -10,9 +10,35 @@
   --docs-bg: #f9fafb;
   --docs-bg-white: #fff;
   --docs-code-bg: #0f172a;
+  --docs-inline-code: #db2777;
+  --docs-inline-code-bg: #fdf2f8;
+  --docs-badge-border: #e0e7ff;
+  --docs-danger: #ef4444;
+  --docs-on-primary: #fff;
+  --docs-topbar-bg: rgb(255 255 255 / 88%);
   --docs-sidebar-w: 248px;
   --docs-radius: 8px;
   --docs-shadow-sm: 0 1px 2px rgb(0 0 0 / 6%);
+}
+
+// 暗色主题：与 @xui-design/styles tokens.scss 的 [data-theme='dark'] 同一属性驱动，
+// 页面底色比组件容器（#111827）深一档，卡片 / 侧栏与组件 demo 容器保持一致
+[data-theme='dark'] {
+  --docs-primary: #818cf8;
+  --docs-primary-soft: rgb(129 140 248 / 16%);
+  --docs-text: #f3f4f6;
+  --docs-text-secondary: #9ca3af;
+  --docs-text-tertiary: #6b7280;
+  --docs-border: #374151;
+  --docs-bg: #0b1220;
+  --docs-bg-white: #111827;
+  --docs-inline-code: #f472b6;
+  --docs-inline-code-bg: rgb(219 39 119 / 16%);
+  --docs-badge-border: rgb(129 140 248 / 35%);
+  --docs-danger: #f87171;
+  --docs-on-primary: #111827;
+  --docs-topbar-bg: rgb(11 18 32 / 88%);
+  --docs-shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
 }
 
 html,
@@ -79,7 +105,7 @@ code {
   border-right: 1px solid var(--docs-border);
 }
 
-.docs-main {
+.docs-body {
   flex: 1;
   min-width: 0;
 }
@@ -87,7 +113,70 @@ code {
 .docs-content {
   max-width: 920px;
   margin: 0 auto;
-  padding: 40px 48px 120px;
+  padding: 32px 48px 120px;
+}
+
+// ---------- 顶部工具栏 ----------
+
+.docs-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  height: 52px;
+  padding: 0 48px;
+  background: var(--docs-topbar-bg);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--docs-border);
+}
+
+.docs-topbar__controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.docs-topbar__lang {
+  padding: 3px 14px;
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--docs-text-secondary);
+  background: none;
+  border: 1px solid var(--docs-border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.docs-topbar__lang:hover {
+  color: var(--docs-primary);
+  border-color: var(--docs-primary);
+}
+
+.docs-topbar__theme {
+  display: flex;
+  border: 1px solid var(--docs-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.docs-topbar__theme-item {
+  padding: 3px 12px;
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--docs-text-secondary);
+  background: var(--docs-bg-white);
+  border: none;
+  cursor: pointer;
+}
+
+.docs-topbar__theme-item + .docs-topbar__theme-item {
+  border-left: 1px solid var(--docs-border);
+}
+
+.docs-topbar__theme-item.is-active {
+  color: var(--docs-on-primary);
+  background: var(--docs-primary);
 }
 
 // ---------- 侧边导航 ----------
@@ -205,7 +294,7 @@ code {
   font-size: 12px;
   color: var(--docs-primary);
   background: var(--docs-primary-soft);
-  border: 1px solid #e0e7ff;
+  border: 1px solid var(--docs-badge-border);
   border-radius: 999px;
 }
 
@@ -374,8 +463,8 @@ code {
 .inline-code {
   padding: 2px 6px;
   font-size: 12.5px;
-  color: #db2777;
-  background: #fdf2f8;
+  color: var(--docs-inline-code);
+  background: var(--docs-inline-code-bg);
   border-radius: 4px;
 }
 
@@ -429,7 +518,7 @@ code {
 }
 
 .demo-block__tab.is-active {
-  color: #fff;
+  color: var(--docs-on-primary);
   background: var(--docs-primary);
 }
 
@@ -611,12 +700,12 @@ code {
 }
 
 .api-table .api-table__required {
-  color: #ef4444;
+  color: var(--docs-danger);
   margin-left: 2px;
 }
 
 .api-table .api-table__type {
-  color: #db2777;
+  color: var(--docs-inline-code);
   white-space: nowrap;
 }
 
@@ -736,6 +825,10 @@ code {
   .side-nav__en,
   .side-nav__soon {
     display: none;
+  }
+
+  .docs-topbar {
+    padding: 0 20px;
   }
 
   .docs-content {
