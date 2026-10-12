@@ -11,6 +11,7 @@ import type { BreadcrumbProps } from '@xui/core';
 import { createBreadcrumbLogic } from '@xui/shared';
 import type { BreadcrumbLogicInstance } from '@xui/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
+import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';
 
 /** Breadcrumb 组件 Props（在契约 Props 基础上扩展 React 专属属性） */
@@ -21,6 +22,9 @@ export type BreadcrumbComponentProps = BreadcrumbProps & {
 
 export function Breadcrumb(props: BreadcrumbComponentProps) {
   const { items, separator = '/', className, style, onItemClick, children } = props;
+
+  // 导航 aria-label 取全局语言包（setLocale / registerLocale 后响应式更新）
+  const locale = useLocaleData();
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
   const callbacksRef = useRef({ onItemClick });
@@ -48,7 +52,7 @@ export function Breadcrumb(props: BreadcrumbComponentProps) {
       <nav
         className={cn('xui-breadcrumb', className)}
         style={style as CSSProperties}
-        aria-label="面包屑"
+        aria-label={locale.breadcrumb.nav}
       >
         {children}
       </nav>
@@ -60,7 +64,7 @@ export function Breadcrumb(props: BreadcrumbComponentProps) {
     <nav
       className={cn('xui-breadcrumb', className)}
       style={style as CSSProperties}
-      aria-label="面包屑"
+      aria-label={locale.breadcrumb.nav}
     >
       <ol className="xui-breadcrumb__list">
         {state.items.map((item, index) => (

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onUnmounted, ref, useId, watch, watchEffect } from 'vue';
+import { computed, nextTick, onUnmounted, ref, useId, watch, watchEffect } from 'vue';
 import {
   bindViewportUpdate,
   createPopconfirmLogic,
@@ -7,17 +7,21 @@ import {
   resolveFloatingPosition,
 } from '@xui/shared';
 import type { FloatingPlacement } from '@xui/shared';
+import { useLocaleData } from '../../hooks/use-locale';
 import type { PopconfirmProps } from '@xui/core';
 
 const props = withDefaults(defineProps<Omit<PopconfirmProps, 'onConfirm' | 'onCancel'>>(), {
   content: undefined,
-  confirmText: '确定',
-  cancelText: '取消',
   placement: 'top',
   disabled: false,
 });
 
 const emit = defineEmits<{ confirm: []; cancel: [] }>();
+
+// 未提供 confirmText / cancelText 时取全局语言包（setLocale / registerLocale 后响应式更新）
+const locale = useLocaleData();
+const confirmLabel = computed(() => props.confirmText ?? locale.value.popconfirm.confirm);
+const cancelLabel = computed(() => props.cancelText ?? locale.value.popconfirm.cancel);
 
 const popperId = useId();
 const rootRef = ref<HTMLElement | null>(null);
@@ -134,14 +138,14 @@ watchEffect(() => {
         </span>
         <div class="xui-popconfirm__actions">
           <button class="xui-button xui-button--sm" type="button" @click="logic.cancel()">
-            {{ props.cancelText }}
+            {{ cancelLabel }}
           </button>
           <button
             class="xui-button xui-button--primary xui-button--sm"
             type="button"
             @click="logic.confirm()"
           >
-            {{ props.confirmText }}
+            {{ confirmLabel }}
           </button>
         </div>
         <span class="xui-popconfirm__arrow" aria-hidden="true" />

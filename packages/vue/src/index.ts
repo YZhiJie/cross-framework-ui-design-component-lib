@@ -70,6 +70,18 @@ export type { XuiTheme } from '@xui/shared';
 export type { XuiPlugin, PluginInstallContext } from '@xui/shared';
 export type { VirtualListLogicInstance, VirtualListOptions, VirtualListState } from '@xui/shared';
 
+// 基础设施：国际化运行时 API（re-export 自 @xui/shared）
+export {
+  DEFAULT_LOCALE,
+  getLocale,
+  getLocaleData,
+  registerLocale,
+  setLocale,
+  subscribeLocale,
+} from '@xui/shared';
+export { useLocaleData } from './hooks/use-locale';
+export type { LocaleListener, XuiLocaleData, XuiLocaleInput } from '@xui/shared';
+
 export const VUE_VERSION = '0.0.0';
 
 export default {

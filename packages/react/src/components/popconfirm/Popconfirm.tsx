@@ -16,6 +16,7 @@ import {
 } from '@xui/shared';
 import type { FloatingPlacement, PopconfirmLogicInstance } from '@xui/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
+import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';
 
 /** Popconfirm 组件 Props（在契约 Props 基础上扩展 React 专属属性） */
@@ -29,8 +30,8 @@ export type PopconfirmComponentProps = PopconfirmProps & {
 export function Popconfirm(props: PopconfirmComponentProps) {
   const {
     content,
-    confirmText = '确定',
-    cancelText = '取消',
+    confirmText,
+    cancelText,
     placement = 'top',
     disabled = false,
     className,
@@ -40,6 +41,9 @@ export function Popconfirm(props: PopconfirmComponentProps) {
     children,
     renderContent,
   } = props;
+
+  // 未提供 confirmText / cancelText 时取全局语言包（setLocale / registerLocale 后响应式更新）
+  const locale = useLocaleData();
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
   const callbacksRef = useRef({ onConfirm, onCancel });
@@ -140,14 +144,14 @@ export function Popconfirm(props: PopconfirmComponentProps) {
                 type="button"
                 onClick={() => logic.cancel()}
               >
-                {cancelText}
+                {cancelText ?? locale.popconfirm.cancel}
               </button>
               <button
                 className="xui-button xui-button--primary xui-button--sm"
                 type="button"
                 onClick={() => logic.confirm()}
               >
-                {confirmText}
+                {confirmText ?? locale.popconfirm.confirm}
               </button>
             </div>
             <span className="xui-popconfirm__arrow" aria-hidden="true" />

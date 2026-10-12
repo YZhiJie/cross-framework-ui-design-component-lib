@@ -12,6 +12,7 @@ import { createPageItems, createPaginationLogic } from '@xui/shared';
 import type { PageItem, PaginationLogicInstance } from '@xui/shared';
 import { icons } from '@xui/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
+import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';
 
 /** Pagination 组件 Props（契约 Props 基础上扩展 React 专属属性） */
@@ -37,6 +38,9 @@ export function Pagination(props: PaginationComponentProps) {
     renderPrevIcon,
     renderNextIcon,
   } = props;
+
+  // 导航 aria-label 取全局语言包（setLocale / registerLocale 后响应式更新）
+  const locale = useLocaleData();
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
   const callbacksRef = useRef({ onChange });
@@ -70,13 +74,13 @@ export function Pagination(props: PaginationComponentProps) {
       className={cn('xui-pagination', className, { 'is-disabled': state.disabled })}
       style={style as CSSProperties}
       role="navigation"
-      aria-label="分页"
+      aria-label={locale.pagination.nav}
     >
       <button
         type="button"
         className="xui-pagination__nav"
         disabled={state.disabled || state.page <= 1}
-        aria-label="上一页"
+        aria-label={locale.pagination.prev}
         onClick={() => logic.prev()}
       >
         {renderPrevIcon ? (
@@ -118,7 +122,7 @@ export function Pagination(props: PaginationComponentProps) {
         type="button"
         className="xui-pagination__nav"
         disabled={state.disabled || state.page >= state.pageCount}
-        aria-label="下一页"
+        aria-label={locale.pagination.next}
         onClick={() => logic.next()}
       >
         {renderNextIcon ? (

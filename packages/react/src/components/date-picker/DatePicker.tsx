@@ -9,10 +9,11 @@
 import { useEffect, useId, useRef } from 'react';
 import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
 import type { DatePickerProps } from '@xui/core';
-import { createDatePickerLogic, DATE_WEEKDAY_LABELS, getMonthMatrix } from '@xui/shared';
+import { createDatePickerLogic, getMonthMatrix } from '@xui/shared';
 import type { DatePickerLogicInstance } from '@xui/shared';
 import { icons } from '@xui/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
+import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';
 
 /** DatePicker 组件 Props（契约 Props 基础上扩展 React 专属属性） */
@@ -43,6 +44,9 @@ export function DatePicker(props: DatePickerComponentProps) {
     renderPrevIcon,
     renderNextIcon,
   } = props;
+
+  // 占位符 / 面板 aria / 星期标题 / 月份标题取全局语言包（setLocale / registerLocale 后响应式更新）
+  const locale = useLocaleData();
 
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerId = useId();
@@ -125,7 +129,9 @@ export function DatePicker(props: DatePickerComponentProps) {
         {state.value ? (
           <span className="xui-date-picker__value">{state.value}</span>
         ) : (
-          <span className="xui-date-picker__placeholder">{placeholder ?? '请选择日期'}</span>
+          <span className="xui-date-picker__placeholder">
+            {placeholder ?? locale.datePicker.placeholder}
+          </span>
         )}
         {clearable && state.value && !state.disabled ? (
           <span
@@ -175,12 +181,17 @@ export function DatePicker(props: DatePickerComponentProps) {
         )}
       </div>
       {state.open && (
-        <div id={panelId} className="xui-date-picker__panel" role="dialog" aria-label="选择日期">
+        <div
+          id={panelId}
+          className="xui-date-picker__panel"
+          role="dialog"
+          aria-label={locale.datePicker.panel}
+        >
           <div className="xui-date-picker__header">
             <button
               type="button"
               className="xui-date-picker__nav"
-              aria-label="上个月"
+              aria-label={locale.datePicker.prevMonth}
               onClick={() => logic.prevMonth()}
             >
               {renderPrevIcon ? (
@@ -201,12 +212,12 @@ export function DatePicker(props: DatePickerComponentProps) {
               )}
             </button>
             <span className="xui-date-picker__title">
-              {state.viewYear} 年 {String(state.viewMonth).padStart(2, '0')} 月
+              {locale.datePicker.titleFormat(state.viewYear, state.viewMonth)}
             </span>
             <button
               type="button"
               className="xui-date-picker__nav"
-              aria-label="下个月"
+              aria-label={locale.datePicker.nextMonth}
               onClick={() => logic.nextMonth()}
             >
               {renderNextIcon ? (
@@ -228,7 +239,7 @@ export function DatePicker(props: DatePickerComponentProps) {
             </button>
           </div>
           <div className="xui-date-picker__weekdays" aria-hidden="true">
-            {DATE_WEEKDAY_LABELS.map((label) => (
+            {locale.datePicker.weekdays.map((label) => (
               <span key={label} className="xui-date-picker__weekday">
                 {label}
               </span>

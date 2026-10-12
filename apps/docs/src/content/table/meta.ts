@@ -152,7 +152,11 @@ export const tableMeta: ComponentMeta = {
         react: 'renderSortIcon',
         description: "自定义排序图标（作用域参数 order: 'asc' | 'desc'）",
       },
-      { vue: 'empty', react: 'renderEmpty', description: '空数据内容（覆盖默认"暂无数据"）' },
+      {
+        vue: 'empty',
+        react: 'renderEmpty',
+        description: '空数据内容（覆盖默认语言包 table.empty，zh-CN："暂无数据"）',
+      },
     ],
     types: [
       {

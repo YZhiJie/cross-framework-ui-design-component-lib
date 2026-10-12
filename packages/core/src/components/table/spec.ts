@@ -42,7 +42,7 @@ export const tableSpec = {
     rowClick: { description: '行点击时触发（选择列单元格不触发）', payloadType: 'TableRow' },
   },
   slots: {
-    empty: { description: '空数据内容', fallback: '暂无数据' },
+    empty: { description: '空数据内容（未提供时回退当前语言包 table.empty）' },
     sortIcon: { description: "自定义排序图标（作用域参数 order: 'asc' | 'desc'）" },
   },
   useLogic: (props: TableProps) =>

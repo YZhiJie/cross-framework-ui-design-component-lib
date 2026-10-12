@@ -15,6 +15,7 @@ import { trapFocus as trapFocusIn } from '@xui/shared';
 import { icons } from '@xui/icons';
 import type { ModalLogicInstance } from '@xui/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
+import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';
 
 /** Modal 组件 Props（在契约 Props 基础上扩展 React 专属属性） */
@@ -46,8 +47,8 @@ export function Modal(props: ModalComponentProps) {
     closable = true,
     maskClosable = true,
     closeOnEsc = true,
-    okText = '确认',
-    cancelText = '取消',
+    okText,
+    cancelText,
     trapFocus = true,
     className,
     style,
@@ -61,6 +62,9 @@ export function Modal(props: ModalComponentProps) {
     renderCloseIcon,
     ref,
   } = props;
+
+  // 未提供 okText / cancelText 时取全局语言包（setLocale / registerLocale 后响应式更新）
+  const locale = useLocaleData();
 
   // 回调 latest-ref：App 每次重渲染都会新建箭头函数，若回调进入 updateOptions 的
   // effect 依赖，命令式 open() 后的任意重渲染都会用受控旧值把 visible 打回 false。
@@ -197,14 +201,14 @@ export function Modal(props: ModalComponentProps) {
               className={cn('xui-button', 'xui-button--md')}
               onClick={handleCancel}
             >
-              {cancelText}
+              {cancelText ?? locale.modal.cancel}
             </button>
             <button
               type="button"
               className={cn('xui-button', 'xui-button--primary', 'xui-button--md')}
               onClick={handleOk}
             >
-              {okText}
+              {okText ?? locale.modal.ok}
             </button>
           </div>
         )}

@@ -2,6 +2,7 @@
 import { computed, onUnmounted, ref, watchEffect } from 'vue';
 import { createPageItems, createPaginationLogic } from '@xui/shared';
 import { icons } from '@xui/icons';
+import { useLocaleData } from '../../hooks/use-locale';
 import type { PaginationProps } from '@xui/core';
 
 const props = withDefaults(defineProps<Omit<PaginationProps, 'onChange'>>(), {
@@ -56,6 +57,9 @@ watchEffect(() => {
 
 const pageItems = computed(() => createPageItems(state.value.page, state.value.pageCount));
 
+// 导航 aria-label 取全局语言包（setLocale / registerLocale 后响应式更新）
+const locale = useLocaleData();
+
 const isNumber = (item: number | 'ellipsis-prev' | 'ellipsis-next'): item is number =>
   typeof item === 'number';
 </script>
@@ -66,14 +70,14 @@ const isNumber = (item: number | 'ellipsis-prev' | 'ellipsis-next'): item is num
     :class="[className, { 'is-disabled': state.disabled }]"
     :style="style"
     role="navigation"
-    aria-label="分页"
+    :aria-label="locale.pagination.nav"
   >
     <button
       type="button"
       class="xui-pagination__nav"
       :class="{ 'is-prev': true }"
       :disabled="state.disabled || state.page <= 1"
-      aria-label="上一页"
+      :aria-label="locale.pagination.prev"
       @click="logic.prev()"
     >
       <slot name="prevIcon">
@@ -109,7 +113,7 @@ const isNumber = (item: number | 'ellipsis-prev' | 'ellipsis-next'): item is num
       type="button"
       class="xui-pagination__nav"
       :disabled="state.disabled || state.page >= state.pageCount"
-      aria-label="下一页"
+      :aria-label="locale.pagination.next"
       @click="logic.next()"
     >
       <slot name="nextIcon">

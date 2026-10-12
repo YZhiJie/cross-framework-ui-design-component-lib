@@ -18,7 +18,7 @@ export const popconfirmMeta: ComponentMeta = {
   summary: '点击元素弹出轻量确认气泡，适合"删除"等需要二次确认但不必打断整页的操作。',
   features: [
     '点击触发元素切换气泡，确定 / 取消按钮在收起后分别回调 confirm / cancel',
-    'confirmText / cancelText 自定义按钮文本（默认"确定"/"取消"），placement 控制四方位',
+    'confirmText / cancelText 自定义按钮文本（未提供时取全局语言包，zh-CN 默认"确定"/"取消"），placement 控制四方位',
     'content 属性或 content 插槽 / renderContent 自定义确认文案；disabled 关闭交互',
     '点击气泡外部仅收起，不触发任何回调',
   ],
@@ -51,8 +51,18 @@ export const popconfirmMeta: ComponentMeta = {
         default: '—',
         description: '确认文案（content 插槽 / renderContent 可覆盖）',
       },
-      { name: 'confirmText', type: 'string', default: `'确定'`, description: '确认按钮文本' },
-      { name: 'cancelText', type: 'string', default: `'取消'`, description: '取消按钮文本' },
+      {
+        name: 'confirmText',
+        type: 'string',
+        default: '—',
+        description: '确认按钮文本；未提供时取全局语言包（zh-CN：确定）',
+      },
+      {
+        name: 'cancelText',
+        type: 'string',
+        default: '—',
+        description: '取消按钮文本；未提供时取全局语言包（zh-CN：取消）',
+      },
       {
         name: 'placement',
         type: `'top' | 'bottom' | 'left' | 'right'`,

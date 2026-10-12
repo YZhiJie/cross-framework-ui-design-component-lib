@@ -18,6 +18,7 @@ import {
   resolveFloatingPosition,
 } from '@xui/shared';
 import { icons } from '@xui/icons';
+import { useLocaleData } from '../../hooks/use-locale';
 import type { SelectProps, SelectValue } from '@xui/core';
 
 const props = withDefaults(defineProps<Omit<SelectProps, 'onChange' | 'onClear'>>(), {
@@ -41,6 +42,9 @@ const emit = defineEmits<{
   clear: [];
   'update:value': [value: SelectValue];
 }>();
+
+// 触发器 placeholder / 搜索框文案取全局语言包（setLocale / registerLocale 后响应式更新）
+const locale = useLocaleData();
 
 const rootRef = useTemplateRef<HTMLElement>('root');
 const dropdownRef = useTemplateRef<HTMLElement>('dropdown');
@@ -339,12 +343,14 @@ const handleSearchKeydown = (event: KeyboardEvent) => {
             </span>
           </span>
           <span v-if="selectedTags.length === 0" class="xui-select__placeholder">
-            {{ props.placeholder ?? '请选择' }}
+            {{ props.placeholder ?? locale.select.triggerPlaceholder }}
           </span>
         </span>
       </template>
       <span v-else-if="selectedOption" class="xui-select__value">{{ selectedOption.label }}</span>
-      <span v-else class="xui-select__placeholder">{{ props.placeholder ?? '请选择' }}</span>
+      <span v-else class="xui-select__placeholder">{{
+        props.placeholder ?? locale.select.triggerPlaceholder
+      }}</span>
       <span
         v-if="props.clearable && hasValue && !state.disabled"
         class="xui-select__clear"
@@ -399,9 +405,9 @@ const handleSearchKeydown = (event: KeyboardEvent) => {
           class="xui-select__search"
           type="text"
           role="searchbox"
-          placeholder="搜索..."
+          :placeholder="locale.select.searchPlaceholder"
           :value="state.searchQuery"
-          :aria-label="'搜索选项'"
+          :aria-label="locale.select.searchAriaLabel"
           @input="handleSearchInput"
           @keydown="handleSearchKeydown"
           @click.stop

@@ -13,9 +13,9 @@ export type PopconfirmPlacement = 'top' | 'bottom' | 'left' | 'right';
 export type PopconfirmProps = {
   /** 确认文案（content 插槽 / renderContent 可覆盖） */
   content?: string;
-  /** 确认按钮文本（默认 '确定'） */
+  /** 确认按钮文本（未提供时取全局语言包 popconfirm.confirm） */
   confirmText?: string;
-  /** 取消按钮文本（默认 '取消'） */
+  /** 取消按钮文本（未提供时取全局语言包 popconfirm.cancel） */
   cancelText?: string;
   /** 气泡方位 */
   placement?: PopconfirmPlacement;

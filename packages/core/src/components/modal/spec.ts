@@ -35,8 +35,6 @@ export const modalSpec = {
       closable: true,
       maskClosable: true,
       closeOnEsc: true,
-      okText: '确认',
-      cancelText: '取消',
       trapFocus: true,
     },
   },

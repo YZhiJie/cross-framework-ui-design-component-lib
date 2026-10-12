@@ -20,6 +20,7 @@ import {
 import type { TableLogicInstance } from '@xui/shared';
 import { icons } from '@xui/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
+import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';
 
 /** Table 组件 Props（契约 Props + 插槽映射的渲染回调） */
@@ -64,6 +65,9 @@ export function Table(props: TableComponentProps) {
     renderEmpty,
     renderSortIcon,
   } = props;
+
+  // 空态回退文案 / 行选择 aria 取全局语言包（setLocale / registerLocale 后响应式更新）
+  const locale = useLocaleData();
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
   const callbacksRef = useRef({ onSortChange });
@@ -176,7 +180,7 @@ export function Table(props: TableComponentProps) {
                   type="checkbox"
                   className="xui-table__check"
                   checked={state.allSelected}
-                  aria-label="全选"
+                  aria-label={locale.table.selectAll}
                   onChange={() => logic.toggleAll()}
                 />
               </th>
@@ -275,7 +279,7 @@ export function Table(props: TableComponentProps) {
                       className="xui-table__check"
                       checked={selected}
                       disabled={checkboxDisabled}
-                      aria-label={`选择第 ${i + 1} 行`}
+                      aria-label={locale.table.selectRow(index)}
                       onChange={() => logic.toggleRow(key)}
                     />
                   </td>
@@ -296,7 +300,7 @@ export function Table(props: TableComponentProps) {
           {isEmpty && (
             <tr>
               <td className="xui-table__empty" colSpan={colspan}>
-                {renderEmpty ? renderEmpty() : '暂无数据'}
+                {renderEmpty ? renderEmpty() : locale.table.empty}
               </td>
             </tr>
           )}

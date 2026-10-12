@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { nextTick, onUnmounted, ref, useTemplateRef, watch, watchEffect } from 'vue';
+import { computed, nextTick, onUnmounted, ref, useTemplateRef, watch, watchEffect } from 'vue';
 import { createModalLogic, trapFocus as trapFocusIn } from '@xui/shared';
+import { useLocaleData } from '../../hooks/use-locale';
 import { icons } from '@xui/icons';
 import type { ModalProps } from '@xui/core';
 
@@ -10,8 +11,8 @@ const {
   closable = true,
   maskClosable = true,
   closeOnEsc = true,
-  okText = '确认',
-  cancelText = '取消',
+  okText,
+  cancelText,
   trapFocus = true,
 } = defineProps<
   Omit<ModalProps, 'visible' | 'defaultVisible' | 'onOpen' | 'onClose' | 'onOk' | 'onCancel'>
@@ -27,6 +28,11 @@ const emit = defineEmits<{
 const visible = defineModel<boolean>('visible', { default: false });
 
 const panelRef = useTemplateRef<HTMLDivElement>('panel');
+
+// 未提供 okText / cancelText 时取全局语言包（setLocale / registerLocale 后响应式更新）
+const locale = useLocaleData();
+const okLabel = computed(() => okText ?? locale.value.modal.ok);
+const cancelLabel = computed(() => cancelText ?? locale.value.modal.cancel);
 
 const logic = createModalLogic({
   visible: visible.value,
@@ -170,10 +176,10 @@ defineExpose({ open, close });
         <div class="xui-modal__footer">
           <slot name="footer">
             <button class="xui-button xui-button--md" @click="handleCancel">
-              {{ cancelText }}
+              {{ cancelLabel }}
             </button>
             <button class="xui-button xui-button--primary xui-button--md" @click="handleOk">
-              {{ okText }}
+              {{ okLabel }}
             </button>
           </slot>
         </div>

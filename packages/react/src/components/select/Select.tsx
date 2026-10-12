@@ -21,6 +21,7 @@ import {
 import type { SelectLogicInstance, VirtualListLogicInstance } from '@xui/shared';
 import { icons } from '@xui/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
+import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';
 
 /** Select 组件 Props（契约 Props 基础上扩展 React 专属属性） */
@@ -53,6 +54,9 @@ export function Select(props: SelectComponentProps) {
     renderClearIcon,
     renderSuffixIcon,
   } = props;
+
+  // 触发器占位符 / 搜索框 placeholder 与 aria 取全局语言包（setLocale / registerLocale 后响应式更新）
+  const locale = useLocaleData();
 
   const rootRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
@@ -309,13 +313,17 @@ export function Select(props: SelectComponentProps) {
               </span>
             ))}
             {selectedTags.length === 0 && (
-              <span className="xui-select__placeholder">{placeholder ?? '请选择'}</span>
+              <span className="xui-select__placeholder">
+                {placeholder ?? locale.select.triggerPlaceholder}
+              </span>
             )}
           </span>
         ) : selectedOption ? (
           <span className="xui-select__value">{selectedOption.label}</span>
         ) : (
-          <span className="xui-select__placeholder">{placeholder ?? '请选择'}</span>
+          <span className="xui-select__placeholder">
+            {placeholder ?? locale.select.triggerPlaceholder}
+          </span>
         )}
         {clearable && hasValue && !state.disabled ? (
           <span
@@ -381,9 +389,9 @@ export function Select(props: SelectComponentProps) {
                 className="xui-select__search"
                 type="text"
                 role="searchbox"
-                placeholder="搜索..."
+                placeholder={locale.select.searchPlaceholder}
                 value={state.searchQuery}
-                aria-label="搜索选项"
+                aria-label={locale.select.searchAriaLabel}
                 onChange={(event) => logic.setSearch(event.currentTarget.value)}
                 onKeyDown={handleSearchKeydown}
                 onClick={(event) => event.stopPropagation()}

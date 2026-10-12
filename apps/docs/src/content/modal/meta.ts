@@ -26,7 +26,7 @@ export const modalMeta: ComponentMeta = {
     'title 标题、width 自定义宽度（数字按 px，字符串原样输出）',
     'closable 关闭按钮、maskClosable 遮罩点击关闭、closeOnEsc ESC 关闭',
     '焦点陷阱：打开期间 Tab 循环约束在弹窗内（trapFocus 可关闭）；关闭后焦点恢复到打开前元素',
-    'okText / cancelText 自定义默认底部按钮文案（默认 确认 / 取消）',
+    'okText / cancelText 自定义默认底部按钮文案（未提供时取全局语言包，zh-CN 默认 确认 / 取消）',
     'default / title / footer 三个插槽（React 对应 children / renderTitle / renderFooter）',
     '通过 ref 暴露 open() / close() 命令式方法（类型 ModalRef）',
   ],
@@ -82,14 +82,14 @@ export const modalMeta: ComponentMeta = {
       {
         name: 'okText',
         type: 'string',
-        default: "'确认'",
-        description: '确认按钮文案（默认 footer 生效）',
+        default: '—',
+        description: '确认按钮文案；未提供时取全局语言包（zh-CN：确认 / en-US：OK）',
       },
       {
         name: 'cancelText',
         type: 'string',
-        default: "'取消'",
-        description: '取消按钮文案（默认 footer 生效）',
+        default: '—',
+        description: '取消按钮文案；未提供时取全局语言包（zh-CN：取消 / en-US：Cancel）',
       },
       {
         name: 'trapFocus',

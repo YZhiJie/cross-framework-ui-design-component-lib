@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, useId, useTemplateRef, watchEffect } from 'vue';
-import { createDatePickerLogic, DATE_WEEKDAY_LABELS, getMonthMatrix } from '@xui/shared';
+import { createDatePickerLogic, getMonthMatrix } from '@xui/shared';
 import { icons } from '@xui/icons';
+import { useLocaleData } from '../../hooks/use-locale';
 import type { DatePickerProps } from '@xui/core';
 
 const props = withDefaults(defineProps<Omit<DatePickerProps, 'onChange' | 'onClear'>>(), {
@@ -70,8 +71,11 @@ watchEffect(() => {
 
 const monthCells = computed(() => getMonthMatrix(state.value.viewYear, state.value.viewMonth));
 
-const title = computed(
-  () => `${state.value.viewYear} 年 ${String(state.value.viewMonth).padStart(2, '0')} 月`,
+// 面板文案 / 星期表头取全局语言包（setLocale / registerLocale 后响应式更新）
+const locale = useLocaleData();
+
+const title = computed(() =>
+  locale.value.datePicker.titleFormat(state.value.viewYear, state.value.viewMonth),
 );
 
 const handleTriggerKeydown = (event: KeyboardEvent) => {
@@ -112,7 +116,7 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
     >
       <span v-if="state.value" class="xui-date-picker__value">{{ state.value }}</span>
       <span v-else class="xui-date-picker__placeholder">{{
-        props.placeholder ?? '请选择日期'
+        props.placeholder ?? locale.datePicker.placeholder
       }}</span>
       <span
         v-if="props.clearable && state.value && !state.disabled"
@@ -157,13 +161,13 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
       :id="panelId"
       class="xui-date-picker__panel"
       role="dialog"
-      aria-label="选择日期"
+      :aria-label="locale.datePicker.panel"
     >
       <div class="xui-date-picker__header">
         <button
           type="button"
           class="xui-date-picker__nav"
-          aria-label="上个月"
+          :aria-label="locale.datePicker.prevMonth"
           @click="logic.prevMonth()"
         >
           <slot name="prevIcon">
@@ -185,7 +189,7 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
         <button
           type="button"
           class="xui-date-picker__nav"
-          aria-label="下个月"
+          :aria-label="locale.datePicker.nextMonth"
           @click="logic.nextMonth()"
         >
           <slot name="nextIcon">
@@ -205,7 +209,11 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
         </button>
       </div>
       <div class="xui-date-picker__weekdays" aria-hidden="true">
-        <span v-for="label in DATE_WEEKDAY_LABELS" :key="label" class="xui-date-picker__weekday">
+        <span
+          v-for="label in locale.datePicker.weekdays"
+          :key="label"
+          class="xui-date-picker__weekday"
+        >
           {{ label }}
         </span>
       </div>

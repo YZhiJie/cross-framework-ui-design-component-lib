@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watchEffect } from 'vue';
 import { createSkeletonLogic } from '@xui/shared';
+import { useLocaleData } from '../../hooks/use-locale';
 import type { SkeletonProps } from '@xui/core';
 
 const props = withDefaults(defineProps<SkeletonProps>(), {
@@ -14,6 +15,9 @@ const logic = createSkeletonLogic({
   avatar: props.avatar,
   rows: props.rows,
 });
+
+// 骨架屏 aria-label 取全局语言包（setLocale / registerLocale 后响应式更新）
+const locale = useLocaleData();
 
 const state = ref(logic.getState());
 const unsubscribe = logic.subscribe((next) => {
@@ -43,7 +47,7 @@ watchEffect(() => {
     :class="className"
     :style="style"
     role="status"
-    aria-label="加载中"
+    :aria-label="locale.skeleton.loading"
   >
     <span v-if="state.avatar" class="xui-skeleton__avatar" aria-hidden="true" />
     <div class="xui-skeleton__rows" aria-hidden="true">

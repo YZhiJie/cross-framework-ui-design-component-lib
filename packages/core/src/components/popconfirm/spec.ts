@@ -26,8 +26,6 @@ export const popconfirmSpec = {
       onCancel: Function,
     },
     defaults: {
-      confirmText: '确定',
-      cancelText: '取消',
       placement: 'top',
       disabled: false,
     },

@@ -7,6 +7,7 @@ import {
   getRowKeyOf,
 } from '@xui/shared';
 import { icons } from '@xui/icons';
+import { useLocaleData } from '../../hooks/use-locale';
 import type { TableColumn, TableProps, TableRow, TableSortOrder } from '@xui/core';
 
 const props = withDefaults(defineProps<Omit<TableProps, 'onSortChange' | 'onRowClick'>>(), {
@@ -27,6 +28,9 @@ const emit = defineEmits<{
   sortChange: [sort: { key: string; order: TableSortOrder }];
   rowClick: [record: TableRow, index: number];
 }>();
+
+// 空态回退文案 / 行选择 aria 取全局语言包（setLocale / registerLocale 后响应式更新）
+const locale = useLocaleData();
 
 // 父组件是否监听 rowClick（决定行 hover 指针样式）
 const attrs = useAttrs();
@@ -227,7 +231,7 @@ const arrowDown = icons['arrow-down'];
               class="xui-table__check"
               :checked="state.allSelected"
               :indeterminate="state.indeterminate"
-              aria-label="全选"
+              :aria-label="locale.table.selectAll"
               @change="handleToggleAll($event)"
             />
           </th>
@@ -303,7 +307,7 @@ const arrowDown = icons['arrow-down'];
               class="xui-table__check"
               :checked="isSelectedRow(record, props.virtual ? vlState.startIndex + i : i)"
               :disabled="isCheckboxDisabled(record, props.virtual ? vlState.startIndex + i : i)"
-              :aria-label="`选择第 ${i + 1} 行`"
+              :aria-label="locale.table.selectRow(props.virtual ? vlState.startIndex + i : i)"
               @change="handleToggleRow(record, props.virtual ? vlState.startIndex + i : i, $event)"
             />
           </td>
@@ -325,7 +329,7 @@ const arrowDown = icons['arrow-down'];
         </tr>
         <tr v-if="state.sortedData.length === 0">
           <td class="xui-table__empty" :colspan="colspan">
-            <slot name="empty">暂无数据</slot>
+            <slot name="empty">{{ locale.table.empty }}</slot>
           </td>
         </tr>
       </tbody>

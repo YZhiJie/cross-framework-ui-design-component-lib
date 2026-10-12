@@ -11,6 +11,7 @@ import type { SkeletonProps } from '@xui/core';
 import { createSkeletonLogic } from '@xui/shared';
 import type { SkeletonLogicInstance } from '@xui/shared';
 import { useLogicState } from '../../hooks/use-logic-state';
+import { useLocaleData } from '../../hooks/use-locale';
 import { cn } from '../../utils/cn';
 
 /** Skeleton 组件 Props（在契约 Props 基础上扩展 React 专属属性） */
@@ -21,6 +22,9 @@ export type SkeletonComponentProps = SkeletonProps & {
 
 export function Skeleton(props: SkeletonComponentProps) {
   const { loading = true, avatar = false, rows = 3, className, style, children } = props;
+
+  // 状态 aria-label 取全局语言包（setLocale / registerLocale 后响应式更新）
+  const locale = useLocaleData();
 
   const logicRef = useRef<SkeletonLogicInstance | null>(null);
   if (logicRef.current === null) {
@@ -45,7 +49,7 @@ export function Skeleton(props: SkeletonComponentProps) {
       className={cn('xui-skeleton', className)}
       style={style as CSSProperties}
       role="status"
-      aria-label="加载中"
+      aria-label={locale.skeleton.loading}
     >
       {state.avatar && <span className="xui-skeleton__avatar" aria-hidden="true" />}
       <div className="xui-skeleton__rows" aria-hidden="true">

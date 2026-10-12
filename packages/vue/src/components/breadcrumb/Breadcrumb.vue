@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watchEffect } from 'vue';
 import { createBreadcrumbLogic } from '@xui/shared';
+import { useLocaleData } from '../../hooks/use-locale';
 import type { BreadcrumbItem, BreadcrumbProps } from '@xui/core';
 
 const props = withDefaults(defineProps<Omit<BreadcrumbProps, 'onItemClick'>>(), {
@@ -9,6 +10,9 @@ const props = withDefaults(defineProps<Omit<BreadcrumbProps, 'onItemClick'>>(), 
 });
 
 const emit = defineEmits<{ itemClick: [item: BreadcrumbItem, index: number] }>();
+
+// 导航 aria-label 取全局语言包（setLocale / registerLocale 后响应式更新）
+const locale = useLocaleData();
 
 const logic = createBreadcrumbLogic({
   items: props.items,
@@ -40,11 +44,17 @@ watchEffect(() => {
     class="xui-breadcrumb"
     :class="className"
     :style="style"
-    aria-label="面包屑"
+    :aria-label="locale.breadcrumb.nav"
   >
     <slot />
   </nav>
-  <nav v-else class="xui-breadcrumb" :class="className" :style="style" aria-label="面包屑">
+  <nav
+    v-else
+    class="xui-breadcrumb"
+    :class="className"
+    :style="style"
+    :aria-label="locale.breadcrumb.nav"
+  >
     <ol class="xui-breadcrumb__list">
       <li
         v-for="(item, index) in state.items"
