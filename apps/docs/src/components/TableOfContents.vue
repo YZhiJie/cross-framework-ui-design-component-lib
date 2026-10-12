@@ -3,10 +3,12 @@
  * 章节锚点目录（Table of Contents）
  *
  * 自动扫描当前页面内的 h2.docs-section-title 元素，生成固定在内容区右侧的锚点目录：
- * - 点击锚点平滑滚动到对应章节
- * - IntersectionObserver 监听当前可见章节并高亮
+ * - 点击锚点：立即激活 + 平滑滚动到对应章节
+ * - 滚动/resize 时用 getBoundingClientRect 判断激活线之上的最后一个章节
  * - 路由切换后重新扫描（nextTick）
  * - 视口宽度不足时自动隐藏（不遮挡内容）
+ *
+ * 不使用 IntersectionObserver：其 rootMargin 空窗期会导致章节间过渡时激活态丢失。
  */
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
@@ -20,7 +22,14 @@ const route = useRoute();
 const items = ref<TocItem[]>([]);
 const activeId = ref<string>('');
 
-let observer: IntersectionObserver | null = null;
+/** 激活线：标题顶部越过此线（距视口顶 px）即视为已进入当前章节 */
+const TRIGGER_OFFSET = 100;
+/** 贴底容差：smooth 滚动残差 / 弹性滚动余量，避免末项漏激活 */
+const BOTTOM_TOLERANCE = 32;
+let ticking = false;
+/** 点击触发的 smooth 滚动锁：期间不覆盖 activeId（避免中途状态抢回激活） */
+let scrollLock = false;
+let scrollTimer: ReturnType<typeof setTimeout> | null = null;
 
 /** 扫描页面内的 h2.docs-section-title，提取文本并补充 id */
 const scan = () => {
@@ -33,44 +42,76 @@ const scan = () => {
     }
     return { id: heading.id, text: heading.textContent?.trim() ?? '' };
   });
+  updateActive();
+};
 
-  // 重建观察器
-  if (observer) {
-    observer.disconnect();
-  }
-  if (headings.length === 0) {
+/** 依据各标题相对视口位置确定当前激活章节 */
+const updateActive = () => {
+  if (items.value.length === 0) {
     activeId.value = '';
     return;
   }
-
-  observer = new IntersectionObserver(
-    (entries) => {
-      // 取第一个 intersecting 的条目作为当前章节
-      const visible = entries.find((entry) => entry.isIntersecting);
-      if (visible) {
-        activeId.value = (visible.target as HTMLElement).id;
-      }
-    },
-    { rootMargin: '-80px 0px -70% 0px', threshold: 0 },
-  );
-
-  headings.forEach((heading) => observer!.observe(heading));
+  // 已贴近页面底部 → 强制激活最后一项
+  // （末尾章节内容较短时，其标题顶部够不到激活线，否则永远停留在上一项）
+  const reachedBottom =
+    window.scrollY + window.innerHeight + BOTTOM_TOLERANCE >= document.documentElement.scrollHeight;
+  if (reachedBottom) {
+    activeId.value = items.value[items.value.length - 1].id;
+    return;
+  }
+  let current = '';
+  for (const item of items.value) {
+    const el = document.getElementById(item.id);
+    if (!el) continue;
+    // 标题顶部越过激活线 → 取最后一个满足条件的（滚动到章中部仍属该章）
+    if (el.getBoundingClientRect().top <= TRIGGER_OFFSET) {
+      current = item.id;
+    } else {
+      break; // 后续标题都在激活线下方，提前结束
+    }
+  }
+  // 页面顶部：所有标题都在激活线下方时激活首项
+  if (!current) current = items.value[0].id;
+  activeId.value = current;
 };
 
-/** 点击锚点：平滑滚动到对应章节 */
+const onScroll = () => {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    ticking = false;
+    // 点击触发的 smooth 滚动期间锁定，不被中途状态覆盖
+    if (scrollLock) return;
+    updateActive();
+  });
+};
+
+/** 点击锚点：立即激活 + 平滑滚动（smooth 期间锁定，结束后校准一次） */
 const scrollTo = (id: string) => {
   const target = document.getElementById(id);
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+  if (!target) return;
+  activeId.value = id;
+  scrollLock = true;
+  if (scrollTimer) clearTimeout(scrollTimer);
+  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // smooth 滚动结束后解锁并校准（应对末项贴底：scroll 事件最后一帧可能未贴底）
+  scrollTimer = setTimeout(() => {
+    scrollLock = false;
+    scrollTimer = null;
+    updateActive();
+  }, 700);
 };
 
 onMounted(() => {
   nextTick(scan);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
 });
 
 onUnmounted(() => {
-  observer?.disconnect();
+  window.removeEventListener('scroll', onScroll);
+  window.removeEventListener('resize', onScroll);
+  if (scrollTimer) clearTimeout(scrollTimer);
 });
 
 // 路由切换后重新扫描（等待页面渲染完成）
