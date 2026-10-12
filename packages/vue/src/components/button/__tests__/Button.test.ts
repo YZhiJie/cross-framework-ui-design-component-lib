@@ -14,6 +14,11 @@ describe('Button 组件（Vue 适配层）', () => {
     expect(wrapper.attributes('disabled')).toBeUndefined();
   });
 
+  it('原生 type 固定为 button，避免表单内点击意外触发提交', () => {
+    const wrapper = mount(Button, { slots: { default: '重置' } });
+    expect(wrapper.attributes('type')).toBe('button');
+  });
+
   it('type 传值生效', () => {
     const wrapper = mount(Button, { props: { type: 'primary' } });
     expect(wrapper.classes()).toContain('xui-button--primary');

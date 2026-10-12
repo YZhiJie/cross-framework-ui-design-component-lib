@@ -59,6 +59,7 @@ defineExpose({ focus, setLoading });
 <template>
   <button
     ref="btn"
+    type="button"
     :class="[
       className,
       'xui-button',
