@@ -2,9 +2,12 @@
 /**
  * 章节锚点目录（Table of Contents）
  *
- * 自动扫描当前页面内的 h2.docs-section-title 元素，生成固定在内容区右侧的锚点目录：
+ * 自动扫描当前页面内的标题元素生成固定在内容区右侧的锚点目录：
+ * - 一级：h2.docs-section-title 章节标题
+ * - 二级：章节内的 h3 子标题（docs-subsection-title / demo-block__title），
+ *   缩进渲染、同样支持点击滚动与滚动激活
  * - 点击锚点：立即激活 + 平滑滚动到对应章节
- * - 滚动/resize 时用 getBoundingClientRect 判断激活线之上的最后一个章节
+ * - 滚动/resize 时用 getBoundingClientRect 判断激活线之上的最后一个标题
  * - 路由切换后重新扫描（nextTick）
  * - 视口宽度不足时自动隐藏（不遮挡内容）
  *
@@ -18,6 +21,8 @@ import { docsLocale } from '../i18n';
 interface TocItem {
   id: string;
   text: string;
+  /** 2 = 章节标题（h2），3 = 章节内子标题（h3） */
+  level: 2 | 3;
 }
 
 const route = useRoute();
@@ -34,17 +39,30 @@ let ticking = false;
 let scrollLock = false;
 let scrollTimer: ReturnType<typeof setTimeout> | null = null;
 
-/** 扫描页面内的 h2.docs-section-title，提取文本并补充 id */
+/** 扫描页面内的 h2 章节与其下属 h3 子标题，按 DOM 顺序提取文本并补充 id */
 const scan = () => {
   const headings = Array.from(
-    document.querySelectorAll<HTMLHeadingElement>('h2.docs-section-title'),
+    document.querySelectorAll<HTMLHeadingElement>(
+      'h2.docs-section-title, h3.docs-subsection-title, h3.demo-block__title',
+    ),
   );
-  items.value = headings.map((heading, index) => {
+  const list: TocItem[] = [];
+  let counter = 0;
+  let currentH2Id = '';
+  for (const heading of headings) {
     if (!heading.id) {
-      heading.id = `toc-section-${index}`;
+      heading.id = `toc-heading-${counter++}`;
     }
-    return { id: heading.id, text: heading.textContent?.trim() ?? '' };
-  });
+    const text = heading.textContent?.trim() ?? '';
+    if (heading.tagName === 'H2') {
+      currentH2Id = heading.id;
+      list.push({ id: heading.id, text, level: 2 });
+    } else if (currentH2Id) {
+      // 仅收录归属于某个 h2 章节之下的 h3（避免首页等无章节页面的游离标题）
+      list.push({ id: heading.id, text, level: 3 });
+    }
+  }
+  items.value = list;
   updateActive();
 };
 
@@ -138,7 +156,7 @@ watch(
         v-for="item in items"
         :key="item.id"
         class="docs-toc__item"
-        :class="{ 'is-active': activeId === item.id }"
+        :class="{ 'is-active': activeId === item.id, 'is-sub': item.level === 3 }"
       >
         <a :href="`#${item.id}`" @click.prevent="scrollTo(item.id)">{{ item.text }}</a>
       </li>
@@ -194,6 +212,22 @@ watch(
 .docs-toc__item.is-active a {
   color: var(--docs-primary);
   border-left-color: var(--docs-primary);
+  font-weight: 500;
+}
+
+/* 二级条目：缩进 + 弱化字号，形成层级感 */
+.docs-toc__item.is-sub a {
+  padding-left: 26px;
+  font-size: 12px;
+  color: var(--docs-text-tertiary);
+}
+
+.docs-toc__item.is-sub a:hover {
+  color: var(--docs-primary);
+}
+
+.docs-toc__item.is-sub.is-active a {
+  color: var(--docs-primary);
   font-weight: 500;
 }
 

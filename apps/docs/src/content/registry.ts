@@ -32,6 +32,7 @@ import { alertMeta } from './alert/meta';
 import { tooltipMeta } from './tooltip/meta';
 import { spinMeta } from './spin/meta';
 import { popconfirmMeta } from './popconfirm/meta';
+import { formMeta } from './form/meta';
 
 export const CATEGORIES: { key: CategoryKey; title: LText }[] = [
   { key: 'basic', title: { 'zh-CN': '基础组件', 'en-US': 'Basic' } },
@@ -65,6 +66,7 @@ export const COMPONENT_LIST: ComponentEntry[] = [
     category: 'form',
     available: true,
   },
+  { name: 'Form', slug: 'form', title: '表单', category: 'form', available: true },
   // 数据展示
   { name: 'Tag', slug: 'tag', title: '标签', category: 'display', available: true },
   { name: 'Progress', slug: 'progress', title: '进度条', category: 'display', available: true },
@@ -129,6 +131,7 @@ export const componentMetas: ComponentMeta[] = [
   tooltipMeta,
   spinMeta,
   popconfirmMeta,
+  formMeta,
 ];
 
 export const componentMetaMap: Map<string, ComponentMeta> = new Map(

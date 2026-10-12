@@ -65,6 +65,15 @@ export type { InputComponentProps, InputRef } from './components/input';
 export { Modal } from './components/modal';
 export type { ModalComponentProps, ModalRef } from './components/modal';
 
+export { Form, FormItem, useFormContext } from './components/form';
+export type {
+  FormComponentProps,
+  FormContextValue,
+  FormItemComponentProps,
+  FormRef,
+  FormItemRef,
+} from './components/form';
+
 export { useLogicState } from './hooks/use-logic-state';
 export { cn } from './utils/cn';
 
@@ -81,7 +90,11 @@ export { applyPlugins } from '@xui-design/shared';
 export { createVirtualListLogic } from '@xui-design/shared';
 export type { XuiTheme } from '@xui-design/shared';
 export type { XuiPlugin, PluginInstallContext } from '@xui-design/shared';
-export type { VirtualListLogicInstance, VirtualListOptions, VirtualListState } from '@xui-design/shared';
+export type {
+  VirtualListLogicInstance,
+  VirtualListOptions,
+  VirtualListState,
+} from '@xui-design/shared';
 
 // 基础设施：国际化运行时 API（re-export 自 @xui-design/shared）
 export {

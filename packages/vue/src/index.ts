@@ -33,6 +33,7 @@ import { Skeleton } from './components/skeleton';
 import { InputNumber } from './components/input-number';
 import { Popconfirm } from './components/popconfirm';
 import { Modal } from './components/modal';
+import { Form, FormItem } from './components/form';
 
 export { Switch, Checkbox, Tag, Alert };
 export { RadioGroup };
@@ -54,6 +55,7 @@ export { Skeleton };
 export { InputNumber };
 export { Popconfirm };
 export { Button, Input, Modal };
+export { Form, FormItem };
 
 // 基础设施：主题运行时 API / 插件系统 / 虚拟滚动原语（re-export 自 @xui-design/shared）
 export {
@@ -68,7 +70,11 @@ export { applyPlugins } from '@xui-design/shared';
 export { createVirtualListLogic } from '@xui-design/shared';
 export type { XuiTheme } from '@xui-design/shared';
 export type { XuiPlugin, PluginInstallContext } from '@xui-design/shared';
-export type { VirtualListLogicInstance, VirtualListOptions, VirtualListState } from '@xui-design/shared';
+export type {
+  VirtualListLogicInstance,
+  VirtualListOptions,
+  VirtualListState,
+} from '@xui-design/shared';
 
 // 基础设施：国际化运行时 API（re-export 自 @xui-design/shared）
 export {
@@ -110,5 +116,7 @@ export default {
     app.component(InputNumber.name ?? 'InputNumber', InputNumber);
     app.component(Popconfirm.name ?? 'Popconfirm', Popconfirm);
     app.component(Modal.name ?? 'Modal', Modal);
+    app.component(Form.name ?? 'Form', Form);
+    app.component(FormItem.name ?? 'FormItem', FormItem);
   },
 };
