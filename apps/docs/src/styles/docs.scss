@@ -179,6 +179,17 @@ code {
   background: var(--docs-primary);
 }
 
+.docs-topbar__github {
+  display: flex;
+  align-items: center;
+  color: var(--docs-text-secondary);
+  transition: color 0.15s;
+}
+
+.docs-topbar__github:hover {
+  color: var(--docs-primary);
+}
+
 // ---------- 侧边导航 ----------
 
 .side-nav {
