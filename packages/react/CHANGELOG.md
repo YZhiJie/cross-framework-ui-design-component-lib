@@ -1,5 +1,13 @@
 # @xui-design/react
 
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependencies [[`8bf2605`](https://github.com/YZhiJie/cross-framework-ui-design-component-lib/commit/8bf260593de4c4cb8f847ae3a00002e93cb374fb)]:
+  - @xui-design/styles@0.4.1
+  - @xui-design/icons@0.4.1
+
 ## 0.4.0
 
 ### Minor Changes
