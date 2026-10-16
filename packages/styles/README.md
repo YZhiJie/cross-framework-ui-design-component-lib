@@ -20,10 +20,11 @@
 ```
 packages/styles/
 ├── package.json
-├── vite.config.ts          # 单入口构建：src/index.scss → dist/index.css
+├── vite.config.ts          # 构建：src/index.ts → dist/index.mjs/cjs + dist/index.css（插件回写 CSS 引用）
 ├── tsconfig.json
 └── src/
-    ├── index.scss          # 入口：@use reset + tokens + components
+    ├── index.ts            # JS 入口：副作用引入 index.scss
+    ├── index.scss          # 样式入口：@use reset + tokens + components
     ├── reset.scss          # 基础重置（box-sizing / margin / padding 清零）
     ├── tokens.scss         # 主题 tokens：:root（浅色默认）+ [data-theme='dark']（暗色覆盖）
     └── components.scss     # 全部组件 BEM 样式（25 个组件块）
@@ -43,8 +44,8 @@ packages/styles/
 
 | 子路径 | 解析目标 | 说明 |
 | --- | --- | --- |
-| `.` | `dist/index.mjs` / `dist/index.cjs` | JS 入口(CSS 入口打包后的占位) |
-| `./index.css` | `dist/index.css` | **推荐消费方式**:一份 CSS 即获得 reset + tokens + 全部组件样式 |
+| `.` | `dist/index.mjs` / `dist/index.cjs` | **推荐消费方式**:JS 产物内注入了对 `index.css` 的引用,`import '@xui-design/styles'` 即生效全部样式 |
+| `./index.css` | `dist/index.css` | 仅需要 CSS 文件时的直接引用方式 |
 | `./reset.css` | `dist/reset.css` | 子路径(已声明,保留按需引入能力) |
 | `./theme/*` | `dist/theme/*` | 主题子路径(已声明,保留按需引入能力) |
 | `./components/*` | `dist/components/*` | 组件样式子路径(已声明,保留按需引入能力) |
@@ -143,8 +144,10 @@ packages/styles/
 
 ```ts
 // 应用入口(任意框架通用)
-import '@xui-design/styles/index.css';
+import '@xui-design/styles';
 ```
+
+JS 产物(`dist/index.mjs` / `dist/index.cjs`)内已注入对 `dist/index.css` 的引用,裸导入即生效全部样式;也兼容显式引用 `import '@xui-design/styles/index.css'`。
 
 一行即获得 reset + 浅色/暗色 tokens + 全部组件样式。
 

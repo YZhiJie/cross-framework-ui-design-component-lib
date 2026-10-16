@@ -1,0 +1,58 @@
+name: Deploy Docs
+
+# 文档内容或组件源码变更后，自动构建文档站并推送至独立部署仓库 YZhiJie/xui-design-docs
+# 前置条件：本仓库需配置 secret DOCS_DEPLOY_TOKEN（对 xui-design-docs 仓库有 contents:write 权限的 PAT）
+on:
+  push:
+    branches: [main]
+    paths:
+      - apps/docs/**
+      - packages/**/src/**
+      - .github/workflows/docs-deploy.yml
+  workflow_dispatch:
+
+concurrency:
+  group: docs-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        # 版本由 package.json 的 packageManager 字段决定，避免双重指定导致 ERR_PNPM_BAD_PM_VERSION
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # docs 的 vite alias 将 core/vue/react/styles 直链兄弟包 src，
+      # 但 shared / icons 经 node_modules 解析到 dist，需先构建全部 workspace 依赖
+      - name: Build workspace dependencies
+        run: pnpm --filter "@xui-design/docs^..." build
+
+      # 不经 turbo 直接跑 vite build，保证 DOCS_BASE 环境变量透传（turbo 只传递已声明的 env）
+      - name: Build docs with Pages base
+        run: pnpm --filter @xui-design/docs build
+        env:
+          # base 前缀必须与部署仓库名一致，否则线上资源 404
+          DOCS_BASE: /xui-design-docs/
+
+      - name: Verify base prefix in output
+        run: grep -q '/xui-design-docs/' apps/docs/dist/index.html
+
+      # peaceiris/actions-gh-pages 默认自动写入 .nojekyll，禁用 Jekyll 处理
+      - name: Deploy to xui-design-docs
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.DOCS_DEPLOY_TOKEN }}
+          external_repository: YZhiJie/xui-design-docs
+          publish_branch: main
+          publish_dir: apps/docs/dist
+          commit_message: "deploy: docs ${{ github.sha }}"
