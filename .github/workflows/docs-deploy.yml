@@ -55,4 +55,7 @@ jobs:
           external_repository: YZhiJie/xui-design-docs
           publish_branch: main
           publish_dir: apps/docs/dist
+          # ⚠️ 必须保留部署仓库已有文件：其 .github/workflows/deploy.yml 是 Pages 上线流水线，
+          # 缺省清空式推送会将其删除，导致后续推送不再触发部署（本次事故根因）
+          keep_files: true
           commit_message: "deploy: docs ${{ github.sha }}"
