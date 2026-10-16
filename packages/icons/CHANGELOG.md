@@ -1,5 +1,12 @@
 # @xui-design/icons
 
+## 0.3.0
+
+### Patch Changes
+
+- Updated dependencies [[`a8852b3`](https://github.com/YZhiJie/cross-framework-ui-design-component-lib/commit/a8852b36ae59d7d0577f8146d8455527a19679a1)]:
+  - @xui-design/styles@0.3.0
+
 ## 0.2.1
 
 ### Patch Changes

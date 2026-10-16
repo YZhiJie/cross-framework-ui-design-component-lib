@@ -1,6 +1,6 @@
 {
   "name": "@xui-design/react",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "跨框架组件库 - React 19 适配层",
   "type": "module",
   "main": "./dist/index.cjs",
