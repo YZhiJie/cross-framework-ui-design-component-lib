@@ -55,7 +55,9 @@ jobs:
           external_repository: YZhiJie/xui-design-docs
           publish_branch: main
           publish_dir: apps/docs/dist
-          # ⚠️ 必须保留部署仓库已有文件：其 .github/workflows/deploy.yml 是 Pages 上线流水线，
-          # 缺省清空式推送会将其删除，导致后续推送不再触发部署（本次事故根因）
+          # ⚠️ 两条缺一不可（事故记录）：exclude_assets 默认值为 '.github'，
+          # 即使 keep_files: true 也会在拷贝前主动删除目标仓库的 .github 目录，
+          # 而其中的 workflows/deploy.yml 正是 Pages 上线流水线本身——删了就不再自动部署
           keep_files: true
+          exclude_assets: ""
           commit_message: "deploy: docs ${{ github.sha }}"

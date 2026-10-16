@@ -171,7 +171,7 @@ commit_message: "deploy: docs ${{ github.sha }}"
 
 ### 文档站部署避坑
 
-- **⚠️ `keep_files: true` 必须保留**（事故记录）：peaceiris/actions-gh-pages 默认清空式推送会删除部署仓库中不在 `publish_dir` 内的文件——曾把 `xui-design-docs/.github/workflows/deploy.yml`（Pages 上线流水线本身）一并删除，导致「文件已同步但 Pages 不再部署」。恢复方式：从 git 历史找回该文件重新推送（`gh api .../contents/...?ref=<旧sha>`）
+- **⚠️ `keep_files: true` 与 `exclude_assets: ''` 缺一不可**（事故记录）：peaceiris/actions-gh-pages 的 `exclude_assets` 默认值为 `.github`，即使开了 `keep_files` 也会在拷贝产物前**主动删除目标仓库的 `.github` 目录**——曾两次把 `xui-design-docs/.github/workflows/deploy.yml`（Pages 上线流水线本身）删掉，导致「文件已同步但 Pages 不再部署」。恢复方式：从 git 历史找回该文件重新推送（`gh api ".../contents/.github/workflows/deploy.yml?ref=<旧sha>"`）
 - **`DOCS_BASE` 必须与部署仓库名一致**（`/xui-design-docs/`），否则线上资源 404；构建后可用 `grep -o 'href="[^"]*"' apps/docs/dist/index.html` 本地验证（workflow 中已内置该断言）
 - 本地 dev / preview 不受影响：`vite.config.ts` 中 `base: process.env.DOCS_BASE ?? '/'`，不传时为 `/`
 - 并发控制 `concurrency.group: docs-deploy` 且 `cancel-in-progress: false`，避免两个部署任务交错推送同一分支
