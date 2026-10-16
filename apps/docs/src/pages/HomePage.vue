@@ -23,7 +23,7 @@ const availableCount = componentMetas.length;
 
 const installCode = computed(() => {
   const entry = framework.value === 'vue' ? 'main.ts' : 'main.tsx';
-  return `pnpm add @xui-design/${framework.value}
+  return `pnpm add @xui-design/${framework.value} @xui-design/styles
 
 ${ui.value.home.installCoreComment}
 pnpm add @xui-design/core
