@@ -11,9 +11,6 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
-    "./theme/*": "./dist/theme/*",
-    "./components/*": "./dist/components/*",
-    "./reset.css": "./dist/reset.css",
     "./index.css": "./dist/index.css"
   },
   "sideEffects": [

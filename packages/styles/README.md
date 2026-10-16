@@ -46,11 +46,8 @@ packages/styles/
 | --- | --- | --- |
 | `.` | `dist/index.mjs` / `dist/index.cjs` | **推荐消费方式**:JS 产物内注入了对 `index.css` 的引用,`import '@xui-design/styles'` 即生效全部样式 |
 | `./index.css` | `dist/index.css` | 仅需要 CSS 文件时的直接引用方式 |
-| `./reset.css` | `dist/reset.css` | 子路径(已声明,保留按需引入能力) |
-| `./theme/*` | `dist/theme/*` | 主题子路径(已声明,保留按需引入能力) |
-| `./components/*` | `dist/components/*` | 组件样式子路径(已声明,保留按需引入能力) |
 
-> 说明:`vite.config.ts` 当前以 `src/index.scss` 为**单一入口**,所有样式(含 reset / tokens / components)统一打包输出为 `dist/index.css`(`assetFileNames` 将任意 `.css` 资产归一为 `index.css`)。上述 `./reset.css`、`./theme/*`、`./components/*` 为 exports 中保留的子路径,用于未来按需引入。
+> 说明:所有样式(reset / tokens / components)统一打包输出为单文件 `dist/index.css`,不提供按 reset / theme / components 拆分的子路径导出。
 
 `sideEffects` 标记 `**/*.css` 与 `**/*.scss` 为有副作用,避免打包器误删样式。
 

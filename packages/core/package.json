@@ -11,21 +11,6 @@
       "types": "./dist/types/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
-    },
-    "./components/*": {
-      "types": "./dist/types/components/*/index.d.ts",
-      "import": "./dist/components/*/index.mjs",
-      "require": "./dist/components/*/index.cjs"
-    },
-    "./spec": {
-      "types": "./dist/types/spec.d.ts",
-      "import": "./dist/spec.mjs",
-      "require": "./dist/spec.cjs"
-    },
-    "./types": {
-      "types": "./dist/types/types.d.ts",
-      "import": "./dist/types.mjs",
-      "require": "./dist/types.cjs"
     }
   },
   "sideEffects": false,

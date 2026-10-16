@@ -5,7 +5,7 @@
 - 包名：`@xui-design/shared`
 - 版本：`0.1.0`
 - 入口：`dist/index.mjs`（ESM）/ `dist/index.cjs`（CJS）/ `dist/types/index.d.ts`（类型）
-- 子路径导出：`./components/*`、`./hooks`、`./utils`
+- 子路径导出：无（统一经根导出 `.` 引用）
 - `sideEffects: false`，可安全被 tree-shaking。
 
 ## 职责边界

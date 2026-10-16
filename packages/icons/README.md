@@ -37,10 +37,7 @@ packages/icons/
 
 | 子路径 | 解析目标 | 说明 |
 | --- | --- | --- |
-| `.` | `dist/index.mjs` / `dist/index.cjs`(+ `dist/types/index.d.ts`) | **核心数据与渲染 API** |
-| `./components/*` | `dist/components/*/index.{mjs,cjs}`(+ 类型) | 框架组件包装子路径(已声明,保留给各框架适配层) |
-
-> 当前 `src/` 下无 `components/` 目录,`./components/*` 为 exports 中保留的子路径,核心能力全部由根导出 `.` 提供。
+| `.` | `dist/index.mjs` / `dist/index.cjs`(+ `dist/types/index.d.ts`) | **核心数据与渲染 API**(唯一导出,无子路径) |
 
 ## 完整图标清单
 

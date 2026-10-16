@@ -5,7 +5,7 @@
 - 包名：`@xui-design/core`
 - 版本：`0.1.0`
 - 入口：`dist/index.mjs`（ESM）/ `dist/index.cjs`（CJS）/ `dist/types/index.d.ts`（类型）
-- 子路径导出：`./spec`、`./types`、`./components/*`（按组件细粒度引用）
+- 子路径导出：无（统一经根导出 `.` 引用）
 
 ## 职责边界
 
@@ -1007,12 +1007,13 @@ const state = logic.getState();
 //    ^? { disabled: boolean; loading: boolean }
 ```
 
-### 按子路径细粒度引用
+### 细粒度类型与 spec 引用
+
+所有组件的 spec 与契约类型均经根导出提供，无单独子路径：
 
 ```ts
-import { buttonSpec } from '@xui-design/core/components/button';
-import type { ComponentSpec } from '@xui-design/core/spec';
-import type { LogicInstance } from '@xui-design/core/types';
+import { buttonSpec } from '@xui-design/core';
+import type { ComponentSpec, LogicInstance } from '@xui-design/core';
 ```
 
 ### Message 命令式 API 默认值契约

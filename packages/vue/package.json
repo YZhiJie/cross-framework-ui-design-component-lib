@@ -11,11 +11,6 @@
       "types": "./dist/types/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
-    },
-    "./components/*": {
-      "types": "./dist/types/components/*/index.d.ts",
-      "import": "./dist/components/*/index.mjs",
-      "require": "./dist/components/*/index.cjs"
     }
   },
   "sideEffects": [
