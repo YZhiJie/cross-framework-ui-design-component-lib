@@ -10,16 +10,14 @@
  */
 
 export { Switch } from './components/switch';
-export type { SwitchComponentProps, SwitchRef } from './components/switch';
+export type { SwitchRef } from './components/switch';
 
 export { Checkbox } from './components/checkbox';
-export type { CheckboxComponentProps, CheckboxRef } from './components/checkbox';
+export type { CheckboxRef } from './components/checkbox';
 
 export { Tag } from './components/tag';
-export type { TagComponentProps } from './components/tag';
 
 export { Alert } from './components/alert';
-export type { AlertComponentProps } from './components/alert';
 
 export { RadioGroup } from './components/radio-group';
 export { Radio } from './components/radio';
@@ -40,39 +38,55 @@ export { Skeleton } from './components/skeleton';
 export { InputNumber } from './components/input-number';
 export { Popconfirm } from './components/popconfirm';
 export { Button } from './components/button';
-export type { RadioGroupComponentProps } from './components/radio-group';
-export type { RadioComponentProps } from './components/radio';
-export type { ProgressComponentProps } from './components/progress';
-export type { BadgeComponentProps } from './components/badge';
-export type { AvatarComponentProps } from './components/avatar';
-export type { EmptyComponentProps } from './components/empty';
-export type { SelectComponentProps, SelectRef } from './components/select';
-export type { TabsComponentProps } from './components/tabs';
-export type { TooltipComponentProps, TooltipRef } from './components/tooltip';
-export type { PaginationComponentProps } from './components/pagination';
-export type { DatePickerComponentProps, DatePickerRef } from './components/date-picker';
-export type { TableComponentProps } from './components/table';
-export type { SpinComponentProps } from './components/spin';
-export type { BreadcrumbComponentProps } from './components/breadcrumb';
-export type { SkeletonComponentProps } from './components/skeleton';
-export type { InputNumberComponentProps, InputNumberRef } from './components/input-number';
-export type { PopconfirmComponentProps, PopconfirmRef } from './components/popconfirm';
-export type { ButtonComponentProps, ButtonRef } from './components/button';
+
+export type { SelectRef } from './components/select';
+
+export type { TooltipRef } from './components/tooltip';
+
+export type { DatePickerRef } from './components/date-picker';
+
+export type { InputNumberRef } from './components/input-number';
+export type { PopconfirmRef } from './components/popconfirm';
+export type { ButtonRef } from './components/button';
 
 export { Input } from './components/input';
-export type { InputComponentProps, InputRef } from './components/input';
+export type { InputRef } from './components/input';
 
 export { Modal } from './components/modal';
-export type { ModalComponentProps, ModalRef } from './components/modal';
+export type { ModalRef } from './components/modal';
 
 export { Form, FormItem, useFormContext } from './components/form';
+export type { FormContextValue, FormRef, FormItemRef } from './components/form';
+
+// 组件契约 Props 类型（re-export 自 @xui-design/core，与 Vue 端导出名称逐字一致）
 export type {
-  FormComponentProps,
-  FormContextValue,
-  FormItemComponentProps,
-  FormRef,
-  FormItemRef,
-} from './components/form';
+  SwitchProps,
+  CheckboxProps,
+  TagProps,
+  AlertProps,
+  RadioGroupProps,
+  RadioProps,
+  ProgressProps,
+  BadgeProps,
+  AvatarProps,
+  EmptyProps,
+  SelectProps,
+  TabsProps,
+  TooltipProps,
+  PaginationProps,
+  DatePickerProps,
+  TableProps,
+  SpinProps,
+  BreadcrumbProps,
+  SkeletonProps,
+  InputNumberProps,
+  PopconfirmProps,
+  ButtonProps,
+  InputProps,
+  ModalProps,
+  FormProps,
+  FormItemProps,
+} from '@xui-design/core';
 
 export { useLogicState } from './hooks/use-logic-state';
 export { cn } from './utils/cn';

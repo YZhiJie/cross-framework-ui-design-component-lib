@@ -36,26 +36,57 @@ import { Modal } from './components/modal';
 import { Form, FormItem } from './components/form';
 
 export { Switch, Checkbox, Tag, Alert };
+export type { SwitchProps, SwitchRef } from './components/switch';
+export type { CheckboxProps, CheckboxRef } from './components/checkbox';
+export type { TagProps } from './components/tag';
+export type { AlertProps } from './components/alert';
+
 export { RadioGroup };
+export type { RadioGroupProps } from './components/radio-group';
 export { Radio };
+export type { RadioProps } from './components/radio';
 export { Progress };
+export type { ProgressProps } from './components/progress';
 export { Badge };
+export type { BadgeProps } from './components/badge';
 export { Avatar };
+export type { AvatarProps } from './components/avatar';
 export { Empty };
+export type { EmptyProps } from './components/empty';
 export { Select };
+export type { SelectProps, SelectRef } from './components/select';
 export { Tabs };
+export type { TabsProps } from './components/tabs';
 export { message };
 export { Tooltip };
+export type { TooltipProps, TooltipRef } from './components/tooltip';
 export { Pagination };
+export type { PaginationProps } from './components/pagination';
 export { DatePicker };
+export type { DatePickerProps, DatePickerRef } from './components/date-picker';
 export { Table };
+export type { TableProps } from './components/table';
 export { Spin };
+export type { SpinProps } from './components/spin';
 export { Breadcrumb };
+export type { BreadcrumbProps } from './components/breadcrumb';
 export { Skeleton };
+export type { SkeletonProps } from './components/skeleton';
 export { InputNumber };
+export type { InputNumberProps, InputNumberRef } from './components/input-number';
 export { Popconfirm };
+export type { PopconfirmProps, PopconfirmRef } from './components/popconfirm';
 export { Button, Input, Modal };
+export type { ButtonProps, ButtonRef } from './components/button';
+export type { InputProps, InputRef } from './components/input';
+export type { ModalProps, ModalRef } from './components/modal';
 export { Form, FormItem };
+export type {
+  FormProps,
+  FormItemProps,
+  FormRef,
+  FormItemRef,
+} from './components/form';
 
 // 基础设施：主题运行时 API / 插件系统 / 虚拟滚动原语（re-export 自 @xui-design/shared）
 export {
