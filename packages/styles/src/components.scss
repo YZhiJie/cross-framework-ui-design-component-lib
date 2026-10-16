@@ -941,8 +941,8 @@
   max-width: 240px;
   padding: 6px 10px;
   border-radius: var(--xui-radius-sm, 4px);
-  background-color: var(--xui-color-text, #1f2937);
-  color: #fff;
+  background-color: var(--xui-color-tooltip-bg, #1f2937);
+  color: var(--xui-color-tooltip-text, #fff);
   font-size: var(--xui-font-size-sm, 12px);
   line-height: 1.5;
   text-align: left;

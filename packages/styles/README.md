@@ -75,6 +75,8 @@ packages/styles/
 | | `--xui-shadow-sm` | `0 1px 2px rgb(0 0 0 / 6%)` |
 | | `--xui-shadow-md` | `0 4px 12px rgb(0 0 0 / 10%)` |
 | | `--xui-shadow-lg` | `0 8px 24px rgb(0 0 0 / 16%)` |
+| 深色气泡(Tooltip) | `--xui-color-tooltip-bg` | `#1f2937` |
+| | `--xui-color-tooltip-text` | `#fff` |
 | 轨道 / 分隔线 | `--xui-color-track` | `#e5e7eb` |
 | | `--xui-color-divider` | `#e5e7eb` |
 
@@ -97,6 +99,7 @@ packages/styles/
 - 边框与背景:`--xui-color-border`(`#374151`)、`--xui-color-bg`(`#111827`)、`--xui-color-bg-disabled`(`#1f2937`)、`--xui-color-bg-hover`(`#1f2937`)、`--xui-color-bg-container`(`#111827`)
 - 状态色:`--xui-color-success`(`#4ade80`)、`--xui-color-warning`(`#fbbf24`)、`--xui-color-danger`(`#f87171`)、`--xui-color-info`(`#60a5fa`)
 - 遮罩与阴影:`--xui-color-overlay`(`rgb(0 0 0 / 65%)`)、`--xui-shadow-sm` / `--xui-shadow-md` / `--xui-shadow-lg`(透明度加重)
+- 深色气泡(Tooltip):`--xui-color-tooltip-bg`(`#374151`)、`--xui-color-tooltip-text`(`#f3f4f6`)
 - 轨道 / 分隔线:`--xui-color-track`(`#374151`)、`--xui-color-divider`(`#374151`)
 
 ### 4. 组件级扩展 token(在 `components.scss` 中引用,未在 `tokens.scss :root` 定义,依赖降级值)

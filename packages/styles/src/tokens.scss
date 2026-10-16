@@ -39,6 +39,10 @@
   --xui-shadow-md: 0 4px 12px rgb(0 0 0 / 10%);
   --xui-shadow-lg: 0 8px 24px rgb(0 0 0 / 16%);
 
+  /* ---- 深色气泡提示（Tooltip）：背景 / 文字成对使用，随主题整体翻转 ---- */
+  --xui-color-tooltip-bg: #1f2937;
+  --xui-color-tooltip-text: #fff;
+
   /* ---- 轨道 / 分隔线（Progress / Table / Skeleton 等） ---- */
   --xui-color-track: #e5e7eb;
   --xui-color-divider: #e5e7eb;
@@ -79,6 +83,8 @@
   --xui-shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
   --xui-shadow-md: 0 4px 12px rgb(0 0 0 / 50%);
   --xui-shadow-lg: 0 8px 24px rgb(0 0 0 / 60%);
+  --xui-color-tooltip-bg: #374151;
+  --xui-color-tooltip-text: #f3f4f6;
   --xui-color-track: #374151;
   --xui-color-divider: #374151;
 
