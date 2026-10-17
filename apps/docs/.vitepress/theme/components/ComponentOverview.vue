@@ -5,7 +5,7 @@
  * 组件卡片链接按当前 locale 生成（zh 根路径 / en 前缀）。
  */
 import { computed, ref } from 'vue';
-import { useData } from 'vitepress';
+import { useData, withBase } from 'vitepress';
 import CodeBlock from '../../../src/components/CodeBlock.vue';
 import type { ComponentEntry } from '../../../src/content/types';
 import { componentMetas, getComponentsByCategory } from '../../../src/content/registry';
@@ -23,9 +23,9 @@ const componentGroups = getComponentsByCategory().map((group) => ({
   pendingList: group.components.filter((item: ComponentEntry) => !item.available),
 }));
 
-/** 当前 locale 的组件页链接前缀（zh 根树 / en 树） */
+/** 当前 locale 的组件页链接前缀（zh 根树 / en 树），withBase 补全部署 base 前缀 */
 const localePrefix = computed(() => (lang.value === 'zh-CN' ? '' : '/en'));
-const componentHref = (slug: string) => `${localePrefix.value}/components/${slug}`;
+const componentHref = (slug: string) => withBase(`${localePrefix.value}/components/${slug}`);
 
 const installCode = computed(() => {
   const entry = framework.value === 'vue' ? 'main.ts' : 'main.tsx';
