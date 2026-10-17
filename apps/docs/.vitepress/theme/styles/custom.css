@@ -160,7 +160,8 @@ body {
   border: 1px solid var(--docs-border);
   border-radius: var(--docs-radius);
   background: var(--docs-bg-white);
-  overflow: hidden;
+  /* 不设 overflow: hidden：Tooltip/Popconfirm/Select 等气泡为 CSS 包裹定位（非 portal），
+     会被本容器裁剪；圆角改由首尾子元素（__header / __code）各自承担 */
 }
 
 .demo-block__header {
@@ -168,6 +169,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 14px 20px 0;
+  border-radius: var(--docs-radius) var(--docs-radius) 0 0;
 }
 
 .demo-block__tabs {
@@ -226,6 +228,9 @@ body {
 
 .demo-block__code {
   border-top: 1px solid var(--docs-border);
+  /* 容器不再 overflow: hidden，由自身承担底部圆角（内部深色代码区不再依赖外层裁剪） */
+  border-radius: 0 0 var(--docs-radius) var(--docs-radius);
+  overflow: hidden;
 }
 
 /* ---------- CodeBlock ---------- */
