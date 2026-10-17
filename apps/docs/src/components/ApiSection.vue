@@ -5,20 +5,34 @@
  * 按 Props / Events / Slots / 命令式方法 / 契约类型分块渲染表格，
  * 数据全部来自组件 meta.ts，口径对齐 @xui-design/core 的 ComponentSpec。
  * description 为 LText 双语结构，经 t() 按当前语言取值。
+ *
+ * kind 不传时全量渲染（指南页）；传入时只渲染对应分组
+ * （组件文档页由 md 生成器按 h3 分节调用，使各分组进入目录锚点）。
  */
 import type { ComponentMeta } from '../content/types';
 import CodeBlock from './CodeBlock.vue';
 import { t } from '../i18n';
 import { useUiMessages } from '../i18n/ui-messages';
 
-defineProps<{ api: ComponentMeta['api'] }>();
+type ApiKind = 'props' | 'events' | 'slots' | 'methods' | 'types';
+
+const props = withDefaults(
+  defineProps<{
+    api: ComponentMeta['api'];
+    /** 只渲染的分组；缺省全量渲染 */
+    kind?: ApiKind;
+  }>(),
+  { kind: undefined },
+);
 
 const ui = useUiMessages();
+
+const show = (kind: ApiKind): boolean => props.kind === undefined || props.kind === kind;
 </script>
 
 <template>
   <div>
-    <template v-if="api.props && api.props.length > 0">
+    <template v-if="show('props') && api.props && api.props.length > 0">
       <h3 class="docs-subsection-title">Props</h3>
       <div class="api-table-wrap">
         <table class="api-table">
@@ -47,7 +61,7 @@ const ui = useUiMessages();
       </div>
     </template>
 
-    <template v-if="api.events && api.events.length > 0">
+    <template v-if="show('events') && api.events && api.events.length > 0">
       <h3 class="docs-subsection-title">{{ ui.api.eventsTitle }}</h3>
       <div class="api-table-wrap">
         <table class="api-table">
@@ -71,7 +85,7 @@ const ui = useUiMessages();
       </div>
     </template>
 
-    <template v-if="api.slots && api.slots.length > 0">
+    <template v-if="show('slots') && api.slots && api.slots.length > 0">
       <h3 class="docs-subsection-title">{{ ui.api.slotsTitle }}</h3>
       <div class="api-table-wrap">
         <table class="api-table">
@@ -93,7 +107,7 @@ const ui = useUiMessages();
       </div>
     </template>
 
-    <template v-if="api.methods && api.methods.length > 0">
+    <template v-if="show('methods') && api.methods && api.methods.length > 0">
       <h3 class="docs-subsection-title">{{ ui.api.methodsTitle }}</h3>
       <div class="api-table-wrap">
         <table class="api-table">
@@ -115,7 +129,7 @@ const ui = useUiMessages();
       </div>
     </template>
 
-    <template v-if="api.types && api.types.length > 0">
+    <template v-if="show('types') && api.types && api.types.length > 0">
       <h3 class="docs-subsection-title">{{ ui.api.typesTitle }}</h3>
       <div v-for="typeBlock in api.types" :key="typeBlock.name" class="api-type-block">
         <div class="api-type-block__head">

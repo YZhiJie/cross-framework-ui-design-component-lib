@@ -3,7 +3,8 @@
  *
  * - 模块级 reactive locale：组件渲染中读取 t() 即自动收集依赖，切语言全站响应式更新
  * - 与组件库 locale 联动：切换文档语言时同步 setLocale，demo 内置文案跟随
- * - localStorage 持久化，刷新后保持；同时维护 <html lang>
+ * - VitePress 迁移后语言由路由驱动：LocaleSync 组件监听 useData().lang 写入本模块，
+ *   SSR / 水化阶段即按当前 locale 渲染，无闪变
  *
  * 与组件库 locale（@xui-design/shared locale）的分工：
  * 组件库 locale 管组件内置文案（okText 等），本模块管文档站自身全部文案。
@@ -19,8 +20,6 @@ export interface LText {
   'zh-CN': string;
   'en-US': string;
 }
-
-const STORAGE_KEY = 'xui-docs-locale';
 
 const state = reactive<{ locale: DocsLocale }>({ locale: 'zh-CN' });
 
@@ -50,25 +49,26 @@ export const subscribeDocsLocale = (listener: LocaleListener): (() => void) => {
 /** 获取当前语言快照（useSyncExternalStore 的 getSnapshot 参数） */
 export const getDocsLocaleSnapshot = (): DocsLocale => state.locale;
 
-/** 应用语言副作用：持久化 + <html lang> + 页面标题 + 组件库 locale 联动 */
+/** 应用语言副作用：通知订阅者 + 组件库 locale 联动（SSR 下仅更新状态） */
 const applyLocale = (locale: DocsLocale): void => {
   state.locale = locale;
   listeners.forEach((listener) => listener(locale));
+  if (typeof document === 'undefined') return;
+  // <html lang> 与页面标题由 VitePress 按路由 locale 管理，这里只联动组件库文案
   document.documentElement.lang = locale;
-  document.title = locale === 'zh-CN' ? 'XUI - 跨框架组件库文档' : 'XUI - Cross-Framework UI Docs';
-  localStorage.setItem(STORAGE_KEY, locale);
-  // 组件库 demo 内置文案（Modal 按钮、Table 空态等）跟随文档语言
   setXuiLocale(locale);
 };
 
-/** 切换文档语言 */
+/** 切换文档语言（LocaleSync 在挂载与路由 locale 变化时调用） */
 export const setDocsLocale = (locale: DocsLocale): void => {
   if (locale === state.locale) return;
   applyLocale(locale);
 };
 
-/** 初始化：读取 localStorage 持久化语言（入口调用一次） */
-export const initDocsLocale = (): void => {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  applyLocale(saved === 'en-US' ? 'en-US' : 'zh-CN');
+/** 初始化当前语言（LocaleSync 挂载时调用一次，SSR 与客户端水化均执行，保证渲染一致） */
+export const initDocsLocale = (locale: DocsLocale): void => {
+  state.locale = locale;
+  if (typeof document === 'undefined') return;
+  document.documentElement.lang = locale;
+  setXuiLocale(locale);
 };

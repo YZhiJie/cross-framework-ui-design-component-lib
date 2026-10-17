@@ -5,13 +5,14 @@
  * - Vue / React 双 tab：同一 demo 双端真实组件实时挂载，源码随 tab 联动
  * - 预览区常驻，代码区可折叠
  * - React demo 经 createRoot 挂载到独立容器，切走 / 卸载时 unmount
+ * - demo 标题 / 说明由 md 生成器写成 markdown（进入目录与搜索索引），本组件只管交互区
+ * - 预览区包 ClientOnly：demo 组件存在窗口测量等运行时逻辑，SSG 阶段不渲染
  */
 import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import type { Root } from 'react-dom/client';
 import type { DemoDefinition } from '../content/types';
 import { mountReactDemo } from './react-mount';
 import CodeBlock from './CodeBlock.vue';
-import { t } from '../i18n';
 import { useUiMessages } from '../i18n/ui-messages';
 
 const props = defineProps<{ demo: DemoDefinition }>();
@@ -46,7 +47,6 @@ onBeforeUnmount(unmountReact);
 <template>
   <section class="demo-block">
     <div class="demo-block__header">
-      <h3 class="demo-block__title">{{ t(demo.title) }}</h3>
       <div class="demo-block__tabs" role="tablist">
         <button
           type="button"
@@ -70,11 +70,12 @@ onBeforeUnmount(unmountReact);
         </button>
       </div>
     </div>
-    <p v-if="demo.description" class="demo-block__desc">{{ t(demo.description) }}</p>
-    <div class="demo-block__stage">
-      <component :is="demo.vueComponent" v-if="framework === 'vue'" />
-      <div v-else ref="reactHost" class="demo-block__react-host" />
-    </div>
+    <ClientOnly>
+      <div class="demo-block__stage">
+        <component :is="demo.vueComponent" v-if="framework === 'vue'" />
+        <div v-else ref="reactHost" class="demo-block__react-host" />
+      </div>
+    </ClientOnly>
     <div class="demo-block__footer">
       <button type="button" class="demo-block__toggle" @click="showCode = !showCode">
         {{ showCode ? ui.demo.hideCode : ui.demo.showCode }}

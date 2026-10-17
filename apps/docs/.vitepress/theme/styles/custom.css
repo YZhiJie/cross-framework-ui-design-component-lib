@@ -1,0 +1,608 @@
+/**
+ * XUI 文档站自定义样式（VitePress 版）
+ *
+ * 结构：
+ * 1. VitePress 变量品牌化覆盖（品牌色 / 字体 / 代码块 / 首页 hero），明暗两套
+ * 2. 文档站自有 CSS 变量（--docs-*，供移植组件使用），明暗两套（.dark）
+ * 3. 移植组件样式：页头 / demo 块 / 代码块 / API 表格 / 首页总览 / demo 辅助类
+ * 4. 页面切换过渡、导航栏三态主题切换控件
+ *
+ * 说明：文档变量以 .dark 类驱动（VitePress 切换主题时在 <html> 上加 .dark）；
+ * 组件库 demo 的 [data-theme] 由 ThemeModeToggle 同步写入，两套状态始终一致。
+ */
+
+/* ---------- 1. VitePress 变量品牌化 ---------- */
+
+:root {
+  --vp-c-brand-1: #4f46e5;
+  --vp-c-brand-2: #6366f1;
+  --vp-c-brand-3: #4f46e5;
+  --vp-c-brand-soft: rgb(79 70 229 / 14%);
+  --vp-font-family-base:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', sans-serif;
+  --vp-font-family-mono: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+  --vp-nav-height: 56px;
+  /* 内联代码沿用文档粉色调 */
+  --vp-code-color: #db2777;
+  --vp-code-bg: #fdf2f8;
+  /* 代码块：github-dark 统一深色（明暗主题一致） */
+  --vp-code-block-bg: #24292e;
+  --vp-code-copy-code-bg: #3a414b;
+  --vp-code-copy-code-hover-bg: #4a525d;
+  --vp-code-copy-code-border-color: #4a525d;
+  /* 滚动锚点偏移：顶栏 56px + 视觉间距 */
+  --vp-doc-top-height: 76px;
+}
+
+.dark {
+  --vp-c-brand-1: #818cf8;
+  --vp-c-brand-2: #a5b4fc;
+  --vp-c-brand-3: #818cf8;
+  --vp-c-brand-soft: rgb(129 140 248 / 16%);
+  --vp-code-color: #f472b6;
+  --vp-code-bg: rgb(219 39 119 / 16%);
+}
+
+/* 首页 hero：品牌渐变标题 */
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #4f46e5 30%, #8b5cf6 70%);
+}
+
+.dark {
+  --vp-home-hero-name-background: linear-gradient(120deg, #818cf8 30%, #c084fc 70%);
+}
+
+/* 隐藏默认主题内置的明暗开关（由三态控件替代） */
+.VPNavBarAppearance {
+  display: none;
+}
+
+/* VP markdown 标题对齐旧版视觉：h2 带下边框、h3 适度缩小 */
+.vp-doc h2 {
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  padding-top: 0;
+  border-top: none;
+  border-bottom: 1px solid var(--docs-border);
+  font-size: 22px;
+  font-weight: 650;
+}
+
+.vp-doc h3 {
+  margin: 28px 0 12px;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+/* 组件页 h1 页头（下边框分隔 + 英文副名 / 分类标签） */
+.vp-doc h1 {
+  padding-bottom: 20px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--docs-border);
+}
+
+.vp-doc h1 .page-head__en {
+  margin-left: 4px;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--docs-text-secondary);
+}
+
+.vp-doc h1 .doc-tag {
+  margin-left: 10px;
+  vertical-align: 4px;
+}
+
+/* ---------- 2. 文档站自有变量 ---------- */
+
+:root {
+  --docs-primary: #4f46e5;
+  --docs-primary-soft: #eef2ff;
+  --docs-text: #1f2937;
+  --docs-text-secondary: #6b7280;
+  --docs-text-tertiary: #9ca3af;
+  --docs-border: #e5e7eb;
+  --docs-bg: #f9fafb;
+  --docs-bg-white: #fff;
+  --docs-code-bg: #24292e;
+  --docs-inline-code: #db2777;
+  --docs-inline-code-bg: #fdf2f8;
+  --docs-badge-border: #e0e7ff;
+  --docs-danger: #ef4444;
+  --docs-on-primary: #fff;
+  --docs-radius: 8px;
+  --docs-shadow-sm: 0 1px 2px rgb(0 0 0 / 6%);
+}
+
+/* 暗色主题：与组件 tokens.scss 的暗色同一属性驱动（.dark 由 VitePress 维护） */
+.dark {
+  --docs-primary: #818cf8;
+  --docs-primary-soft: rgb(129 140 248 / 16%);
+  --docs-text: #f3f4f6;
+  --docs-text-secondary: #9ca3af;
+  --docs-text-tertiary: #6b7280;
+  --docs-border: #374151;
+  --docs-bg: #0b1220;
+  --docs-bg-white: #111827;
+  --docs-inline-code: #f472b6;
+  --docs-inline-code-bg: rgb(219 39 119 / 16%);
+  --docs-badge-border: rgb(129 140 248 / 35%);
+  --docs-danger: #f87171;
+  --docs-on-primary: #111827;
+  --docs-shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+}
+
+/* 文档框架底色与文字跟随（VP 用自己的容器，这里只调正文底色） */
+body {
+  background: var(--docs-bg);
+}
+
+/* ---------- 3. 移植组件样式 ---------- */
+
+.doc-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  font-size: 12px;
+  color: var(--docs-primary);
+  background: var(--docs-primary-soft);
+  border-radius: 999px;
+}
+
+.inline-code {
+  padding: 2px 6px;
+  font-size: 12.5px;
+  color: var(--docs-inline-code);
+  background: var(--docs-inline-code-bg);
+  border-radius: 4px;
+}
+
+/* ---------- DemoBlock ---------- */
+
+.demo-block {
+  margin: 24px 0;
+  border: 1px solid var(--docs-border);
+  border-radius: var(--docs-radius);
+  background: var(--docs-bg-white);
+  overflow: hidden;
+}
+
+.demo-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px 0;
+}
+
+.demo-block__tabs {
+  display: flex;
+  border: 1px solid var(--docs-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.demo-block__tab {
+  padding: 3px 14px;
+  font-size: 12px;
+  line-height: 20px;
+  color: var(--docs-text-secondary);
+  background: var(--docs-bg-white);
+  border: none;
+  cursor: pointer;
+}
+
+.demo-block__tab + .demo-block__tab {
+  border-left: 1px solid var(--docs-border);
+}
+
+.demo-block__tab.is-active {
+  color: var(--docs-on-primary);
+  background: var(--docs-primary);
+}
+
+.demo-block__stage {
+  margin: 16px 20px 0;
+  padding: 28px 24px;
+  background: var(--docs-bg-white);
+  border: 1px dashed var(--docs-border);
+  border-radius: 6px;
+}
+
+.demo-block__footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 20px;
+  border-top: 1px solid var(--docs-border);
+}
+
+.demo-block__toggle {
+  padding: 2px 10px;
+  font-size: 12px;
+  color: var(--docs-text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.demo-block__toggle:hover {
+  color: var(--docs-primary);
+}
+
+.demo-block__code {
+  border-top: 1px solid var(--docs-border);
+}
+
+/* ---------- CodeBlock ---------- */
+
+.code-block {
+  border: 1px solid var(--docs-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.code-block__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 14px;
+  background: #1b1f24;
+}
+
+.code-block__lang {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.code-block__copy {
+  padding: 2px 10px;
+  font-size: 11px;
+  color: #cbd5e1;
+  background: transparent;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.code-block__copy:hover {
+  color: #fff;
+  border-color: #64748b;
+}
+
+.code-block__pre {
+  margin: 0;
+  padding: 16px 20px;
+  overflow-x: auto;
+  background: var(--docs-code-bg);
+}
+
+.code-block__code {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #e2e8f0;
+}
+
+.code-block__code .token.comment,
+.code-block__code .token.prolog,
+.code-block__code .token.doctype {
+  color: #64748b;
+}
+
+.code-block__code .token.keyword,
+.code-block__code .token.tag,
+.code-block__code .token.important {
+  color: #f472b6;
+}
+
+.code-block__code .token.string,
+.code-block__code .token.attr-value,
+.code-block__code .token.char {
+  color: #86efac;
+}
+
+.code-block__code .token.number,
+.code-block__code .token.boolean,
+.code-block__code .token.attr-name {
+  color: #fbbf24;
+}
+
+.code-block__code .token.function,
+.code-block__code .token.class-name {
+  color: #60a5fa;
+}
+
+.code-block__code .token.property,
+.code-block__code .token.symbol,
+.code-block__code .token.constant {
+  color: #38bdf8;
+}
+
+.code-block__code .token.punctuation,
+.code-block__code .token.operator {
+  color: #94a3b8;
+  background: transparent;
+}
+
+.code-block__code .token.builtin {
+  color: #c084fc;
+}
+
+/* DemoBlock 内联代码块去外框（特异性高于 .code-block 基础规则，须置于其后） */
+.demo-block__code .code-block {
+  border: none;
+  border-radius: 0;
+}
+
+/* ---------- API 表格 ---------- */
+
+.api-table-wrap {
+  margin: 12px 0 20px;
+  border: 1px solid var(--docs-border);
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: var(--docs-bg-white);
+}
+
+.api-table th {
+  padding: 10px 14px;
+  font-weight: 600;
+  text-align: left;
+  color: var(--docs-text);
+  background: var(--docs-bg);
+  border-bottom: 1px solid var(--docs-border);
+  white-space: nowrap;
+}
+
+.api-table td {
+  padding: 10px 14px;
+  color: var(--docs-text-secondary);
+  border-bottom: 1px solid var(--docs-border);
+  vertical-align: top;
+}
+
+/* 末列（说明/描述）设置最小可读宽度：窄视口下不被压成窄条导致文本逐字换行，
+   超出部分由 .api-table-wrap 横向滚动承担 */
+.api-table td:last-child {
+  min-width: 160px;
+}
+
+.api-table tr:last-child td {
+  border-bottom: none;
+}
+
+.api-table .api-table__name {
+  color: var(--docs-text);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.api-table .api-table__required {
+  color: var(--docs-danger);
+  margin-left: 2px;
+}
+
+.api-table .api-table__type {
+  color: var(--docs-inline-code);
+  white-space: nowrap;
+}
+
+/* 方法签名列：签名可能很长（如浮层 resolveFloatingPosition），
+   nowrap 会把表格撑爆并把说明列压成窄条导致行高失控，
+   因此允许换行并设置最小列宽，长签名在任意字符处可断行 */
+.api-table .api-table__signature {
+  color: var(--docs-inline-code);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  min-width: 280px;
+}
+
+.api-table .api-table__default {
+  color: var(--docs-text-secondary);
+  white-space: nowrap;
+}
+
+/* ---------- 首页（VP hero 之下由 ComponentOverview 渲染的区块） ---------- */
+
+.docs-home-body {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 24px 96px;
+}
+
+.home-section {
+  margin-top: 48px;
+}
+
+.home-section .docs-section-title {
+  margin: 40px 0 16px;
+  padding-bottom: 8px;
+  font-size: 22px;
+  font-weight: 650;
+  border-bottom: 1px solid var(--docs-border);
+}
+
+.home-section .docs-subsection-title {
+  margin: 28px 0 12px;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.home-card {
+  display: block;
+  padding: 16px;
+  color: inherit;
+  text-decoration: none;
+  background: var(--docs-bg-white);
+  border: 1px solid var(--docs-border);
+  border-radius: var(--docs-radius);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+
+.home-card__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.home-card__en {
+  font-size: 12px;
+  color: var(--docs-text-secondary);
+  font-weight: 400;
+}
+
+.home-card__desc {
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-size: 12px;
+  color: var(--docs-text-secondary);
+}
+
+.home-card:hover {
+  border-color: var(--docs-primary);
+  box-shadow: var(--docs-shadow-sm);
+  transform: translateY(-1px);
+}
+
+.home-card.is-disabled {
+  cursor: not-allowed;
+  background: var(--docs-bg);
+}
+
+.home-card.is-disabled .home-card__title,
+.home-card.is-disabled .home-card__en,
+.home-card.is-disabled .home-card__desc {
+  color: var(--docs-text-tertiary);
+}
+
+.home-card.is-disabled:hover {
+  border-color: var(--docs-border);
+  box-shadow: none;
+  transform: none;
+}
+
+.home-card__soon {
+  margin-left: auto;
+  font-size: 10px;
+  padding: 0 6px;
+  border: 1px solid var(--docs-border);
+  border-radius: 999px;
+  color: var(--docs-text-tertiary);
+}
+
+/* ---------- demo 通用辅助类（供 demo SFC/TSX 使用） ---------- */
+
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.demo-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.demo-text {
+  font-size: 13px;
+  color: var(--docs-text-secondary);
+}
+
+/* ---------- 4. 页面切换过渡 ---------- */
+
+.xui-page-enter-active,
+.xui-page-leave-active {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.xui-page-enter-from {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.xui-page-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+/* ---------- 导航栏三态主题切换控件 ---------- */
+
+.docs-theme-toggle {
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.docs-theme-toggle__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 26px;
+  color: var(--docs-text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+
+.docs-theme-toggle__item + .docs-theme-toggle__item {
+  border-left: 1px solid var(--vp-c-divider);
+}
+
+.docs-theme-toggle__item:hover {
+  color: var(--docs-primary);
+}
+
+.docs-theme-toggle__item.is-active {
+  color: var(--docs-on-primary);
+  background: var(--docs-primary);
+}
+
+/* ---------- 响应式 ---------- */
+
+@media (width <= 900px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .docs-home-body {
+    padding: 0 16px 64px;
+  }
+
+  .vp-doc h1 .doc-tag {
+    display: none;
+  }
+
+  .docs-theme-toggle {
+    margin-left: 8px;
+  }
+}

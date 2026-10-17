@@ -52,3 +52,4 @@ coverage/
 .turbo/
 .eslintcache
 *.ts.timestamp-*.mjs
+apps/docs/.vitepress/cache/
