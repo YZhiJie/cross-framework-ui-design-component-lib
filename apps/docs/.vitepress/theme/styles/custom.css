@@ -5,10 +5,10 @@
  * 1. VitePress 变量品牌化覆盖（品牌色 / 字体 / 代码块 / 首页 hero），明暗两套
  * 2. 文档站自有 CSS 变量（--docs-*，供移植组件使用），明暗两套（.dark）
  * 3. 移植组件样式：页头 / demo 块 / 代码块 / API 表格 / 首页总览 / demo 辅助类
- * 4. 页面切换过渡、导航栏三态主题切换控件
+ * 4. 页面切换过渡
  *
  * 说明：文档变量以 .dark 类驱动（VitePress 切换主题时在 <html> 上加 .dark）；
- * 组件库 demo 的 [data-theme] 由 ThemeModeToggle 同步写入，两套状态始终一致。
+ * 组件库 demo 的 [data-theme] 由 Layout 中 watch(isDark) 同步写入，两套状态始终一致。
  */
 
 /* ---------- 1. VitePress 变量品牌化 ---------- */
@@ -52,11 +52,6 @@
 
 .dark {
   --vp-home-hero-name-background: linear-gradient(120deg, #818cf8 30%, #c084fc 70%);
-}
-
-/* 隐藏默认主题内置的明暗开关（由三态控件替代） */
-.VPNavBarAppearance {
-  display: none;
 }
 
 /* VP markdown 标题对齐旧版视觉：h2 带下边框、h3 适度缩小 */
@@ -548,45 +543,6 @@ body {
   transform: translateY(-6px);
 }
 
-/* ---------- 导航栏三态主题切换控件 ---------- */
-
-.docs-theme-toggle {
-  display: flex;
-  align-items: center;
-  margin-left: 12px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.docs-theme-toggle__item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 26px;
-  color: var(--docs-text-secondary);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  transition:
-    color 0.15s,
-    background 0.15s;
-}
-
-.docs-theme-toggle__item + .docs-theme-toggle__item {
-  border-left: 1px solid var(--vp-c-divider);
-}
-
-.docs-theme-toggle__item:hover {
-  color: var(--docs-primary);
-}
-
-.docs-theme-toggle__item.is-active {
-  color: var(--docs-on-primary);
-  background: var(--docs-primary);
-}
-
 /* ---------- 响应式 ---------- */
 
 @media (width <= 900px) {
@@ -600,9 +556,5 @@ body {
 
   .vp-doc h1 .doc-tag {
     display: none;
-  }
-
-  .docs-theme-toggle {
-    margin-left: 8px;
   }
 }

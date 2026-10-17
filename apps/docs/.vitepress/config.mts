@@ -172,7 +172,7 @@ export default defineConfig({
     },
   },
   themeConfig: {
-    // 内置明暗开关由自定义三态切换（明亮/暗黑/跟随系统）替代（CSS 隐藏 .VPNavBarAppearance）
+    // 明暗切换使用 VP 内置导航栏开关；Layout 中 watch(isDark) 联动组件库 data-theme
     logo: `${base}logo-512.png`,
     socialLinks: [{ icon: 'github', link: REPO }],
     search: {

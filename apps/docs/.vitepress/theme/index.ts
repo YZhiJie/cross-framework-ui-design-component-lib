@@ -12,7 +12,6 @@ import { h } from 'vue';
 
 import XuiLayout from './Layout.vue';
 import PageContent from './components/PageContent.vue';
-import ThemeModeToggle from './components/ThemeModeToggle.vue';
 import ComponentDemo from './components/ComponentDemo.vue';
 import ComponentApi from './components/ComponentApi.vue';
 import GuideDemo from './components/GuideDemo.vue';
@@ -38,7 +37,5 @@ export default {
     app.component('GuideDemo', GuideDemo);
     app.component('GuideApi', GuideApi);
     app.component('ComponentOverview', ComponentOverview);
-    // 导航栏三态主题切换（明亮 / 暗黑 / 跟随系统）
-    app.component('ThemeModeToggle', ThemeModeToggle);
   },
 } satisfies Theme;
