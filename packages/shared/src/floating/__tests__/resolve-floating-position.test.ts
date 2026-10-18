@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import { getViewport, resolveFloatingPosition } from '../resolve-floating-position';
 import type { FloatingRect, FloatingViewport } from '../resolve-floating-position';
