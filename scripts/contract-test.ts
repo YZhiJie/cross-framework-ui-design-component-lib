@@ -393,6 +393,13 @@ const API_COMPONENTS: ComponentPlan[] = [
     modelProp: 'value',
     modelCoveredProps: ['defaultValue'],
   },
+  {
+    name: 'Steps',
+    specKey: 'stepsSpec',
+    reactSource: 'packages/react/src/components/steps/Steps.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
 ];
 
 interface MatrixRow {

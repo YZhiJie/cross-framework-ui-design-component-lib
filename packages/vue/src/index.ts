@@ -36,6 +36,7 @@ import { Tree } from './components/tree';
 import { Drawer } from './components/drawer';
 import { Dropdown } from './components/dropdown';
 import { TreeSelect } from './components/tree-select';
+import { Steps } from './components/steps';
 import { Modal } from './components/modal';
 import { Form, FormItem } from './components/form';
 import { TimePicker } from './components/time-picker';
@@ -89,6 +90,8 @@ export type { DrawerPlacement, DrawerProps, DrawerRef } from './components/drawe
 export { Dropdown };
 export { TreeSelect };
 export type { TreeSelectProps, TreeSelectRef } from './components/tree-select';
+export { Steps };
+export type { StepsProps, StepsRef } from './components/steps';
 export { Button, Input, Modal };
 export type { ButtonProps, ButtonRef } from './components/button';
 export type { InputProps, InputRef } from './components/input';
@@ -165,6 +168,7 @@ export default {
     app.component(Drawer.name ?? 'Drawer', Drawer);
     app.component(Dropdown.name ?? 'Dropdown', Dropdown);
     app.component(TreeSelect.name ?? 'TreeSelect', TreeSelect);
+    app.component(Steps.name ?? 'Steps', Steps);
     app.component(Modal.name ?? 'Modal', Modal);
     app.component(Form.name ?? 'Form', Form);
     app.component(FormItem.name ?? 'FormItem', FormItem);

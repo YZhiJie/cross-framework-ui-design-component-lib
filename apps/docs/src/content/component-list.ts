@@ -79,6 +79,7 @@ export const COMPONENT_LIST: ComponentEntry[] = [
     category: 'navigation',
     available: true,
   },
+  { name: 'Steps', slug: 'steps', title: '步骤条', category: 'navigation', available: true },
   {
     name: 'Breadcrumb',
     slug: 'breadcrumb',

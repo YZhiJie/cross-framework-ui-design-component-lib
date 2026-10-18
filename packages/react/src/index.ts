@@ -45,6 +45,8 @@ export { Dropdown } from './components/dropdown';
 export type { DropdownRef } from './components/dropdown';
 export { TreeSelect } from './components/tree-select';
 export type { TreeSelectRef } from './components/tree-select';
+export { Steps } from './components/steps';
+export type { StepsRef } from './components/steps';
 export { Button } from './components/button';
 
 export type { SelectRef } from './components/select';
@@ -115,6 +117,7 @@ export type {
   CascaderProps,
   TreeSelectProps,
   TreeSelectValue,
+  StepsProps,
   UploadProps,
   UploadFile,
 } from '@xui-design/core';

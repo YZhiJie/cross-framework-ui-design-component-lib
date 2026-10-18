@@ -3832,6 +3832,143 @@
 }
 
 /* ============================================
+   Steps 步骤条
+   ============================================ */
+
+.xui-steps {
+  display: flex;
+  width: 100%;
+}
+
+.xui-steps.is-vertical {
+  flex-direction: column;
+}
+
+.xui-steps__item {
+  position: relative;
+  display: flex;
+  flex: 1;
+  gap: 8px;
+  align-items: flex-start;
+  color: var(--xui-color-text-secondary, #6b7280);
+  cursor: pointer;
+}
+
+.xui-steps__item:last-child {
+  flex: none;
+}
+
+.xui-steps__line {
+  position: absolute;
+  top: 15px;
+  right: calc(100% - 8px);
+  width: calc(100% - 24px);
+  height: 2px;
+  background-color: var(--xui-color-border, #d1d5db);
+  transition: background-color 0.2s ease;
+}
+
+.xui-steps__line.is-finished {
+  background-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-steps__icon {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  background-color: var(--xui-color-bg, #fff);
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: 50%;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.xui-steps__item.is-process .xui-steps__icon {
+  background-color: var(--xui-color-primary, #4f46e5);
+  border-color: var(--xui-color-primary, #4f46e5);
+  color: #fff;
+}
+
+.xui-steps__item.is-finish .xui-steps__icon {
+  background-color: var(--xui-color-primary-bg, #eef2ff);
+  border-color: var(--xui-color-primary, #4f46e5);
+  color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-steps__item.is-error .xui-steps__icon {
+  background-color: var(--xui-color-danger-bg, #fef2f2);
+  border-color: var(--xui-color-danger, #dc2626);
+  color: var(--xui-color-danger, #dc2626);
+}
+
+.xui-steps__index {
+  line-height: 1;
+}
+
+.xui-steps__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-top: 3px;
+}
+
+.xui-steps__title {
+  font-size: var(--xui-font-size-md, 14px);
+  line-height: 20px;
+  color: var(--xui-color-text, #1f2937);
+}
+
+.xui-steps__item.is-current .xui-steps__title {
+  color: var(--xui-color-primary, #4f46e5);
+  font-weight: 500;
+}
+
+.xui-steps__description {
+  font-size: var(--xui-font-size-sm, 12px);
+  line-height: 18px;
+  color: var(--xui-color-text-secondary, #6b7280);
+}
+
+.xui-steps__item.is-disabled {
+  color: var(--xui-color-text-disabled, #9ca3af);
+  cursor: not-allowed;
+}
+
+.xui-steps__item.is-disabled .xui-steps__title,
+.xui-steps__item.is-disabled .xui-steps__description {
+  color: var(--xui-color-text-disabled, #9ca3af);
+}
+
+.xui-steps__item.is-disabled .xui-steps__icon {
+  border-color: var(--xui-color-border, #d1d5db);
+  color: var(--xui-color-text-disabled, #9ca3af);
+}
+
+/* 垂直方向：连接线改为纵向 */
+.xui-steps.is-vertical .xui-steps__item {
+  flex: none;
+  padding-bottom: 20px;
+}
+
+.xui-steps.is-vertical .xui-steps__item:last-child {
+  padding-bottom: 0;
+}
+
+.xui-steps.is-vertical .xui-steps__line {
+  top: 30px;
+  right: auto;
+  left: 12px;
+  width: 2px;
+  height: calc(100% - 30px);
+}
+
+/* ============================================
    Drawer 抽屉
    ============================================ */
 
