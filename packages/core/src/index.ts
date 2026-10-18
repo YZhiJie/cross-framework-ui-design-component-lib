@@ -37,6 +37,7 @@ export * from './components/skeleton';
 export * from './components/input-number';
 export * from './components/popconfirm';
 export * from './components/tree';
+export * from './components/drawer';
 export * from './components/modal';
 export * from './components/form';
 export * from './components/time-picker';

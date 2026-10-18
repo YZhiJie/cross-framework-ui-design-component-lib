@@ -39,6 +39,8 @@ export { InputNumber } from './components/input-number';
 export { Popconfirm } from './components/popconfirm';
 export { Tree } from './components/tree';
 export type { TreeRef } from './components/tree';
+export { Drawer } from './components/drawer';
+export type { DrawerRef } from './components/drawer';
 export { Button } from './components/button';
 
 export type { SelectRef } from './components/select';
@@ -94,6 +96,8 @@ export type {
   PopconfirmProps,
   TreeProps,
   TreeNode,
+  DrawerProps,
+  DrawerPlacement,
   ButtonProps,
   InputProps,
   ModalProps,

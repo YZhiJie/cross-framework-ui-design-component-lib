@@ -3398,3 +3398,110 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ============================================
+   Drawer 抽屉
+   ============================================ */
+
+.xui-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.xui-drawer__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(0 0 0 / 45%);
+}
+
+.xui-drawer__panel {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--xui-color-bg, #fff);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 12%);
+  outline: none;
+}
+
+.xui-drawer--right .xui-drawer__panel {
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.xui-drawer--left .xui-drawer__panel {
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.xui-drawer--top .xui-drawer__panel {
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.xui-drawer--bottom .xui-drawer__panel {
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.xui-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--xui-color-border, #d1d5db);
+}
+
+.xui-drawer__title {
+  font-size: var(--xui-font-size-lg, 16px);
+  font-weight: 600;
+  color: var(--xui-color-text, #1f2937);
+}
+
+.xui-drawer__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--xui-color-text-secondary, #6b7280);
+  cursor: pointer;
+  border-radius: var(--xui-radius-sm, 4px);
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.xui-drawer__close:hover {
+  color: var(--xui-color-text, #1f2937);
+  background-color: var(--xui-color-bg-disabled, #f3f4f6);
+}
+
+.xui-drawer__body {
+  box-sizing: border-box;
+  flex: 1;
+  padding: 20px;
+  overflow: auto;
+  color: var(--xui-color-text, #1f2937);
+  font-size: var(--xui-font-size-md, 14px);
+}
+
+.xui-drawer__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 20px;
+  border-top: 1px solid var(--xui-color-border, #d1d5db);
+}

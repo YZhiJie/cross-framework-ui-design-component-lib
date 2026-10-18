@@ -33,6 +33,7 @@ import { Skeleton } from './components/skeleton';
 import { InputNumber } from './components/input-number';
 import { Popconfirm } from './components/popconfirm';
 import { Tree } from './components/tree';
+import { Drawer } from './components/drawer';
 import { Modal } from './components/modal';
 import { Form, FormItem } from './components/form';
 import { TimePicker } from './components/time-picker';
@@ -81,6 +82,8 @@ export type { InputNumberProps, InputNumberRef } from './components/input-number
 export { Popconfirm };
 export type { PopconfirmProps, PopconfirmRef } from './components/popconfirm';
 export { Tree };
+export { Drawer };
+export type { DrawerPlacement, DrawerProps, DrawerRef } from './components/drawer';
 export { Button, Input, Modal };
 export type { ButtonProps, ButtonRef } from './components/button';
 export type { InputProps, InputRef } from './components/input';
@@ -154,6 +157,7 @@ export default {
     app.component(InputNumber.name ?? 'InputNumber', InputNumber);
     app.component(Popconfirm.name ?? 'Popconfirm', Popconfirm);
     app.component(Tree.name ?? 'Tree', Tree);
+    app.component(Drawer.name ?? 'Drawer', Drawer);
     app.component(Modal.name ?? 'Modal', Modal);
     app.component(Form.name ?? 'Form', Form);
     app.component(FormItem.name ?? 'FormItem', FormItem);

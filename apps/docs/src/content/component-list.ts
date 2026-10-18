@@ -23,6 +23,7 @@ export const COMPONENT_LIST: ComponentEntry[] = [
   { name: 'Button', slug: 'button', title: '按钮', category: 'basic', available: true },
   { name: 'Input', slug: 'input', title: '输入框', category: 'basic', available: true },
   { name: 'Modal', slug: 'modal', title: '对话框', category: 'basic', available: true },
+  { name: 'Drawer', slug: 'drawer', title: '抽屉', category: 'basic', available: true },
   // 表单交互
   { name: 'Switch', slug: 'switch', title: '开关', category: 'form', available: true },
   { name: 'Checkbox', slug: 'checkbox', title: '复选框', category: 'form', available: true },

@@ -372,6 +372,13 @@ const API_COMPONENTS: ComponentPlan[] = [
     modelProp: null,
     modelCoveredProps: [],
   },
+  {
+    name: 'Drawer',
+    specKey: 'drawerSpec',
+    reactSource: 'packages/react/src/components/drawer/Drawer.tsx',
+    modelProp: 'visible',
+    modelCoveredProps: ['defaultVisible'],
+  },
 ];
 
 interface MatrixRow {
