@@ -1817,13 +1817,14 @@
 .xui-cascader__checkbox-inner.is-checked::after {
   content: '';
   position: absolute;
-  left: 3px;
-  top: 0;
+  left: 50%;
+  top: 50%;
   width: 4px;
   height: 8px;
+  margin-left: -1px;
   border: solid #fff;
   border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
 .xui-cascader__checkbox-inner.is-indeterminate {
@@ -1834,11 +1835,12 @@
 .xui-cascader__checkbox-inner.is-indeterminate::after {
   content: '';
   position: absolute;
-  left: 2px;
-  top: 5px;
+  left: 50%;
+  top: 50%;
   width: 8px;
   height: 2px;
   background-color: #fff;
+  transform: translate(-50%, -50%);
 }
 
 .xui-cascader__footer {
@@ -3542,13 +3544,14 @@
 .xui-tree__checkbox-inner.is-checked::after {
   content: '';
   position: absolute;
-  left: 3px;
-  top: 0;
+  left: 50%;
+  top: 50%;
   width: 4px;
   height: 8px;
+  margin-left: -1px;
   border: solid #fff;
   border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
 .xui-tree__checkbox-inner.is-indeterminate {
@@ -3559,11 +3562,12 @@
 .xui-tree__checkbox-inner.is-indeterminate::after {
   content: '';
   position: absolute;
-  left: 2px;
-  top: 5px;
+  left: 50%;
+  top: 50%;
   width: 8px;
   height: 2px;
   background-color: #fff;
+  transform: translate(-50%, -50%);
 }
 
 .xui-tree__checkbox.is-disabled .xui-tree__checkbox-inner {
@@ -3784,13 +3788,14 @@
 .xui-tree-select__checkbox-inner.is-checked::after {
   content: '';
   position: absolute;
-  left: 3px;
-  top: 0;
+  left: 50%;
+  top: 50%;
   width: 4px;
   height: 8px;
+  margin-left: -1px;
   border: solid #fff;
   border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
 .xui-tree-select__checkbox-inner.is-indeterminate {
@@ -3801,11 +3806,12 @@
 .xui-tree-select__checkbox-inner.is-indeterminate::after {
   content: '';
   position: absolute;
-  left: 2px;
-  top: 5px;
+  left: 50%;
+  top: 50%;
   width: 8px;
   height: 2px;
   background-color: #fff;
+  transform: translate(-50%, -50%);
 }
 
 .xui-tree-select__checkbox.is-disabled .xui-tree-select__checkbox-inner {
