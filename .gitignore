@@ -53,3 +53,8 @@ coverage/
 .eslintcache
 *.ts.timestamp-*.mjs
 apps/docs/.vitepress/cache/
+
+# Playwright（视觉基线 e2e/visual.spec.ts-snapshots/ 需入库，勿整体忽略）
+test-results/
+playwright-report/
+blob-report/

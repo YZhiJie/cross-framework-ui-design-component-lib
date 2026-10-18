@@ -6,6 +6,7 @@
   "scripts": {
     "docs:gen": "tsx scripts/gen-component-docs.ts",
     "dev": "vitepress dev --port 5175",
+    "dev:e2e": "vitepress dev --port 4173 --strictPort",
     "build": "vitepress build",
     "preview": "vitepress preview --port 5176",
     "type-check": "vue-tsc --noEmit",
