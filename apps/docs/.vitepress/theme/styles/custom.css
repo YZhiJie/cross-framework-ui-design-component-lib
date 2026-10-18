@@ -71,6 +71,28 @@
   font-weight: 650;
 }
 
+/* VP markdown 列表样式会压过组件库（.vp-doc ul 特异性 0,1,1 > 组件类 0,1,0），
+ * demo 里的组件列表容器（Select 下拉、TreeSelect 树面板等）需显式还原 */
+.vp-doc ul[class*='xui-'],
+.vp-doc ol[class*='xui-'] {
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* 还原下拉面板自身的 4px 左内边距（上一条与组件 padding 简写冲突）；
+ * 用 ul. 前缀与上一条保持同特异性，靠书写顺序生效 */
+.vp-doc ul.xui-select__dropdown,
+.vp-doc ul.xui-tree-select__list,
+.vp-doc ul.xui-tree-select__children,
+.vp-doc ul.xui-dropdown__menu {
+  padding-left: 4px;
+}
+
+.vp-doc li[class*='xui-'] + li[class*='xui-'] {
+  margin-top: 0;
+}
+
 /* 组件页 h1 页头（下边框分隔 + 英文副名 / 分类标签） */
 .vp-doc h1 {
   padding-bottom: 20px;
