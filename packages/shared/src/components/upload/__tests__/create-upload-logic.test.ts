@@ -185,4 +185,140 @@ describe('createUploadLogic', () => {
     expect(logic.getState().fileList).toHaveLength(0);
     expect(requestUpload).not.toHaveBeenCalled();
   });
+
+  it('autoUpload=false 时文件 pending，submit 后才发起上传', async () => {
+    const requestUpload = vi.fn().mockResolvedValue({ url: 'http://x.com/a.txt' });
+    const logic = createUploadLogic({ action: '/upload', autoUpload: false, requestUpload });
+
+    await logic.selectFiles([makeFile()]);
+    expect(logic.getState().fileList[0].status).toBe('pending');
+    expect(requestUpload).not.toHaveBeenCalled();
+
+    logic.submit();
+    expect(requestUpload).toHaveBeenCalledTimes(1);
+    await new Promise((r) => setTimeout(r, 10));
+    expect(logic.getState().fileList[0].status).toBe('done');
+  });
+
+  it('submit 仅上传 pending 文件，disabled 时忽略', async () => {
+    const requestUpload = vi.fn().mockResolvedValue({ url: 'http://x.com/a.txt' });
+    const logic = createUploadLogic({ action: '/upload', autoUpload: false, requestUpload });
+
+    await logic.selectFiles([makeFile({ name: 'a.txt' }), makeFile({ name: 'b.txt' })]);
+    // 标记第一个为 done（模拟已上传），submit 只应上传第二个
+    const firstUid = logic.getState().fileList[0].uid;
+    logic.remove(firstUid);
+    await logic.selectFiles([makeFile({ name: 'c.txt' })]);
+    logic.submit();
+    expect(requestUpload).toHaveBeenCalledTimes(2);
+
+    const disabledLogic = createUploadLogic({
+      action: '/upload',
+      autoUpload: false,
+      requestUpload,
+      disabled: true,
+    });
+    disabledLogic.submit();
+    expect(requestUpload).toHaveBeenCalledTimes(2);
+  });
+
+  it('cancel 中断上传：状态变为 cancelled，速率信息清空', async () => {
+    let rejectUpload!: (err: unknown) => void;
+    const requestUpload = vi.fn().mockReturnValue(
+      new Promise<{ url: string }>((_resolve, reject) => {
+        rejectUpload = reject;
+      }),
+    );
+    const logic = createUploadLogic({ action: '/upload', requestUpload });
+
+    await logic.selectFiles([makeFile()]);
+    const uid = logic.getState().fileList[0].uid;
+    expect(logic.getState().fileList[0].status).toBe('uploading');
+
+    logic.cancel(uid);
+    // 模拟 XHR abort 触发的 AbortError 拒绝
+    rejectUpload(new DOMException('The user aborted a request.', 'AbortError'));
+    await new Promise((r) => setTimeout(r, 10));
+
+    const file = logic.getState().fileList[0];
+    expect(file.status).toBe('cancelled');
+    expect(file.speed).toBeUndefined();
+    expect(file.remainingTime).toBeUndefined();
+  });
+
+  it('cancel 对非 uploading 状态或未知 uid 忽略', async () => {
+    const requestUpload = vi.fn().mockResolvedValue({ url: 'http://x.com/a.txt' });
+    const logic = createUploadLogic({ action: '/upload', requestUpload });
+
+    await logic.selectFiles([makeFile()]);
+    await new Promise((r) => setTimeout(r, 10));
+    const uid = logic.getState().fileList[0].uid;
+    expect(logic.getState().fileList[0].status).toBe('done');
+
+    // done 状态取消无效
+    logic.cancel(uid);
+    expect(logic.getState().fileList[0].status).toBe('done');
+    // 未知 uid 不抛错
+    logic.cancel('not-exists');
+  });
+
+  it('move 排序交换文件顺序，越界与未知 uid 忽略', async () => {
+    const requestUpload = vi.fn().mockResolvedValue({});
+    const logic = createUploadLogic({ action: '/upload', autoUpload: false, requestUpload });
+
+    await logic.selectFiles([
+      makeFile({ name: 'a.txt' }),
+      makeFile({ name: 'b.txt' }),
+      makeFile({ name: 'c.txt' }),
+    ]);
+    const names = () => logic.getState().fileList.map((f) => f.name);
+    const uidOf = (i: number) => logic.getState().fileList[i].uid;
+
+    logic.move(uidOf(0), 1);
+    expect(names()).toEqual(['b.txt', 'a.txt', 'c.txt']);
+
+    logic.move(uidOf(2), -1);
+    expect(names()).toEqual(['b.txt', 'c.txt', 'a.txt']);
+
+    // 越界忽略
+    logic.move(uidOf(0), -1);
+    expect(names()).toEqual(['b.txt', 'c.txt', 'a.txt']);
+    logic.move(uidOf(2), 1);
+    expect(names()).toEqual(['b.txt', 'c.txt', 'a.txt']);
+    // 未知 uid 不抛错
+    logic.move('not-exists', 1);
+    expect(names()).toEqual(['b.txt', 'c.txt', 'a.txt']);
+  });
+
+  it('上传进度回调计算速率与剩余时间', async () => {
+    const nowSpy = vi.spyOn(Date, 'now');
+    let t = 1_000;
+    nowSpy.mockImplementation(() => t);
+
+    let resolveUpload!: (v: { url: string }) => void;
+    const requestUpload = vi.fn().mockImplementation((_f, { onProgress }) => {
+      // 第 1 秒：25%（256/1024 B）
+      onProgress(25);
+      // 第 3 秒：75%（2 秒传了 512B → 256B/s，剩余 256B → 1s）
+      t += 2_000;
+      onProgress(75);
+      // 保持悬置，断言中途进度后再手动解决
+      return new Promise<{ url: string }>((r) => {
+        resolveUpload = r;
+      });
+    });
+    const logic = createUploadLogic({ action: '/upload', requestUpload });
+
+    await logic.selectFiles([makeFile({ size: 1024 })]);
+    const file = logic.getState().fileList[0];
+    expect(file.percent).toBe(75);
+    expect(file.speed).toBe(256);
+    expect(file.remainingTime).toBe(1);
+
+    resolveUpload({ url: 'http://x.com/a.txt' });
+    await new Promise((r) => setTimeout(r, 10));
+    // 完成后速率信息清空
+    expect(logic.getState().fileList[0].speed).toBeUndefined();
+    nowSpy.mockRestore();
+  });
 });

@@ -5,6 +5,7 @@ import {
   genTimeColumn,
   isValidTimeString,
   parseTimeString,
+  snapToStep,
 } from '../create-time-picker-logic';
 
 describe('createTimePickerLogic', () => {
@@ -143,6 +144,17 @@ describe('createTimePickerLogic', () => {
     logic.updateOptions({ disabled: true });
     expect(logic.getState().open).toBe(false);
   });
+
+  it('退订后不再收到状态通知', () => {
+    const logic = createTimePickerLogic();
+    const listener = vi.fn();
+    const unsubscribe = logic.subscribe(listener);
+    logic.toggleOpen();
+    expect(listener).toHaveBeenCalledTimes(1);
+    unsubscribe();
+    logic.toggleOpen();
+    expect(listener).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe('time helpers', () => {
@@ -170,5 +182,14 @@ describe('time helpers', () => {
     expect(genTimeColumn(24, 1)).toHaveLength(24);
     expect(genTimeColumn(60, 15)).toEqual([0, 15, 30, 45]);
     expect(genTimeColumn(24, 0)).toHaveLength(24); // step<=1 回退 1
+  });
+
+  it('snapToStep 规整到最近步长值并钳制边界', () => {
+    expect(snapToStep(7, 15, 60)).toBe(0); // 7 距 0 更近
+    expect(snapToStep(8, 15, 60)).toBe(15); // 8 距 15 更近
+    expect(snapToStep(37, 15, 60)).toBe(30);
+    expect(snapToStep(59, 15, 60)).toBe(59); // 钳制到 max-1
+    expect(snapToStep(23, 1, 24)).toBe(23);
+    expect(snapToStep(5, 0, 24)).toBe(5); // step<=1 回退 1
   });
 });

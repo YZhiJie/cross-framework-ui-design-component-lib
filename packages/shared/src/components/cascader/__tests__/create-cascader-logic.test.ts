@@ -143,6 +143,78 @@ describe('createCascaderLogic', () => {
     logic.select(0, 'zj');
     expect(logic.getState().value).toBeNull();
   });
+
+  it('多选 select 叶子节点切换勾选，非叶子仅展开子列', () => {
+    const onChange = vi.fn();
+    const logic = createCascaderLogic({ options, multiple: true, onChange });
+    logic.toggleOpen();
+
+    // 非叶子：仅展开，不勾选（未勾选任何项时 value 保持 null）
+    logic.select(0, 'zj');
+    expect(logic.getState().activePath).toEqual(['zj']);
+    expect(logic.getState().value).toBeNull();
+    logic.select(1, 'hz');
+    expect(logic.getState().activePath).toEqual(['zj', 'hz']);
+    expect(logic.getState().value).toBeNull();
+
+    // 叶子：勾选
+    logic.select(2, 'xh');
+    expect(logic.getState().value).toEqual([['zj', 'hz', 'xh']]);
+    expect(onChange).toHaveBeenCalledWith([['zj', 'hz', 'xh']], [['浙江', '杭州', '西湖区']]);
+
+    // 再次点击同一叶子：取消勾选
+    logic.select(2, 'xh');
+    expect(logic.getState().value).toEqual([]);
+  });
+
+  it('多选 checkStrictly 模式下 select 任意层级均切换勾选', () => {
+    const logic = createCascaderLogic({ options, multiple: true, checkStrictly: true });
+    logic.toggleOpen();
+    // 非叶子也可勾选
+    logic.select(0, 'zj');
+    expect(logic.getState().value).toEqual([['zj']]);
+    // 取消
+    logic.select(0, 'zj');
+    expect(logic.getState().value).toEqual([]);
+  });
+
+  it('多选 clear 清空所有勾选并触发 onChange 与 onClear', () => {
+    const onChange = vi.fn();
+    const onClear = vi.fn();
+    const logic = createCascaderLogic({
+      options,
+      multiple: true,
+      defaultValue: [
+        ['zj', 'hz', 'xh'],
+        ['zj', 'nb'],
+      ],
+      onChange,
+      onClear,
+    });
+    logic.clear();
+    expect(logic.getState().value).toEqual([]);
+    expect(logic.getState().activePath).toEqual([]);
+    expect(onChange).toHaveBeenCalledWith([], []);
+    expect(onClear).toHaveBeenCalledTimes(1);
+  });
+
+  it('多选受控模式 clear 仅回调不更新内部值', () => {
+    const onChange = vi.fn();
+    const value: string[][] = [['zj', 'hz', 'xh']];
+    const logic = createCascaderLogic({ options, multiple: true, value, onChange });
+    logic.clear();
+    expect(logic.getState().value).toEqual([['zj', 'hz', 'xh']]);
+    expect(onChange).toHaveBeenCalledWith([], []);
+  });
+
+  it('多选 clear 空值时提前返回不触发回调', () => {
+    const onChange = vi.fn();
+    const onClear = vi.fn();
+    const logic = createCascaderLogic({ options, multiple: true, onChange, onClear });
+    logic.clear();
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onClear).not.toHaveBeenCalled();
+  });
 });
 
 describe('cascader helpers', () => {

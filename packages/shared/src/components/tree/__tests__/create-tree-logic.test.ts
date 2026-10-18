@@ -126,6 +126,45 @@ describe('createTreeLogic - 展开/收起', () => {
     expect(logic.getState().expandedKeys).toEqual([]);
     expect(onExpand).not.toHaveBeenCalled();
   });
+
+  it('expandAll 展开全部非叶子节点并触发 onExpand', () => {
+    const onExpand = vi.fn();
+    const logic = createTreeLogic({ data, onExpand });
+    logic.expandAll();
+    expect(logic.getState().expandedKeys).toEqual(['a', 'a-2']);
+    expect(onExpand).toHaveBeenCalledWith(['a', 'a-2'], { key: '', expanded: true });
+  });
+
+  it('collapseAll 收起全部节点并触发 onExpand', () => {
+    const onExpand = vi.fn();
+    const logic = createTreeLogic({ data, defaultExpandAll: true, onExpand });
+    expect(logic.getState().expandedKeys).toEqual(['a', 'a-2']);
+    logic.collapseAll();
+    expect(logic.getState().expandedKeys).toEqual([]);
+    expect(onExpand).toHaveBeenCalledWith([], { key: '', expanded: false });
+  });
+
+  it('受控 expandedKeys：expandAll/collapseAll 仅回调不更新内部状态', () => {
+    const onExpand = vi.fn();
+    const logic = createTreeLogic({ data, expandedKeys: [], onExpand });
+    logic.expandAll();
+    expect(logic.getState().expandedKeys).toEqual([]);
+    expect(onExpand).toHaveBeenCalledWith(['a', 'a-2'], { key: '', expanded: true });
+
+    logic.updateOptions({ expandedKeys: ['a', 'a-2'] });
+    logic.collapseAll();
+    expect(logic.getState().expandedKeys).toEqual(['a', 'a-2']);
+    expect(onExpand).toHaveBeenCalledWith([], { key: '', expanded: false });
+  });
+
+  it('disabled 时 expandAll/collapseAll 忽略', () => {
+    const onExpand = vi.fn();
+    const logic = createTreeLogic({ data, disabled: true, onExpand });
+    logic.expandAll();
+    logic.collapseAll();
+    expect(logic.getState().expandedKeys).toEqual([]);
+    expect(onExpand).not.toHaveBeenCalled();
+  });
 });
 
 describe('createTreeLogic - 勾选（父子联动）', () => {
@@ -213,6 +252,15 @@ describe('createTreeLogic - 勾选（checkStrictly）', () => {
     expect(onCheck).toHaveBeenCalledWith(['a'], { key: 'a', checked: true });
     // 父级状态仅看自身，不做后代推导
     expect(logic.getCheckState('a')).toEqual({ checked: true, indeterminate: false });
+  });
+
+  it('checkStrictly 模式 checkAll 勾选全部非禁用节点（含非叶子）', () => {
+    const logic = createTreeLogic({ data, checkable: true, checkStrictly: true });
+    logic.checkAll();
+    // 禁用节点 a-2-2 被排除，其余全部勾选
+    expect(logic.getState().checkedKeys).toEqual(['a', 'a-1', 'a-2', 'a-2-1', 'b']);
+    logic.uncheckAll();
+    expect(logic.getState().checkedKeys).toEqual([]);
   });
 });
 

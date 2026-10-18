@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { resolveFloatingPosition } from '../resolve-floating-position';
+import { getViewport, resolveFloatingPosition } from '../resolve-floating-position';
 import type { FloatingRect, FloatingViewport } from '../resolve-floating-position';
 
 /** 构造视口坐标矩形 */
@@ -103,5 +103,11 @@ describe('resolveFloatingPosition', () => {
     expect(
       resolveFloatingPosition(trigger, popper, viewport, { placement: 'top', gap: 20 }).placement,
     ).toBe('bottom');
+  });
+});
+
+describe('getViewport', () => {
+  it('无 window 环境（SSR）降级为零矩形', () => {
+    expect(getViewport()).toEqual({ top: 0, right: 0, bottom: 0, left: 0 });
   });
 });
