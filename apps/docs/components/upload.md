@@ -17,6 +17,7 @@ title: 文件上传 Upload
 - 上传中可取消（cancel），状态变为 cancelled；列表项支持上移/下移排序
 - 上传中实时显示进度百分比、上传速率（KB/s、MB/s）与预估剩余时间
 - 完整状态机：pending / uploading / done / error / cancelled
+- drag 开启拖拽上传形态：虚线 dropzone 支持拖入文件与点击选择，悬停高亮
 
 ### 使用场景
 
@@ -43,6 +44,12 @@ listType="picture" 展示缩略图；beforeUpload 仅允许图片；maxCount 限
 autoUpload=false 时文件进入待上传状态，可手动开始上传；上传中可取消、可排序，实时显示速率与剩余时间。
 
 <ComponentDemo slug="upload" demo-id="manual" />
+
+### 拖拽上传
+
+drag 开启拖拽形态：虚线 dropzone 支持拖入文件与点击选择，悬停时高亮；accept 与多选约束同样生效。
+
+<ComponentDemo slug="upload" demo-id="drag" />
 
 ## API 文档
 

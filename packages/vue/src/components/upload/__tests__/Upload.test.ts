@@ -78,4 +78,30 @@ describe('Upload (Vue)', () => {
     });
     expect(wrapper.text()).toContain('controlled.txt');
   });
+
+  it('drag 形态：drop 事件收集文件并高亮悬停态', async () => {
+    const requestUpload = vi.fn().mockResolvedValue({});
+    const wrapper = mount(Upload, {
+      props: { action: '/upload', requestUpload, drag: true, autoUpload: false },
+    });
+    const dropzone = wrapper.find('.xui-upload__drag');
+    expect(dropzone.exists()).toBe(true);
+
+    const file = new File(['a'], 'dropped.txt', { type: 'text/plain' });
+    await dropzone.trigger('dragenter', {});
+    expect(dropzone.classes()).toContain('is-dragover');
+
+    await dropzone.trigger('drop', { dataTransfer: { files: [file] } });
+    expect(wrapper.find('.xui-upload__drag').classes()).not.toContain('is-dragover');
+    expect(wrapper.text()).toContain('dropped.txt');
+  });
+
+  it('drag 形态：默认文案与自定义 trigger 插槽', () => {
+    const wrapper = mount(Upload, {
+      props: { action: '/upload' },
+      slots: { trigger: '<div class="my-trigger">自定义</div>' },
+    });
+    expect(wrapper.find('.xui-upload__drag').exists()).toBe(false);
+    expect(wrapper.find('.my-trigger').exists()).toBe(true);
+  });
 });

@@ -8,7 +8,7 @@
  */
 
 import { useEffect, useImperativeHandle, useRef } from 'react';
-import type { CSSProperties, ReactNode, Ref } from 'react';
+import type { CSSProperties, DragEvent, ReactNode, Ref } from 'react';
 import type { UploadFile, UploadProps } from '@xui-design/core';
 import { createUploadLogic } from '@xui-design/shared';
 import type { UploadLogicInstance } from '@xui-design/shared';
@@ -57,6 +57,7 @@ export function Upload(props: UploadComponentProps) {
     maxCount,
     maxSize,
     listType = 'text',
+    drag = false,
     autoUpload = true,
     requestUpload,
     beforeUpload,
@@ -125,6 +126,28 @@ export function Upload(props: UploadComponentProps) {
     inputRef.current?.click();
   };
 
+  // 拖拽计数器：子元素间移动会触发 dragleave，计数归零才撤销高亮
+  const dragEnterCount = useRef(0);
+
+  const handleDragEnter = () => {
+    dragEnterCount.current += 1;
+    logic.setDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    dragEnterCount.current = Math.max(0, dragEnterCount.current - 1);
+    if (dragEnterCount.current === 0) logic.setDragOver(false);
+  };
+
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    dragEnterCount.current = 0;
+    logic.setDragOver(false);
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      logic.selectFiles(files);
+    }
+  };
+
   const hasPending = state.fileList.some((f) => f.status === 'pending');
 
   return (
@@ -140,7 +163,44 @@ export function Upload(props: UploadComponentProps) {
         onChange={handleInputChange}
       />
       <div className="xui-upload__actions">
-        {renderTrigger ? (
+        {drag ? (
+          <div
+            className={cn('xui-upload__drag', {
+              'is-disabled': state.disabled,
+              'is-dragover': state.dragOver,
+            })}
+            role="button"
+            aria-disabled={state.disabled || undefined}
+            aria-label={state.dragOver ? 'release to upload' : 'drag file here'}
+            onClick={handleTriggerClick}
+            onDragEnter={(event) => {
+              event.preventDefault();
+              handleDragEnter();
+            }}
+            onDragOver={(event) => event.preventDefault()}
+            onDragLeave={(event) => {
+              event.preventDefault();
+              handleDragLeave();
+            }}
+            onDrop={(event) => {
+              event.preventDefault();
+              handleDrop(event);
+            }}
+          >
+            {renderTrigger ? (
+              renderTrigger()
+            ) : (
+              <>
+                <span className="xui-upload__drag-icon" aria-hidden="true">
+                  ⇪
+                </span>
+                <span className="xui-upload__drag-text">
+                  {state.dragOver ? '松开即可上传' : '拖拽文件到此处，或点击上传'}
+                </span>
+              </>
+            )}
+          </div>
+        ) : renderTrigger ? (
           renderTrigger()
         ) : (
           <button

@@ -70,6 +70,8 @@ export type UploadProps = {
   maxSize?: number;
   /** 文件列表展示样式 */
   listType?: 'text' | 'picture';
+  /** 拖拽上传形态（渲染虚线 dropzone，支持拖入文件与点击选择） */
+  drag?: boolean;
   /** 是否自动上传（默认 true；false 时文件进入 pending，由 submit() 手动触发） */
   autoUpload?: boolean;
   /** 自定义上传请求（覆盖默认 XMLHttpRequest 实现） */
@@ -109,11 +111,13 @@ export type UploadState = {
   /** 当前文件列表 */
   fileList: UploadFile[];
   disabled: boolean;
+  /** 拖拽悬停中（drag 形态下 dropzone 高亮） */
+  dragOver: boolean;
 };
 
 /** Upload 逻辑实例 */
 export type UploadLogic = LogicInstance<UploadProps, UploadState> & {
-  /** 选中文件（由适配层从 input change 事件传入） */
+  /** 选中文件（由适配层从 input change / drop 事件传入） */
   selectFiles: (files: FileList | File[]) => void;
   /** 删除文件 */
   remove: (uid: string) => void;
@@ -125,4 +129,6 @@ export type UploadLogic = LogicInstance<UploadProps, UploadState> & {
   cancel: (uid: string) => void;
   /** 移动文件顺序（direction: -1 上移 / 1 下移） */
   move: (uid: string, direction: -1 | 1) => void;
+  /** 更新拖拽悬停状态（drop / dragleave 归位；disabled 恒为 false） */
+  setDragOver: (value: boolean) => void;
 };

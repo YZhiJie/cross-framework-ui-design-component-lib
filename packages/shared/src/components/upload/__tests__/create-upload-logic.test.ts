@@ -19,6 +19,18 @@ describe('createUploadLogic', () => {
     expect(logic.getState().fileList).toEqual([]);
   });
 
+  it('setDragOver 管理拖拽悬停态，disabled 恒为 false', () => {
+    const logic = createUploadLogic({ action: '/upload' });
+    expect(logic.getState().dragOver).toBe(false);
+    logic.setDragOver(true);
+    expect(logic.getState().dragOver).toBe(true);
+    logic.setDragOver(false);
+    expect(logic.getState().dragOver).toBe(false);
+    logic.updateOptions({ disabled: true });
+    logic.setDragOver(true);
+    expect(logic.getState().dragOver).toBe(false);
+  });
+
   it('selectFiles 添加文件并进入 uploading 状态', async () => {
     let resolveUpload!: (v: { url: string }) => void;
     const requestUpload = vi.fn().mockReturnValue(

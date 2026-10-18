@@ -17,6 +17,7 @@ Select and upload files by clicking; supports multiple files, count / size limit
 - In-progress uploads can be cancelled (status becomes cancelled); list items support move up / down ordering
 - Displays real-time progress percentage, upload speed (KB/s, MB/s), and estimated remaining time during upload
 - Full state machine: pending / uploading / done / error / cancelled
+- drag enables the drag-and-drop style: a dashed dropzone accepting dropped files and clicks, highlighted on hover
 
 ### When to Use
 
@@ -43,6 +44,12 @@ listType="picture" shows thumbnails; beforeUpload allows only images; maxCount l
 With autoUpload=false files stay pending until manually started; in-progress uploads can be cancelled and reordered, with real-time speed and remaining time displayed.
 
 <ComponentDemo slug="upload" demo-id="manual" />
+
+### Drag &amp; Drop
+
+With drag enabled the dashed dropzone accepts dropped files and clicks, highlighted on hover; accept and multiple constraints still apply.
+
+<ComponentDemo slug="upload" demo-id="drag" />
 
 ## API
 

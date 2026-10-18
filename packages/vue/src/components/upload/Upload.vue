@@ -11,6 +11,7 @@ const props = withDefaults(defineProps<Omit<UploadProps, 'onChange' | 'onRemove'
   maxCount: undefined,
   maxSize: undefined,
   listType: 'text',
+  drag: false,
   autoUpload: true,
   requestUpload: undefined,
   beforeUpload: undefined,
@@ -71,6 +72,28 @@ const handleInputChange = (event: Event) => {
   input.value = '';
 };
 
+// 拖拽计数器：子元素间移动会触发 dragleave，计数归零才撤销高亮
+let dragEnterCount = 0;
+
+const handleDragEnter = () => {
+  dragEnterCount += 1;
+  logic.setDragOver(true);
+};
+
+const handleDragLeave = () => {
+  dragEnterCount = Math.max(0, dragEnterCount - 1);
+  if (dragEnterCount === 0) logic.setDragOver(false);
+};
+
+const handleDrop = (event: DragEvent) => {
+  dragEnterCount = 0;
+  logic.setDragOver(false);
+  const files = event.dataTransfer?.files;
+  if (files && files.length > 0) {
+    logic.selectFiles(files);
+  }
+};
+
 const open = () => {
   inputRef.value?.click();
 };
@@ -122,17 +145,40 @@ defineExpose({ open, clear, submit });
       @change="handleInputChange"
     />
     <div class="xui-upload__actions">
-      <slot name="trigger">
-        <button
-          type="button"
-          class="xui-upload__trigger"
-          :class="{ 'is-disabled': state.disabled }"
-          :disabled="state.disabled"
-          @click="open"
-        >
-          + 点击上传
-        </button>
-      </slot>
+      <!-- 拖拽形态：虚线 dropzone（点击选择 + 拖入上传） -->
+      <div
+        v-if="props.drag"
+        class="xui-upload__drag"
+        :class="{ 'is-disabled': state.disabled, 'is-dragover': state.dragOver }"
+        role="button"
+        :aria-disabled="state.disabled || undefined"
+        :aria-label="state.dragOver ? 'release to upload' : 'drag file here'"
+        @click="open"
+        @dragenter.prevent="handleDragEnter"
+        @dragover.prevent
+        @dragleave.prevent="handleDragLeave"
+        @drop.prevent="handleDrop"
+      >
+        <slot name="trigger">
+          <span class="xui-upload__drag-icon" aria-hidden="true">⇪</span>
+          <span class="xui-upload__drag-text">
+            {{ state.dragOver ? '松开即可上传' : '拖拽文件到此处，或点击上传' }}
+          </span>
+        </slot>
+      </div>
+      <template v-else>
+        <slot name="trigger">
+          <button
+            type="button"
+            class="xui-upload__trigger"
+            :class="{ 'is-disabled': state.disabled }"
+            :disabled="state.disabled"
+            @click="open"
+          >
+            + 点击上传
+          </button>
+        </slot>
+      </template>
       <!-- 手动上传按钮（autoUpload=false 时显示） -->
       <button
         v-if="!props.autoUpload && hasPending"

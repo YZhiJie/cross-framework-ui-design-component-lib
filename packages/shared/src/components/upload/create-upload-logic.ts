@@ -74,6 +74,8 @@ export type UploadLogicOptions = {
 export type UploadState = {
   fileList: UploadFile[];
   disabled: boolean;
+  /** 拖拽悬停中（drag 适配层渲染高亮用） */
+  dragOver: boolean;
 };
 
 /** Upload 逻辑实例 */
@@ -84,6 +86,8 @@ export interface UploadLogicInstance extends LogicInstance<UploadLogicOptions, U
   submit: () => void;
   cancel: (uid: string) => void;
   move: (uid: string, direction: -1 | 1) => void;
+  /** 更新拖拽悬停状态（drop / dragleave 归位；disabled 恒为 false） */
+  setDragOver: (value: boolean) => void;
 }
 
 /** 生成唯一 uid */
@@ -184,6 +188,7 @@ export function createUploadLogic(options: UploadLogicOptions): UploadLogicInsta
         ? [...options.defaultValue]
         : [],
     disabled: options.disabled ?? false,
+    dragOver: false,
   };
 
   let onChange = options.onChange;
@@ -304,12 +309,23 @@ export function createUploadLogic(options: UploadLogicOptions): UploadLogicInsta
 
     getState: () => ({ ...state, fileList: [...state.fileList] }),
 
+    setDragOver(value) {
+      const next = value && !state.disabled;
+      if (state.dragOver === next) return;
+      state.dragOver = next;
+      notify();
+    },
+
     updateOptions(next) {
       let changed = false;
 
       const nextDisabled = next.disabled ?? state.disabled;
       if (nextDisabled !== state.disabled) {
         state.disabled = nextDisabled;
+        // 运行时禁用归位拖拽悬停态
+        if (nextDisabled && state.dragOver) {
+          state.dragOver = false;
+        }
         changed = true;
       }
 

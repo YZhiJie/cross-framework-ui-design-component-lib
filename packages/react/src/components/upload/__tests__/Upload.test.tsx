@@ -88,4 +88,28 @@ describe('Upload (React)', () => {
     render(<Upload action="/upload" requestUpload={requestUpload} value={controlled} />);
     expect(screen.getByText('controlled.txt')).toBeInTheDocument();
   });
+
+  it('drag 形态：drop 事件收集文件并高亮悬停态', async () => {
+    const requestUpload = vi.fn().mockResolvedValue({});
+    const { container } = render(
+      <Upload action="/upload" requestUpload={requestUpload} drag autoUpload={false} />,
+    );
+    const dropzone = container.querySelector('.xui-upload__drag')!;
+    expect(dropzone).not.toBeNull();
+
+    const file = new File(['a'], 'dropped.txt', { type: 'text/plain' });
+    fireEvent.dragEnter(dropzone);
+    expect(dropzone.className).toContain('is-dragover');
+
+    fireEvent.drop(dropzone, { dataTransfer: { files: [file] } });
+    await new Promise((r) => setTimeout(r, 20));
+    expect(container.querySelector('.xui-upload__drag')!.className).not.toContain('is-dragover');
+    expect(screen.getByText('dropped.txt')).toBeInTheDocument();
+  });
+
+  it('非 drag 形态不渲染 dropzone', () => {
+    const requestUpload = vi.fn().mockResolvedValue({});
+    const { container } = render(<Upload action="/upload" requestUpload={requestUpload} />);
+    expect(container.querySelector('.xui-upload__drag')).toBeNull();
+  });
 });

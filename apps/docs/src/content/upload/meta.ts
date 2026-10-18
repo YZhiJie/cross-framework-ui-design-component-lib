@@ -3,16 +3,20 @@ import type { ComponentMeta } from '../types';
 import BasicVue from './demos/basic.vue';
 import StateVue from './demos/state.vue';
 import ManualVue from './demos/manual.vue';
+import DragVue from './demos/drag.vue';
 import BasicReact from './demos/basic';
 import StateReact from './demos/state';
 import ManualReact from './demos/manual';
+import DragReact from './demos/drag';
 
 import basicVueSource from './demos/basic.vue?raw';
 import stateVueSource from './demos/state.vue?raw';
 import manualVueSource from './demos/manual.vue?raw';
+import dragVueSource from './demos/drag.vue?raw';
 import basicReactSource from './demos/basic.tsx?raw';
 import stateReactSource from './demos/state.tsx?raw';
 import manualReactSource from './demos/manual.tsx?raw';
+import dragReactSource from './demos/drag.tsx?raw';
 
 export const uploadMeta: ComponentMeta = {
   name: 'Upload',
@@ -70,6 +74,11 @@ export const uploadMeta: ComponentMeta = {
       'zh-CN': '完整状态机：pending / uploading / done / error / cancelled',
       'en-US': 'Full state machine: pending / uploading / done / error / cancelled',
     },
+    {
+      'zh-CN': 'drag 开启拖拽上传形态：虚线 dropzone 支持拖入文件与点击选择，悬停高亮',
+      'en-US':
+        'drag enables the drag-and-drop style: a dashed dropzone accepting dropped files and clicks, highlighted on hover',
+    },
   ],
   scenarios: [
     {
@@ -120,6 +129,20 @@ export const uploadMeta: ComponentMeta = {
       reactComponent: ManualReact,
       vueSource: manualVueSource,
       reactSource: manualReactSource,
+    },
+    {
+      id: 'drag',
+      title: { 'zh-CN': '拖拽上传', 'en-US': 'Drag & Drop' },
+      description: {
+        'zh-CN':
+          'drag 开启拖拽形态：虚线 dropzone 支持拖入文件与点击选择，悬停时高亮；accept 与多选约束同样生效。',
+        'en-US':
+          'With drag enabled the dashed dropzone accepts dropped files and clicks, highlighted on hover; accept and multiple constraints still apply.',
+      },
+      vueComponent: DragVue,
+      reactComponent: DragReact,
+      vueSource: dragVueSource,
+      reactSource: dragReactSource,
     },
   ],
   api: {
@@ -177,6 +200,16 @@ export const uploadMeta: ComponentMeta = {
         description: {
           'zh-CN': '文件列表展示样式',
           'en-US': 'File list display style',
+        },
+      },
+      {
+        name: 'drag',
+        type: 'boolean',
+        default: 'false',
+        description: {
+          'zh-CN': '拖拽上传形态：渲染虚线 dropzone，支持拖入文件与点击选择，悬停时高亮',
+          'en-US':
+            'Drag style: renders a dashed dropzone accepting dropped files and clicks, highlighted on hover',
         },
       },
       {
