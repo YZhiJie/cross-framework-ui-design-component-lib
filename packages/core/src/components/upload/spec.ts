@@ -21,6 +21,7 @@ export const uploadSpec = {
       maxCount: Number,
       maxSize: Number,
       listType: String,
+      autoUpload: Boolean,
       requestUpload: Function,
       beforeUpload: Function,
       value: Array,
@@ -34,6 +35,7 @@ export const uploadSpec = {
       multiple: false,
       disabled: false,
       listType: 'text',
+      autoUpload: true,
     },
   },
   events: {
@@ -52,6 +54,7 @@ export const uploadSpec = {
       maxCount: props.maxCount,
       maxSize: props.maxSize,
       listType: props.listType,
+      autoUpload: props.autoUpload,
       requestUpload: props.requestUpload,
       beforeUpload: props.beforeUpload,
       value: props.value,

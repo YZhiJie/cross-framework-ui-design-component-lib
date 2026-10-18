@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, useId, useTemplateRef, watchEffect } from 'vue';
-import { createCascaderLogic, getColumnsByPath, resolvePath } from '@xui-design/shared';
+import {
+  createCascaderLogic,
+  getColumnsByPath,
+  getPathCheckState,
+  resolvePath,
+} from '@xui-design/shared';
 import type { CascaderOption } from '@xui-design/shared';
 import { icons } from '@xui-design/icons';
 import { useLocaleData } from '../../hooks/use-locale';
@@ -84,7 +89,8 @@ const columns = computed(() => getColumnsByPath(props.options, state.value.activ
 // 单选：选中路径的展示文案
 const displayLabel = computed(() =>
   !props.multiple && state.value.value
-    ? (resolvePath(props.options, state.value.value as string[])?.labels.join(props.separator) ?? null)
+    ? (resolvePath(props.options, state.value.value as string[])?.labels.join(props.separator) ??
+      null)
     : null,
 );
 
@@ -95,9 +101,7 @@ const checkedTags = computed(() => {
   return paths
     .map((path) => {
       const resolved = resolvePath(props.options, path);
-      return resolved
-        ? { path, label: resolved.labels.join(props.separator) }
-        : null;
+      return resolved ? { path, label: resolved.labels.join(props.separator) } : null;
     })
     .filter(Boolean) as { path: string[]; label: string }[];
 });
@@ -112,37 +116,28 @@ const hasValue = computed(() => {
 
 const locale = useLocaleData();
 
-/** 判断某选项路径是否被勾选 */
+/** 判断某选项路径是否被勾选（父级由后代叶子全选推导） */
 const isOptionChecked = (level: number, option: CascaderOption): boolean => {
   if (!props.multiple) return false;
   const path = [...state.value.activePath.slice(0, level), option.value];
-  const checked = (state.value.value as string[][]) ?? [];
-  return checked.some((p) => p.length === path.length && p.every((v, i) => v === path[i]));
+  return getPathCheckState(
+    props.options,
+    state.value.value as string[][],
+    path,
+    props.checkStrictly,
+  ).checked;
 };
 
-/** 判断某选项是否半选（部分后代被勾选） */
+/** 判断某选项是否半选（部分后代叶子被勾选） */
 const isOptionIndeterminate = (level: number, option: CascaderOption): boolean => {
-  if (!props.multiple || option.children?.length) {
-    return false;
-  }
-  // 简化：非叶子节点若部分后代勾选则半选
+  if (!props.multiple) return false;
   const path = [...state.value.activePath.slice(0, level), option.value];
-  const checked = (state.value.value as string[][]) ?? [];
-  const descendantKeys = new Set<string>();
-  const collect = (opts: CascaderOption[], prefix: string[]) => {
-    for (const o of opts) {
-      const p = [...prefix, o.value];
-      if (!o.children || o.children.length === 0) {
-        descendantKeys.add(p.join('/'));
-      } else {
-        collect(o.children, p);
-      }
-    }
-  };
-  if (option.children) collect(option.children, path);
-  if (descendantKeys.size === 0) return false;
-  const checkedCount = checked.filter((p) => descendantKeys.has(p.join('/'))).length;
-  return checkedCount > 0 && checkedCount < descendantKeys.size;
+  return getPathCheckState(
+    props.options,
+    state.value.value as string[][],
+    path,
+    props.checkStrictly,
+  ).indeterminate;
 };
 
 /** 删除多选标签 */
@@ -185,7 +180,10 @@ defineExpose({ focus, toggleOpen, close });
   <div
     ref="root"
     class="xui-cascader"
-    :class="[className, { 'is-disabled': state.disabled, 'is-open': state.open, 'is-multiple': props.multiple }]"
+    :class="[
+      className,
+      { 'is-disabled': state.disabled, 'is-open': state.open, 'is-multiple': props.multiple },
+    ]"
     :style="style"
   >
     <div
@@ -214,7 +212,8 @@ defineExpose({ focus, toggleOpen, close });
               role="button"
               aria-label="remove"
               @click.stop="removeTag(tag.path)"
-            >×</span>
+              >×</span
+            >
           </span>
         </span>
       </template>
@@ -302,7 +301,10 @@ defineExpose({ focus, toggleOpen, close });
             <span v-if="props.multiple" class="xui-cascader__checkbox" aria-hidden="true">
               <span
                 class="xui-cascader__checkbox-inner"
-                :class="{ 'is-checked': isOptionChecked(level, option), 'is-indeterminate': isOptionIndeterminate(level, option) }"
+                :class="{
+                  'is-checked': isOptionChecked(level, option),
+                  'is-indeterminate': isOptionIndeterminate(level, option),
+                }"
               />
             </span>
             <span class="xui-cascader__item-label">{{ option.label }}</span>
@@ -328,8 +330,12 @@ defineExpose({ focus, toggleOpen, close });
       </div>
       <!-- 多选底部操作栏 -->
       <div v-if="props.multiple" class="xui-cascader__footer">
-        <button type="button" class="xui-cascader__footer-btn" @click="logic.checkAll()">全选</button>
-        <button type="button" class="xui-cascader__footer-btn" @click="logic.uncheckAll()">清空</button>
+        <button type="button" class="xui-cascader__footer-btn" @click="logic.checkAll()">
+          全选
+        </button>
+        <button type="button" class="xui-cascader__footer-btn" @click="logic.uncheckAll()">
+          清空
+        </button>
       </div>
     </div>
   </div>

@@ -60,6 +60,8 @@ export type TimePickerSlots = {
 export type TimePickerState = {
   /** 当前选中时间（'HH:mm:ss'，null 表示未选中；非法输入回退 null） */
   value: string | null;
+  /** 面板内待确认的草稿时间（打开面板时从 value 拷贝，confirm 提交，close 丢弃） */
+  draft: string | null;
   /** 面板展开状态 */
   open: boolean;
   disabled: boolean;
@@ -67,12 +69,14 @@ export type TimePickerState = {
 
 /** TimePicker 逻辑实例（通用接口 + 交互方法） */
 export type TimePickerLogic = LogicInstance<TimePickerProps, TimePickerState> & {
-  /** 展开 / 收起面板（disabled 时忽略） */
+  /** 展开 / 收起面板（disabled 时忽略）；展开时草稿从 value 拷贝，收起时丢弃草稿 */
   toggleOpen: () => void;
-  /** 收起面板 */
+  /** 收起面板并丢弃未确认的草稿（取消按钮 / 外部点击 / Esc 同路径） */
   close: () => void;
-  /** 选中时间：非法值忽略；非受控更新 value；受控仅回调；选中后收起面板 */
-  select: (hour: number, minute: number, second: number) => void;
+  /** 更新面板内草稿：非法值忽略；仅更新 draft，不收起面板、不触发 onChange */
+  selectDraft: (hour: number, minute: number, second: number) => void;
+  /** 确认草稿：草稿合法且与 value 不同时提交（非受控更新 value，触发 onChange），随后收起面板 */
+  confirm: () => void;
   /** 清空选中值（非受控置 null，始终触发 onClear） */
   clear: () => void;
 };

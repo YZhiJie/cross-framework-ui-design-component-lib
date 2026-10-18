@@ -89,4 +89,62 @@ describe('Cascader (vue)', () => {
     await wrapper.find('.xui-cascader__clear').trigger('click');
     expect(wrapper.emitted('clear')).toHaveLength(1);
   });
+
+  it('多选：父级勾选态由子级推导（全选勾选 / 部分半选）', async () => {
+    const wrapper = mount(Cascader, { props: { options, multiple: true } });
+    const checkboxOf = (col: number, idx: number) =>
+      wrapper
+        .findAll('.xui-cascader__column')
+        [col].findAll('.xui-cascader__item')
+        [idx].find('.xui-cascader__checkbox-inner');
+    const itemOf = (col: number, idx: number) =>
+      wrapper.findAll('.xui-cascader__column')[col].findAll('.xui-cascader__item')[idx];
+
+    await wrapper.find('.xui-cascader__trigger').trigger('click');
+    // 逐级展开：浙江 → 杭州
+    await itemOf(0, 0).trigger('click');
+    await itemOf(1, 0).trigger('click');
+    // 勾选西湖区：杭州部分子级选中 → 半选；浙江半选
+    await itemOf(2, 0).trigger('click');
+    expect(checkboxOf(1, 0).classes()).toContain('is-indeterminate');
+    expect(checkboxOf(0, 0).classes()).toContain('is-indeterminate');
+    // 勾选余杭区：杭州子级全选 → 勾选；浙江仍半选（宁波未选）
+    await itemOf(2, 1).trigger('click');
+    expect(checkboxOf(1, 0).classes()).toContain('is-checked');
+    expect(checkboxOf(1, 0).classes()).not.toContain('is-indeterminate');
+    expect(checkboxOf(0, 0).classes()).toContain('is-indeterminate');
+    // 勾选宁波：浙江后代叶子全选 → 勾选
+    await itemOf(1, 1).trigger('click');
+    expect(checkboxOf(0, 0).classes()).toContain('is-checked');
+    expect(checkboxOf(0, 0).classes()).not.toContain('is-indeterminate');
+  });
+
+  it('多选：存在未勾选的禁用子级时父级显示半选而非全选', async () => {
+    const tree = [
+      {
+        label: '华北',
+        value: 'north',
+        children: [
+          { label: '北京', value: 'beijing' },
+          { label: '天津', value: 'tianjin', disabled: true },
+        ],
+      },
+    ];
+    const wrapper = mount(Cascader, { props: { options: tree, multiple: true } });
+    await wrapper.find('.xui-cascader__trigger').trigger('click');
+    // 展开华北，勾选唯一可用子级北京
+    await wrapper
+      .findAll('.xui-cascader__column')[0]
+      .findAll('.xui-cascader__item')[0]
+      .trigger('click');
+    await wrapper
+      .findAll('.xui-cascader__column')[1]
+      .findAll('.xui-cascader__item')[0]
+      .trigger('click');
+    const parent = wrapper
+      .findAll('.xui-cascader__column')[0]
+      .find('.xui-cascader__checkbox-inner');
+    expect(parent.classes()).toContain('is-indeterminate');
+    expect(parent.classes()).not.toContain('is-checked');
+  });
 });

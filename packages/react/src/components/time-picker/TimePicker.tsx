@@ -131,8 +131,8 @@ export function TimePicker(props: TimePickerComponentProps) {
   const minutes = genTimeColumn(60, minuteStep);
   const seconds = format === 'HH:mm:ss' ? genTimeColumn(60, secondStep) : [];
 
-  // 当前选中值解析，用于高亮
-  const parsed = state.value ? parseTimeString(state.value) : null;
+  // 面板高亮基于草稿值（confirm 提交后才写回 value）
+  const parsed = state.draft ? parseTimeString(state.draft) : null;
   const showSeconds = format === 'HH:mm:ss';
 
   // 显示文案：按 format 决定是否省略秒
@@ -154,11 +154,11 @@ export function TimePicker(props: TimePickerComponentProps) {
     }
   };
 
-  // 点击某列数字：若未选完整时分秒，则补全其余列后选中
+  // 点击某列数字：若未选完整时分秒，则补全其余列后更新草稿（confirm 时才提交）
   const handlePick = (col: 'hour' | 'minute' | 'second', num: number) => {
     const cur = parsed ?? { hour: 0, minute: 0, second: 0 };
     const next = { ...cur, [col]: num };
-    logic.select(next.hour, next.minute, showSeconds ? next.second : 0);
+    logic.selectDraft(next.hour, next.minute, showSeconds ? next.second : 0);
   };
 
   return (
@@ -292,6 +292,23 @@ export function TimePicker(props: TimePickerComponentProps) {
                 ))}
               </ul>
             )}
+          </div>
+          <div className="xui-time-picker__footer">
+            <button
+              type="button"
+              className="xui-time-picker__footer-btn xui-time-picker__footer-btn--cancel"
+              onClick={() => logic.close()}
+            >
+              {locale.timePicker.cancel}
+            </button>
+            <button
+              type="button"
+              className="xui-time-picker__footer-btn xui-time-picker__footer-btn--confirm"
+              disabled={!state.draft}
+              onClick={() => logic.confirm()}
+            >
+              {locale.timePicker.confirm}
+            </button>
           </div>
         </div>
       )}

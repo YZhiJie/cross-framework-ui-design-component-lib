@@ -119,6 +119,65 @@ describe('Cascader (react)', () => {
     fireEvent.click(screen_getByText(container, 'B'));
     expect(onChange).toHaveBeenCalledWith(['b'], ['B']);
   });
+
+  it('多选：父级勾选态由子级推导（全选勾选 / 部分半选）', () => {
+    const { container } = render(<Cascader options={options} multiple />);
+    const itemsOf = (col: number) =>
+      container
+        .querySelectorAll('.xui-cascader__column')
+        [col].querySelectorAll('.xui-cascader__item');
+    const checkboxOf = (col: number, idx: number) =>
+      itemsOf(col)[idx].querySelector('.xui-cascader__checkbox-inner')!;
+
+    fireEvent.click(container.querySelector('.xui-cascader__trigger')!);
+    // 逐级展开：浙江 → 杭州
+    fireEvent.click(itemsOf(0)[0]);
+    fireEvent.click(itemsOf(1)[0]);
+    // 勾选西湖区：杭州部分子级选中 → 半选；浙江半选
+    fireEvent.click(itemsOf(2)[0]);
+    expect(checkboxOf(1, 0).className).toContain('is-indeterminate');
+    expect(checkboxOf(0, 0).className).toContain('is-indeterminate');
+    // 勾选余杭区：杭州子级全选 → 勾选；浙江仍半选（宁波未选）
+    fireEvent.click(itemsOf(2)[1]);
+    expect(checkboxOf(1, 0).className).toContain('is-checked');
+    expect(checkboxOf(1, 0).className).not.toContain('is-indeterminate');
+    expect(checkboxOf(0, 0).className).toContain('is-indeterminate');
+    // 勾选宁波：浙江后代叶子全选 → 勾选
+    fireEvent.click(itemsOf(1)[1]);
+    expect(checkboxOf(0, 0).className).toContain('is-checked');
+    expect(checkboxOf(0, 0).className).not.toContain('is-indeterminate');
+  });
+
+  it('多选：存在未勾选的禁用子级时父级显示半选而非全选', () => {
+    const tree: CascaderOption[] = [
+      {
+        label: '华北',
+        value: 'north',
+        children: [
+          { label: '北京', value: 'beijing' },
+          { label: '天津', value: 'tianjin', disabled: true },
+        ],
+      },
+    ];
+    const { container } = render(<Cascader options={tree} multiple />);
+    fireEvent.click(container.querySelector('.xui-cascader__trigger')!);
+    // 展开华北，勾选唯一可用子级北京
+    fireEvent.click(
+      container
+        .querySelectorAll('.xui-cascader__column')[0]
+        .querySelectorAll('.xui-cascader__item')[0],
+    );
+    fireEvent.click(
+      container
+        .querySelectorAll('.xui-cascader__column')[1]
+        .querySelectorAll('.xui-cascader__item')[0],
+    );
+    const parent = container
+      .querySelectorAll('.xui-cascader__column')[0]
+      .querySelector('.xui-cascader__checkbox-inner')!;
+    expect(parent.className).toContain('is-indeterminate');
+    expect(parent.className).not.toContain('is-checked');
+  });
 });
 
 // 辅助：在 container 中按文本查找元素

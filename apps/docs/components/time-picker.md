@@ -12,6 +12,7 @@ title: 时间选择 TimePicker
 - format 支持 HH:mm:ss（默认）与 HH:mm（隐藏秒列）
 - hourStep / minuteStep / secondStep 自定义各列步长
 - clearable 已选中时显示清空按钮；disabled 整体禁用
+- 确认-取消交互：面板内选择仅更新待选值，点击「确认」提交并收起，「取消」放弃修改
 
 ### 使用场景
 
@@ -52,7 +53,7 @@ format="HH:mm" 仅显示时分；hourStep=2，minuteStep=10。
 ## 注意事项
 
 - 值统一为 HH:mm:ss 字符串；当 format 为 HH:mm 时，秒固定为 00。
-- 选中时间后面板自动收起；点击外部收起面板。
+- 面板内点击时间项仅更新待选值（高亮跟随），点击「确认」提交并收起面板、触发 onChange；点击「取消」、外部点击或 Esc 收起面板并放弃未确认的修改，重新展开时回退到已选值。
 
 ## 无障碍
 

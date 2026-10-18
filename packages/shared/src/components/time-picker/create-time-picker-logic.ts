@@ -1,8 +1,10 @@
 /**
  * TimePicker 纯逻辑工厂
  *
- * 状态：value / open / disabled
- * 交互：toggleOpen / close / select / clear
+ * 状态：value / draft / open / disabled
+ * 交互：toggleOpen / close / selectDraft / confirm / clear
+ * 确认-取消模式：面板打开时 draft 从 value 拷贝，面板内 selectDraft 仅更新草稿，
+ * confirm 提交草稿并收起面板（触发 onChange），close（含取消/外部点击/Esc）丢弃草稿。
  * 受控模式：创建时提供 value 选项即进入受控模式，
  * 内部不再自行更新选中值，由外部通过 updateOptions 同步。
  * 契约：value 为 'HH:mm:ss' 字符串，非法值回退 null。
@@ -33,6 +35,8 @@ export type TimePickerLogicOptions = {
 export type TimePickerState = {
   /** 当前选中时间（'HH:mm:ss'，null 表示未选中） */
   value: string | null;
+  /** 面板内待确认的草稿时间（打开面板时从 value 拷贝，confirm 提交，close 丢弃） */
+  draft: string | null;
   /** 面板展开状态 */
   open: boolean;
   disabled: boolean;
@@ -43,12 +47,14 @@ export interface TimePickerLogicInstance extends LogicInstance<
   TimePickerLogicOptions,
   TimePickerState
 > {
-  /** 展开 / 收起面板（disabled 时忽略） */
+  /** 展开 / 收起面板（disabled 时忽略）；展开时草稿从 value 拷贝，收起时丢弃草稿 */
   toggleOpen: () => void;
-  /** 收起面板 */
+  /** 收起面板并丢弃未确认的草稿（取消按钮 / 外部点击 / Esc 同路径） */
   close: () => void;
-  /** 选中时间：非法值忽略；非受控更新 value；受控仅回调；选中后收起面板 */
-  select: (hour: number, minute: number, second: number) => void;
+  /** 更新面板内草稿：非法值忽略；仅更新 draft，不收起面板、不触发 onChange */
+  selectDraft: (hour: number, minute: number, second: number) => void;
+  /** 确认草稿：草稿合法且与 value 不同时提交（非受控更新 value，触发 onChange），随后收起面板 */
+  confirm: () => void;
   /** 清空选中值（非受控置 null，始终触发 onClear） */
   clear: () => void;
 }
@@ -116,6 +122,7 @@ export function createTimePickerLogic(
 
   const state: TimePickerState = {
     value: initialValue,
+    draft: initialValue,
     open: false,
     disabled: options.disabled ?? false,
   };
@@ -152,11 +159,12 @@ export function createTimePickerLogic(
         }
       }
 
-      // 受控值同步（非法值回退 null）
+      // 受控值同步（非法值回退 null）；草稿跟随最新选中值
       if (next.value !== undefined) {
         const nextValue = isValidTimeString(next.value) ? next.value : null;
         if (nextValue !== state.value) {
           state.value = nextValue;
+          state.draft = nextValue;
           changed = true;
         }
       }
@@ -170,28 +178,47 @@ export function createTimePickerLogic(
     toggleOpen() {
       if (state.disabled) return;
       state.open = !state.open;
+      // 展开：草稿从当前选中值拷贝；收起：丢弃未确认草稿
+      state.draft = state.value;
       notify();
     },
 
     close() {
       if (!state.open) return;
       state.open = false;
+      // 丢弃未确认的草稿（取消 / 外部点击 / Esc 同路径）
+      state.draft = state.value;
       notify();
     },
 
-    select(hour, minute, second) {
+    selectDraft(hour, minute, second) {
       if (state.disabled) return;
       // 范围校验
       if (hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59) {
         return;
       }
-      const date = formatTime(hour, minute, second);
-      if (!controlled) {
-        state.value = date;
-      }
-      state.open = false;
+      // 仅更新草稿，不收起面板、不触发 onChange，等待 confirm 提交
+      state.draft = formatTime(hour, minute, second);
       notify();
-      onChange?.(date);
+    },
+
+    confirm() {
+      if (state.disabled) return;
+      if (!state.open) return;
+      const next = isValidTimeString(state.draft) ? state.draft : null;
+      state.open = false;
+      // 草稿为空（未选择）或与当前值相同：直接收起，不触发 onChange
+      if (next === null || next === state.value) {
+        state.draft = state.value;
+        notify();
+        return;
+      }
+      if (!controlled) {
+        state.value = next;
+      }
+      state.draft = next;
+      notify();
+      onChange?.(next);
     },
 
     clear() {
@@ -200,6 +227,7 @@ export function createTimePickerLogic(
       if (!controlled) {
         state.value = null;
       }
+      state.draft = null;
       notify();
       // 受控模式下需通过 onChange 通知外部清空（适配层 emit update:value），
       // 非受控模式同样广播值变化，保持双端语义一致

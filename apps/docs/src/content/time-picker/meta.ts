@@ -39,6 +39,11 @@ export const timePickerMeta: ComponentMeta = {
       'en-US':
         'clearable shows a clear button when a value is selected; disabled disables the picker',
     },
+    {
+      'zh-CN': '确认-取消交互：面板内选择仅更新待选值，点击「确认」提交并收起，「取消」放弃修改',
+      'en-US':
+        'Confirm-cancel interaction: picking in the panel only updates a pending value; "OK" commits and closes, "Cancel" discards',
+    },
   ],
   scenarios: [
     {
@@ -227,8 +232,10 @@ export const timePickerMeta: ComponentMeta = {
         'The value is always a HH:mm:ss string; when format is HH:mm, the seconds are fixed to 00.',
     },
     {
-      'zh-CN': '选中时间后面板自动收起；点击外部收起面板。',
-      'en-US': 'Selecting a time auto-closes the panel; clicking outside also closes it.',
+      'zh-CN':
+        '面板内点击时间项仅更新待选值（高亮跟随），点击「确认」提交并收起面板、触发 onChange；点击「取消」、外部点击或 Esc 收起面板并放弃未确认的修改，重新展开时回退到已选值。',
+      'en-US':
+        'Clicking a time item only updates the pending value (highlight follows); "OK" commits it, closes the panel, and fires onChange; "Cancel", clicking outside, or Esc closes the panel and discards uncommitted changes — reopening restores the selected value.',
     },
   ],
   a11y: [

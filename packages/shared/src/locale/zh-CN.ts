@@ -34,6 +34,8 @@ export const zhCN: XuiLocaleData = {
   timePicker: {
     panel: '选择时间',
     placeholder: '请选择时间',
+    confirm: '确认',
+    cancel: '取消',
   },
   cascader: {
     panel: '请选择',

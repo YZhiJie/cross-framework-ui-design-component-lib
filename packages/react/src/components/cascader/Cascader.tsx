@@ -9,7 +9,12 @@
 import { useEffect, useId, useImperativeHandle, useRef } from 'react';
 import type { CSSProperties, KeyboardEvent, ReactNode, Ref } from 'react';
 import type { CascaderProps } from '@xui-design/core';
-import { createCascaderLogic, getColumnsByPath, resolvePath } from '@xui-design/shared';
+import {
+  createCascaderLogic,
+  getColumnsByPath,
+  getPathCheckState,
+  resolvePath,
+} from '@xui-design/shared';
 import type { CascaderLogicInstance, CascaderOption } from '@xui-design/shared';
 import { icons } from '@xui-design/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
@@ -134,34 +139,18 @@ export function Cascader(props: CascaderComponentProps) {
 
   const hasValue = multiple ? checkedTags.length > 0 : !!state.value;
 
-  /** 判断某选项路径是否被勾选 */
+  /** 判断某选项路径是否被勾选（父级由后代叶子全选推导） */
   const isOptionChecked = (level: number, option: CascaderOption): boolean => {
     if (!multiple) return false;
     const path = [...state.activePath.slice(0, level), option.value];
-    const checked = (state.value as string[][]) ?? [];
-    return checked.some((p) => p.length === path.length && p.every((v, i) => v === path[i]));
+    return getPathCheckState(options, state.value as string[][], path, checkStrictly).checked;
   };
 
-  /** 判断某选项是否半选 */
+  /** 判断某选项是否半选（部分后代叶子被勾选） */
   const isOptionIndeterminate = (level: number, option: CascaderOption): boolean => {
-    if (!multiple || !option.children?.length) return false;
+    if (!multiple) return false;
     const path = [...state.activePath.slice(0, level), option.value];
-    const checked = (state.value as string[][]) ?? [];
-    const descendantKeys = new Set<string>();
-    const collect = (opts: CascaderOption[], prefix: string[]) => {
-      for (const o of opts) {
-        const p = [...prefix, o.value];
-        if (!o.children || o.children.length === 0) {
-          descendantKeys.add(p.join('/'));
-        } else {
-          collect(o.children, p);
-        }
-      }
-    };
-    collect(option.children, path);
-    if (descendantKeys.size === 0) return false;
-    const checkedCount = checked.filter((p) => descendantKeys.has(p.join('/'))).length;
-    return checkedCount > 0 && checkedCount < descendantKeys.size;
+    return getPathCheckState(options, state.value as string[][], path, checkStrictly).indeterminate;
   };
 
   const handleTriggerKeydown = (event: KeyboardEvent<HTMLDivElement>) => {

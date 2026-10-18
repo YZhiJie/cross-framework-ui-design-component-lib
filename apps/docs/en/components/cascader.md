@@ -77,7 +77,7 @@ A cascader option (tree-shaped; leaf nodes have no children).
 
 - value is a value-path array (e.g. ["east", "hangzhou"]); an empty array means nothing is selected. In multiple mode value is string[][] (e.g. [["east","hangzhou"], ["north","beijing"]]).
 - Clicking outside closes the panel; selecting a leaf auto-closes in single mode (any selection auto-closes in changeOnSelect mode); the panel stays open in multiple mode.
-- In multiple mode, checking a parent cascades to all descendant leaves; when all children are checked the parent auto-checks (indeterminate state). checkStrictly=true disables cascading and allows any level.
+- In multiple mode, checking a parent cascades to all enabled descendant leaves (disabled options are excluded); the parent shows checked when all children are checked, indeterminate when partially checked. An unchecked disabled child caps the parent at indeterminate. checkStrictly=true disables cascading and allows any level.
 
 ## Accessibility
 

@@ -303,9 +303,9 @@ export const cascaderMeta: ComponentMeta = {
     },
     {
       'zh-CN':
-        '多选模式下，勾选父节点会级联勾选所有后代叶子；子节点全选时父节点自动勾选（半选状态）。checkStrictly=true 时取消级联，可勾选任意层级。',
+        '多选模式下，勾选父节点会级联勾选所有可用后代叶子（禁用项不参与级联）；子级全选时父节点显示勾选，部分勾选时显示半选。存在未勾选的禁用子级时父级最多显示半选。checkStrictly=true 时取消级联，可勾选任意层级。',
       'en-US':
-        'In multiple mode, checking a parent cascades to all descendant leaves; when all children are checked the parent auto-checks (indeterminate state). checkStrictly=true disables cascading and allows any level.',
+        'In multiple mode, checking a parent cascades to all enabled descendant leaves (disabled options are excluded); the parent shows checked when all children are checked, indeterminate when partially checked. An unchecked disabled child caps the parent at indeterminate. checkStrictly=true disables cascading and allows any level.',
     },
   ],
   a11y: [

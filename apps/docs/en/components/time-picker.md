@@ -12,6 +12,7 @@ Pick a time from hour / minute / second columns; the value is a HH:mm:ss string 
 - format supports HH:mm:ss (default) and HH:mm (second column hidden)
 - hourStep / minuteStep / secondStep customize each column step
 - clearable shows a clear button when a value is selected; disabled disables the picker
+- Confirm-cancel interaction: picking in the panel only updates a pending value; "OK" commits and closes, "Cancel" discards
 
 ### When to Use
 
@@ -52,7 +53,7 @@ format="HH:mm" shows hours &amp; minutes only; hourStep=2, minuteStep=10.
 ## Notes
 
 - The value is always a HH:mm:ss string; when format is HH:mm, the seconds are fixed to 00.
-- Selecting a time auto-closes the panel; clicking outside also closes it.
+- Clicking a time item only updates the pending value (highlight follows); "OK" commits it, closes the panel, and fires onChange; "Cancel", clicking outside, or Esc closes the panel and discards uncommitted changes — reopening restores the selected value.
 
 ## Accessibility
 

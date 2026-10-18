@@ -47,6 +47,8 @@ export const enUS: XuiLocaleData = {
   timePicker: {
     panel: 'Select time',
     placeholder: 'Select time',
+    confirm: 'OK',
+    cancel: 'Cancel',
   },
   cascader: {
     panel: 'Please select',

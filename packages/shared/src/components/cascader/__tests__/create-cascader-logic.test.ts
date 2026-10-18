@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   createCascaderLogic,
   getColumnsByPath,
+  getPathCheckState,
   isLeaf,
   resolvePath,
 } from '../create-cascader-logic';
@@ -114,6 +115,27 @@ describe('createCascaderLogic', () => {
     expect(onChange).toHaveBeenCalledWith(['b'], ['B']);
   });
 
+  it('多选 toggleCheck 级联：勾选父级级联勾选所有后代叶子，再次切换全部取消', () => {
+    const onChange = vi.fn();
+    const logic = createCascaderLogic({ options, multiple: true, onChange });
+    logic.toggleCheck(['zj']);
+    expect(logic.getState().value).toEqual([
+      ['zj', 'hz', 'xh'],
+      ['zj', 'hz', 'yh'],
+      ['zj', 'nb'],
+    ]);
+    logic.toggleCheck(['zj']);
+    expect(logic.getState().value).toEqual([]);
+  });
+
+  it('多选 checkAll / uncheckAll 全选与清空', () => {
+    const logic = createCascaderLogic({ options, multiple: true });
+    logic.checkAll();
+    expect((logic.getState().value as string[][]).length).toBe(4);
+    logic.uncheckAll();
+    expect(logic.getState().value).toEqual([]);
+  });
+
   it('disabled 时 toggleOpen 与 select 被忽略', () => {
     const logic = createCascaderLogic({ options, disabled: true });
     logic.toggleOpen();
@@ -151,5 +173,109 @@ describe('cascader helpers', () => {
       labels: ['浙江', '杭州', '西湖区'],
     });
     expect(resolvePath(options, ['zj', 'invalid'])).toBeNull();
+  });
+
+  it('getPathCheckState：后代叶子全部勾选 → checked', () => {
+    const checked = [
+      ['zj', 'hz', 'xh'],
+      ['zj', 'hz', 'yh'],
+      ['zj', 'nb'],
+    ];
+    expect(getPathCheckState(options, checked, ['zj'])).toEqual({
+      checked: true,
+      indeterminate: false,
+    });
+    expect(getPathCheckState(options, checked, ['zj', 'hz'])).toEqual({
+      checked: true,
+      indeterminate: false,
+    });
+  });
+
+  it('getPathCheckState：部分后代勾选 → indeterminate', () => {
+    const checked = [['zj', 'hz', 'xh']];
+    expect(getPathCheckState(options, checked, ['zj', 'hz'])).toEqual({
+      checked: false,
+      indeterminate: true,
+    });
+    expect(getPathCheckState(options, checked, ['zj'])).toEqual({
+      checked: false,
+      indeterminate: true,
+    });
+  });
+
+  it('getPathCheckState：无后代勾选 → 未勾选', () => {
+    expect(getPathCheckState(options, [['zj', 'hz', 'xh']], ['js'])).toEqual({
+      checked: false,
+      indeterminate: false,
+    });
+    expect(getPathCheckState(options, [], ['zj'])).toEqual({
+      checked: false,
+      indeterminate: false,
+    });
+    expect(getPathCheckState(options, null, ['zj'])).toEqual({
+      checked: false,
+      indeterminate: false,
+    });
+  });
+
+  it('getPathCheckState：叶子节点按自身路径精确匹配', () => {
+    expect(getPathCheckState(options, [['zj', 'nb']], ['zj', 'nb'])).toEqual({
+      checked: true,
+      indeterminate: false,
+    });
+  });
+
+  it('getPathCheckState：checkStrictly 仅精确匹配自身路径，无半选', () => {
+    const allLeaves = [
+      ['zj', 'hz', 'xh'],
+      ['zj', 'hz', 'yh'],
+      ['zj', 'nb'],
+    ];
+    // 即使后代叶子全部勾选，父级未精确勾选也不显示勾选
+    expect(getPathCheckState(options, allLeaves, ['zj'], true)).toEqual({
+      checked: false,
+      indeterminate: false,
+    });
+    expect(getPathCheckState(options, [['zj']], ['zj'], true)).toEqual({
+      checked: true,
+      indeterminate: false,
+    });
+  });
+
+  it('getPathCheckState：存在未勾选的禁用子级时父级最多半选', () => {
+    const tree: CascaderOption[] = [
+      {
+        label: '华北',
+        value: 'north',
+        children: [
+          { label: '北京', value: 'beijing' },
+          { label: '天津', value: 'tianjin', disabled: true },
+        ],
+      },
+    ];
+    // 可用子级全部勾选、禁用子级未勾选 → 半选而非全选
+    expect(getPathCheckState(tree, [['north', 'beijing']], ['north'])).toEqual({
+      checked: false,
+      indeterminate: true,
+    });
+    // 禁用子级也在勾选集中（如外部受控传入）→ 全选
+    expect(
+      getPathCheckState(
+        tree,
+        [
+          ['north', 'beijing'],
+          ['north', 'tianjin'],
+        ],
+        ['north'],
+      ),
+    ).toEqual({ checked: true, indeterminate: false });
+    // 禁用子级不参与级联勾选：toggleCheck 只勾选可用叶子，父级保持半选
+    const logic = createCascaderLogic({ options: tree, multiple: true });
+    logic.toggleCheck(['north']);
+    expect(logic.getState().value).toEqual([['north', 'beijing']]);
+    expect(getPathCheckState(tree, logic.getState().value as string[][], ['north'])).toEqual({
+      checked: false,
+      indeterminate: true,
+    });
   });
 });

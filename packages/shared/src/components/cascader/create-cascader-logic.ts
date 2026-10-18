@@ -130,23 +130,31 @@ export function resolvePath(
   return { values, labels };
 }
 
-/** 收集树中所有叶子节点的完整路径 */
-function getAllLeafPaths(options: CascaderOption[], prefix: string[] = []): string[][] {
+/** 收集树中所有叶子节点的完整路径（includeDisabled=true 时禁用叶子也计入） */
+function getAllLeafPaths(
+  options: CascaderOption[],
+  prefix: string[] = [],
+  includeDisabled = false,
+): string[][] {
   const paths: string[][] = [];
   for (const opt of options) {
-    if (opt.disabled) continue;
+    if (opt.disabled && !includeDisabled) continue;
     const currentPath = [...prefix, opt.value];
     if (isLeaf(opt)) {
       paths.push(currentPath);
     } else if (opt.children) {
-      paths.push(...getAllLeafPaths(opt.children, currentPath));
+      paths.push(...getAllLeafPaths(opt.children, currentPath, includeDisabled));
     }
   }
   return paths;
 }
 
-/** 获取某条路径下的所有后代叶子路径（含自身若是叶子） */
-function getDescendantLeafPaths(options: CascaderOption[], path: string[]): string[][] {
+/** 获取某条路径下的所有后代叶子路径（含自身若是叶子；includeDisabled=true 时禁用叶子也计入） */
+function getDescendantLeafPaths(
+  options: CascaderOption[],
+  path: string[],
+  includeDisabled = false,
+): string[][] {
   let current: CascaderOption[] | undefined = options;
   for (const v of path) {
     if (!current) return [];
@@ -158,12 +166,42 @@ function getDescendantLeafPaths(options: CascaderOption[], path: string[]): stri
     // path 指向叶子节点
     return [path];
   }
-  return getAllLeafPaths(current, path);
+  return getAllLeafPaths(current, path, includeDisabled);
 }
 
 /** 路径是否已勾选（精确匹配） */
-function isPathChecked(checked: string[][], path: string[]): boolean {
+function isPathChecked(checked: string[][] | null | undefined, path: string[]): boolean {
+  if (!checked) return false;
   return checked.some((p) => p.length === path.length && p.every((v, i) => v === path[i]));
+}
+
+/**
+ * 多选模式：推导某条路径节点的勾选状态（供双端面板渲染复用）
+ *
+ * - checkStrictly=false（默认，父子联动）：
+ *   后代叶子全部勾选 → checked；部分勾选 → indeterminate；否则均未勾选
+ * - checkStrictly=true（父子独立）：仅按自身路径精确匹配，无半选态
+ * - 禁用叶子计入推导的分母：存在未勾选的禁用后代时父级最多显示半选；
+ *   但禁用项不参与 toggleCheck / checkAll 的级联勾选（两处口径刻意不同）
+ */
+export function getPathCheckState(
+  options: CascaderOption[],
+  checked: string[][] | null | undefined,
+  path: string[],
+  checkStrictly = false,
+): { checked: boolean; indeterminate: boolean } {
+  if (checkStrictly) {
+    return { checked: isPathChecked(checked, path), indeterminate: false };
+  }
+  const leafPaths = getDescendantLeafPaths(options, path, true);
+  if (leafPaths.length === 0) {
+    return { checked: false, indeterminate: false };
+  }
+  const checkedCount = leafPaths.filter((p) => isPathChecked(checked, p)).length;
+  return {
+    checked: checkedCount === leafPaths.length,
+    indeterminate: checkedCount > 0 && checkedCount < leafPaths.length,
+  };
 }
 
 /** 路径比较 */

@@ -111,8 +111,8 @@ const hours = computed(() => genTimeColumn(24, props.hourStep));
 const minutes = computed(() => genTimeColumn(60, props.minuteStep));
 const seconds = computed(() => genTimeColumn(60, props.secondStep));
 
-// 当前选中值解析，用于高亮
-const parsed = computed(() => (state.value.value ? parseTimeString(state.value.value) : null));
+// 面板高亮基于草稿值（confirm 提交后才写回 value）
+const parsed = computed(() => (state.value.draft ? parseTimeString(state.value.draft) : null));
 const showSeconds = computed(() => props.format === 'HH:mm:ss');
 
 // 显示文案：按 format 决定是否省略秒
@@ -140,11 +140,11 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
   }
 };
 
-// 点击某列数字：若未选完整时分秒，则补全其余列后选中
+// 点击某列数字：若未选完整时分秒，则补全其余列后更新草稿（confirm 时才提交）
 const handlePick = (col: 'hour' | 'minute' | 'second', num: number) => {
   const cur = parsed.value ?? { hour: 0, minute: 0, second: 0 };
   const next = { ...cur, [col]: num };
-  logic.select(next.hour, next.minute, showSeconds.value ? next.second : 0);
+  logic.selectDraft(next.hour, next.minute, showSeconds.value ? next.second : 0);
 };
 
 // 暴露命令式 focus / toggleOpen / close（与 React 适配层的 TimePickerRef 对齐）
@@ -278,6 +278,23 @@ defineExpose({ focus, toggleOpen, close });
             {{ String(s).padStart(2, '0') }}
           </li>
         </ul>
+      </div>
+      <div class="xui-time-picker__footer">
+        <button
+          type="button"
+          class="xui-time-picker__footer-btn xui-time-picker__footer-btn--cancel"
+          @click="logic.close()"
+        >
+          {{ locale.timePicker.cancel }}
+        </button>
+        <button
+          type="button"
+          class="xui-time-picker__footer-btn xui-time-picker__footer-btn--confirm"
+          :disabled="!state.draft"
+          @click="logic.confirm()"
+        >
+          {{ locale.timePicker.confirm }}
+        </button>
       </div>
     </div>
   </div>

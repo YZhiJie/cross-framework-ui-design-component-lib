@@ -77,7 +77,7 @@ interface CascaderOption {
 
 - value 为值路径数组（如 ["east", "hangzhou"]）；空数组表示未选中。多选时 value 为 string[][]（如 [["east","hangzhou"], ["north","beijing"]]）。
 - 点击组件外部会收起面板；单选选中叶子节点后自动收起（changeOnSelect 时选中即收起）；多选面板保持展开。
-- 多选模式下，勾选父节点会级联勾选所有后代叶子；子节点全选时父节点自动勾选（半选状态）。checkStrictly=true 时取消级联，可勾选任意层级。
+- 多选模式下，勾选父节点会级联勾选所有可用后代叶子（禁用项不参与级联）；子级全选时父节点显示勾选，部分勾选时显示半选。存在未勾选的禁用子级时父级最多显示半选。checkStrictly=true 时取消级联，可勾选任意层级。
 
 ## 无障碍
 
