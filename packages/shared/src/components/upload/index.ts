@@ -1,7 +1,4 @@
-export {
-  createUploadLogic,
-  defaultRequestUpload,
-} from './create-upload-logic';
+export { createUploadLogic, defaultRequestUpload } from './create-upload-logic';
 export type {
   UploadFile,
   UploadLogicInstance,

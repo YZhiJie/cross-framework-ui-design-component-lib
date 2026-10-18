@@ -123,7 +123,9 @@ describe('createSwitchLogic', () => {
     });
 
     it('异步 pending 期间再次 toggle 被忽略', async () => {
-      const beforeChange = vi.fn(() => new Promise<boolean>((resolve) => setTimeout(() => resolve(true), 10)));
+      const beforeChange = vi.fn(
+        () => new Promise<boolean>((resolve) => setTimeout(() => resolve(true), 10)),
+      );
       const onChange = vi.fn();
       const logic = createSwitchLogic({ beforeChange, onChange });
       logic.toggle();
