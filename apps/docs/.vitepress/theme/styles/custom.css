@@ -206,6 +206,37 @@ body {
   border-radius: 6px;
 }
 
+/* demo 区组件表格豁免 .vp-doc 的 markdown 表格样式（display:block / margin / overflow-x、
+   tr 边框与斑马背景、th/td 全边框与 padding），恢复组件自身样式；
+   padding 值须与 @xui-design/styles 的 .xui-table__th/__td（10px 12px）保持同步 */
+.demo-block__stage .xui-table__table {
+  display: table;
+  margin: 0;
+  overflow: visible;
+}
+
+.demo-block__stage .xui-table tr {
+  background-color: transparent;
+  border-top: none;
+  transition: none;
+}
+
+.demo-block__stage .xui-table th,
+.demo-block__stage .xui-table td {
+  border: none;
+  padding: 10px 12px;
+}
+
+/* 恢复组件 is-bordered 变体边框（值与 @xui-design/styles 保持同步） */
+.demo-block__stage .xui-table.is-bordered th,
+.demo-block__stage .xui-table.is-bordered td {
+  border: 1px solid var(--xui-color-border-light, #f3f4f6);
+}
+
+.demo-block__stage .xui-table.is-bordered th {
+  border-color: var(--xui-color-border, #d1d5db);
+}
+
 .demo-block__footer {
   display: flex;
   justify-content: flex-end;

@@ -1873,7 +1873,13 @@
 }
 
 .xui-table__table {
+  /* 防御宿主环境（如 VitePress .vp-doc）将 table 置为 block，保持表格盒模型与占满行为 */
+  display: table;
   width: 100%;
+  margin: 0;
+
+  /* 固定布局：设宽列固定，未设宽列平分剩余宽度（表格始终占满父容器） */
+  table-layout: fixed;
   border-collapse: collapse;
   font-size: var(--xui-font-size-md, 14px);
 }
