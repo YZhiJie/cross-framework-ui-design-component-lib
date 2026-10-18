@@ -14,6 +14,7 @@ Pick values from a pop-up option panel, with single / multiple selection, search
 - Virtual scrolling via virtual: 1000+ options render only the visible window; maxHeight controls the panel viewport height
 - Clear button via clearable when a value is selected (clears all in multiple mode); disabled disables the whole select
 - Keyboard support: ArrowUp / ArrowDown move the highlight (skipping disabled options), Enter confirms, Esc closes
+- Grouped options: options accepts a mixed SelectOptionGroup structure, rendering options within groups
 
 ### When to Use
 
@@ -42,6 +43,12 @@ defaultValue sets the initial selection; disabled disables the whole select.
 multiple shows selections as tags; searchable filters by label; virtual renders 1000 items while maintaining only the visible window.
 
 <ComponentDemo slug="select" demo-id="advanced" />
+
+### Grouped Options
+
+Pass a SelectOptionGroup structure to options; options within groups are rendered together, with group-level disabled support.
+
+<ComponentDemo slug="select" demo-id="grouped" />
 
 ## API
 
@@ -72,6 +79,26 @@ interface SelectOption {
 ```
 
 Configuration of a dropdown option.
+
+**SelectOptionGroup**
+
+```ts
+interface SelectOptionGroup {
+  label: string
+  options: SelectOption[]
+  disabled?: boolean
+}
+```
+
+Configuration of a dropdown option group.
+
+**SelectSource**
+
+```ts
+type SelectSource = (SelectOption | SelectOptionGroup)[];
+```
+
+options data source: supports a flat option array or a mixed grouped structure.
 
 **SelectValue**
 

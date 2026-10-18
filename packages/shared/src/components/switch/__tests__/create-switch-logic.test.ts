@@ -67,4 +67,70 @@ describe('createSwitchLogic', () => {
     logic.updateOptions({ disabled: true });
     expect(listener).not.toHaveBeenCalled();
   });
+
+  describe('beforeChange 钩子', () => {
+    it('返回 false 时阻止切换，不触发 onChange', () => {
+      const onChange = vi.fn();
+      const beforeChange = vi.fn(() => false);
+      const logic = createSwitchLogic({ beforeChange, onChange });
+      logic.toggle();
+      expect(beforeChange).toHaveBeenCalledWith(true);
+      expect(logic.getState().checked).toBe(false);
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it('返回 true 时允许切换', () => {
+      const onChange = vi.fn();
+      const beforeChange = vi.fn(() => true);
+      const logic = createSwitchLogic({ beforeChange, onChange });
+      logic.toggle();
+      expect(logic.getState().checked).toBe(true);
+      expect(onChange).toHaveBeenCalledWith(true);
+    });
+
+    it('返回 Promise<true> 时异步允许切换', async () => {
+      const onChange = vi.fn();
+      const beforeChange = vi.fn(() => Promise.resolve(true));
+      const logic = createSwitchLogic({ beforeChange, onChange });
+      const result = logic.toggle();
+      // pending 期间 loading 为 true
+      expect(logic.getState().loading).toBe(true);
+      expect(logic.getState().checked).toBe(false);
+      await result;
+      expect(logic.getState().checked).toBe(true);
+      expect(logic.getState().loading).toBe(false);
+      expect(onChange).toHaveBeenCalledWith(true);
+    });
+
+    it('返回 Promise<false> 时异步阻止切换', async () => {
+      const onChange = vi.fn();
+      const beforeChange = vi.fn(() => Promise.resolve(false));
+      const logic = createSwitchLogic({ beforeChange, onChange });
+      await logic.toggle();
+      expect(logic.getState().checked).toBe(false);
+      expect(logic.getState().loading).toBe(false);
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it('Promise reject 时阻止切换', async () => {
+      const onChange = vi.fn();
+      const beforeChange = vi.fn(() => Promise.reject(new Error('fail')));
+      const logic = createSwitchLogic({ beforeChange, onChange });
+      await logic.toggle();
+      expect(logic.getState().checked).toBe(false);
+      expect(logic.getState().loading).toBe(false);
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it('异步 pending 期间再次 toggle 被忽略', async () => {
+      const beforeChange = vi.fn(() => new Promise<boolean>((resolve) => setTimeout(() => resolve(true), 10)));
+      const onChange = vi.fn();
+      const logic = createSwitchLogic({ beforeChange, onChange });
+      logic.toggle();
+      logic.toggle(); // 被忽略
+      expect(beforeChange).toHaveBeenCalledTimes(1);
+      await new Promise((resolve) => setTimeout(resolve, 20));
+      expect(onChange).toHaveBeenCalledTimes(1);
+    });
+  });
 });

@@ -31,4 +31,12 @@ export const zhCN: XuiLocaleData = {
     searchAriaLabel: '搜索选项',
     triggerPlaceholder: '请选择',
   },
+  timePicker: {
+    panel: '选择时间',
+    placeholder: '请选择时间',
+  },
+  cascader: {
+    panel: '请选择',
+    placeholder: '请选择',
+  },
 };

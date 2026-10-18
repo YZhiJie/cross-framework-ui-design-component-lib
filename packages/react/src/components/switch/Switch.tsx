@@ -18,6 +18,10 @@ import { cn } from '../../utils/cn';
 export type SwitchComponentProps = SwitchProps & {
   /** 自定义加载图标（loading 状态时替代内置 spinner） */
   renderLoadingIcon?: () => ReactNode;
+  /** 开启态滑块图标渲染函数（替换默认对勾） */
+  renderCheckedIcon?: () => ReactNode;
+  /** 关闭态滑块图标渲染函数（替换默认关闭图标） */
+  renderUncheckedIcon?: () => ReactNode;
   /** React 19 ref-as-prop */
   ref?: Ref<SwitchRef>;
 };
@@ -38,10 +42,15 @@ export function Switch(props: SwitchComponentProps) {
     loading = false,
     checkedText,
     uncheckedText,
+    checkedColor,
+    uncheckedColor,
+    beforeChange,
     className,
     style,
     onChange,
     renderLoadingIcon,
+    renderCheckedIcon,
+    renderUncheckedIcon,
     ref,
   } = props;
 
@@ -51,8 +60,8 @@ export function Switch(props: SwitchComponentProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
-  const callbacksRef = useRef({ onChange });
-  callbacksRef.current = { onChange };
+  const callbacksRef = useRef({ onChange, beforeChange });
+  callbacksRef.current = { onChange, beforeChange };
 
   // 逻辑实例只创建一次：value 提供即受控，否则用 defaultValue 非受控
   const logicRef = useRef<SwitchLogicInstance | null>(null);
@@ -62,6 +71,7 @@ export function Switch(props: SwitchComponentProps) {
       defaultValue,
       disabled,
       loading,
+      beforeChange: (next) => callbacksRef.current.beforeChange?.(next) ?? true,
       onChange: (next) => callbacksRef.current.onChange?.(next),
     });
   }
@@ -99,7 +109,13 @@ export function Switch(props: SwitchComponentProps) {
         },
         className,
       )}
-      style={style as CSSProperties}
+      style={
+        {
+          ...(style as CSSProperties),
+          ...(checkedColor ? { '--xui-switch-checked-color': checkedColor } : {}),
+          ...(uncheckedColor ? { '--xui-switch-unchecked-color': uncheckedColor } : {}),
+        } as CSSProperties
+      }
       aria-checked={state.checked}
       aria-disabled={state.disabled || state.loading}
       disabled={state.disabled || state.loading}
@@ -131,7 +147,23 @@ export function Switch(props: SwitchComponentProps) {
           </span>
         )}
         <span className="xui-switch__thumb">
-          {state.loading && (renderLoadingIcon ? renderLoadingIcon() : <LoadingSpinner />)}
+          {state.loading ? (
+            renderLoadingIcon ? (
+              renderLoadingIcon()
+            ) : (
+              <LoadingSpinner />
+            )
+          ) : state.checked ? (
+            renderCheckedIcon ? (
+              renderCheckedIcon()
+            ) : (
+              <CheckIcon />
+            )
+          ) : renderUncheckedIcon ? (
+            renderUncheckedIcon()
+          ) : (
+            <CloseIcon />
+          )}
         </span>
       </span>
     </button>
@@ -152,6 +184,43 @@ function LoadingSpinner() {
       strokeLinecap="round"
       aria-hidden="true"
       dangerouslySetInnerHTML={{ __html: icons.loading }}
+    />
+  );
+}
+
+/** 开启态默认对勾图标 */
+function CheckIcon() {
+  return (
+    <svg
+      className="xui-switch__icon xui-switch__icon--checked"
+      viewBox="0 0 24 24"
+      width="12"
+      height="12"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      dangerouslySetInnerHTML={{ __html: icons.check }}
+    />
+  );
+}
+
+/** 关闭态默认关闭图标 */
+function CloseIcon() {
+  return (
+    <svg
+      className="xui-switch__icon xui-switch__icon--unchecked"
+      viewBox="0 0 24 24"
+      width="10"
+      height="10"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      aria-hidden="true"
+      dangerouslySetInnerHTML={{ __html: icons.close }}
     />
   );
 }

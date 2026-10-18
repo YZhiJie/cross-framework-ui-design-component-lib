@@ -6,7 +6,7 @@
 
 import type { LogicInstance } from '../../types';
 
-/** 下拉选项 */
+/** 下拉选项（叶子节点） */
 export type SelectOption = {
   /** 选项文案 */
   label: string;
@@ -15,6 +15,19 @@ export type SelectOption = {
   /** 禁用本项 */
   disabled?: boolean;
 };
+
+/** 下拉选项分组 */
+export type SelectOptionGroup = {
+  /** 分组标题 */
+  label: string;
+  /** 分组内选项 */
+  options: SelectOption[];
+  /** 禁用整个分组 */
+  disabled?: boolean;
+};
+
+/** options 数据源：支持扁平选项数组或分组混合 */
+export type SelectSource = (SelectOption | SelectOptionGroup)[];
 
 /** Select 选中值：单选为 string，多选为 string[] */
 export type SelectValue = string | string[];
@@ -25,8 +38,8 @@ export type SelectProps = {
   value?: SelectValue;
   /** 非受控初始选中值 */
   defaultValue?: SelectValue;
-  /** 选项数组 */
-  options: SelectOption[];
+  /** 选项数组（支持扁平选项或分组混合） */
+  options: SelectSource;
   /** 占位文案 */
   placeholder?: string;
   /** 禁用状态 */
@@ -63,6 +76,8 @@ export type SelectSlots = {
   clearIcon: Record<string, never>;
   /** 自定义下拉箭头图标（替换内置 arrow-down，内容为任意节点） */
   suffixIcon: Record<string, never>;
+  /** 自定义选项渲染（作用域插槽，传入当前选项） */
+  option: { option: SelectOption };
 };
 
 /** Select 状态快照（由逻辑层暴露） */
@@ -71,13 +86,15 @@ export type SelectState = {
   value: string | string[] | null;
   /** 下拉面板展开状态 */
   open: boolean;
-  /** 键盘高亮项下标（-1 表示无高亮；作用于过滤后列表） */
+  /** 键盘高亮项下标（-1 表示无高亮；作用于过滤后扁平列表） */
   activeIndex: number;
   disabled: boolean;
   /** 当前搜索词（searchable 模式） */
   searchQuery: string;
-  /** 过滤后的选项列表（非 searchable 恒等于 options） */
+  /** 过滤后的扁平选项列表（用于键盘导航与虚拟滚动） */
   filteredOptions: SelectOption[];
+  /** 过滤后的分组结构（用于分组渲染；无分组时为空数组） */
+  groupedOptions: SelectOptionGroup[];
 };
 
 /** Select 逻辑实例（通用接口 + 交互方法） */

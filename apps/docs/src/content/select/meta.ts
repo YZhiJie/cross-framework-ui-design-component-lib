@@ -3,16 +3,20 @@ import type { ComponentMeta } from '../types';
 import BasicVue from './demos/basic.vue';
 import StateVue from './demos/state.vue';
 import AdvancedVue from './demos/advanced.vue';
+import GroupedVue from './demos/grouped.vue';
 import BasicReact from './demos/basic';
 import StateReact from './demos/state';
 import AdvancedReact from './demos/advanced';
+import GroupedReact from './demos/grouped';
 
 import basicVueSource from './demos/basic.vue?raw';
 import stateVueSource from './demos/state.vue?raw';
 import advancedVueSource from './demos/advanced.vue?raw';
+import groupedVueSource from './demos/grouped.vue?raw';
 import basicReactSource from './demos/basic.tsx?raw';
 import stateReactSource from './demos/state.tsx?raw';
 import advancedReactSource from './demos/advanced.tsx?raw';
+import groupedReactSource from './demos/grouped.tsx?raw';
 
 export const selectMeta: ComponentMeta = {
   name: 'Select',
@@ -54,6 +58,11 @@ export const selectMeta: ComponentMeta = {
       'zh-CN': '键盘支持：上下方向键移动高亮（跳过禁用项）、Enter 确认、Esc 关闭',
       'en-US':
         'Keyboard support: ArrowUp / ArrowDown move the highlight (skipping disabled options), Enter confirms, Esc closes',
+    },
+    {
+      'zh-CN': '分组选项：options 支持 SelectOptionGroup 混合结构，分组内选项统一展示',
+      'en-US':
+        'Grouped options: options accepts a mixed SelectOptionGroup structure, rendering options within groups',
     },
   ],
   scenarios: [
@@ -110,6 +119,19 @@ export const selectMeta: ComponentMeta = {
       vueSource: advancedVueSource,
       reactSource: advancedReactSource,
     },
+    {
+      id: 'grouped',
+      title: { 'zh-CN': '分组选项', 'en-US': 'Grouped Options' },
+      description: {
+        'zh-CN': 'options 传入 SelectOptionGroup 结构，分组内选项统一展示，支持分组级 disabled。',
+        'en-US':
+          'Pass a SelectOptionGroup structure to options; options within groups are rendered together, with group-level disabled support.',
+      },
+      vueComponent: GroupedVue,
+      reactComponent: GroupedReact,
+      vueSource: groupedVueSource,
+      reactSource: groupedReactSource,
+    },
   ],
   api: {
     props: [
@@ -134,10 +156,13 @@ export const selectMeta: ComponentMeta = {
       },
       {
         name: 'options',
-        type: 'SelectOption[]',
+        type: 'SelectSource',
         default: '—',
         required: true,
-        description: { 'zh-CN': '选项数组', 'en-US': 'Options array' },
+        description: {
+          'zh-CN': '选项数组（支持扁平选项 SelectOption[] 或分组混合 SelectSource）',
+          'en-US': 'Options array (supports flat SelectOption[] or mixed grouped SelectSource)',
+        },
       },
       {
         name: 'placeholder',
@@ -259,6 +284,14 @@ export const selectMeta: ComponentMeta = {
     ],
     slots: [
       {
+        vue: 'option',
+        react: 'renderOption',
+        description: {
+          'zh-CN': '自定义选项渲染（作用域参数：option）',
+          'en-US': 'Custom option rendering (scoped param: option)',
+        },
+      },
+      {
         vue: 'clearIcon',
         react: 'renderClearIcon',
         description: {
@@ -287,6 +320,27 @@ export const selectMeta: ComponentMeta = {
         description: {
           'zh-CN': '下拉选项配置。',
           'en-US': 'Configuration of a dropdown option.',
+        },
+      },
+      {
+        name: 'SelectOptionGroup',
+        definition: `interface SelectOptionGroup {
+  label: string
+  options: SelectOption[]
+  disabled?: boolean
+}`,
+        description: {
+          'zh-CN': '下拉选项分组配置。',
+          'en-US': 'Configuration of a dropdown option group.',
+        },
+      },
+      {
+        name: 'SelectSource',
+        definition: `type SelectSource = (SelectOption | SelectOptionGroup)[];`,
+        description: {
+          'zh-CN': 'options 数据源：支持扁平选项数组或分组混合。',
+          'en-US':
+            'options data source: supports a flat option array or a mixed grouped structure.',
         },
       },
       {

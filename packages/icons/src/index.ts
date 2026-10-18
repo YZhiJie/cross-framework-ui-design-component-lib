@@ -31,7 +31,8 @@ export type IconName =
   | 'info'
   | 'success'
   | 'warning'
-  | 'error';
+  | 'error'
+  | 'clock';
 
 /** 图标内层 SVG 标记（不含 <svg> 壳） */
 export const icons: Record<IconName, string> = {
@@ -55,6 +56,7 @@ export const icons: Record<IconName, string> = {
   warning:
     '<path d="M10.3 4.1L2.8 17a2 2 0 001.7 3h15a2 2 0 001.7-3L13.7 4.1a2 2 0 00-3.4 0z" /><path d="M12 9v4" /><path d="M12 16.5h.01" />',
   error: '<circle cx="12" cy="12" r="9" /><path d="M15 9l-6 6M9 9l6 6" />',
+  clock: '<circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />',
 };
 
 /** 全部图标名 */

@@ -344,6 +344,27 @@ const API_COMPONENTS: ComponentPlan[] = [
     modelProp: null,
     modelCoveredProps: [],
   },
+  {
+    name: 'TimePicker',
+    specKey: 'timePickerSpec',
+    reactSource: 'packages/react/src/components/time-picker/TimePicker.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
+  {
+    name: 'Cascader',
+    specKey: 'cascaderSpec',
+    reactSource: 'packages/react/src/components/cascader/Cascader.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
+  {
+    name: 'Upload',
+    specKey: 'uploadSpec',
+    reactSource: 'packages/react/src/components/upload/Upload.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
 ];
 
 interface MatrixRow {

@@ -14,12 +14,13 @@ import {
   bindViewportUpdate,
   createSelectLogic,
   createVirtualListLogic,
+  flattenOptions,
   getViewport,
   resolveFloatingPosition,
 } from '@xui-design/shared';
 import { icons } from '@xui-design/icons';
 import { useLocaleData } from '../../hooks/use-locale';
-import type { SelectProps, SelectValue } from '@xui-design/core';
+import type { SelectOption, SelectProps, SelectValue } from '@xui-design/core';
 
 const props = withDefaults(defineProps<Omit<SelectProps, 'onChange' | 'onClear'>>(), {
   // 显式 undefined 默认值：未绑定 value 时保持 undefined → 逻辑层进入非受控模式
@@ -117,7 +118,9 @@ watchEffect(() => {
 });
 
 const filteredOptions = computed(() => state.value.filteredOptions);
-const isVirtual = computed(() => props.virtual);
+const groupedOptions = computed(() => state.value.groupedOptions);
+const hasGroups = computed(() => groupedOptions.value.length > 0);
+const isVirtual = computed(() => props.virtual && !hasGroups.value);
 
 const visibleOptions = computed(() => {
   const list = filteredOptions.value;
@@ -125,8 +128,10 @@ const visibleOptions = computed(() => {
   return list.slice(vlState.value.startIndex, vlState.value.endIndex + 1);
 });
 
+const flatOptions = computed(() => flattenOptions(props.options ?? []));
+
 const selectedOption = computed(() =>
-  props.options?.find((option) => option.value === state.value.value),
+  flatOptions.value.find((option) => option.value === state.value.value),
 );
 
 /** 多选模式已选 tag 列表（含 options 中不存在的值，回退显示原始值） */
@@ -134,7 +139,7 @@ const selectedTags = computed(() => {
   if (!props.multiple) return [];
   const values = Array.isArray(state.value.value) ? state.value.value : [];
   return values.map((item) => {
-    const option = props.options?.find((candidate) => candidate.value === item);
+    const option = flatOptions.value.find((candidate) => candidate.value === item);
     return { value: item, label: option?.label ?? item };
   });
 });
@@ -143,6 +148,12 @@ const selectedTags = computed(() => {
 const hasValue = computed(() =>
   props.multiple ? selectedTags.value.length > 0 : state.value.value !== null,
 );
+
+/** 判断指定值是否选中 */
+const isSelected = (optionValue: string) =>
+  props.multiple
+    ? Array.isArray(state.value.value) && state.value.value.includes(optionValue)
+    : state.value.value === optionValue;
 
 const rootClass = computed(() => [
   props.className,
@@ -430,31 +441,57 @@ defineExpose({ focus, toggleOpen, close });
           @click.stop
         />
       </li>
-      <template v-if="visibleOptions.length > 0">
+      <template v-if="filteredOptions.length > 0">
         <li
           v-if="isVirtual && vlState.offsetY > 0"
           class="xui-select__spacer"
           :style="{ height: `${vlState.offsetY}px` }"
           aria-hidden="true"
         ></li>
+        <!-- 分组模式 -->
+        <template v-if="hasGroups">
+          <li
+            v-for="group in groupedOptions"
+            :key="group.label"
+            class="xui-select__group"
+            role="presentation"
+          >
+            <div class="xui-select__group-title">{{ group.label }}</div>
+            <div
+              v-for="option in group.options"
+              :key="option.value"
+              :id="`${listboxId}-option-${filteredOptions.findIndex((o: SelectOption) => o.value === option.value)}`"
+              class="xui-select__option"
+              :class="{
+                'is-selected': isSelected(option.value),
+                'is-active':
+                  filteredOptions.findIndex((o: SelectOption) => o.value === option.value) ===
+                  state.activeIndex,
+                'is-disabled': option.disabled,
+              }"
+              role="option"
+              :aria-selected="isSelected(option.value)"
+              :aria-disabled="option.disabled || undefined"
+              @click="logic.select(option.value)"
+            >
+              {{ option.label }}
+            </div>
+          </li>
+        </template>
+        <!-- 扁平模式 -->
         <li
+          v-else
           v-for="(option, index) in visibleOptions"
           :id="`${listboxId}-option-${isVirtual ? vlState.startIndex + index : index}`"
           :key="option.value"
           class="xui-select__option"
           :class="{
-            'is-selected': props.multiple
-              ? Array.isArray(state.value) && (state.value as string[]).includes(option.value)
-              : option.value === state.value,
+            'is-selected': isSelected(option.value),
             'is-active': (isVirtual ? vlState.startIndex + index : index) === state.activeIndex,
             'is-disabled': option.disabled,
           }"
           role="option"
-          :aria-selected="
-            props.multiple
-              ? Array.isArray(state.value) && (state.value as string[]).includes(option.value)
-              : option.value === state.value
-          "
+          :aria-selected="isSelected(option.value)"
           :aria-disabled="option.disabled || undefined"
           @click="logic.select(option.value)"
         >

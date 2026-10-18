@@ -15,6 +15,7 @@ import {
   bindViewportUpdate,
   createSelectLogic,
   createVirtualListLogic,
+  flattenOptions,
   getViewport,
   resolveFloatingPosition,
 } from '@xui-design/shared';
@@ -178,12 +179,13 @@ export function Select(props: SelectComponentProps) {
     return () => document.removeEventListener('mousedown', handleOutside);
   }, [logic]);
 
-  const selectedOption = options?.find((option) => option.value === state.value);
+  const flatOptions = flattenOptions(options ?? []);
+  const selectedOption = flatOptions.find((option) => option.value === state.value);
 
   /** 多选模式已选 tag 列表（含 options 中不存在的值，回退显示原始值） */
   const selectedTags: { value: string; label: string }[] = multiple
     ? (Array.isArray(state.value) ? state.value : []).map((item) => {
-        const option = options?.find((candidate) => candidate.value === item);
+        const option = flatOptions.find((candidate) => candidate.value === item);
         return { value: item, label: option?.label ?? item };
       })
     : [];
@@ -192,7 +194,10 @@ export function Select(props: SelectComponentProps) {
   const hasValue = multiple ? selectedTags.length > 0 : state.value !== null;
 
   const filteredOptions = state.filteredOptions;
-  const visibleOptions = virtual
+  const hasGroups = state.groupedOptions.length > 0;
+  // 分组模式不使用虚拟滚动（虚拟滚动仅作用于扁平列表）
+  const effectiveVirtual = virtual && !hasGroups;
+  const visibleOptions = effectiveVirtual
     ? filteredOptions.slice(vlState.startIndex, vlState.endIndex + 1)
     : filteredOptions;
 
@@ -423,36 +428,65 @@ export function Select(props: SelectComponentProps) {
               />
             </li>
           )}
-          {visibleOptions.length > 0 ? (
+          {filteredOptions.length > 0 ? (
             <>
-              {virtual && vlState.offsetY > 0 && (
+              {effectiveVirtual && vlState.offsetY > 0 && (
                 <li
                   className="xui-select__spacer"
                   style={{ height: `${vlState.offsetY}px` }}
                   aria-hidden="true"
                 />
               )}
-              {visibleOptions.map((option, index) => {
-                const realIndex = virtual ? vlState.startIndex + index : index;
-                return (
-                  <li
-                    id={`${listboxId}-option-${realIndex}`}
-                    key={option.value}
-                    className={cn('xui-select__option', {
-                      'is-selected': isSelected(option.value),
-                      'is-active': realIndex === state.activeIndex,
-                      'is-disabled': option.disabled,
-                    })}
-                    role="option"
-                    aria-selected={isSelected(option.value)}
-                    aria-disabled={option.disabled || undefined}
-                    onClick={() => logic.select(option.value)}
-                  >
-                    {option.label}
-                  </li>
-                );
-              })}
-              {virtual && vlState.fillerHeight > 0 && (
+              {hasGroups
+                ? // 分组模式：按分组结构渲染，扁平索引用于键盘高亮定位
+                  state.groupedOptions.map((group) => (
+                    <li key={group.label} className="xui-select__group" role="presentation">
+                      <div className="xui-select__group-title">{group.label}</div>
+                      {group.options.map((option) => {
+                        const flatIndex = filteredOptions.findIndex(
+                          (o) => o.value === option.value,
+                        );
+                        return (
+                          <div
+                            id={flatIndex >= 0 ? `${listboxId}-option-${flatIndex}` : undefined}
+                            key={option.value}
+                            className={cn('xui-select__option', {
+                              'is-selected': isSelected(option.value),
+                              'is-active': flatIndex === state.activeIndex,
+                              'is-disabled': option.disabled,
+                            })}
+                            role="option"
+                            aria-selected={isSelected(option.value)}
+                            aria-disabled={option.disabled || undefined}
+                            onClick={() => logic.select(option.value)}
+                          >
+                            {option.label}
+                          </div>
+                        );
+                      })}
+                    </li>
+                  ))
+                : visibleOptions.map((option, index) => {
+                    const realIndex = effectiveVirtual ? vlState.startIndex + index : index;
+                    return (
+                      <li
+                        id={`${listboxId}-option-${realIndex}`}
+                        key={option.value}
+                        className={cn('xui-select__option', {
+                          'is-selected': isSelected(option.value),
+                          'is-active': realIndex === state.activeIndex,
+                          'is-disabled': option.disabled,
+                        })}
+                        role="option"
+                        aria-selected={isSelected(option.value)}
+                        aria-disabled={option.disabled || undefined}
+                        onClick={() => logic.select(option.value)}
+                      >
+                        {option.label}
+                      </li>
+                    );
+                  })}
+              {effectiveVirtual && vlState.fillerHeight > 0 && (
                 <li
                   className="xui-select__spacer"
                   style={{ height: `${vlState.fillerHeight}px` }}

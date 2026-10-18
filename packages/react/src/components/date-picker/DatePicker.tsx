@@ -2,14 +2,18 @@
  * DatePicker - React 19 适配层
  *
  * useSyncExternalStore 桥接 @xui-design/shared 逻辑，回调 latest-ref 化避免受控回退竞态。
- * ARIA combobox 模式：trigger role="combobox"，面板 role="dialog"，
- * 键盘 Enter/Space/Escape，点击组件外部收起面板。
+ * 支持 type='date'（单选）与 type='range'（范围选择），shortcuts 快捷选项。
+ * ARIA combobox 模式：trigger role="combobox"，面板 role="dialog"。
  */
 
 import { useEffect, useId, useImperativeHandle, useRef } from 'react';
 import type { CSSProperties, KeyboardEvent, ReactNode, Ref } from 'react';
 import type { DatePickerProps } from '@xui-design/core';
-import { createDatePickerLogic, getMonthMatrix } from '@xui-design/shared';
+import {
+  compareDate,
+  createDatePickerLogic,
+  getMonthMatrix,
+} from '@xui-design/shared';
 import type { DatePickerLogicInstance } from '@xui-design/shared';
 import { icons } from '@xui-design/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
@@ -18,35 +22,29 @@ import { cn } from '../../utils/cn';
 
 /** DatePicker 组件 Props（契约 Props 基础上扩展 React 专属属性） */
 export type DatePickerComponentProps = DatePickerProps & {
-  /** 自定义清除图标（默认渲染内联 SVG） */
   renderClearIcon?: () => ReactNode;
-  /** 自定义日历图标（默认渲染内联 SVG） */
   renderCalendarIcon?: () => ReactNode;
-  /** 自定义上一月图标（默认渲染内联 SVG） */
   renderPrevIcon?: () => ReactNode;
-  /** 自定义下一月图标（默认渲染内联 SVG） */
   renderNextIcon?: () => ReactNode;
-  /** React 19 ref-as-prop */
   ref?: Ref<DatePickerRef>;
 };
 
 /** 通过 ref 暴露的命令式 API */
 export interface DatePickerRef {
-  /** 聚焦触发器 */
   focus: () => void;
-  /** 切换面板展开/收起（disabled 时忽略） */
   toggleOpen: () => void;
-  /** 收起面板 */
   close: () => void;
 }
 
 export function DatePicker(props: DatePickerComponentProps) {
   const {
+    type = 'date',
     value,
     defaultValue,
     placeholder,
     disabled = false,
     clearable = false,
+    shortcuts,
     className,
     style,
     onChange,
@@ -58,7 +56,6 @@ export function DatePicker(props: DatePickerComponentProps) {
     ref,
   } = props;
 
-  // 占位符 / 面板 aria / 星期标题 / 月份标题取全局语言包（setLocale / registerLocale 后响应式更新）
   const locale = useLocaleData();
 
   const rootRef = useRef<HTMLDivElement>(null);
@@ -66,24 +63,23 @@ export function DatePicker(props: DatePickerComponentProps) {
   const triggerId = useId();
   const panelId = useId();
 
-  // 回调 latest-ref：避免回调引用变化触发 updateOptions 重跑（见 Modal.tsx 注释）
   const callbacksRef = useRef({ onChange, onClear });
   callbacksRef.current = { onChange, onClear };
 
-  // 逻辑实例只创建一次：value 提供即受控，否则用 defaultValue 非受控
   const logicRef = useRef<DatePickerLogicInstance | null>(null);
   if (logicRef.current === null) {
     logicRef.current = createDatePickerLogic({
+      type,
       value,
       defaultValue,
       disabled,
+      shortcuts,
       onChange: (v) => callbacksRef.current.onChange?.(v),
       onClear: () => callbacksRef.current.onClear?.(),
     });
   }
   const logic = logicRef.current;
 
-  // 同步 prop 变更到逻辑层（受控模式：value 变更 → 逻辑层）
   useEffect(() => {
     logic.updateOptions({ value, disabled });
   }, [logic, value, disabled]);
@@ -100,7 +96,6 @@ export function DatePicker(props: DatePickerComponentProps) {
     [logic],
   );
 
-  // 点击组件外部时收起面板（close 内部有未展开守卫，未打开时为 no-op）
   useEffect(() => {
     const handleOutside = (event: MouseEvent) => {
       if (rootRef.current && !rootRef.current.contains(event.target as Node)) {
@@ -112,6 +107,16 @@ export function DatePicker(props: DatePickerComponentProps) {
   }, [logic]);
 
   const monthCells = getMonthMatrix(state.viewYear, state.viewMonth);
+
+  // 展示文案：date 模式显示单个日期；range 模式显示 "start - end"
+  const displayValue = state.value
+    ? Array.isArray(state.value)
+      ? `${state.value[0]} ~ ${state.value[1]}`
+      : state.value
+    : null;
+
+  // range 高亮区间：已确认的 value 或正在选择的 rangeStart~hover（简化为 value 区间）
+  const rangeValue = state.value && Array.isArray(state.value) ? state.value : null;
 
   const handleTriggerKeydown = (event: KeyboardEvent<HTMLDivElement>) => {
     switch (event.key) {
@@ -129,12 +134,31 @@ export function DatePicker(props: DatePickerComponentProps) {
     }
   };
 
+  /** 判断日期单元格在 range 模式下的选中态 */
+  const getDayClass = (date: string) => {
+    if (type === 'date') {
+      return date === state.value;
+    }
+    // range
+    if (rangeValue) {
+      return date === rangeValue[0] || date === rangeValue[1];
+    }
+    return state.rangeStart === date;
+  };
+
+  /** 判断日期是否在范围内（in-range） */
+  const isInRange = (date: string) => {
+    if (type !== 'range' || !rangeValue) return false;
+    return compareDate(date, rangeValue[0]) >= 0 && compareDate(date, rangeValue[1]) <= 0;
+  };
+
   return (
     <div
       ref={rootRef}
       className={cn('xui-date-picker', className, {
         'is-disabled': state.disabled,
         'is-open': state.open,
+        'is-range': type === 'range',
       })}
       style={style as CSSProperties}
     >
@@ -151,8 +175,8 @@ export function DatePicker(props: DatePickerComponentProps) {
         onClick={() => logic.toggleOpen()}
         onKeyDown={handleTriggerKeydown}
       >
-        {state.value ? (
-          <span className="xui-date-picker__value">{state.value}</span>
+        {displayValue ? (
+          <span className="xui-date-picker__value">{displayValue}</span>
         ) : (
           <span className="xui-date-picker__placeholder">
             {placeholder ?? locale.datePicker.placeholder}
@@ -278,7 +302,10 @@ export function DatePicker(props: DatePickerComponentProps) {
                 className={cn('xui-date-picker__day', {
                   'is-outside': !cell.inMonth,
                   'is-today': cell.isToday,
-                  'is-selected': cell.date === state.value,
+                  'is-selected': getDayClass(cell.date),
+                  'is-in-range': isInRange(cell.date),
+                  'is-range-start': type === 'range' && rangeValue && cell.date === rangeValue[0],
+                  'is-range-end': type === 'range' && rangeValue && cell.date === rangeValue[1],
                 })}
                 aria-label={cell.date}
                 onClick={() => logic.select(cell.date)}
@@ -287,6 +314,20 @@ export function DatePicker(props: DatePickerComponentProps) {
               </button>
             ))}
           </div>
+          {shortcuts && shortcuts.length > 0 && (
+            <div className="xui-date-picker__shortcuts">
+              {shortcuts.map((sc) => (
+                <button
+                  key={sc.label}
+                  type="button"
+                  className="xui-date-picker__shortcut"
+                  onClick={() => logic.selectShortcut(sc.value)}
+                >
+                  {sc.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>

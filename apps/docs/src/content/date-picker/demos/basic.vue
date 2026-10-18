@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { DatePicker } from '@xui-design/vue';
 import { isZh } from '../../../i18n';
 
-const value = ref('2026-10-01');
+const value = ref<string | [string, string]>('2026-10-01');
 </script>
 
 <template>

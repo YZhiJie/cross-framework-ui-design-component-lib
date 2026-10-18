@@ -19,6 +19,7 @@ describe('createSelectLogic', () => {
       disabled: false,
       searchQuery: '',
       filteredOptions: OPTIONS,
+      groupedOptions: [],
     });
   });
 
@@ -371,5 +372,73 @@ describe('createSelectLogic 可搜索模式', () => {
     logic.setSearch('广');
     logic.updateOptions({ options: [{ label: '杭州', value: 'hangzhou' }] });
     expect(logic.getState().filteredOptions).toEqual([]);
+  });
+});
+
+describe('createSelectLogic 分组模式', () => {
+  const GROUPED_OPTIONS = [
+    {
+      label: '华北',
+      options: [
+        { label: '北京', value: 'beijing' },
+        { label: '天津', value: 'tianjin' },
+      ],
+    },
+    {
+      label: '华东',
+      options: [
+        { label: '上海', value: 'shanghai' },
+        { label: '杭州', value: 'hangzhou' },
+      ],
+    },
+  ];
+
+  it('分组选项扁平化用于 filteredOptions，groupedOptions 保留分组结构', () => {
+    const logic = createSelectLogic({ options: GROUPED_OPTIONS });
+    const state = logic.getState();
+    expect(state.filteredOptions.map((o) => o.value)).toEqual([
+      'beijing',
+      'tianjin',
+      'shanghai',
+      'hangzhou',
+    ]);
+    expect(state.groupedOptions).toHaveLength(2);
+    expect(state.groupedOptions[0].label).toBe('华北');
+    expect(state.groupedOptions[1].options.map((o) => o.value)).toEqual(['shanghai', 'hangzhou']);
+  });
+
+  it('分组禁用时子选项全部标记 disabled', () => {
+    const logic = createSelectLogic({
+      options: [{ label: '组', disabled: true, options: [{ label: 'a', value: 'a' }] }],
+    });
+    expect(logic.getState().filteredOptions[0].disabled).toBe(true);
+  });
+
+  it('搜索过滤后空分组不显示', () => {
+    const logic = createSelectLogic({ options: GROUPED_OPTIONS, searchable: true });
+    logic.setSearch('北');
+    const state = logic.getState();
+    expect(state.filteredOptions.map((o) => o.value)).toEqual(['beijing']);
+    expect(state.groupedOptions).toHaveLength(1);
+    expect(state.groupedOptions[0].label).toBe('华北');
+  });
+
+  it('分组选项可正常选中', () => {
+    const onChange = vi.fn();
+    const logic = createSelectLogic({ options: GROUPED_OPTIONS, onChange });
+    logic.select('hangzhou');
+    expect(logic.getState().value).toBe('hangzhou');
+    expect(onChange).toHaveBeenCalledWith('hangzhou');
+  });
+
+  it('扁平选项与分组混合时正确处理', () => {
+    const logic = createSelectLogic({
+      options: [
+        { label: '热门', value: 'hot' },
+        { label: '城市', options: [{ label: '北京', value: 'beijing' }] },
+      ],
+    });
+    expect(logic.getState().filteredOptions.map((o) => o.value)).toEqual(['hot', 'beijing']);
+    expect(logic.getState().groupedOptions).toHaveLength(1);
   });
 });

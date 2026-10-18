@@ -34,6 +34,9 @@ import { InputNumber } from './components/input-number';
 import { Popconfirm } from './components/popconfirm';
 import { Modal } from './components/modal';
 import { Form, FormItem } from './components/form';
+import { TimePicker } from './components/time-picker';
+import { Cascader } from './components/cascader';
+import { Upload } from './components/upload';
 
 export { Switch, Checkbox, Tag, Alert };
 export type { SwitchProps, SwitchRef } from './components/switch';
@@ -81,12 +84,13 @@ export type { ButtonProps, ButtonRef } from './components/button';
 export type { InputProps, InputRef } from './components/input';
 export type { ModalProps, ModalRef } from './components/modal';
 export { Form, FormItem };
-export type {
-  FormProps,
-  FormItemProps,
-  FormRef,
-  FormItemRef,
-} from './components/form';
+export type { FormProps, FormItemProps, FormRef, FormItemRef } from './components/form';
+export { TimePicker };
+export type { TimePickerProps, TimePickerRef } from './components/time-picker';
+export { Cascader };
+export type { CascaderProps, CascaderRef } from './components/cascader';
+export { Upload };
+export type { UploadProps, UploadFile } from './components/upload';
 
 // 基础设施：主题运行时 API / 插件系统 / 虚拟滚动原语（re-export 自 @xui-design/shared）
 export {
@@ -149,5 +153,8 @@ export default {
     app.component(Modal.name ?? 'Modal', Modal);
     app.component(Form.name ?? 'Form', Form);
     app.component(FormItem.name ?? 'FormItem', FormItem);
+    app.component(TimePicker.name ?? 'TimePicker', TimePicker);
+    app.component(Cascader.name ?? 'Cascader', Cascader);
+    app.component(Upload.name ?? 'Upload', Upload);
   },
 };

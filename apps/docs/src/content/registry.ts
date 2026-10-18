@@ -33,6 +33,9 @@ import { tooltipMeta } from './tooltip/meta';
 import { spinMeta } from './spin/meta';
 import { popconfirmMeta } from './popconfirm/meta';
 import { formMeta } from './form/meta';
+import { cascaderMeta } from './cascader/meta';
+import { timePickerMeta } from './time-picker/meta';
+import { uploadMeta } from './upload/meta';
 
 export { CATEGORIES, COMPONENT_LIST };
 
@@ -63,6 +66,9 @@ export const componentMetas: ComponentMeta[] = [
   spinMeta,
   popconfirmMeta,
   formMeta,
+  cascaderMeta,
+  timePickerMeta,
+  uploadMeta,
 ];
 
 export const componentMetaMap: Map<string, ComponentMeta> = new Map(

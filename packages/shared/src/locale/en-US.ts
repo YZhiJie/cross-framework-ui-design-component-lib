@@ -44,4 +44,12 @@ export const enUS: XuiLocaleData = {
     searchAriaLabel: 'Search options',
     triggerPlaceholder: 'Select',
   },
+  timePicker: {
+    panel: 'Select time',
+    placeholder: 'Select time',
+  },
+  cascader: {
+    panel: 'Please select',
+    placeholder: 'Please select',
+  },
 };

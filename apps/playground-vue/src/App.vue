@@ -46,7 +46,7 @@ const radioValue = ref('a');
 const radioCity = ref('beijing');
 const progressValue = ref(60);
 const tabsValue = ref('a');
-const dateValue = ref('');
+const dateValue = ref<string | [string, string]>('');
 const pageValue = ref(2);
 const spinValue = ref(true);
 const skeletonLoading = ref(true);
@@ -423,7 +423,7 @@ const pushLog = (msg: string) => {
           v-model:value="dateValue"
           placeholder="选择日期"
           clearable
-          @change="(v: string) => pushLog(`date: ${v}`)"
+          @change="(v: string | [string, string]) => pushLog(`date: ${v}`)"
           @clear="pushLog('date cleared')"
         />
         <DatePicker disabled placeholder="Disabled" />

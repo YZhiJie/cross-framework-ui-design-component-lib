@@ -21,6 +21,9 @@ export const switchSpec = {
       loading: Boolean,
       checkedText: String,
       uncheckedText: String,
+      checkedColor: String,
+      uncheckedColor: String,
+      beforeChange: Function,
       className: String,
       style: Object,
       onChange: Function,
@@ -34,13 +37,18 @@ export const switchSpec = {
   events: {
     change: { description: '选中状态变更时触发', payloadType: 'boolean' },
   },
-  slots: { loadingIcon: { description: '自定义加载图标' } },
+  slots: {
+    loadingIcon: { description: '自定义加载图标' },
+    checkedIcon: { description: '开启态滑块图标' },
+    uncheckedIcon: { description: '关闭态滑块图标' },
+  },
   useLogic: (props: SwitchProps) =>
     createSwitchLogic({
       value: props.value,
       defaultValue: props.defaultValue,
       disabled: props.disabled,
       loading: props.loading,
+      beforeChange: props.beforeChange,
       onChange: props.onChange,
     }),
 } satisfies ComponentSpec<SwitchProps, SwitchEvents, SwitchSlots, SwitchLogic>;

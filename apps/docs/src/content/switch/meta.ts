@@ -42,6 +42,16 @@ export const switchMeta: ComponentMeta = {
         'Dual-state text via checkedText / uncheckedText: shown inside the track on the opposite side of the thumb, auto-truncated when too long (with a title tooltip)',
     },
     {
+      'zh-CN': 'checkedColor / uncheckedColor 自定义开 / 关背景色（CSS 颜色值，透传 CSS 变量）',
+      'en-US':
+        'checkedColor / uncheckedColor customize the on / off background colors (CSS color values, passed via CSS variables)',
+    },
+    {
+      'zh-CN': 'beforeChange 切换前钩子：返回 false 或 reject 的 Promise 可阻止切换',
+      'en-US':
+        'beforeChange pre-toggle hook: returning false or a rejected promise prevents the toggle',
+    },
+    {
       'zh-CN': '通过 ref 暴露 focus() 命令式聚焦',
       'en-US': 'Imperative focus() exposed via ref',
     },
@@ -152,6 +162,35 @@ export const switchMeta: ComponentMeta = {
         },
       },
       {
+        name: 'checkedColor',
+        type: 'string',
+        default: '—',
+        description: {
+          'zh-CN': '开启态背景色（CSS 颜色值，通过 --xui-switch-checked-color 透传）',
+          'en-US':
+            'On-state background color (CSS color value, passed via --xui-switch-checked-color)',
+        },
+      },
+      {
+        name: 'uncheckedColor',
+        type: 'string',
+        default: '—',
+        description: {
+          'zh-CN': '关闭态背景色（CSS 颜色值，通过 --xui-switch-unchecked-color 透传）',
+          'en-US':
+            'Off-state background color (CSS color value, passed via --xui-switch-unchecked-color)',
+        },
+      },
+      {
+        name: 'beforeChange',
+        type: '(value: boolean) => boolean | Promise<boolean>',
+        default: '—',
+        description: {
+          'zh-CN': '切换前钩子，返回 false 或 reject 的 Promise 可阻止切换',
+          'en-US': 'Pre-toggle hook; returning false or a rejected promise prevents the toggle',
+        },
+      },
+      {
         name: 'onChange',
         type: '(value: boolean) => void',
         default: '—',
@@ -202,6 +241,22 @@ export const switchMeta: ComponentMeta = {
           'en-US': 'Custom loading icon (replaces the built-in spinner)',
         },
       },
+      {
+        vue: 'checkedIcon',
+        react: 'renderCheckedIcon',
+        description: {
+          'zh-CN': '自定义开启态滑块内图标（替换默认对勾）',
+          'en-US': 'Custom on-state thumb icon (replaces the default checkmark)',
+        },
+      },
+      {
+        vue: 'uncheckedIcon',
+        react: 'renderUncheckedIcon',
+        description: {
+          'zh-CN': '自定义关闭态滑块内图标（替换默认关闭图标）',
+          'en-US': 'Custom off-state thumb icon (replaces the default close icon)',
+        },
+      },
     ],
   },
   notes: [
@@ -214,6 +269,12 @@ export const switchMeta: ComponentMeta = {
       'zh-CN': 'loading 为 true 时点击切换被忽略，但不禁用样式，适合"切换中等待异步结果"场景。',
       'en-US':
         'When loading is true, click toggles are ignored but the disabled styling is not applied — ideal for "waiting for an async result after toggling" scenarios.',
+    },
+    {
+      'zh-CN':
+        'beforeChange 返回 false 或 reject 的 Promise 时阻止切换；返回 true 或 resolve(true) 时正常切换。',
+      'en-US':
+        'beforeChange returning false or a rejected promise prevents the toggle; returning true or resolving to true allows it.',
     },
     {
       'zh-CN':

@@ -15,23 +15,26 @@ export const datePickerSpec = {
   name: 'DatePicker',
   props: {
     type: {
+      type: String,
       value: String,
       defaultValue: String,
       placeholder: String,
       disabled: Boolean,
       clearable: Boolean,
+      shortcuts: Array,
       className: String,
       style: Object,
       onChange: Function,
       onClear: Function,
     },
     defaults: {
+      type: 'date',
       disabled: false,
       clearable: false,
     },
   },
   events: {
-    change: { description: '选中日期变更时触发', payloadType: 'string' },
+    change: { description: '选中值变更时触发', payloadType: 'string | [string, string]' },
     clear: { description: '点击清除图标时触发' },
   },
   slots: {
@@ -42,9 +45,11 @@ export const datePickerSpec = {
   },
   useLogic: (props: DatePickerProps) =>
     createDatePickerLogic({
+      type: props.type,
       value: props.value,
       defaultValue: props.defaultValue,
       disabled: props.disabled,
+      shortcuts: props.shortcuts,
       onChange: props.onChange,
       onClear: props.onClear,
     }),

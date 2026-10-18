@@ -12,6 +12,8 @@ A boolean toggle switch with controlled / uncontrolled modes and a loading state
 - Two sizes: sm / md
 - Disabled state and loading state (toggles are ignored while loading; the thumb shows a spinner)
 - Dual-state text via checkedText / uncheckedText: shown inside the track on the opposite side of the thumb, auto-truncated when too long (with a title tooltip)
+- checkedColor / uncheckedColor customize the on / off background colors (CSS color values, passed via CSS variables)
+- beforeChange pre-toggle hook: returning false or a rejected promise prevents the toggle
 - Imperative focus() exposed via ref
 
 ### When to Use
@@ -60,6 +62,7 @@ checkedText / uncheckedText are shown inside the track; omit them for a plain sw
 
 - In controlled mode the component never changes its own state; it only notifies the external side via change / update:value.
 - When loading is true, click toggles are ignored but the disabled styling is not applied — ideal for "waiting for an async result after toggling" scenarios.
+- beforeChange returning false or a rejected promise prevents the toggle; returning true or resolving to true allows it.
 - Dual-state text is hidden from screen readers (state is conveyed via role="switch" + aria-checked); both texts stay in the DOM overlapped with CSS Grid, the track width adapts to the wider text, and no width jitter occurs on toggle.
 
 ## Accessibility

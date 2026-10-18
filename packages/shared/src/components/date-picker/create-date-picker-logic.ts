@@ -1,11 +1,17 @@
 /**
  * DatePicker 纯逻辑工厂
  *
- * 状态：value / open / viewYear / viewMonth / disabled
- * 交互：toggleOpen / close / prevMonth / nextMonth / select / clear
+ * 状态：value / open / viewYear / viewMonth / rangeStage / rangeStart / disabled
+ * 交互：toggleOpen / close / prevMonth / nextMonth / select / selectShortcut / clear
  * 受控模式：创建时提供 value 选项即进入受控模式，
  * 内部不再自行更新选中值，由外部通过 updateOptions 同步。
- * 契约：value 为 'YYYY-MM-DD' 字符串，非法值回退 null。
+ *
+ * 模式：
+ * - type='date'（默认）：单选，select 直接确认并收起
+ * - type='range'：范围选择，第一次 select 设置 rangeStart（rangeStage='end'），
+ *   第二次 select 设置 end，若 end < start 自动交换，确认后收起
+ *
+ * 契约：date 模式 value 为 'YYYY-MM-DD' 字符串，range 模式为 [start, end]。
  * 通过 subscribe 通知状态变更，getState 返回不可变快照。
  */
 
@@ -13,6 +19,15 @@ import type { LogicInstance, StateListener } from '../../types';
 
 /** 星期表头（周日起始，双端适配层共用） */
 export const DATE_WEEKDAY_LABELS = ['日', '一', '二', '三', '四', '五', '六'] as const;
+
+/** 选择模式 */
+export type DatePickerType = 'date' | 'range';
+
+/** DatePicker 值 */
+export type DatePickerValue = string | [string, string];
+
+/** 快捷选项 */
+export type DateShortcut = { label: string; value: DatePickerValue };
 
 /** 日期单元格（月矩阵 42 格：上月尾 + 本月 + 下月头） */
 export type DateCell = {
@@ -28,25 +43,27 @@ export type DateCell = {
 
 /** DatePicker 逻辑配置（由适配层从 Props 中提取注入） */
 export type DatePickerLogicOptions = {
-  /** 受控选中日期（提供时进入受控模式） */
-  value?: string;
-  /** 非受控初始日期 */
-  defaultValue?: string;
+  type?: DatePickerType;
+  /** 受控选中值（提供时进入受控模式） */
+  value?: DatePickerValue;
+  /** 非受控初始值 */
+  defaultValue?: DatePickerValue;
   disabled?: boolean;
-  onChange?: (value: string) => void;
+  shortcuts?: DateShortcut[];
+  onChange?: (value: DatePickerValue) => void;
   onClear?: () => void;
 };
 
 /** DatePicker 状态快照 */
 export type DatePickerState = {
-  /** 当前选中日期（'YYYY-MM-DD'，null 表示未选中） */
-  value: string | null;
-  /** 面板展开状态 */
+  value: DatePickerValue | null;
   open: boolean;
-  /** 面板当前展示年份 */
   viewYear: number;
-  /** 面板当前展示月份（1-12） */
   viewMonth: number;
+  /** range 模式当前选择阶段 */
+  rangeStage: 'start' | 'end' | null;
+  /** range 模式已选起始值 */
+  rangeStart: string | null;
   disabled: boolean;
 };
 
@@ -55,28 +72,25 @@ export interface DatePickerLogicInstance extends LogicInstance<
   DatePickerLogicOptions,
   DatePickerState
 > {
-  /** 展开 / 收起面板（disabled 时忽略；展开时视图定位到选中值或今天） */
   toggleOpen: () => void;
-  /** 收起面板 */
   close: () => void;
-  /** 视图切换到上个月（跨年自动滚动） */
   prevMonth: () => void;
-  /** 视图切换到下个月（跨年自动滚动） */
   nextMonth: () => void;
-  /** 选中日期：非法值忽略；非受控更新 value；受控仅回调；选中后收起面板 */
+  /** 选中日期：date 直接确认；range 先 start 后 end */
   select: (date: string) => void;
-  /** 清空选中值（非受控置 null，始终触发 onClear） */
+  /** 选中快捷选项 */
+  selectShortcut: (value: DatePickerValue) => void;
   clear: () => void;
 }
 
-/** 补零格式化 'YYYY-MM-DD'（内部使用） */
+/** 补零格式化 'YYYY-MM-DD' */
 export function formatDateParts(year: number, month: number, day: number): string {
   const mm = String(month).padStart(2, '0');
   const dd = String(day).padStart(2, '0');
   return `${year}-${mm}-${dd}`;
 }
 
-/** 校验 'YYYY-MM-DD' 是否为真实日期（拦截 2024-02-31 之类） */
+/** 校验 'YYYY-MM-DD' 是否为真实日期 */
 export function isValidDateString(value: unknown): value is string {
   if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const [year, month, day] = value.split('-').map(Number) as [number, number, number];
@@ -84,7 +98,7 @@ export function isValidDateString(value: unknown): value is string {
   return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
 }
 
-/** 解析 'YYYY-MM-DD' 为年月日（非法返回 null） */
+/** 解析 'YYYY-MM-DD' 为年月日 */
 export function parseDateString(
   value: string,
 ): { year: number; month: number; day: number } | null {
@@ -93,18 +107,14 @@ export function parseDateString(
   return { year, month, day };
 }
 
-/** 今天的 'YYYY-MM-DD'（本地时区） */
+/** 今天的 'YYYY-MM-DD' */
 export function todayString(): string {
   const now = new Date();
   return formatDateParts(now.getFullYear(), now.getMonth() + 1, now.getDate());
 }
 
 /**
- * 生成月矩阵（纯函数，双端适配层共用）
- *
- * 42 格：视图月第一天所在周的周日开始，连续 6 周；
- * 含上月尾 / 下月头格子（inMonth=false），isToday 以本地时区当天标记。
- * month 参数为 1-12。
+ * 生成月矩阵（42 格：视图月第一天所在周的周日开始，连续 6 周）
  */
 export function getMonthMatrix(year: number, month: number): DateCell[] {
   const firstWeekday = new Date(year, month - 1, 1).getDay();
@@ -123,19 +133,52 @@ export function getMonthMatrix(year: number, month: number): DateCell[] {
   return cells;
 }
 
+/** 字符串日期比较：a < b 返回 -1，相等 0，a > b 返回 1 */
+export function compareDate(a: string, b: string): -1 | 0 | 1 {
+  if (a === b) return 0;
+  return a < b ? -1 : 1;
+}
+
+/** 规整初始值：按 mode 校验，非法回退 null */
+function normalizeValue(
+  raw: DatePickerValue | undefined,
+  type: DatePickerType,
+): DatePickerValue | null {
+  if (raw === undefined) return null;
+  if (type === 'range') {
+    if (!Array.isArray(raw)) return null;
+    if (!isValidDateString(raw[0]) || !isValidDateString(raw[1])) return null;
+    // 保证 start <= end
+    const [a, b] = raw;
+    return compareDate(a, b) <= 0 ? [a, b] : [b, a];
+  }
+  return isValidDateString(raw) ? raw : null;
+}
+
+/** 值等价比较 */
+function valueEquals(a: DatePickerValue | null, b: DatePickerValue | null): boolean {
+  if (a === b) return true;
+  if (a === null || b === null) return false;
+  if (Array.isArray(a) || Array.isArray(b)) {
+    if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
+    return a[0] === b[0] && a[1] === b[1];
+  }
+  return a === b;
+}
+
 export function createDatePickerLogic(
   options: DatePickerLogicOptions = {},
 ): DatePickerLogicInstance {
+  const type: DatePickerType = options.type === 'range' ? 'range' : 'date';
   const controlled = options.value !== undefined;
 
-  // 非法初始值回退 null
-  const initialValue = isValidDateString(options.value ?? options.defaultValue)
-    ? (options.value ?? options.defaultValue)!
-    : null;
-
-  const initialParts = initialValue
-    ? (parseDateString(initialValue) as { year: number; month: number })
-    : null;
+  const initialValue = normalizeValue(options.value ?? options.defaultValue, type);
+  const initialParts =
+    initialValue && typeof initialValue === 'string'
+      ? parseDateString(initialValue)
+      : initialValue && Array.isArray(initialValue)
+        ? parseDateString(initialValue[0])
+        : null;
   const now = new Date();
 
   const state: DatePickerState = {
@@ -143,11 +186,13 @@ export function createDatePickerLogic(
     open: false,
     viewYear: initialParts?.year ?? now.getFullYear(),
     viewMonth: initialParts?.month ?? now.getMonth() + 1,
+    rangeStage: null,
+    rangeStart: null,
     disabled: options.disabled ?? false,
   };
 
-  const onChange = options.onChange;
-  const onClear = options.onClear;
+  let onChange = options.onChange;
+  let onClear = options.onClear;
   const listeners = new Set<StateListener<DatePickerState>>();
 
   const notify = () => {
@@ -155,9 +200,11 @@ export function createDatePickerLogic(
     listeners.forEach((listener) => listener(snapshot));
   };
 
-  // 展开面板时将视图定位到选中值所在月（未选中则定位到今天）
+  /** 展开面板时将视图定位到选中值所在月（未选中则今天） */
   const syncView = () => {
-    const parts = state.value ? parseDateString(state.value) : null;
+    const v = state.value;
+    const target = v && typeof v === 'string' ? v : v && Array.isArray(v) ? v[0] : null;
+    const parts = target ? parseDateString(target) : null;
     const today = new Date();
     state.viewYear = parts?.year ?? today.getFullYear();
     state.viewMonth = parts?.month ?? today.getMonth() + 1;
@@ -180,35 +227,44 @@ export function createDatePickerLogic(
       if (nextDisabled !== state.disabled) {
         state.disabled = nextDisabled;
         changed = true;
-        // 运行时禁用：收起面板
-        if (state.disabled && state.open) {
-          state.open = false;
-        }
+        if (state.disabled && state.open) state.open = false;
       }
 
-      // 受控值同步（非法值回退 null）
       if (next.value !== undefined) {
-        const nextValue = isValidDateString(next.value) ? next.value : null;
-        if (nextValue !== state.value) {
+        const nextValue = normalizeValue(next.value, type);
+        if (!valueEquals(nextValue, state.value)) {
           state.value = nextValue;
           changed = true;
+          // 受控值变化时重置 range 暂存
+          state.rangeStart = null;
+          state.rangeStage = null;
           if (state.open) syncView();
         }
       }
+
+      if (next.onChange !== undefined) onChange = next.onChange;
+      if (next.onClear !== undefined) onClear = next.onClear;
 
       if (changed) notify();
     },
 
     toggleOpen() {
       if (state.disabled) return;
+      if (!state.open) {
+        syncView();
+        // 展开时重置 range 暂存
+        state.rangeStart = null;
+        state.rangeStage = type === 'range' ? 'start' : null;
+      }
       state.open = !state.open;
-      if (state.open) syncView();
       notify();
     },
 
     close() {
       if (!state.open) return;
       state.open = false;
+      state.rangeStart = null;
+      state.rangeStage = null;
       notify();
     },
 
@@ -234,19 +290,62 @@ export function createDatePickerLogic(
 
     select(date) {
       if (state.disabled || !isValidDateString(date)) return;
-      if (!controlled) {
-        state.value = date;
+
+      // date 模式：直接确认
+      if (type === 'date') {
+        if (!controlled) state.value = date;
+        state.open = false;
+        notify();
+        onChange?.(date);
+        return;
       }
+
+      // range 模式
+      if (state.rangeStage === 'start' || state.rangeStart === null) {
+        // 第一次点击：设置 start
+        state.rangeStart = date;
+        state.rangeStage = 'end';
+        notify();
+        return;
+      }
+
+      // 第二次点击：确定 end
+      const start = state.rangeStart!;
+      const cmp = compareDate(start, date);
+      const range: [string, string] = cmp <= 0 ? [start, date] : [date, start];
+
+      if (!controlled) state.value = range;
       state.open = false;
+      state.rangeStart = null;
+      state.rangeStage = null;
       notify();
-      onChange?.(date);
+      onChange?.(range);
+    },
+
+    selectShortcut(value) {
+      if (state.disabled) return;
+      const normalized = normalizeValue(value, type);
+      if (normalized === null) return;
+
+      if (!controlled) state.value = normalized;
+      state.open = false;
+      state.rangeStart = null;
+      state.rangeStage = null;
+      notify();
+      onChange?.(normalized);
     },
 
     clear() {
-      if (!controlled && state.value !== null) {
+      if (state.disabled) return;
+      if (state.value === null) return;
+      if (!controlled) {
         state.value = null;
-        notify();
+        state.rangeStart = null;
+        state.rangeStage = null;
       }
+      notify();
+      // 受控模式下通过 onChange 通知外部清空：date→''，range→['','']
+      onChange?.(type === 'range' ? (['', ''] as [string, string]) : '');
       onClear?.();
     },
   };

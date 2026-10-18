@@ -40,7 +40,7 @@ export default function App() {
   const [radioCity, setRadioCity] = useState('beijing');
   const [progressValue, setProgressValue] = useState(60);
   const [tabsValue, setTabsValue] = useState('a');
-  const [dateValue, setDateValue] = useState('');
+  const [dateValue, setDateValue] = useState<string | [string, string]>('');
   const [pageValue, setPageValue] = useState(2);
   const [spinValue, setSpinValue] = useState(true);
   const [skeletonLoading, setSkeletonLoading] = useState(true);

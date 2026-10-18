@@ -14,6 +14,7 @@ title: 下拉选择 Select
 - virtual 虚拟滚动：1000+ 选项仅渲染可视窗口，maxHeight 控制面板视口高度
 - clearable 已选中时显示清空按钮（多选清空全部）；disabled 整体禁用
 - 键盘支持：上下方向键移动高亮（跳过禁用项）、Enter 确认、Esc 关闭
+- 分组选项：options 支持 SelectOptionGroup 混合结构，分组内选项统一展示
 
 ### 使用场景
 
@@ -42,6 +43,12 @@ defaultValue 指定初始选中；disabled 禁用整个选择器。
 multiple 以 tag 展示选中项；searchable 按文案过滤；virtual 渲染 1000 项仅维护可视窗口。
 
 <ComponentDemo slug="select" demo-id="advanced" />
+
+### 分组选项
+
+options 传入 SelectOptionGroup 结构，分组内选项统一展示，支持分组级 disabled。
+
+<ComponentDemo slug="select" demo-id="grouped" />
 
 ## API 文档
 
@@ -72,6 +79,26 @@ interface SelectOption {
 ```
 
 下拉选项配置。
+
+**SelectOptionGroup**
+
+```ts
+interface SelectOptionGroup {
+  label: string
+  options: SelectOption[]
+  disabled?: boolean
+}
+```
+
+下拉选项分组配置。
+
+**SelectSource**
+
+```ts
+type SelectSource = (SelectOption | SelectOptionGroup)[];
+```
+
+options 数据源：支持扁平选项数组或分组混合。
 
 **SelectValue**
 

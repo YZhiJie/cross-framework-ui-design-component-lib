@@ -12,6 +12,8 @@ title: 开关 Switch
 - sm / md 两种尺寸
 - disabled 禁用、loading 加载态（加载中切换被忽略，滑块显示 Spinner）
 - checkedText / uncheckedText 双态文本：显示在轨道内滑块对侧，超长自动截断（title 提示）
+- checkedColor / uncheckedColor 自定义开 / 关背景色（CSS 颜色值，透传 CSS 变量）
+- beforeChange 切换前钩子：返回 false 或 reject 的 Promise 可阻止切换
 - 通过 ref 暴露 focus() 命令式聚焦
 
 ### 使用场景
@@ -60,6 +62,7 @@ checkedText / uncheckedText 显示在轨道内；不传保持纯开关模式。
 
 - 受控模式下组件不自改状态，仅通过 change / update:value 回调通知外部同步。
 - loading 为 true 时点击切换被忽略，但不禁用样式，适合"切换中等待异步结果"场景。
+- beforeChange 返回 false 或 reject 的 Promise 时阻止切换；返回 true 或 resolve(true) 时正常切换。
 - 双态文本对读屏隐藏（状态由 role="switch" + aria-checked 传达），两文本常驻 DOM 并以 CSS Grid 重叠，轨道宽度自适应较宽文本，切换时无宽度抖动。
 
 ## 无障碍

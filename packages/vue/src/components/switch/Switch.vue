@@ -31,6 +31,8 @@ const logic = createSwitchLogic({
   defaultValue,
   disabled,
   loading,
+  // props 响应式访问：每次调用取最新 beforeChange
+  beforeChange: (next) => props.beforeChange?.(next) ?? true,
   onChange: (value) => {
     emit('update:value', value);
     emit('change', value);
@@ -91,7 +93,11 @@ defineExpose({ focus, toggle });
         'xui-switch--has-text': Boolean(props.checkedText || props.uncheckedText),
       },
     ]"
-    :style="style"
+    :style="{
+      ...style,
+      ...(props.checkedColor ? { '--xui-switch-checked-color': props.checkedColor } : {}),
+      ...(props.uncheckedColor ? { '--xui-switch-unchecked-color': props.uncheckedColor } : {}),
+    }"
     :aria-checked="state.checked"
     :aria-disabled="state.disabled || state.loading"
     :disabled="state.disabled || state.loading"
@@ -131,6 +137,39 @@ defineExpose({ focus, toggle });
             v-html="icons.loading"
           />
         </slot>
+        <template v-else-if="state.checked">
+          <slot name="checkedIcon">
+            <svg
+              class="xui-switch__icon xui-switch__icon--checked"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              width="12"
+              height="12"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              v-html="icons.check"
+            />
+          </slot>
+        </template>
+        <template v-else>
+          <slot name="uncheckedIcon">
+            <svg
+              class="xui-switch__icon xui-switch__icon--unchecked"
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              width="10"
+              height="10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              v-html="icons.close"
+            />
+          </slot>
+        </template>
       </span>
     </span>
   </button>

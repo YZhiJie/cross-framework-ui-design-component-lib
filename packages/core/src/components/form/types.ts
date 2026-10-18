@@ -4,33 +4,62 @@
  * Props / Events / Slots / State / Logic
  * Form 是复合容器组件（Form + FormItem），二者类型统一定义在此。
  * 验证规则类型也由此文件导出，供 spec 与适配层复用。
- * 逻辑层类型在 @xui-design/shared 本地定义（ValidationRule / FormValues 等），
- * core 复用/对齐（遵循 shared 不依赖 core 的约定）。
+ *
+ * 注意：校验相关类型（ValidationRule / FormValues 等）在 core 与 @xui-design/shared
+ * 各自本地定义并保持结构对齐——core 不依赖 shared，避免 core barrel 的类型解析
+ * 被 shared 的构建产物可用性阻塞（否则 Vue SFC 的 defineProps 类型解析会因
+ * @xui-design/shared 未构建而报 "Unresolvable type reference"）。
  */
 
 import type { LogicInstance } from '../../types';
-import type {
-  FormValues,
-  FormErrors,
-  FormValidationResult,
-  ValidationRule,
-  ValidationTrigger,
-} from '@xui-design/shared';
 
 /** 校验触发时机 */
-export type { ValidationTrigger };
+export type ValidationTrigger = 'change' | 'blur' | 'submit';
 
 /** 表单值映射 */
-export type { FormValues };
+export type FormValues = Record<string, unknown>;
 
 /** 表单错误集合（字段名 -> 错误信息数组） */
-export type { FormErrors };
+export type FormErrors = Record<string, string[]>;
 
 /** 表单校验结果 */
-export type { FormValidationResult };
+export interface FormValidationResult {
+  valid: boolean;
+  errors: FormErrors;
+  values: FormValues;
+}
+
+/** 自定义校验函数：返回 true / string / Promise */
+export type CustomValidator = (
+  value: unknown,
+  values: FormValues,
+) => boolean | string | Promise<boolean | string>;
+
+/** 内置校验规则类型 */
+export type ValidationRuleType =
+  'required' | 'email' | 'phone' | 'number' | 'length' | 'regex' | 'url' | 'custom';
 
 /** 校验规则 */
-export type { ValidationRule };
+export type ValidationRule = {
+  /** 规则类型（省略时必须有 validator 字段走自定义） */
+  type?: ValidationRuleType;
+  /** 错误提示信息（覆盖内置默认提示） */
+  message?: string;
+  /** 触发时机（覆盖表单级 validateTrigger） */
+  trigger?: ValidationTrigger;
+  /** 最小值（number）或最小长度（length） */
+  min?: number;
+  /** 最大值（number）或最大长度（length） */
+  max?: number;
+  /** 精确长度（length）或精确值（number） */
+  exact?: number;
+  /** regex 规则的正则（string 或 RegExp） */
+  pattern?: string | RegExp;
+  /** custom 规则的自定义校验函数 */
+  validator?: CustomValidator;
+  /** 条件校验：仅当返回 true 时执行本条规则 */
+  when?: (values: FormValues) => boolean;
+};
 
 /** 表单级校验触发配置：单触发时机或数组 */
 export type FormValidateTrigger = ValidationTrigger | ValidationTrigger[];

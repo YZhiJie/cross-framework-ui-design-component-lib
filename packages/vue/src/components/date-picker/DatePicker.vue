@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, useId, useTemplateRef, watchEffect } from 'vue';
-import { createDatePickerLogic, getMonthMatrix } from '@xui-design/shared';
+import { compareDate, createDatePickerLogic, getMonthMatrix } from '@xui-design/shared';
+import type { DatePickerValue } from '@xui-design/shared';
 import { icons } from '@xui-design/icons';
 import { useLocaleData } from '../../hooks/use-locale';
 import type { DatePickerProps } from '@xui-design/core';
@@ -8,17 +9,19 @@ import type { DatePickerProps } from '@xui-design/core';
 const props = withDefaults(defineProps<Omit<DatePickerProps, 'onChange' | 'onClear'>>(), {
   // 显式 undefined 默认值：未绑定 value 时保持 undefined → 逻辑层进入非受控模式
   // （提供 value 即受控），与 React 端语义对齐
+  type: 'date',
   value: undefined,
   defaultValue: undefined,
   placeholder: undefined,
   disabled: false,
   clearable: false,
+  shortcuts: undefined,
 });
 
 const emit = defineEmits<{
-  change: [value: string];
+  change: [value: DatePickerValue];
   clear: [];
-  'update:value': [value: string];
+  'update:value': [value: DatePickerValue];
 }>();
 
 const rootRef = useTemplateRef<HTMLElement>('root');
@@ -27,12 +30,14 @@ const triggerId = useId();
 const panelId = useId();
 
 // setup 仅执行一次：解构快照仅用于逻辑层初始化，后续同步一律经 props.xxx 响应式访问
-const { value, defaultValue, disabled } = props;
+const { value, defaultValue, disabled, type } = props;
 
 const logic = createDatePickerLogic({
+  type,
   value,
   defaultValue,
   disabled,
+  shortcuts: props.shortcuts,
   onChange: (val) => {
     emit('update:value', val);
     emit('change', val);
@@ -79,6 +84,19 @@ const title = computed(() =>
   locale.value.datePicker.titleFormat(state.value.viewYear, state.value.viewMonth),
 );
 
+// 展示文案：date 模式显示单个日期；range 模式显示 "start ~ end"
+const displayValue = computed(() => {
+  const v = state.value.value;
+  if (!v) return null;
+  return Array.isArray(v) ? `${v[0]} ~ ${v[1]}` : v;
+});
+
+// range 高亮区间
+const rangeValue = computed<[string, string] | null>(() => {
+  const v = state.value.value;
+  return v && Array.isArray(v) ? v : null;
+});
+
 const handleTriggerKeydown = (event: KeyboardEvent) => {
   switch (event.key) {
     case 'Enter':
@@ -93,6 +111,21 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
       }
       break;
   }
+};
+
+// 判断单元格是否被选中（date 模式=选中值；range 模式=起止端点）
+const isSelected = (date: string) => {
+  if (props.type === 'date') return date === state.value.value;
+  if (rangeValue.value) {
+    return date === rangeValue.value[0] || date === rangeValue.value[1];
+  }
+  return state.value.rangeStart === date;
+};
+
+// range 范围内高亮
+const isInRange = (date: string) => {
+  if (props.type !== 'range' || !rangeValue.value) return false;
+  return compareDate(date, rangeValue.value[0]) >= 0 && compareDate(date, rangeValue.value[1]) <= 0;
 };
 
 // 暴露命令式 focus / toggleOpen / close（与 React 适配层的 DatePickerRef 对齐）
@@ -115,7 +148,10 @@ defineExpose({ focus, toggleOpen, close });
   <div
     ref="root"
     class="xui-date-picker"
-    :class="[className, { 'is-disabled': state.disabled, 'is-open': state.open }]"
+    :class="[
+      className,
+      { 'is-disabled': state.disabled, 'is-open': state.open, 'is-range': props.type === 'range' },
+    ]"
     :style="style"
   >
     <div
@@ -131,7 +167,7 @@ defineExpose({ focus, toggleOpen, close });
       @click="logic.toggleOpen()"
       @keydown="handleTriggerKeydown"
     >
-      <span v-if="state.value" class="xui-date-picker__value">{{ state.value }}</span>
+      <span v-if="displayValue" class="xui-date-picker__value">{{ displayValue }}</span>
       <span v-else class="xui-date-picker__placeholder">{{
         props.placeholder ?? locale.datePicker.placeholder
       }}</span>
@@ -243,12 +279,26 @@ defineExpose({ focus, toggleOpen, close });
           :class="{
             'is-outside': !cell.inMonth,
             'is-today': cell.isToday,
-            'is-selected': cell.date === state.value,
+            'is-selected': isSelected(cell.date),
+            'is-in-range': isInRange(cell.date),
+            'is-range-start': props.type === 'range' && rangeValue && cell.date === rangeValue[0],
+            'is-range-end': props.type === 'range' && rangeValue && cell.date === rangeValue[1],
           }"
           :aria-label="cell.date"
           @click="logic.select(cell.date)"
         >
           {{ cell.day }}
+        </button>
+      </div>
+      <div v-if="props.shortcuts && props.shortcuts.length > 0" class="xui-date-picker__shortcuts">
+        <button
+          v-for="sc in props.shortcuts"
+          :key="sc.label"
+          type="button"
+          class="xui-date-picker__shortcut"
+          @click="logic.selectShortcut(sc.value)"
+        >
+          {{ sc.label }}
         </button>
       </div>
     </div>

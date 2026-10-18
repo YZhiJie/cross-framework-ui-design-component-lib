@@ -48,6 +48,7 @@ export const selectSpec = {
   slots: {
     clearIcon: { description: '自定义清除图标' },
     suffixIcon: { description: '自定义下拉箭头图标' },
+    option: { description: '自定义选项渲染' },
   },
   useLogic: (props: SelectProps) =>
     createSelectLogic({

@@ -4,7 +4,7 @@ import { useIsZh } from '../../../i18n/use-docs-locale';
 
 export default function DatePickerBasicDemo() {
   const isZh = useIsZh();
-  const [value, setValue] = useState('2026-10-01');
+  const [value, setValue] = useState<string | [string, string]>('2026-10-01');
 
   return (
     <div className="demo-column">
