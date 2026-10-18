@@ -56,4 +56,8 @@ export const enUS: XuiLocaleData = {
     panel: 'Please select',
     placeholder: 'Please select',
   },
+  treeSelect: {
+    panel: 'Please select',
+    placeholder: 'Please select',
+  },
 };

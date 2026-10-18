@@ -39,6 +39,7 @@ import { uploadMeta } from './upload/meta';
 import { treeMeta } from './tree/meta';
 import { drawerMeta } from './drawer/meta';
 import { dropdownMeta } from './dropdown/meta';
+import { treeSelectMeta } from './tree-select/meta';
 
 export { CATEGORIES, COMPONENT_LIST };
 
@@ -75,6 +76,7 @@ export const componentMetas: ComponentMeta[] = [
   treeMeta,
   drawerMeta,
   dropdownMeta,
+  treeSelectMeta,
 ];
 
 export const componentMetaMap: Map<string, ComponentMeta> = new Map(

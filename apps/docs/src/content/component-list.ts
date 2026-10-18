@@ -46,6 +46,13 @@ export const COMPONENT_LIST: ComponentEntry[] = [
   { name: 'Form', slug: 'form', title: '表单', category: 'form', available: true },
   { name: 'Cascader', slug: 'cascader', title: '级联选择', category: 'form', available: true },
   { name: 'TimePicker', slug: 'time-picker', title: '时间选择', category: 'form', available: true },
+  {
+    name: 'TreeSelect',
+    slug: 'tree-select',
+    title: '树选择',
+    category: 'form',
+    available: true,
+  },
   { name: 'Upload', slug: 'upload', title: '文件上传', category: 'form', available: true },
   // 数据展示
   { name: 'Tag', slug: 'tag', title: '标签', category: 'display', available: true },

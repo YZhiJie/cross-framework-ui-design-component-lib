@@ -386,6 +386,13 @@ const API_COMPONENTS: ComponentPlan[] = [
     modelProp: null,
     modelCoveredProps: [],
   },
+  {
+    name: 'TreeSelect',
+    specKey: 'treeSelectSpec',
+    reactSource: 'packages/react/src/components/tree-select/TreeSelect.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
 ];
 
 interface MatrixRow {

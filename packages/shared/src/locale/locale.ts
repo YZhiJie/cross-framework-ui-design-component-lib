@@ -75,6 +75,13 @@ export type XuiLocaleData = {
     /** 触发器 placeholder（value 为空时） */
     placeholder: string;
   };
+  /** TreeSelect 树选择 */
+  treeSelect: {
+    /** 面板 aria-label */
+    panel: string;
+    /** 触发器 placeholder（value 为空时） */
+    placeholder: string;
+  };
 };
 
 /** registerLocale 的输入：允许只提供部分组 / 部分字段，未提供字段回退基底语言包 */

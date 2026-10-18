@@ -43,6 +43,8 @@ export { Drawer } from './components/drawer';
 export type { DrawerRef } from './components/drawer';
 export { Dropdown } from './components/dropdown';
 export type { DropdownRef } from './components/dropdown';
+export { TreeSelect } from './components/tree-select';
+export type { TreeSelectRef } from './components/tree-select';
 export { Button } from './components/button';
 
 export type { SelectRef } from './components/select';
@@ -111,6 +113,8 @@ export type {
   FormItemProps,
   TimePickerProps,
   CascaderProps,
+  TreeSelectProps,
+  TreeSelectValue,
   UploadProps,
   UploadFile,
 } from '@xui-design/core';

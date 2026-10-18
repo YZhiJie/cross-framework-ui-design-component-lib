@@ -43,4 +43,8 @@ export const zhCN: XuiLocaleData = {
     panel: '请选择',
     placeholder: '请选择',
   },
+  treeSelect: {
+    panel: '请选择',
+    placeholder: '请选择',
+  },
 };

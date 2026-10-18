@@ -3544,6 +3544,294 @@
 }
 
 /* ============================================
+   TreeSelect 树选择
+   ============================================ */
+
+.xui-tree-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-width: 0;
+}
+
+.xui-tree-select__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: var(--xui-radius-md, 6px);
+  background-color: var(--xui-color-bg, #fff);
+  color: var(--xui-color-text, #1f2937);
+  font-size: var(--xui-font-size-md, 14px);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.xui-tree-select__trigger:focus-visible {
+  outline: none;
+  border-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-tree-select.is-open .xui-tree-select__trigger {
+  border-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-tree-select.is-disabled .xui-tree-select__trigger {
+  border-color: var(--xui-color-border, #d1d5db);
+  background-color: var(--xui-color-bg-disabled, #f3f4f6);
+  color: var(--xui-color-text-secondary, #6b7280);
+  cursor: not-allowed;
+}
+
+.xui-tree-select.is-multiple .xui-tree-select__trigger {
+  height: auto;
+  min-height: 32px;
+  padding: 4px 10px;
+}
+
+.xui-tree-select__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.xui-tree-select__placeholder {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--xui-color-text-secondary, #6b7280);
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.xui-tree-select__arrow {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--xui-color-text-secondary, #6b7280);
+  transition: transform 0.2s ease;
+}
+
+.xui-tree-select__arrow.is-open {
+  transform: rotate(180deg);
+}
+
+.xui-tree-select__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--xui-color-text-secondary, #6b7280);
+  transition: color 0.2s ease;
+}
+
+.xui-tree-select__clear:hover {
+  color: var(--xui-color-text, #1f2937);
+}
+
+.xui-tree-select__panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 1050;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: var(--xui-color-bg, #fff);
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: var(--xui-radius-md, 6px);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 10%);
+}
+
+.xui-tree-select__list,
+.xui-tree-select__children {
+  max-height: 264px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.xui-tree-select__node-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px 4px 0;
+  border-radius: var(--xui-radius-sm, 4px);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.xui-tree-select__node-content:hover {
+  background-color: var(--xui-color-bg-hover, #f3f4f6);
+}
+
+.xui-tree-select__node.is-selected > .xui-tree-select__node-content {
+  background-color: var(--xui-color-primary-bg, #eef2ff);
+  color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-tree-select__node.is-disabled > .xui-tree-select__node-content {
+  color: var(--xui-color-text-disabled, #9ca3af);
+  cursor: not-allowed;
+}
+
+.xui-tree-select.is-disabled .xui-tree-select__node-content {
+  color: var(--xui-color-text-disabled, #9ca3af);
+  cursor: not-allowed;
+}
+
+.xui-tree-select__node.is-disabled > .xui-tree-select__node-content:hover {
+  background-color: transparent;
+}
+
+.xui-tree-select.is-disabled .xui-tree-select__node-content:hover {
+  background-color: transparent;
+}
+
+.xui-tree-select__switcher {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--xui-color-text-secondary, #6b7280);
+  transition: transform 0.2s ease;
+}
+
+.xui-tree-select__switcher.is-expanded {
+  transform: rotate(90deg);
+}
+
+.xui-tree-select__switcher.is-leaf {
+  visibility: hidden;
+}
+
+.xui-tree-select__checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.xui-tree-select__checkbox-inner {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: 3px;
+  background-color: #fff;
+  transition: all 0.15s ease;
+}
+
+.xui-tree-select__checkbox-inner.is-checked {
+  background-color: var(--xui-color-primary, #4f46e5);
+  border-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-tree-select__checkbox-inner.is-checked::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.xui-tree-select__checkbox-inner.is-indeterminate {
+  background-color: var(--xui-color-primary, #4f46e5);
+  border-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-tree-select__checkbox-inner.is-indeterminate::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 5px;
+  width: 8px;
+  height: 2px;
+  background-color: #fff;
+}
+
+.xui-tree-select__checkbox.is-disabled .xui-tree-select__checkbox-inner {
+  background-color: var(--xui-color-bg-disabled, #f3f4f6);
+  border-color: var(--xui-color-border, #d1d5db);
+  cursor: not-allowed;
+}
+
+.xui-tree-select__checkbox.is-disabled .xui-tree-select__checkbox-inner.is-checked {
+  background-color: var(--xui-color-primary-disabled, #c7d2fe);
+  border-color: var(--xui-color-primary-disabled, #c7d2fe);
+}
+
+.xui-tree-select__title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.xui-tree-select__tags {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+}
+
+.xui-tree-select__tag {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  max-width: 100%;
+  padding: 1px 6px;
+  background-color: var(--xui-color-primary-bg, rgb(79 70 229 / 10%));
+  border-radius: var(--xui-radius-sm, 4px);
+  color: var(--xui-color-primary, #4f46e5);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.xui-tree-select__tag-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.xui-tree-select__tag-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  color: var(--xui-color-primary, #4f46e5);
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  transition: background-color 0.15s ease;
+}
+
+.xui-tree-select__tag-close:hover {
+  background-color: var(--xui-color-primary, #4f46e5);
+  color: #fff;
+}
+
+/* ============================================
    Drawer 抽屉
    ============================================ */
 
