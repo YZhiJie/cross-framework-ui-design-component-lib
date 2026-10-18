@@ -32,6 +32,7 @@ import { Breadcrumb } from './components/breadcrumb';
 import { Skeleton } from './components/skeleton';
 import { InputNumber } from './components/input-number';
 import { Popconfirm } from './components/popconfirm';
+import { Tree } from './components/tree';
 import { Modal } from './components/modal';
 import { Form, FormItem } from './components/form';
 import { TimePicker } from './components/time-picker';
@@ -79,6 +80,7 @@ export { InputNumber };
 export type { InputNumberProps, InputNumberRef } from './components/input-number';
 export { Popconfirm };
 export type { PopconfirmProps, PopconfirmRef } from './components/popconfirm';
+export { Tree };
 export { Button, Input, Modal };
 export type { ButtonProps, ButtonRef } from './components/button';
 export type { InputProps, InputRef } from './components/input';
@@ -91,6 +93,7 @@ export { Cascader };
 export type { CascaderProps, CascaderRef } from './components/cascader';
 export { Upload };
 export type { UploadProps, UploadFile } from './components/upload';
+export type { TreeProps, TreeNode, TreeRef } from './components/tree';
 
 // 基础设施：主题运行时 API / 插件系统 / 虚拟滚动原语（re-export 自 @xui-design/shared）
 export {
@@ -150,6 +153,7 @@ export default {
     app.component(Skeleton.name ?? 'Skeleton', Skeleton);
     app.component(InputNumber.name ?? 'InputNumber', InputNumber);
     app.component(Popconfirm.name ?? 'Popconfirm', Popconfirm);
+    app.component(Tree.name ?? 'Tree', Tree);
     app.component(Modal.name ?? 'Modal', Modal);
     app.component(Form.name ?? 'Form', Form);
     app.component(FormItem.name ?? 'FormItem', FormItem);

@@ -54,6 +54,7 @@ export const COMPONENT_LIST: ComponentEntry[] = [
   { name: 'Empty', slug: 'empty', title: '空状态', category: 'display', available: true },
   { name: 'Skeleton', slug: 'skeleton', title: '骨架屏', category: 'display', available: true },
   { name: 'Table', slug: 'table', title: '表格', category: 'display', available: true },
+  { name: 'Tree', slug: 'tree', title: '树形控件', category: 'display', available: true },
   // 导航布局
   { name: 'Tabs', slug: 'tabs', title: '标签页', category: 'navigation', available: true },
   {

@@ -36,6 +36,7 @@ import { formMeta } from './form/meta';
 import { cascaderMeta } from './cascader/meta';
 import { timePickerMeta } from './time-picker/meta';
 import { uploadMeta } from './upload/meta';
+import { treeMeta } from './tree/meta';
 
 export { CATEGORIES, COMPONENT_LIST };
 
@@ -69,6 +70,7 @@ export const componentMetas: ComponentMeta[] = [
   cascaderMeta,
   timePickerMeta,
   uploadMeta,
+  treeMeta,
 ];
 
 export const componentMetaMap: Map<string, ComponentMeta> = new Map(

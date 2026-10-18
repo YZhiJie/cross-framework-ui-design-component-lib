@@ -37,6 +37,8 @@ export { Breadcrumb } from './components/breadcrumb';
 export { Skeleton } from './components/skeleton';
 export { InputNumber } from './components/input-number';
 export { Popconfirm } from './components/popconfirm';
+export { Tree } from './components/tree';
+export type { TreeRef } from './components/tree';
 export { Button } from './components/button';
 
 export type { SelectRef } from './components/select';
@@ -90,6 +92,8 @@ export type {
   SkeletonProps,
   InputNumberProps,
   PopconfirmProps,
+  TreeProps,
+  TreeNode,
   ButtonProps,
   InputProps,
   ModalProps,
