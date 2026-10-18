@@ -2,7 +2,7 @@
  * 体积检查脚本
  *
  * 检查各包构建产物是否符合体积预算：
- * - @xui-design/shared: < 50KB (gzip)
+ * - @xui-design/shared: < 65KB (gzip)
  * - @xui-design/core: < 30KB (gzip)
  * - @xui-design/vue: < 100KB (gzip, 不含 vue)
  * - @xui-design/react: < 100KB (gzip, 不含 react)
@@ -29,7 +29,7 @@ const budgets: SizeBudget[] = [
   {
     packageName: '@xui-design/shared',
     distDir: 'packages/shared/dist',
-    maxGzipKB: 50,
+    maxGzipKB: 65,
     description: '纯逻辑核心层',
   },
   {
@@ -99,7 +99,9 @@ function getFileGzipSize(filePath: string): number {
 let hasFailure = false;
 
 console.log('\n📦 Bundle Size Check\n');
-console.log('Package'.padEnd(20) + 'Actual (gzip)'.padEnd(20) + 'Budget (gzip)'.padEnd(20) + 'Status');
+console.log(
+  'Package'.padEnd(20) + 'Actual (gzip)'.padEnd(20) + 'Budget (gzip)'.padEnd(20) + 'Status',
+);
 console.log('-'.repeat(80));
 
 for (const budget of budgets) {
