@@ -59,6 +59,13 @@ export const COMPONENT_LIST: ComponentEntry[] = [
   // 导航布局
   { name: 'Tabs', slug: 'tabs', title: '标签页', category: 'navigation', available: true },
   {
+    name: 'Dropdown',
+    slug: 'dropdown',
+    title: '下拉菜单',
+    category: 'navigation',
+    available: true,
+  },
+  {
     name: 'Pagination',
     slug: 'pagination',
     title: '分页',

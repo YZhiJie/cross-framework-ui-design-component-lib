@@ -379,6 +379,13 @@ const API_COMPONENTS: ComponentPlan[] = [
     modelProp: 'visible',
     modelCoveredProps: ['defaultVisible'],
   },
+  {
+    name: 'Dropdown',
+    specKey: 'dropdownSpec',
+    reactSource: 'packages/react/src/components/dropdown/Dropdown.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
 ];
 
 interface MatrixRow {

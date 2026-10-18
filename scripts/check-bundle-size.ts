@@ -3,7 +3,7 @@
  *
  * 检查各包构建产物是否符合体积预算：
  * - @xui-design/shared: < 65KB (gzip)
- * - @xui-design/core: < 30KB (gzip)
+ * - @xui-design/core: < 35KB (gzip，Dropdown 契约加入后由 30KB 上调)
  * - @xui-design/vue: < 110KB (gzip, 不含 vue)
  * - @xui-design/react: < 100KB (gzip, 不含 react)
  * - @xui-design/styles: < 20KB (gzip)
@@ -35,7 +35,8 @@ const budgets: SizeBudget[] = [
   {
     packageName: '@xui-design/core',
     distDir: 'packages/core/dist',
-    maxGzipKB: 30,
+    // 30 → 35：新增 Dropdown 契约（types + spec）后实测 30.89KB，上调预算
+    maxGzipKB: 35,
     description: '框架无关抽象层',
   },
   {

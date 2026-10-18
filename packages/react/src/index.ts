@@ -41,6 +41,8 @@ export { Tree } from './components/tree';
 export type { TreeRef } from './components/tree';
 export { Drawer } from './components/drawer';
 export type { DrawerRef } from './components/drawer';
+export { Dropdown } from './components/dropdown';
+export type { DropdownRef } from './components/dropdown';
 export { Button } from './components/button';
 
 export type { SelectRef } from './components/select';
@@ -98,6 +100,10 @@ export type {
   TreeNode,
   DrawerProps,
   DrawerPlacement,
+  DropdownProps,
+  DropdownOption,
+  DropdownTrigger,
+  DropdownPlacement,
   ButtonProps,
   InputProps,
   ModalProps,
