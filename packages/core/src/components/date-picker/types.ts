@@ -73,6 +73,8 @@ export type DatePickerSlots = {
 export type DatePickerState = {
   /** 当前选中值（date: string | null；range: [string, string] | null） */
   value: DatePickerValue | null;
+  /** 面板内待确认的草稿值（打开面板时从 value 拷贝，confirm 提交，close 丢弃） */
+  draft: DatePickerValue | null;
   /** 面板展开状态 */
   open: boolean;
   /** 面板当前展示年份 */
@@ -88,18 +90,20 @@ export type DatePickerState = {
 
 /** DatePicker 逻辑实例（通用接口 + 交互方法） */
 export type DatePickerLogic = LogicInstance<DatePickerProps, DatePickerState> & {
-  /** 展开 / 收起面板（disabled 时忽略；展开时视图定位到选中值或今天） */
+  /** 展开 / 收起面板（disabled 时忽略；展开时草稿从 value 拷贝并定位视图，收起时丢弃草稿） */
   toggleOpen: () => void;
-  /** 收起面板 */
+  /** 收起面板并丢弃未确认的草稿（取消按钮 / 外部点击 / Esc 同路径） */
   close: () => void;
   /** 视图切换到上个月（跨年自动滚动） */
   prevMonth: () => void;
   /** 视图切换到下个月（跨年自动滚动） */
   nextMonth: () => void;
-  /** 选中日期：date 模式直接确认；range 模式先选 start 再选 end */
+  /** 选中日期：仅更新草稿（date 直接写入；range 先选 start 再选 end），不收起面板、不触发 onChange */
   select: (date: string) => void;
-  /** 选中快捷选项 */
+  /** 选中快捷选项：仅更新草稿，不收起面板、不触发 onChange */
   selectShortcut: (value: DatePickerValue) => void;
+  /** 确认草稿：草稿非空且与 value 不同时提交（非受控更新 value，触发 onChange），随后收起面板 */
+  confirm: () => void;
   /** 清空选中值（非受控置 null，始终触发 onClear） */
   clear: () => void;
 };

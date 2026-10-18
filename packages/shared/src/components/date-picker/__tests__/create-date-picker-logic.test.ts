@@ -58,10 +58,11 @@ describe('日期工具函数', () => {
 });
 
 describe('createDatePickerLogic', () => {
-  it('初始状态：未展开、视图定位到今天', () => {
+  it('初始状态：未展开、视图定位到今天、草稿跟随值', () => {
     const logic = createDatePickerLogic();
     const state = logic.getState();
     expect(state.value).toBeNull();
+    expect(state.draft).toBeNull();
     expect(state.open).toBe(false);
     const now = new Date();
     expect(state.viewYear).toBe(now.getFullYear());
@@ -106,14 +107,96 @@ describe('createDatePickerLogic', () => {
     expect(logic.getState().viewMonth).toBe(2);
   });
 
-  it('select 更新 value、收起面板并触发 onChange', () => {
+  it('select 仅更新草稿：不收起面板、不触发 onChange', () => {
     const onChange = vi.fn();
     const logic = createDatePickerLogic({ onChange });
     logic.toggleOpen();
     logic.select('2026-10-11');
-    expect(logic.getState().value).toBe('2026-10-11');
-    expect(logic.getState().open).toBe(false);
+    const state = logic.getState();
+    expect(state.draft).toBe('2026-10-11');
+    expect(state.value).toBeNull();
+    expect(state.open).toBe(true);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('confirm 非受控提交草稿并收起面板、触发 onChange', () => {
+    const onChange = vi.fn();
+    const logic = createDatePickerLogic({ onChange });
+    logic.toggleOpen();
+    logic.select('2026-10-11');
+    logic.confirm();
+    const state = logic.getState();
+    expect(state.value).toBe('2026-10-11');
+    expect(state.open).toBe(false);
     expect(onChange).toHaveBeenCalledWith('2026-10-11');
+  });
+
+  it('confirm 受控模式不更新内部 value，仅回调', () => {
+    const onChange = vi.fn();
+    const logic = createDatePickerLogic({ value: '2026-01-01', onChange });
+    logic.toggleOpen();
+    logic.select('2026-10-11');
+    logic.confirm();
+    expect(logic.getState().value).toBe('2026-01-01');
+    expect(onChange).toHaveBeenCalledWith('2026-10-11');
+    logic.updateOptions({ value: '2026-10-11' });
+    expect(logic.getState().value).toBe('2026-10-11');
+    expect(logic.getState().draft).toBe('2026-10-11');
+  });
+
+  it('confirm 草稿与当前值相同时不触发 onChange', () => {
+    const onChange = vi.fn();
+    const logic = createDatePickerLogic({ defaultValue: '2026-03-15', onChange });
+    logic.toggleOpen();
+    logic.confirm();
+    expect(logic.getState().open).toBe(false);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('confirm 草稿为空时仅收起面板', () => {
+    const onChange = vi.fn();
+    const logic = createDatePickerLogic({ onChange });
+    logic.toggleOpen();
+    logic.confirm();
+    expect(logic.getState().value).toBeNull();
+    expect(logic.getState().open).toBe(false);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('close 丢弃未确认的草稿', () => {
+    const onChange = vi.fn();
+    const logic = createDatePickerLogic({ defaultValue: '2026-03-15', onChange });
+    logic.toggleOpen();
+    logic.select('2026-10-11');
+    expect(logic.getState().draft).toBe('2026-10-11');
+    logic.close();
+    const state = logic.getState();
+    expect(state.open).toBe(false);
+    expect(state.draft).toBe('2026-03-15');
+    expect(state.value).toBe('2026-03-15');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('toggleOpen 重新展开时草稿从 value 重新拷贝', () => {
+    const logic = createDatePickerLogic({ defaultValue: '2026-03-15' });
+    logic.toggleOpen();
+    logic.select('2026-10-11');
+    logic.close();
+    logic.toggleOpen();
+    expect(logic.getState().draft).toBe('2026-03-15');
+  });
+
+  it('selectShortcut 仅更新草稿，confirm 提交', () => {
+    const onChange = vi.fn();
+    const logic = createDatePickerLogic({ onChange });
+    logic.toggleOpen();
+    logic.selectShortcut('2026-12-24');
+    expect(logic.getState().draft).toBe('2026-12-24');
+    expect(logic.getState().open).toBe(true);
+    expect(onChange).not.toHaveBeenCalled();
+    logic.confirm();
+    expect(logic.getState().value).toBe('2026-12-24');
+    expect(onChange).toHaveBeenCalledWith('2026-12-24');
   });
 
   it('select 非法日期忽略', () => {
@@ -121,18 +204,8 @@ describe('createDatePickerLogic', () => {
     const logic = createDatePickerLogic({ onChange });
     logic.select('2026-02-30');
     expect(logic.getState().value).toBeNull();
+    expect(logic.getState().draft).toBeNull();
     expect(onChange).not.toHaveBeenCalled();
-  });
-
-  it('受控模式：select 仅回调不内部更新', () => {
-    const onChange = vi.fn();
-    const logic = createDatePickerLogic({ value: '2026-01-01', onChange });
-    logic.toggleOpen();
-    logic.select('2026-10-11');
-    expect(logic.getState().value).toBe('2026-01-01');
-    expect(onChange).toHaveBeenCalledWith('2026-10-11');
-    logic.updateOptions({ value: '2026-10-11' });
-    expect(logic.getState().value).toBe('2026-10-11');
   });
 
   it('clear 非受控置 null 并触发 onClear，受控仅回调', () => {
@@ -140,6 +213,7 @@ describe('createDatePickerLogic', () => {
     const logic = createDatePickerLogic({ defaultValue: '2026-10-11', onClear });
     logic.clear();
     expect(logic.getState().value).toBeNull();
+    expect(logic.getState().draft).toBeNull();
     expect(onClear).toHaveBeenCalledTimes(1);
 
     const controlled = createDatePickerLogic({ value: '2026-10-11', onClear });
@@ -169,5 +243,117 @@ describe('createDatePickerLogic', () => {
     const logic = createDatePickerLogic({ value: '2026-10-11' });
     logic.updateOptions({ value: 'oops' });
     expect(logic.getState().value).toBeNull();
+    expect(logic.getState().draft).toBeNull();
+  });
+});
+
+describe('createDatePickerLogic range 模式', () => {
+  it('初始值规整：乱序自动交换，非法回退 null', () => {
+    const logic = createDatePickerLogic({
+      type: 'range',
+      defaultValue: ['2026-10-20', '2026-10-11'],
+    });
+    expect(logic.getState().value).toEqual(['2026-10-11', '2026-10-20']);
+    expect(logic.getState().draft).toEqual(['2026-10-11', '2026-10-20']);
+
+    const invalid = createDatePickerLogic({ type: 'range', defaultValue: ['2026-10-11', 'oops'] });
+    expect(invalid.getState().value).toBeNull();
+  });
+
+  it('两次 select 写入草稿，confirm 提交并触发 onChange', () => {
+    const onChange = vi.fn();
+    const logic = createDatePickerLogic({ type: 'range', onChange });
+    logic.toggleOpen();
+    expect(logic.getState().rangeStage).toBe('start');
+
+    logic.select('2026-10-11');
+    expect(logic.getState().rangeStart).toBe('2026-10-11');
+    expect(logic.getState().rangeStage).toBe('end');
+    expect(logic.getState().draft).toBeNull();
+    expect(logic.getState().open).toBe(true);
+    expect(onChange).not.toHaveBeenCalled();
+
+    logic.select('2026-10-20');
+    expect(logic.getState().draft).toEqual(['2026-10-11', '2026-10-20']);
+    expect(logic.getState().rangeStart).toBeNull();
+    expect(logic.getState().open).toBe(true);
+    expect(onChange).not.toHaveBeenCalled();
+
+    logic.confirm();
+    expect(logic.getState().value).toEqual(['2026-10-11', '2026-10-20']);
+    expect(logic.getState().open).toBe(false);
+    expect(onChange).toHaveBeenCalledWith(['2026-10-11', '2026-10-20']);
+  });
+
+  it('end < start 自动交换后写入草稿', () => {
+    const onChange = vi.fn();
+    const logic = createDatePickerLogic({ type: 'range', onChange });
+    logic.toggleOpen();
+    logic.select('2026-10-20');
+    logic.select('2026-10-11');
+    expect(logic.getState().draft).toEqual(['2026-10-11', '2026-10-20']);
+    logic.confirm();
+    expect(onChange).toHaveBeenCalledWith(['2026-10-11', '2026-10-20']);
+  });
+
+  it('close 丢弃 range 暂存与草稿', () => {
+    const onChange = vi.fn();
+    const logic = createDatePickerLogic({
+      type: 'range',
+      defaultValue: ['2026-01-01', '2026-01-31'],
+      onChange,
+    });
+    logic.toggleOpen();
+    logic.select('2026-10-11');
+    logic.select('2026-10-20');
+    expect(logic.getState().draft).toEqual(['2026-10-11', '2026-10-20']);
+    logic.close();
+    expect(logic.getState().draft).toEqual(['2026-01-01', '2026-01-31']);
+    expect(logic.getState().rangeStart).toBeNull();
+    expect(logic.getState().rangeStage).toBeNull();
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('受控模式：confirm 仅回调不内部更新', () => {
+    const onChange = vi.fn();
+    const logic = createDatePickerLogic({
+      type: 'range',
+      value: ['2026-01-01', '2026-01-31'],
+      onChange,
+    });
+    logic.toggleOpen();
+    logic.select('2026-10-11');
+    logic.select('2026-10-20');
+    logic.confirm();
+    expect(logic.getState().value).toEqual(['2026-01-01', '2026-01-31']);
+    expect(onChange).toHaveBeenCalledWith(['2026-10-11', '2026-10-20']);
+  });
+
+  it('selectShortcut 写入 range 草稿，confirm 提交', () => {
+    const onChange = vi.fn();
+    const logic = createDatePickerLogic({ type: 'range', onChange });
+    logic.toggleOpen();
+    logic.selectShortcut(['2026-10-01', '2026-10-07']);
+    expect(logic.getState().draft).toEqual(['2026-10-01', '2026-10-07']);
+    expect(logic.getState().open).toBe(true);
+    logic.confirm();
+    expect(logic.getState().value).toEqual(['2026-10-01', '2026-10-07']);
+    expect(onChange).toHaveBeenCalledWith(['2026-10-01', '2026-10-07']);
+  });
+
+  it("clear 触发 onChange 通知外部清空（range 为 ['', '']）", () => {
+    const onChange = vi.fn();
+    const onClear = vi.fn();
+    const logic = createDatePickerLogic({
+      type: 'range',
+      defaultValue: ['2026-01-01', '2026-01-31'],
+      onChange,
+      onClear,
+    });
+    logic.clear();
+    expect(logic.getState().value).toBeNull();
+    expect(logic.getState().draft).toBeNull();
+    expect(onChange).toHaveBeenCalledWith(['', '']);
+    expect(onClear).toHaveBeenCalledTimes(1);
   });
 });

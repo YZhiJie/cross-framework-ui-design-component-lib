@@ -23,6 +23,8 @@ export const zhCN: XuiLocaleData = {
     titleFormat: (year, month) => `${year} 年 ${String(month).padStart(2, '0')} 月`,
     weekdays: DATE_WEEKDAY_LABELS,
     placeholder: '请选择日期',
+    confirm: '确认',
+    cancel: '取消',
   },
   skeleton: { loading: '加载中' },
   breadcrumb: { nav: '面包屑' },

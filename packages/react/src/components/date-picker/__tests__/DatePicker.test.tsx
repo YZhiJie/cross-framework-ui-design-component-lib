@@ -35,7 +35,7 @@ describe('DatePicker (react)', () => {
     expect(container.querySelector('.xui-date-picker__panel')).toBeNull();
   });
 
-  it('defaultValue 显示选中值并定位视图，选择触发 onChange', () => {
+  it('defaultValue 显示选中值并定位视图，确认后触发 onChange', () => {
     const onChange = vi.fn();
     const { container } = render(<DatePicker defaultValue="2026-10-11" onChange={onChange} />);
     expect(container.querySelector('.xui-date-picker__value')?.textContent).toBe('2026-10-11');
@@ -44,9 +44,46 @@ describe('DatePicker (react)', () => {
     expect(container.querySelector('.xui-date-picker__title')?.textContent).toBe('2026 年 10 月');
 
     fireEvent.click(findDay(container, '2026-10-15')!);
+    // 草稿模式：点选仅更新草稿，不收起面板、不触发 onChange
+    expect(onChange).not.toHaveBeenCalled();
+    expect(container.querySelector('.xui-date-picker__panel')).not.toBeNull();
+
+    fireEvent.click(container.querySelector('.xui-date-picker__footer-btn--confirm')!);
     expect(onChange).toHaveBeenCalledWith('2026-10-15');
     expect(container.querySelector('.xui-date-picker__panel')).toBeNull();
     expect(container.querySelector('.xui-date-picker__value')?.textContent).toBe('2026-10-15');
+  });
+
+  it('取消按钮丢弃草稿：值不变、不触发 onChange，重开后高亮回到已确认值', () => {
+    const onChange = vi.fn();
+    const { container } = render(<DatePicker defaultValue="2026-10-11" onChange={onChange} />);
+    fireEvent.click(container.querySelector('.xui-date-picker__trigger')!);
+    fireEvent.click(findDay(container, '2026-10-15')!);
+    expect(
+      container.querySelector('.xui-date-picker__day.is-selected')?.getAttribute('aria-label'),
+    ).toBe('2026-10-15');
+
+    fireEvent.click(container.querySelector('.xui-date-picker__footer-btn--cancel')!);
+    expect(container.querySelector('.xui-date-picker__panel')).toBeNull();
+    expect(onChange).not.toHaveBeenCalled();
+    expect(container.querySelector('.xui-date-picker__value')?.textContent).toBe('2026-10-11');
+
+    fireEvent.click(container.querySelector('.xui-date-picker__trigger')!);
+    expect(
+      container.querySelector('.xui-date-picker__day.is-selected')?.getAttribute('aria-label'),
+    ).toBe('2026-10-11');
+  });
+
+  it('无值时确认按钮禁用，选中草稿后可用', () => {
+    const { container } = render(<DatePicker />);
+    fireEvent.click(container.querySelector('.xui-date-picker__trigger')!);
+    const confirm = container.querySelector(
+      '.xui-date-picker__footer-btn--confirm',
+    ) as HTMLButtonElement;
+    expect(confirm.disabled).toBe(true);
+
+    fireEvent.click(container.querySelector('.xui-date-picker__day.is-today')!);
+    expect(confirm.disabled).toBe(false);
   });
 
   it('今天与选中态样式标记', () => {
@@ -108,11 +145,14 @@ describe('DatePicker (react)', () => {
     expect(navs[1].querySelector('svg')).toBeNull();
   });
 
-  it('受控模式：value 变更驱动显示，选择仅回调', () => {
+  it('受控模式：value 变更驱动显示，确认后仅回调', () => {
     const onChange = vi.fn();
     const { container, rerender } = render(<DatePicker value="2026-10-11" onChange={onChange} />);
     fireEvent.click(container.querySelector('.xui-date-picker__trigger')!);
     fireEvent.click(findDay(container, '2026-10-15')!);
+    expect(onChange).not.toHaveBeenCalled();
+
+    fireEvent.click(container.querySelector('.xui-date-picker__footer-btn--confirm')!);
     expect(onChange).toHaveBeenCalledWith('2026-10-15');
     expect(container.querySelector('.xui-date-picker__value')?.textContent).toBe('2026-10-11');
 

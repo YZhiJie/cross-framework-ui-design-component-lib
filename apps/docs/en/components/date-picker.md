@@ -11,7 +11,8 @@ Click to open a month calendar and pick a single date; the value is always a YYY
 - Controlled and uncontrolled modes; supports v-model:value on the Vue side
 - Values are always 'YYYY-MM-DD' strings (serialization-friendly); invalid values fall back to null
 - The calendar panel switches between previous / next month (scrolling across years automatically), with a full 42-cell week view
-- A clearable clear button and disabled state; the panel closes on outside click or after selection
+- The panel uses a draft + confirm / cancel mode: picking a date only updates the draft; the value is committed on confirm, while cancel or outside click discards the draft
+- A clearable clear button and disabled state; the panel closes on confirm, cancel, or outside click
 
 ### When to Use
 

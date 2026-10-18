@@ -39,6 +39,10 @@ export type XuiLocaleData = {
     weekdays: readonly string[];
     /** 触发器 placeholder（value 为空时） */
     placeholder: string;
+    /** 面板底部确认按钮文案 */
+    confirm: string;
+    /** 面板底部取消按钮文案 */
+    cancel: string;
   };
   /** Skeleton 骨架屏 */
   skeleton: { loading: string };

@@ -1,15 +1,18 @@
 /**
  * DatePicker 纯逻辑工厂
  *
- * 状态：value / open / viewYear / viewMonth / rangeStage / rangeStart / disabled
- * 交互：toggleOpen / close / prevMonth / nextMonth / select / selectShortcut / clear
+ * 状态：value / draft / open / viewYear / viewMonth / rangeStage / rangeStart / disabled
+ * 交互：toggleOpen / close / prevMonth / nextMonth / select / selectShortcut / confirm / clear
+ * 确认-取消模式（与 TimePicker 对齐）：面板打开时 draft 从 value 拷贝，面板内
+ * select / selectShortcut 仅更新草稿，confirm 提交草稿并收起面板（触发 onChange），
+ * close（含取消/外部点击/Esc）丢弃草稿。
  * 受控模式：创建时提供 value 选项即进入受控模式，
  * 内部不再自行更新选中值，由外部通过 updateOptions 同步。
  *
  * 模式：
- * - type='date'（默认）：单选，select 直接确认并收起
+ * - type='date'（默认）：单选，select 更新草稿
  * - type='range'：范围选择，第一次 select 设置 rangeStart（rangeStage='end'），
- *   第二次 select 设置 end，若 end < start 自动交换，确认后收起
+ *   第二次 select 设置 end，若 end < start 自动交换并写入草稿
  *
  * 契约：date 模式 value 为 'YYYY-MM-DD' 字符串，range 模式为 [start, end]。
  * 通过 subscribe 通知状态变更，getState 返回不可变快照。
@@ -57,6 +60,8 @@ export type DatePickerLogicOptions = {
 /** DatePicker 状态快照 */
 export type DatePickerState = {
   value: DatePickerValue | null;
+  /** 面板内待确认的草稿值（打开面板时从 value 拷贝，confirm 提交，close 丢弃） */
+  draft: DatePickerValue | null;
   open: boolean;
   viewYear: number;
   viewMonth: number;
@@ -72,14 +77,18 @@ export interface DatePickerLogicInstance extends LogicInstance<
   DatePickerLogicOptions,
   DatePickerState
 > {
+  /** 展开 / 收起面板（disabled 时忽略）；展开时草稿从 value 拷贝并定位视图，收起时丢弃草稿 */
   toggleOpen: () => void;
+  /** 收起面板并丢弃未确认的草稿（取消按钮 / 外部点击 / Esc 同路径） */
   close: () => void;
   prevMonth: () => void;
   nextMonth: () => void;
-  /** 选中日期：date 直接确认；range 先 start 后 end */
+  /** 选中日期：仅更新草稿（date 直接写入；range 先 start 后 end），不收起面板、不触发 onChange */
   select: (date: string) => void;
-  /** 选中快捷选项 */
+  /** 选中快捷选项：仅更新草稿，不收起面板、不触发 onChange */
   selectShortcut: (value: DatePickerValue) => void;
+  /** 确认草稿：草稿非空且与 value 不同时提交（非受控更新 value，触发 onChange），随后收起面板 */
+  confirm: () => void;
   clear: () => void;
 }
 
@@ -183,6 +192,7 @@ export function createDatePickerLogic(
 
   const state: DatePickerState = {
     value: initialValue,
+    draft: initialValue,
     open: false,
     viewYear: initialParts?.year ?? now.getFullYear(),
     viewMonth: initialParts?.month ?? now.getMonth() + 1,
@@ -234,6 +244,8 @@ export function createDatePickerLogic(
         const nextValue = normalizeValue(next.value, type);
         if (!valueEquals(nextValue, state.value)) {
           state.value = nextValue;
+          // 草稿跟随最新选中值
+          state.draft = nextValue;
           changed = true;
           // 受控值变化时重置 range 暂存
           state.rangeStart = null;
@@ -252,9 +264,13 @@ export function createDatePickerLogic(
       if (state.disabled) return;
       if (!state.open) {
         syncView();
-        // 展开时重置 range 暂存
+        // 展开：草稿从当前选中值拷贝，重置 range 暂存
+        state.draft = state.value;
         state.rangeStart = null;
         state.rangeStage = type === 'range' ? 'start' : null;
+      } else {
+        // 收起：丢弃未确认草稿
+        state.draft = state.value;
       }
       state.open = !state.open;
       notify();
@@ -263,6 +279,8 @@ export function createDatePickerLogic(
     close() {
       if (!state.open) return;
       state.open = false;
+      // 丢弃未确认的草稿（取消 / 外部点击 / Esc 同路径）
+      state.draft = state.value;
       state.rangeStart = null;
       state.rangeStage = null;
       notify();
@@ -291,12 +309,10 @@ export function createDatePickerLogic(
     select(date) {
       if (state.disabled || !isValidDateString(date)) return;
 
-      // date 模式：直接确认
+      // date 模式：仅更新草稿，等待 confirm 提交
       if (type === 'date') {
-        if (!controlled) state.value = date;
-        state.open = false;
+        state.draft = date;
         notify();
-        onChange?.(date);
         return;
       }
 
@@ -309,17 +325,15 @@ export function createDatePickerLogic(
         return;
       }
 
-      // 第二次点击：确定 end
+      // 第二次点击：确定 end，写入草稿（面板保持展开，等待 confirm 提交）
       const start = state.rangeStart!;
       const cmp = compareDate(start, date);
       const range: [string, string] = cmp <= 0 ? [start, date] : [date, start];
 
-      if (!controlled) state.value = range;
-      state.open = false;
+      state.draft = range;
       state.rangeStart = null;
       state.rangeStage = null;
       notify();
-      onChange?.(range);
     },
 
     selectShortcut(value) {
@@ -327,12 +341,31 @@ export function createDatePickerLogic(
       const normalized = normalizeValue(value, type);
       if (normalized === null) return;
 
-      if (!controlled) state.value = normalized;
-      state.open = false;
+      // 仅更新草稿，等待 confirm 提交
+      state.draft = normalized;
       state.rangeStart = null;
       state.rangeStage = null;
       notify();
-      onChange?.(normalized);
+    },
+
+    confirm() {
+      if (state.disabled) return;
+      if (!state.open) return;
+      const next = state.draft;
+      state.open = false;
+      state.rangeStart = null;
+      state.rangeStage = null;
+      // 草稿为空（未选择）或与当前值相同：直接收起，不触发 onChange
+      if (next === null || valueEquals(next, state.value)) {
+        state.draft = state.value;
+        notify();
+        return;
+      }
+      if (!controlled) {
+        state.value = next;
+      }
+      notify();
+      onChange?.(next);
     },
 
     clear() {
@@ -343,6 +376,7 @@ export function createDatePickerLogic(
         state.rangeStart = null;
         state.rangeStage = null;
       }
+      state.draft = null;
       notify();
       // 受控模式下通过 onChange 通知外部清空：date→''，range→['','']
       onChange?.(type === 'range' ? (['', ''] as [string, string]) : '');

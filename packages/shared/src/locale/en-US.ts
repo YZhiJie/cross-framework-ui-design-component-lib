@@ -36,6 +36,8 @@ export const enUS: XuiLocaleData = {
     titleFormat: (year, month) => `${EN_MONTHS[month - 1]} ${year}`,
     weekdays: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
     placeholder: 'Select date',
+    confirm: 'OK',
+    cancel: 'Cancel',
   },
   skeleton: { loading: 'Loading' },
   breadcrumb: { nav: 'Breadcrumb' },

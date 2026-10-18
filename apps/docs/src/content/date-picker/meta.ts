@@ -36,9 +36,14 @@ export const datePickerMeta: ComponentMeta = {
         'The calendar panel switches between previous / next month (scrolling across years automatically), with a full 42-cell week view',
     },
     {
-      'zh-CN': 'clearable 清空、disabled 禁用；点击外部或选中后自动收起',
+      'zh-CN': '面板采用草稿 + 确认 / 取消模式：点选仅更新草稿，点击确认才提交值，取消或点击外部丢弃草稿',
       'en-US':
-        'A clearable clear button and disabled state; the panel closes on outside click or after selection',
+        'The panel uses a draft + confirm / cancel mode: picking a date only updates the draft; the value is committed on confirm, while cancel or outside click discards the draft',
+    },
+    {
+      'zh-CN': 'clearable 清空、disabled 禁用；确认、取消或点击外部后自动收起',
+      'en-US':
+        'A clearable clear button and disabled state; the panel closes on confirm, cancel, or outside click',
     },
   ],
   scenarios: [

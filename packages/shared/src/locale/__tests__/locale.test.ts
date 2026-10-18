@@ -26,6 +26,8 @@ describe('locale 运行时 API', () => {
     expect(getLocaleData().pagination).toEqual({ nav: '分页', prev: '上一页', next: '下一页' });
     expect(getLocaleData().datePicker.weekdays).toEqual(['日', '一', '二', '三', '四', '五', '六']);
     expect(getLocaleData().datePicker.placeholder).toBe('请选择日期');
+    expect(getLocaleData().datePicker.confirm).toBe('确认');
+    expect(getLocaleData().datePicker.cancel).toBe('取消');
     expect(getLocaleData().skeleton.loading).toBe('加载中');
     expect(getLocaleData().breadcrumb.nav).toBe('面包屑');
     expect(getLocaleData().select).toEqual({

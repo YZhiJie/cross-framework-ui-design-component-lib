@@ -1323,6 +1323,46 @@
   border-color: var(--xui-color-primary, #1677ff);
 }
 
+/* 底部确认 / 取消按钮（与 TimePicker footer 对齐） */
+.xui-date-picker__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--xui-color-divider, #e5e7eb);
+}
+
+.xui-date-picker__footer-btn {
+  padding: 4px 12px;
+  border: 1px solid var(--xui-color-border, #d1d5db);
+  border-radius: var(--xui-radius-sm, 4px);
+  background: transparent;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.xui-date-picker__footer-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.xui-date-picker__footer-btn--cancel:hover:not(:disabled) {
+  color: var(--xui-color-primary, #4f46e5);
+  border-color: var(--xui-color-primary, #4f46e5);
+}
+
+.xui-date-picker__footer-btn--confirm {
+  border-color: var(--xui-color-primary, #4f46e5);
+  background-color: var(--xui-color-primary, #4f46e5);
+  color: #fff;
+}
+
+.xui-date-picker__footer-btn--confirm:hover:not(:disabled) {
+  border-color: var(--xui-color-primary-hover, #4338ca);
+  background-color: var(--xui-color-primary-hover, #4338ca);
+}
+
 
 /* ===================== TimePicker ===================== */
 

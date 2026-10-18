@@ -9,11 +9,7 @@
 import { useEffect, useId, useImperativeHandle, useRef } from 'react';
 import type { CSSProperties, KeyboardEvent, ReactNode, Ref } from 'react';
 import type { DatePickerProps } from '@xui-design/core';
-import {
-  compareDate,
-  createDatePickerLogic,
-  getMonthMatrix,
-} from '@xui-design/shared';
+import { compareDate, createDatePickerLogic, getMonthMatrix } from '@xui-design/shared';
 import type { DatePickerLogicInstance } from '@xui-design/shared';
 import { icons } from '@xui-design/icons';
 import { useLogicState } from '../../hooks/use-logic-state';
@@ -115,8 +111,8 @@ export function DatePicker(props: DatePickerComponentProps) {
       : state.value
     : null;
 
-  // range 高亮区间：已确认的 value 或正在选择的 rangeStart~hover（简化为 value 区间）
-  const rangeValue = state.value && Array.isArray(state.value) ? state.value : null;
+  // range 高亮区间：面板内基于草稿值（confirm 提交后才写回 value）
+  const rangeValue = state.draft && Array.isArray(state.draft) ? state.draft : null;
 
   const handleTriggerKeydown = (event: KeyboardEvent<HTMLDivElement>) => {
     switch (event.key) {
@@ -134,10 +130,10 @@ export function DatePicker(props: DatePickerComponentProps) {
     }
   };
 
-  /** 判断日期单元格在 range 模式下的选中态 */
+  /** 判断日期单元格在面板内的选中态（基于草稿值；range 模式=草稿起止端点或暂存的 rangeStart） */
   const getDayClass = (date: string) => {
     if (type === 'date') {
-      return date === state.value;
+      return date === state.draft;
     }
     // range
     if (rangeValue) {
@@ -328,6 +324,23 @@ export function DatePicker(props: DatePickerComponentProps) {
               ))}
             </div>
           )}
+          <div className="xui-date-picker__footer">
+            <button
+              type="button"
+              className="xui-date-picker__footer-btn xui-date-picker__footer-btn--cancel"
+              onClick={() => logic.close()}
+            >
+              {locale.datePicker.cancel}
+            </button>
+            <button
+              type="button"
+              className="xui-date-picker__footer-btn xui-date-picker__footer-btn--confirm"
+              disabled={!state.draft}
+              onClick={() => logic.confirm()}
+            >
+              {locale.datePicker.confirm}
+            </button>
+          </div>
         </div>
       )}
     </div>

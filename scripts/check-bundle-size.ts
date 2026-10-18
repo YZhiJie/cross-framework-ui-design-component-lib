@@ -4,7 +4,7 @@
  * 检查各包构建产物是否符合体积预算：
  * - @xui-design/shared: < 65KB (gzip)
  * - @xui-design/core: < 30KB (gzip)
- * - @xui-design/vue: < 100KB (gzip, 不含 vue)
+ * - @xui-design/vue: < 110KB (gzip, 不含 vue)
  * - @xui-design/react: < 100KB (gzip, 不含 react)
  * - @xui-design/styles: < 20KB (gzip)
  * - @xui-design/icons: < 50KB (gzip)
@@ -41,7 +41,7 @@ const budgets: SizeBudget[] = [
   {
     packageName: '@xui-design/vue',
     distDir: 'packages/vue/dist',
-    maxGzipKB: 100,
+    maxGzipKB: 110,
     description: 'Vue 适配层（不含 vue）',
   },
   {

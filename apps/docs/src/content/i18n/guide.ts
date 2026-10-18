@@ -120,10 +120,13 @@ export const i18nGuideApi: ComponentMeta['api'] = {
   datePicker: {
     panel: string; prevMonth: string; nextMonth: string; placeholder: string;
     titleFormat: (year: number, month: number) => string; weekdays: string[];
+    confirm: string; cancel: string;
   };
   skeleton: { loading: string };
   breadcrumb: { nav: string };
   select: { searchPlaceholder: string; searchAriaLabel: string; triggerPlaceholder: string };
+  timePicker: { panel: string; placeholder: string; confirm: string; cancel: string };
+  cascader: { panel: string; placeholder: string };
 };`,
       description: {
         'zh-CN': '完整语言包结构（按组件分组；函数型字段便于跨语序翻译）。',

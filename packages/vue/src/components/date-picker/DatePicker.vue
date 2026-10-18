@@ -91,9 +91,9 @@ const displayValue = computed(() => {
   return Array.isArray(v) ? `${v[0]} ~ ${v[1]}` : v;
 });
 
-// range 高亮区间
+// range 高亮区间：面板内基于草稿值（confirm 提交后才写回 value）
 const rangeValue = computed<[string, string] | null>(() => {
-  const v = state.value.value;
+  const v = state.value.draft;
   return v && Array.isArray(v) ? v : null;
 });
 
@@ -113,9 +113,9 @@ const handleTriggerKeydown = (event: KeyboardEvent) => {
   }
 };
 
-// 判断单元格是否被选中（date 模式=选中值；range 模式=起止端点）
+// 判断单元格是否被选中（面板内基于草稿值；range 模式=草稿起止端点或暂存的 rangeStart）
 const isSelected = (date: string) => {
-  if (props.type === 'date') return date === state.value.value;
+  if (props.type === 'date') return date === state.value.draft;
   if (rangeValue.value) {
     return date === rangeValue.value[0] || date === rangeValue.value[1];
   }
@@ -299,6 +299,23 @@ defineExpose({ focus, toggleOpen, close });
           @click="logic.selectShortcut(sc.value)"
         >
           {{ sc.label }}
+        </button>
+      </div>
+      <div class="xui-date-picker__footer">
+        <button
+          type="button"
+          class="xui-date-picker__footer-btn xui-date-picker__footer-btn--cancel"
+          @click="logic.close()"
+        >
+          {{ locale.datePicker.cancel }}
+        </button>
+        <button
+          type="button"
+          class="xui-date-picker__footer-btn xui-date-picker__footer-btn--confirm"
+          :disabled="!state.draft"
+          @click="logic.confirm()"
+        >
+          {{ locale.datePicker.confirm }}
         </button>
       </div>
     </div>

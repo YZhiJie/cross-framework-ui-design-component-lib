@@ -27,7 +27,7 @@ describe('DatePicker (vue)', () => {
     expect(wrapper.find('.xui-date-picker__panel').exists()).toBe(false);
   });
 
-  it('defaultValue 显示选中值并定位视图，选择触发 change / update:value', async () => {
+  it('defaultValue 显示选中值并定位视图，确认后触发 change / update:value', async () => {
     const wrapper = mount(DatePicker, { props: { defaultValue: '2026-10-11' } });
     expect(wrapper.find('.xui-date-picker__value').text()).toBe('2026-10-11');
 
@@ -38,9 +38,51 @@ describe('DatePicker (vue)', () => {
       .findAll('.xui-date-picker__day')
       .find((node) => node.attributes('aria-label') === '2026-10-15')!;
     await day.trigger('click');
+    // 草稿模式：点选仅更新草稿，不收起面板、不触发 change
+    expect(wrapper.emitted('change')).toBeUndefined();
+    expect(wrapper.find('.xui-date-picker__panel').exists()).toBe(true);
+
+    await wrapper.find('.xui-date-picker__footer-btn--confirm').trigger('click');
     expect(wrapper.emitted('change')?.[0]).toEqual(['2026-10-15']);
     expect(wrapper.emitted('update:value')?.[0]).toEqual(['2026-10-15']);
     expect(wrapper.find('.xui-date-picker__panel').exists()).toBe(false);
+  });
+
+  it('取消按钮丢弃草稿：值不变、不收起时不触发 change', async () => {
+    const wrapper = mount(DatePicker, { props: { defaultValue: '2026-10-11' } });
+    await wrapper.find('.xui-date-picker__trigger').trigger('click');
+    const day = wrapper
+      .findAll('.xui-date-picker__day')
+      .find((node) => node.attributes('aria-label') === '2026-10-15')!;
+    await day.trigger('click');
+    // 草稿高亮已切换
+    expect(wrapper.find('.xui-date-picker__day.is-selected').attributes('aria-label')).toBe(
+      '2026-10-15',
+    );
+
+    await wrapper.find('.xui-date-picker__footer-btn--cancel').trigger('click');
+    expect(wrapper.find('.xui-date-picker__panel').exists()).toBe(false);
+    expect(wrapper.emitted('change')).toBeUndefined();
+    expect(wrapper.find('.xui-date-picker__value').text()).toBe('2026-10-11');
+
+    // 重新展开：草稿从 value 重新拷贝，高亮回到已确认值
+    await wrapper.find('.xui-date-picker__trigger').trigger('click');
+    expect(wrapper.find('.xui-date-picker__day.is-selected').attributes('aria-label')).toBe(
+      '2026-10-11',
+    );
+  });
+
+  it('无值时确认按钮禁用，选中草稿后可用', async () => {
+    const wrapper = mount(DatePicker);
+    await wrapper.find('.xui-date-picker__trigger').trigger('click');
+    const confirm = wrapper.find('.xui-date-picker__footer-btn--confirm');
+    expect(confirm.attributes('disabled')).toBeDefined();
+
+    const today = wrapper
+      .findAll('.xui-date-picker__day')
+      .find((node) => node.classes().includes('is-today'))!;
+    await today.trigger('click');
+    expect(confirm.attributes('disabled')).toBeUndefined();
   });
 
   it('今天与选中态样式标记', async () => {
