@@ -54,6 +54,27 @@
   --vp-home-hero-name-background: linear-gradient(120deg, #818cf8 30%, #c084fc 70%);
 }
 
+/* ---------- 大屏适配 ---------- */
+
+/* VitePress 用 --vp-layout-max-width 统一驱动全站宽度：
+ * VPContent 的左右 padding（(100vw - 该值) / 2）、VPSidebar 的宽度、
+ * VPNavBar/VPFooter 的容器宽度。默认 1440px 会在宽屏上留出大片两侧空白
+ * （1920 视口两侧各 240px、2400 视口各 480px），且侧边栏被撑宽导致导航右移。
+ * 改为 100%（跟随视口）后两侧留白归零、侧边栏恒为 272px。 */
+:root {
+  --vp-layout-max-width: 100%;
+}
+
+/* 正文列解除 VP 默认的 688px 硬上限，随屏宽流体增长。
+ * 组件页内容以 API 表格 / 代码块为主（长内容靠横向滚动兜底），
+ * 宽列比窄列更实用；1080px 上限避免超宽视口下行长失控影响可读性。
+ * 注意 VP 的组件样式为 SFC scoped，选择器带 [data-v-*] 属性
+ *（.VPDoc.has-aside .content-container[data-v-*] 特异性 0,4,0），
+ * 故此处用 5 个类提升特异性，不依赖样式表加载顺序。 */
+.VPDoc.has-aside .container .content .content-container {
+  max-width: 1080px;
+}
+
 /* VP markdown 标题对齐旧版视觉：h2 带下边框、h3 适度缩小 */
 .vp-doc h2 {
   margin: 40px 0 16px;
