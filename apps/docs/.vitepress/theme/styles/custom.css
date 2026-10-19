@@ -462,6 +462,32 @@ body {
   white-space: nowrap;
 }
 
+/* 豁免 .vp-doc 对 markdown 表格的渗透样式（与上方 demo 区 xui-table 豁免同理）：
+   display:block 会把行/单元格降级为匿名内表并按内容收缩，导致表格不占满父容器
+   宽度（width:100% 失效），tr 斑马纹、th/td 四边框与 padding 同理渗入；
+   特异性 ≥ .vp-doc 对应选择器，横向滚动仍由 .api-table-wrap 承担，
+   display:table + width:100% 恢复列宽分布式占满 */
+.api-table-wrap .api-table {
+  display: table;
+  width: 100%;
+  margin: 0;
+  overflow: visible;
+}
+
+.api-table-wrap .api-table tbody tr {
+  background-color: transparent;
+  border-top: none;
+  transition: none;
+}
+
+.api-table-wrap .api-table thead th,
+.api-table-wrap .api-table tbody td {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  padding: 10px 14px;
+}
+
 /* ---------- 首页（VP hero 之下由 ComponentOverview 渲染的区块） ---------- */
 
 .docs-home-body {
