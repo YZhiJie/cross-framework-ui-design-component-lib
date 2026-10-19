@@ -35,9 +35,10 @@
 
 | 资源 | 地址 |
 |------|------|
-| 文档站（组件 demo / API 表格 / 指南） | https://yzhijie.github.io/xui-design-docs/ |
+| 源码仓库（GitHub） | https://github.com/YZhiJie/cross-framework-ui-design-component-lib |
+| 文档站部署仓库（GitHub Pages） | https://github.com/YZhiJie/xui-design-docs |
+| 文档站线上地址（组件 demo / API 表格 / 指南） | https://yzhijie.github.io/xui-design-docs/ |
 | npm 组织 | https://www.npmjs.com/org/xui-design |
-| 源码仓库 | https://github.com/YZhiJie/cross-framework-ui-design-component-lib |
 
 ## 环境要求
 
