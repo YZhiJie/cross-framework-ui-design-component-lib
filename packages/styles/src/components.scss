@@ -4122,3 +4122,138 @@
   padding: 12px 20px;
   border-top: 1px solid var(--xui-color-border, #d1d5db);
 }
+
+/* ===================== Carousel ===================== */
+
+.xui-carousel {
+  /* 激活项缩放倍数（倾斜变体为 1.1；可经根节点 style 的同名变量覆盖） */
+  --xui-carousel-active-scale: 1.3;
+
+  /* 幻灯片宽度占视口比例（< 100% 时两侧露出相邻项，形成三图聚焦效果） */
+  --xui-carousel-slide-width: 60%;
+
+  /* 非激活项透明度 */
+  --xui-carousel-dim-opacity: 0.5;
+
+  /* 轨道高度 */
+  --xui-carousel-height: 400px;
+
+  position: relative;
+  overflow: hidden;
+  height: var(--xui-carousel-height);
+}
+
+.xui-carousel--skewed {
+  --xui-carousel-active-scale: 1.1;
+}
+
+.xui-carousel__slide {
+  /* 轨道位移（适配层按虚拟位内联注入）与激活缩放（is-active 覆写） */
+  --xui-carousel-tx: 0%;
+  --xui-carousel-slide-scale: 1;
+
+  position: absolute;
+  top: 50%;
+  left: calc((100% - var(--xui-carousel-slide-width)) / 2);
+  box-sizing: border-box;
+  width: var(--xui-carousel-slide-width);
+
+  /* 基础高度按激活缩放倍数补偿：激活项放大后恰好铺满轨道高度 */
+  height: calc(100% / var(--xui-carousel-active-scale));
+  transform: translate(var(--xui-carousel-tx), -50%) scale(var(--xui-carousel-slide-scale));
+  opacity: var(--xui-carousel-dim-opacity);
+  z-index: 0;
+}
+
+.xui-carousel__slide.is-active {
+  --xui-carousel-slide-scale: var(--xui-carousel-active-scale);
+
+  opacity: 1;
+  z-index: 1;
+}
+
+.xui-carousel__slide-body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* 倾斜变体：幻灯片平行四边形裁切，内容层反向矫正保持图片水平。
+   内容层统一放大以覆盖倾斜裁切的边角（适合横向宽幅图） */
+.xui-carousel--skewed .xui-carousel__slide-body {
+  transform: skewX(-15deg);
+}
+
+.xui-carousel__slide-clip {
+  width: 100%;
+  height: 100%;
+}
+
+.xui-carousel--skewed .xui-carousel__slide-clip {
+  transform: skewX(15deg) scale(1.5);
+}
+
+.xui-carousel__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.xui-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  background-color: rgb(0 0 0 / 30%);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background-color 0.2s;
+}
+
+.xui-carousel__arrow:hover {
+  background-color: rgb(0 0 0 / 50%);
+}
+
+.xui-carousel__arrow--prev {
+  left: 16px;
+}
+
+.xui-carousel__arrow--next {
+  right: 16px;
+}
+
+.xui-carousel__dots {
+  position: absolute;
+  right: 0;
+  bottom: 16px;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.xui-carousel__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--xui-color-text-disabled, #9ca3af);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.xui-carousel__dot.is-active {
+  background-color: var(--xui-color-primary, #4f46e5);
+}

@@ -41,6 +41,7 @@ import { drawerMeta } from './drawer/meta';
 import { dropdownMeta } from './dropdown/meta';
 import { treeSelectMeta } from './tree-select/meta';
 import { stepsMeta } from './steps/meta';
+import { carouselMeta } from './carousel/meta';
 
 export { CATEGORIES, COMPONENT_LIST };
 
@@ -79,6 +80,7 @@ export const componentMetas: ComponentMeta[] = [
   dropdownMeta,
   treeSelectMeta,
   stepsMeta,
+  carouselMeta,
 ];
 
 export const componentMetaMap: Map<string, ComponentMeta> = new Map(

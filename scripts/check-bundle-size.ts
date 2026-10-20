@@ -2,9 +2,9 @@
  * 体积检查脚本
  *
  * 检查各包构建产物是否符合体积预算：
- * - @xui-design/shared: < 68KB (gzip；TreeSelect/Steps 逻辑加入后由 65KB 上调)
+ * - @xui-design/shared: < 72KB (gzip；Carousel 逻辑加入后由 68KB 上调)
  * - @xui-design/core: < 35KB (gzip，Dropdown 契约加入后由 30KB 上调)
- * - @xui-design/vue: < 115KB (gzip, 不含 vue；TreeSelect/Steps 加入后由 110KB 上调)
+ * - @xui-design/vue: < 122KB (gzip, 不含 vue；Carousel 加入后由 115KB 上调)
  * - @xui-design/react: < 100KB (gzip, 不含 react)
  * - @xui-design/styles: < 20KB (gzip)
  * - @xui-design/icons: < 50KB (gzip)
@@ -29,7 +29,7 @@ const budgets: SizeBudget[] = [
   {
     packageName: '@xui-design/shared',
     distDir: 'packages/shared/dist',
-    maxGzipKB: 68,
+    maxGzipKB: 72,
     description: '纯逻辑核心层',
   },
   {
@@ -42,7 +42,7 @@ const budgets: SizeBudget[] = [
   {
     packageName: '@xui-design/vue',
     distDir: 'packages/vue/dist',
-    maxGzipKB: 115,
+    maxGzipKB: 122,
     description: 'Vue 适配层（不含 vue）',
   },
   {

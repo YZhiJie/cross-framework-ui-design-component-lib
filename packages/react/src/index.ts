@@ -47,6 +47,8 @@ export { TreeSelect } from './components/tree-select';
 export type { TreeSelectRef } from './components/tree-select';
 export { Steps } from './components/steps';
 export type { StepsRef } from './components/steps';
+export { Carousel } from './components/carousel';
+export type { CarouselRef } from './components/carousel';
 export { Button } from './components/button';
 
 export type { SelectRef } from './components/select';
@@ -118,6 +120,7 @@ export type {
   TreeSelectProps,
   TreeSelectValue,
   StepsProps,
+  CarouselProps,
   UploadProps,
   UploadFile,
 } from '@xui-design/core';

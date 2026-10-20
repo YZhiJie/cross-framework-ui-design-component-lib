@@ -47,4 +47,10 @@ export const zhCN: XuiLocaleData = {
     panel: '请选择',
     placeholder: '请选择',
   },
+  carousel: {
+    region: '轮播图',
+    prev: '上一张',
+    next: '下一张',
+    goTo: (index) => `第 ${index} 张`,
+  },
 };

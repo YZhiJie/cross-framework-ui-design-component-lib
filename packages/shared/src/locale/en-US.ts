@@ -60,4 +60,10 @@ export const enUS: XuiLocaleData = {
     panel: 'Please select',
     placeholder: 'Please select',
   },
+  carousel: {
+    region: 'Carousel',
+    prev: 'Previous slide',
+    next: 'Next slide',
+    goTo: (index) => `Go to slide ${index}`,
+  },
 };

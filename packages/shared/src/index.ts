@@ -52,6 +52,7 @@ export * from './components/drawer';
 export * from './components/dropdown';
 export * from './components/tree-select';
 export * from './components/steps';
+export * from './components/carousel';
 export * from './components/modal';
 export * from './components/form';
 export * from './components/time-picker';

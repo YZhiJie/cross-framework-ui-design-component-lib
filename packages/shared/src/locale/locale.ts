@@ -82,6 +82,17 @@ export type XuiLocaleData = {
     /** 触发器 placeholder（value 为空时） */
     placeholder: string;
   };
+  /** Carousel 轮播图 */
+  carousel: {
+    /** 区域 aria-label */
+    region: string;
+    /** 上一张按钮 aria-label */
+    prev: string;
+    /** 下一张按钮 aria-label */
+    next: string;
+    /** 指示点 aria-label（index 为 1 起始序号） */
+    goTo: (index: number) => string;
+  };
 };
 
 /** registerLocale 的输入：允许只提供部分组 / 部分字段，未提供字段回退基底语言包 */

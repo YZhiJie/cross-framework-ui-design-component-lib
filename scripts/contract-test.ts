@@ -400,6 +400,13 @@ const API_COMPONENTS: ComponentPlan[] = [
     modelProp: 'value',
     modelCoveredProps: ['defaultValue'],
   },
+  {
+    name: 'Carousel',
+    specKey: 'carouselSpec',
+    reactSource: 'packages/react/src/components/carousel/Carousel.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
 ];
 
 interface MatrixRow {
