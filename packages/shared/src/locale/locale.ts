@@ -93,6 +93,27 @@ export type XuiLocaleData = {
     /** 指示点 aria-label（index 为 1 起始序号） */
     goTo: (index: number) => string;
   };
+  /** TimeSlotPicker 投放时段 */
+  timeSlotPicker: {
+    /** 区域 aria-label */
+    region: string;
+    /** 未选择任何时段时的操作提示 */
+    hint: string;
+    /** 底部统计文案（selected 为当前粒度下选中数，total 为格子总数） */
+    summary: (selected: number, total: number) => string;
+    /** 图例：未选中 */
+    unselected: string;
+    /** 图例：已选中 */
+    selected: string;
+    /** 星期短名（周一为 1，7 项） */
+    weekdays: readonly string[];
+    /** 月份短名（1 月起始，12 项） */
+    months: readonly string[];
+    /** 小时标签（hour 为 0-23） */
+    hour: (hour: number) => string;
+    /** 完整日期标签（month / year 视图 aria-label 与 title） */
+    dateLabel: (year: number, month: number, day: number) => string;
+  };
 };
 
 /** registerLocale 的输入：允许只提供部分组 / 部分字段，未提供字段回退基底语言包 */

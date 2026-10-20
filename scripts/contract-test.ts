@@ -407,6 +407,13 @@ const API_COMPONENTS: ComponentPlan[] = [
     modelProp: 'value',
     modelCoveredProps: ['defaultValue'],
   },
+  {
+    name: 'TimeSlotPicker',
+    specKey: 'timeSlotPickerSpec',
+    reactSource: 'packages/react/src/components/time-slot-picker/TimeSlotPicker.tsx',
+    modelProp: 'value',
+    modelCoveredProps: ['defaultValue'],
+  },
 ];
 
 interface MatrixRow {

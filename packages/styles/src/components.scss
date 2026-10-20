@@ -4257,3 +4257,191 @@
 .xui-carousel__dot.is-active {
   background-color: var(--xui-color-primary, #4f46e5);
 }
+
+/* ===================== TimeSlotPicker（投放时段热力图） ===================== */
+
+.xui-time-slot-picker {
+  --xui-time-slot-size: 18px;
+  --xui-time-slot-gap: 3px;
+  --xui-time-slot-label-width: 32px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  color: var(--xui-color-text, #1f2937);
+  font-size: 12px;
+}
+
+.xui-time-slot-picker--day {
+  --xui-time-slot-size: 26px;
+  --xui-time-slot-label-width: 0px;
+}
+
+.xui-time-slot-picker--month {
+  --xui-time-slot-size: 34px;
+  --xui-time-slot-label-width: 0px;
+}
+
+.xui-time-slot-picker--year {
+  --xui-time-slot-size: 14px;
+}
+
+.xui-time-slot-picker.is-disabled {
+  opacity: 0.6;
+}
+
+.xui-time-slot-picker__scroll {
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.xui-time-slot-picker__grid {
+  display: grid;
+  grid-template-columns:
+    var(--xui-time-slot-label-width)
+    repeat(var(--xui-time-slot-columns), var(--xui-time-slot-size));
+  grid-auto-rows: var(--xui-time-slot-size);
+  gap: var(--xui-time-slot-gap);
+  align-items: center;
+  width: max-content;
+  user-select: none;
+}
+
+.xui-time-slot-picker__corner,
+.xui-time-slot-picker__row-label,
+.xui-time-slot-picker__col-label {
+  color: var(--xui-color-text-secondary, #6b7280);
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.xui-time-slot-picker__row-label {
+  display: flex;
+  align-items: center;
+}
+
+.xui-time-slot-picker__col-label {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.xui-time-slot-picker__col-label.is-month {
+  justify-content: flex-start;
+}
+
+.xui-time-slot-picker--year .xui-time-slot-picker__col-label.is-month {
+  font-size: 12px;
+}
+
+.xui-time-slot-picker__cell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  background-color: var(--xui-color-track, #e5e7eb);
+  color: var(--xui-color-text-secondary, #6b7280);
+  font: inherit;
+  font-size: 10px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.xui-time-slot-picker__cell.is-empty {
+  background-color: transparent;
+  cursor: default;
+}
+
+.xui-time-slot-picker--month .xui-time-slot-picker__cell {
+  font-size: 12px;
+}
+
+.xui-time-slot-picker__cell-text {
+  position: relative;
+  z-index: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.xui-time-slot-picker__cell:focus-visible {
+  outline: 2px solid var(--xui-color-primary, #4f46e5);
+  outline-offset: 1px;
+}
+
+.xui-time-slot-picker__cell:disabled {
+  cursor: not-allowed;
+}
+
+.xui-time-slot-picker__cell.is-selected {
+  background-color: var(--xui-color-primary, #4f46e5);
+  color: var(--xui-color-bg, #fff);
+}
+
+/* 框选预览：即将选中 / 即将取消，mouseup 前不写入 value */
+.xui-time-slot-picker__cell.is-preview-selected {
+  background-color: var(--xui-color-primary, #4f46e5);
+  color: var(--xui-color-bg, #fff);
+  opacity: 0.55;
+}
+
+.xui-time-slot-picker__cell.is-preview-unselected {
+  background-color: var(--xui-color-track, #e5e7eb);
+  color: var(--xui-color-text-secondary, #6b7280);
+  opacity: 0.55;
+}
+
+.xui-time-slot-picker__cell:hover:not(
+    .is-selected,
+    .is-preview-selected,
+    .is-preview-unselected,
+    :disabled
+  )::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--xui-color-primary, #4f46e5);
+  opacity: 0.25;
+}
+
+.xui-time-slot-picker__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: var(--xui-color-text-secondary, #6b7280);
+  font-size: 12px;
+}
+
+.xui-time-slot-picker__legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.xui-time-slot-picker__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.xui-time-slot-picker__legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background-color: var(--xui-color-track, #e5e7eb);
+}
+
+.xui-time-slot-picker__legend-swatch.is-selected {
+  background-color: var(--xui-color-primary, #4f46e5);
+}

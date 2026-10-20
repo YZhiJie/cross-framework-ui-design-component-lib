@@ -2,7 +2,7 @@
  * 体积检查脚本
  *
  * 检查各包构建产物是否符合体积预算：
- * - @xui-design/shared: < 72KB (gzip；Carousel 逻辑加入后由 68KB 上调)
+ * - @xui-design/shared: < 74KB (gzip；TimeSlotPicker 矩形框选逻辑加入后由 73KB 上调)
  * - @xui-design/core: < 35KB (gzip，Dropdown 契约加入后由 30KB 上调)
  * - @xui-design/vue: < 122KB (gzip, 不含 vue；Carousel 加入后由 115KB 上调)
  * - @xui-design/react: < 100KB (gzip, 不含 react)
@@ -29,27 +29,27 @@ const budgets: SizeBudget[] = [
   {
     packageName: '@xui-design/shared',
     distDir: 'packages/shared/dist',
-    maxGzipKB: 72,
-    description: '纯逻辑核心层',
+    maxGzipKB: 74,
+    description: '纯逻辑核心层（TimeSlotPicker 矩形框选 + 0.6KB）',
   },
   {
     packageName: '@xui-design/core',
     distDir: 'packages/core/dist',
-    // 30 → 35：新增 Dropdown 契约（types + spec）后实测 30.89KB，上调预算
-    maxGzipKB: 35,
+    // 30 → 35 → 36：新增 TimeSlotPicker 契约（types + spec），实测 35.01KB，上调预算
+    maxGzipKB: 36,
     description: '框架无关抽象层',
   },
   {
     packageName: '@xui-design/vue',
     distDir: 'packages/vue/dist',
-    maxGzipKB: 122,
-    description: 'Vue 适配层（不含 vue）',
+    maxGzipKB: 123,
+    description: 'Vue 适配层（不含 vue；TimeSlotPicker + 1KB）',
   },
   {
     packageName: '@xui-design/react',
     distDir: 'packages/react/dist',
-    maxGzipKB: 100,
-    description: 'React 适配层（不含 react）',
+    maxGzipKB: 101,
+    description: 'React 适配层（不含 react；TimeSlotPicker + 1KB）',
   },
   {
     packageName: '@xui-design/styles',

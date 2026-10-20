@@ -43,6 +43,7 @@ import { Form, FormItem } from './components/form';
 import { TimePicker } from './components/time-picker';
 import { Cascader } from './components/cascader';
 import { Upload } from './components/upload';
+import { TimeSlotPicker } from './components/time-slot-picker';
 
 export { Switch, Checkbox, Tag, Alert };
 export type { SwitchProps, SwitchRef } from './components/switch';
@@ -107,6 +108,12 @@ export { Cascader };
 export type { CascaderProps, CascaderRef } from './components/cascader';
 export { Upload };
 export type { UploadProps, UploadFile } from './components/upload';
+export { TimeSlotPicker };
+export type {
+  TimeSlotGranularity,
+  TimeSlotPickerProps,
+  TimeSlotPickerRef,
+} from './components/time-slot-picker';
 export type { TreeProps, TreeNode, TreeRef } from './components/tree';
 
 // 基础设施：主题运行时 API / 插件系统 / 虚拟滚动原语（re-export 自 @xui-design/shared）
@@ -179,5 +186,6 @@ export default {
     app.component(TimePicker.name ?? 'TimePicker', TimePicker);
     app.component(Cascader.name ?? 'Cascader', Cascader);
     app.component(Upload.name ?? 'Upload', Upload);
+    app.component(TimeSlotPicker.name ?? 'TimeSlotPicker', TimeSlotPicker);
   },
 };

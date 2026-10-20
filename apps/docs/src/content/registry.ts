@@ -42,6 +42,7 @@ import { dropdownMeta } from './dropdown/meta';
 import { treeSelectMeta } from './tree-select/meta';
 import { stepsMeta } from './steps/meta';
 import { carouselMeta } from './carousel/meta';
+import { timeSlotPickerMeta } from './time-slot-picker/meta';
 
 export { CATEGORIES, COMPONENT_LIST };
 
@@ -81,6 +82,7 @@ export const componentMetas: ComponentMeta[] = [
   treeSelectMeta,
   stepsMeta,
   carouselMeta,
+  timeSlotPickerMeta,
 ];
 
 export const componentMetaMap: Map<string, ComponentMeta> = new Map(

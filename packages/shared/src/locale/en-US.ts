@@ -4,6 +4,22 @@
 
 import type { XuiLocaleData } from './locale';
 
+/** 英文月份短名（投放时段列头用，month 1 起始） */
+const EN_MONTHS_SHORT = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+] as const;
+
 /** 英文月份名（面板标题用，month 1 起始） */
 const EN_MONTHS = [
   'January',
@@ -65,5 +81,16 @@ export const enUS: XuiLocaleData = {
     prev: 'Previous slide',
     next: 'Next slide',
     goTo: (index) => `Go to slide ${index}`,
+  },
+  timeSlotPicker: {
+    region: 'Delivery time slots',
+    hint: 'Click or drag to select delivery slots',
+    summary: (selected, total) => `${selected} of ${total} slots selected`,
+    unselected: 'Unselected',
+    selected: 'Selected',
+    weekdays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    months: EN_MONTHS_SHORT,
+    hour: (hour) => `${String(hour).padStart(2, '0')}:00`,
+    dateLabel: (year, month, day) => `${EN_MONTHS_SHORT[month - 1]} ${day}, ${year}`,
   },
 };

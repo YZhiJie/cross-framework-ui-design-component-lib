@@ -79,6 +79,9 @@ export type { CascaderRef } from './components/cascader';
 export { Upload } from './components/upload';
 export type { UploadRef } from './components/upload';
 
+export { TimeSlotPicker } from './components/time-slot-picker';
+export type { TimeSlotPickerRef } from './components/time-slot-picker';
+
 // 组件契约 Props 类型（re-export 自 @xui-design/core，与 Vue 端导出名称逐字一致）
 export type {
   SwitchProps,
@@ -123,6 +126,8 @@ export type {
   CarouselProps,
   UploadProps,
   UploadFile,
+  TimeSlotPickerProps,
+  TimeSlotGranularity,
 } from '@xui-design/core';
 
 export { useLogicState } from './hooks/use-logic-state';

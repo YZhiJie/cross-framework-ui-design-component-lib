@@ -58,3 +58,4 @@ export * from './components/form';
 export * from './components/time-picker';
 export * from './components/cascader';
 export * from './components/upload';
+export * from './components/time-slot-picker';

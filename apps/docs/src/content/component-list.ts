@@ -17,7 +17,7 @@ export const CATEGORIES: { key: CategoryKey; title: LText }[] = [
   { key: 'feedback', title: { 'zh-CN': '反馈提示', 'en-US': 'Feedback' } },
 ];
 
-/** 24 个组件全量规划清单，available 标记文档是否已上线 */
+/** 组件全量规划清单，available 标记文档是否已上线 */
 export const COMPONENT_LIST: ComponentEntry[] = [
   // 基础组件
   { name: 'Button', slug: 'button', title: '按钮', category: 'basic', available: true },
@@ -46,6 +46,13 @@ export const COMPONENT_LIST: ComponentEntry[] = [
   { name: 'Form', slug: 'form', title: '表单', category: 'form', available: true },
   { name: 'Cascader', slug: 'cascader', title: '级联选择', category: 'form', available: true },
   { name: 'TimePicker', slug: 'time-picker', title: '时间选择', category: 'form', available: true },
+  {
+    name: 'TimeSlotPicker',
+    slug: 'time-slot-picker',
+    title: '投放时段',
+    category: 'form',
+    available: true,
+  },
   {
     name: 'TreeSelect',
     slug: 'tree-select',
