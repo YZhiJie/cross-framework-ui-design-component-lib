@@ -1,10 +1,17 @@
 import { nextTick } from 'vue';
 import { afterEach, describe, expect, it } from 'vitest';
 import { enableAutoUnmount, mount } from '@vue/test-utils';
+import { DRAWER_TRANSITION_DURATION } from '@xui-design/shared';
 import Drawer from '../Drawer.vue';
 
 // Teleport 渲染到 body，测试结束后统一卸载、清理 teleport 内容
 enableAutoUnmount(afterEach);
+
+/** 等待退场动画播完、DOM 真正卸载 */
+const flushLeave = async () => {
+  await new Promise((resolve) => setTimeout(resolve, DRAWER_TRANSITION_DURATION + 16));
+  await nextTick();
+};
 
 /** 在 document.body 上查找 teleport 后的元素 */
 const query = <E extends Element = Element>(selector: string): E | null =>
@@ -39,7 +46,27 @@ describe('Drawer 组件（Vue 适配层）', () => {
     await wrapper.setProps({ visible: false });
     await nextTick();
 
+    // 先播放退场动画，动画结束后才卸载
+    expect(query('.xui-drawer')?.classList.contains('is-leaving')).toBe(true);
+
+    await flushLeave();
     expect(query('.xui-drawer')).toBeNull();
+  });
+
+  it('退场动画期间重新打开会取消卸载', async () => {
+    const wrapper = mount(Drawer, { props: { visible: true } });
+    await nextTick();
+
+    await wrapper.setProps({ visible: false });
+    await nextTick();
+    expect(query('.xui-drawer')?.classList.contains('is-leaving')).toBe(true);
+
+    await wrapper.setProps({ visible: true });
+    await nextTick();
+    expect(query('.xui-drawer')?.classList.contains('is-leaving')).toBe(false);
+
+    await flushLeave();
+    expect(query('.xui-drawer')).not.toBeNull();
   });
 
   it('teleport 到 body：抽屉渲染在 document.body 下而非组件树内', async () => {
@@ -91,6 +118,7 @@ describe('Drawer 组件（Vue 适配层）', () => {
 
     expect(wrapper.emitted('close')).toHaveLength(1);
     expect(wrapper.emitted('update:visible')).toEqual([[false]]);
+    await flushLeave();
     expect(query('.xui-drawer')).toBeNull();
   });
 
@@ -119,6 +147,7 @@ describe('Drawer 组件（Vue 适配层）', () => {
 
     expect(wrapper.emitted('close')).toHaveLength(1);
     expect(wrapper.emitted('update:visible')).toEqual([[false]]);
+    await flushLeave();
     expect(query('.xui-drawer')).toBeNull();
   });
 
@@ -150,6 +179,7 @@ describe('Drawer 组件（Vue 适配层）', () => {
     await nextTick();
 
     expect(wrapper.emitted('close')).toHaveLength(1);
+    await flushLeave();
     expect(query('.xui-drawer')).toBeNull();
   });
 
@@ -201,6 +231,7 @@ describe('Drawer 组件（Vue 适配层）', () => {
 
     await wrapper.setProps({ visible: false });
     await nextTick();
+    await flushLeave();
 
     expect(query('.drawer-content')).toBeNull();
   });
@@ -220,6 +251,7 @@ describe('Drawer 组件（Vue 适配层）', () => {
     await nextTick();
 
     expect(wrapper.emitted('close')).toHaveLength(1);
+    await flushLeave();
     expect(query('.xui-drawer')).toBeNull();
   });
 

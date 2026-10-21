@@ -6,11 +6,11 @@
  * 通过 useImperativeHandle 暴露 open / close / toggle。
  */
 
-import { useEffect, useImperativeHandle, useRef } from 'react';
+import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent, ReactNode, Ref } from 'react';
 import { createPortal } from 'react-dom';
 import type { DrawerProps } from '@xui-design/core';
-import { createDrawerLogic } from '@xui-design/shared';
+import { createDrawerLogic, DRAWER_TRANSITION_DURATION } from '@xui-design/shared';
 import { trapFocus as trapFocusIn } from '@xui-design/shared';
 import { icons } from '@xui-design/icons';
 import type { DrawerLogicInstance } from '@xui-design/shared';
@@ -94,6 +94,28 @@ export function Drawer(props: DrawerComponentProps) {
 
   const state = useLogicState(logic.subscribe, logic.getState);
 
+  /**
+   * 进出场动画：关闭后先保留 DOM 播放退场动画（is-leaving），
+   * 超时后再卸载；退场途中重新打开则取消卸载。
+   */
+  const [rendered, setRendered] = useState(state.visible);
+  const [leaving, setLeaving] = useState(false);
+
+  useEffect(() => {
+    if (state.visible) {
+      setLeaving(false);
+      setRendered(true);
+      return;
+    }
+    if (!rendered) return;
+    setLeaving(true);
+    const timer = setTimeout(() => {
+      setRendered(false);
+      setLeaving(false);
+    }, DRAWER_TRANSITION_DURATION);
+    return () => clearTimeout(timer);
+  }, [state.visible, rendered]);
+
   useImperativeHandle(
     ref,
     () => ({
@@ -158,10 +180,10 @@ export function Drawer(props: DrawerComponentProps) {
     }
   }
 
-  if (!state.visible) return null;
+  if (!rendered) return null;
 
   return createPortal(
-    <div className={cn('xui-drawer', `xui-drawer--${placement}`)}>
+    <div className={cn('xui-drawer', `xui-drawer--${placement}`, { 'is-leaving': leaving })}>
       {mask && <div className="xui-drawer__overlay" onClick={handleMaskClick} />}
       <div
         ref={panelRef}

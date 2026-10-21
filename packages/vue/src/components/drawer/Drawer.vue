@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { computed, nextTick, onUnmounted, ref, useTemplateRef, watch, watchEffect } from 'vue';
-import { createDrawerLogic, trapFocus as trapFocusIn } from '@xui-design/shared';
+import {
+  createDrawerLogic,
+  DRAWER_TRANSITION_DURATION,
+  trapFocus as trapFocusIn,
+} from '@xui-design/shared';
 import { icons } from '@xui-design/icons';
 import type { DrawerProps } from '@xui-design/core';
 
@@ -74,8 +78,43 @@ const handlePanelKeydown = (e: KeyboardEvent) => {
 /** 打开前记录的焦点元素，关闭时恢复 */
 let previouslyFocused: HTMLElement | null = null;
 
+/**
+ * 进出场动画：visible 变 false 后仍需保留 DOM 播放退场动画，
+ * 到时再卸载；未播放完又打开时取消卸载并回到进入态。
+ */
+const rendered = ref(state.value.visible);
+const leaving = ref(false);
+let leaveTimer: ReturnType<typeof setTimeout> | null = null;
+
+const cancelLeave = () => {
+  if (leaveTimer !== null) {
+    clearTimeout(leaveTimer);
+    leaveTimer = null;
+  }
+};
+
+watch(
+  () => state.value.visible,
+  (isVisible) => {
+    cancelLeave();
+    if (isVisible) {
+      leaving.value = false;
+      rendered.value = true;
+      return;
+    }
+    if (!rendered.value) return;
+    leaving.value = true;
+    leaveTimer = setTimeout(() => {
+      leaveTimer = null;
+      rendered.value = false;
+      leaving.value = false;
+    }, DRAWER_TRANSITION_DURATION);
+  },
+);
+
 onUnmounted(() => {
   unsubscribe();
+  cancelLeave();
   document.removeEventListener('keydown', handleEscKey);
 });
 
@@ -131,7 +170,11 @@ defineExpose({ open, close, toggle });
 
 <template>
   <Teleport to="body">
-    <div v-if="state.visible" class="xui-drawer" :class="`xui-drawer--${placement}`">
+    <div
+      v-if="rendered"
+      class="xui-drawer"
+      :class="[`xui-drawer--${placement}`, { 'is-leaving': leaving }]"
+    >
       <div v-if="mask" class="xui-drawer__overlay" @click="handleMaskClick" />
       <div
         ref="panel"

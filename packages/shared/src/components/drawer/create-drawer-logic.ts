@@ -13,6 +13,14 @@
 
 import type { LogicInstance, StateListener } from '../../types';
 
+/**
+ * 抽屉进出场动画时长（ms）
+ *
+ * 退场动画期间适配层需保留 DOM，超时后再卸载，因此该常量与
+ * styles 中的 `--xui-drawer-duration` 必须保持一致。
+ */
+export const DRAWER_TRANSITION_DURATION = 240;
+
 /** Drawer 逻辑配置（由适配层从 Props 中提取注入） */
 export type DrawerLogicOptions = {
   /** 受控可见性（变更时通过 updateOptions 同步） */

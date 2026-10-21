@@ -67,6 +67,7 @@ placement 控制抽屉从左 / 右 / 上 / 下哪个边缘滑入。
 - footer 无默认按钮（与 Modal 不同），底部操作区完全由 footer 插槽接管。
 - ref 实例类型为 DrawerRef，提供 open() / close() / toggle() 三个方法。
 - size 作用于交叉轴：left/right 方向设置 width，top/bottom 方向设置 height。
+- 进出场自带过渡动画：遮罩淡入淡出，面板按 placement 方向滑入滑出（240ms）；退场期间保留 DOM 且不可交互，动画结束后才卸载，期间重新打开会取消卸载。系统开启「减少动态效果」时动画缩短至 1ms。
 
 ## 无障碍
 

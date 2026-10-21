@@ -67,6 +67,7 @@ No need to maintain visible; call open() / close() / toggle() on the instance di
 - Unlike Modal, there is no default footer; the footer area is fully controlled by the footer slot.
 - The ref instance is of type DrawerRef, providing open() / close() / toggle().
 - size applies to the cross axis: width for left/right, height for top/bottom.
+- Open/close is animated: the overlay fades while the panel slides along its placement direction (240ms). During the leave animation the DOM is kept but non-interactive, then unmounted; reopening mid-animation cancels the unmount. With prefers-reduced-motion the animation is shortened to 1ms.
 
 ## Accessibility
 

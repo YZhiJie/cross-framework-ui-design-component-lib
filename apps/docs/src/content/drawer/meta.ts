@@ -304,6 +304,12 @@ export const drawerMeta: ComponentMeta = {
       'zh-CN': 'size 作用于交叉轴：left/right 方向设置 width，top/bottom 方向设置 height。',
       'en-US': 'size applies to the cross axis: width for left/right, height for top/bottom.',
     },
+    {
+      'zh-CN':
+        '进出场自带过渡动画：遮罩淡入淡出，面板按 placement 方向滑入滑出（240ms）；退场期间保留 DOM 且不可交互，动画结束后才卸载，期间重新打开会取消卸载。系统开启「减少动态效果」时动画缩短至 1ms。',
+      'en-US':
+        'Open/close is animated: the overlay fades while the panel slides along its placement direction (240ms). During the leave animation the DOM is kept but non-interactive, then unmounted; reopening mid-animation cancels the unmount. With prefers-reduced-motion the animation is shortened to 1ms.',
+    },
   ],
   a11y: [
     {

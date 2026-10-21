@@ -4020,7 +4020,112 @@
    Drawer 抽屉
    ============================================ */
 
+/* 进出场动画：进入时自动播放，退场由适配层加 is-leaving 触发并延迟卸载 */
+@keyframes xui-drawer-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes xui-drawer-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes xui-drawer-slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes xui-drawer-slide-out-right {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes xui-drawer-slide-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes xui-drawer-slide-out-left {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes xui-drawer-slide-in-top {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes xui-drawer-slide-out-top {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes xui-drawer-slide-in-bottom {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes xui-drawer-slide-out-bottom {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(100%);
+  }
+}
+
 .xui-drawer {
+  /* 与 shared 的 DRAWER_TRANSITION_DURATION 保持同步 */
+  --xui-drawer-duration: 240ms;
+  --xui-drawer-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -4030,6 +4135,7 @@
   position: absolute;
   inset: 0;
   background-color: rgb(0 0 0 / 45%);
+  animation: xui-drawer-fade-in var(--xui-drawer-duration) var(--xui-drawer-easing) both;
 }
 
 .xui-drawer__panel {
@@ -4040,30 +4146,68 @@
   background-color: var(--xui-color-bg, #fff);
   box-shadow: 0 6px 16px rgb(0 0 0 / 12%);
   outline: none;
+  animation-duration: var(--xui-drawer-duration);
+  animation-timing-function: var(--xui-drawer-easing);
+  animation-fill-mode: both;
 }
 
 .xui-drawer--right .xui-drawer__panel {
   top: 0;
   right: 0;
   bottom: 0;
+  animation-name: xui-drawer-slide-in-right;
 }
 
 .xui-drawer--left .xui-drawer__panel {
   top: 0;
   left: 0;
   bottom: 0;
+  animation-name: xui-drawer-slide-in-left;
 }
 
 .xui-drawer--top .xui-drawer__panel {
   top: 0;
   left: 0;
   right: 0;
+  animation-name: xui-drawer-slide-in-top;
 }
 
 .xui-drawer--bottom .xui-drawer__panel {
   left: 0;
   right: 0;
   bottom: 0;
+  animation-name: xui-drawer-slide-in-bottom;
+}
+
+/* 退场：保持进入动画结束时的定位，反向滑出并淡出遮罩 */
+.xui-drawer.is-leaving {
+  pointer-events: none;
+}
+
+.xui-drawer.is-leaving .xui-drawer__overlay {
+  animation-name: xui-drawer-fade-out;
+}
+
+.xui-drawer.is-leaving.xui-drawer--right .xui-drawer__panel {
+  animation-name: xui-drawer-slide-out-right;
+}
+
+.xui-drawer.is-leaving.xui-drawer--left .xui-drawer__panel {
+  animation-name: xui-drawer-slide-out-left;
+}
+
+.xui-drawer.is-leaving.xui-drawer--top .xui-drawer__panel {
+  animation-name: xui-drawer-slide-out-top;
+}
+
+.xui-drawer.is-leaving.xui-drawer--bottom .xui-drawer__panel {
+  animation-name: xui-drawer-slide-out-bottom;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xui-drawer {
+    --xui-drawer-duration: 1ms;
+  }
 }
 
 .xui-drawer__header {

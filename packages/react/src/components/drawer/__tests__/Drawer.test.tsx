@@ -7,7 +7,7 @@
  * 焦点恢复、ref 命令式 API（open/close/toggle）。
  */
 
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 import { createRef } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -45,7 +45,7 @@ describe('Drawer 组件', () => {
       expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
 
-    it('受控模式：外部变更 visible 同步显隐，且不触发 onOpen/onClose', () => {
+    it('受控模式：外部变更 visible 同步显隐，且不触发 onOpen/onClose', async () => {
       const onOpen = vi.fn();
       const onClose = vi.fn();
       const { rerender } = render(
@@ -64,9 +64,24 @@ describe('Drawer 组件', () => {
           内容
         </Drawer>,
       );
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      // 退场动画期间保留 DOM，播完后卸载
+      expect(document.body.querySelector('.xui-drawer.is-leaving')).toBeInTheDocument();
+      await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
       expect(onOpen).not.toHaveBeenCalled();
       expect(onClose).not.toHaveBeenCalled();
+    });
+
+    it('退场动画期间重新打开会取消卸载', async () => {
+      const { rerender } = render(<Drawer visible>内容</Drawer>);
+
+      rerender(<Drawer visible={false}>内容</Drawer>);
+      expect(document.body.querySelector('.xui-drawer.is-leaving')).toBeInTheDocument();
+
+      rerender(<Drawer visible>内容</Drawer>);
+      expect(document.body.querySelector('.xui-drawer.is-leaving')).not.toBeInTheDocument();
+
+      await new Promise((resolve) => setTimeout(resolve, 320));
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
   });
 
@@ -122,7 +137,7 @@ describe('Drawer 组件', () => {
   });
 
   describe('关闭交互', () => {
-    it('遮罩点击触发 onClose 并关闭（非受控）', () => {
+    it('遮罩点击触发 onClose 并关闭（非受控）', async () => {
       const onClose = vi.fn();
       render(
         <Drawer defaultVisible onClose={onClose}>
@@ -131,7 +146,7 @@ describe('Drawer 组件', () => {
       );
       fireEvent.click(document.body.querySelector('.xui-drawer__overlay')!);
       expect(onClose).toHaveBeenCalledTimes(1);
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     });
 
     it('maskClosable=false 时遮罩点击不关闭', () => {
@@ -156,7 +171,7 @@ describe('Drawer 组件', () => {
       expect(screen.getByRole('dialog')).not.toHaveAttribute('aria-modal');
     });
 
-    it('ESC 触发 onClose 并关闭（document keydown）', () => {
+    it('ESC 触发 onClose 并关闭（document keydown）', async () => {
       const onClose = vi.fn();
       render(
         <Drawer defaultVisible onClose={onClose}>
@@ -165,7 +180,7 @@ describe('Drawer 组件', () => {
       );
       fireEvent.keyDown(document, { key: 'Escape' });
       expect(onClose).toHaveBeenCalledTimes(1);
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     });
 
     it('closeOnEsc=false 时 ESC 不关闭', () => {
@@ -189,7 +204,7 @@ describe('Drawer 组件', () => {
       expect(onClose).toHaveBeenCalledTimes(1);
     });
 
-    it('点击关闭按钮触发 onClose', () => {
+    it('点击关闭按钮触发 onClose', async () => {
       const onClose = vi.fn();
       render(
         <Drawer defaultVisible onClose={onClose}>
@@ -198,7 +213,7 @@ describe('Drawer 组件', () => {
       );
       fireEvent.click(document.body.querySelector('.xui-drawer__close')!);
       expect(onClose).toHaveBeenCalledTimes(1);
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     });
 
     it('closable=false 时不渲染关闭按钮', () => {
@@ -275,7 +290,7 @@ describe('Drawer 组件', () => {
   });
 
   describe('ref 命令式 API', () => {
-    it('open / close / toggle 控制显隐并触发 onOpen / onClose', () => {
+    it('open / close / toggle 控制显隐并触发 onOpen / onClose', async () => {
       const ref = createRef<DrawerRef>();
       const onOpen = vi.fn();
       const onClose = vi.fn();
@@ -293,7 +308,8 @@ describe('Drawer 组件', () => {
 
       act(() => ref.current!.toggle());
       expect(onClose).toHaveBeenCalledTimes(1);
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      expect(document.body.querySelector('.xui-drawer.is-leaving')).toBeInTheDocument();
+      await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
 
       act(() => ref.current!.toggle());
       expect(onOpen).toHaveBeenCalledTimes(2);
@@ -301,7 +317,7 @@ describe('Drawer 组件', () => {
 
       act(() => ref.current!.close());
       expect(onClose).toHaveBeenCalledTimes(2);
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     });
   });
 });
