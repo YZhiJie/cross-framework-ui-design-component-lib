@@ -1,5 +1,28 @@
 # @xui-design/react
 
+## 0.6.0
+
+### Minor Changes
+
+- [`74250c8`](https://github.com/YZhiJie/cross-framework-ui-design-component-lib/commit/74250c8de041980dbf770f4e2c313260ab0516c2) - feat(waterfall): 支持横向瀑布流（direction="horizontal"）
+
+  新增多行横向瀑布布局：
+  - 新增 `direction` 属性（`vertical` 默认 / `horizontal`）与 `rows` 行数属性
+  - 条目按最短行贪心分配、行内自左向右排列，宽度由卡片内容自身决定
+  - 容器内容超宽时横向滚动；横向模式下自动关闭虚拟滚动与触底分页
+  - 布局算法抽象为 `shortestTrackAssign`（纵向=最短列，横向=最短行），
+    `shortestColumnAssign` 保留为兼容别名
+  - `onLayoutChange` / `layoutChange` 载荷新增 `direction` 与 `rowWidths`
+  - Vue / React 适配层按方向分别测量高度与宽度
+
+### Patch Changes
+
+- Updated dependencies [[`74250c8`](https://github.com/YZhiJie/cross-framework-ui-design-component-lib/commit/74250c8de041980dbf770f4e2c313260ab0516c2)]:
+  - @xui-design/shared@0.6.0
+  - @xui-design/core@0.6.0
+  - @xui-design/styles@0.6.0
+  - @xui-design/icons@0.6.0
+
 ## 0.5.0
 
 ### Minor Changes

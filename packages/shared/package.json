@@ -1,6 +1,6 @@
 {
   "name": "@xui-design/shared",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "跨框架组件库 - 纯逻辑核心层",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -26,8 +26,5 @@
     "test": "vitest run",
     "lint": "eslint \"src/**/*.ts\"",
     "type-check": "tsc --noEmit"
-  },
-  "devDependencies": {
-    "@xui-design/utils": "workspace:*"
   }
 }

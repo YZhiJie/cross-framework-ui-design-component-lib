@@ -1,6 +1,6 @@
 {
   "name": "@xui-design/react",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "跨框架组件库 - React 19 适配层",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -32,9 +32,9 @@
   },
   "dependencies": {
     "@xui-design/core": "workspace:*",
+    "@xui-design/icons": "workspace:*",
     "@xui-design/shared": "workspace:*",
-    "@xui-design/styles": "workspace:*",
-    "@xui-design/icons": "workspace:*"
+    "@xui-design/styles": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=19.0.0",
@@ -49,13 +49,12 @@
     }
   },
   "devDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^16.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.0.0",
-    "@testing-library/react": "^16.0.0",
-    "@testing-library/jest-dom": "^6.0.0",
-    "clsx": "^2.0.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }
