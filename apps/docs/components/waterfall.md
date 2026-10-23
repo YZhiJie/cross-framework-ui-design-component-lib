@@ -55,12 +55,6 @@ title: 瀑布流 Waterfall
 
 <ComponentDemo slug="waterfall" demo-id="random-size" />
 
-### 横向瀑布流
-
-`direction="horizontal"` + `rows` 实现多行横向瀑布：条目按最短行分配、行内自左向右排列，卡片宽度由自身内容决定，内容超宽后容器横向滚动。
-
-<ComponentDemo slug="waterfall" demo-id="horizontal" />
-
 ## API 文档
 
 `@xui-design/core` ComponentSpec · 唯一契约基准，双端一致
