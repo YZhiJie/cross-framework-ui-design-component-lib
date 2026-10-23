@@ -38,7 +38,13 @@ export default function () {
   const [items, setItems] = useState<ImageItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [finished, setFinished] = useState(false);
+  // 按图片 id 记录加载状态，用于控制骨架屏 / 图片淡入
+  const [loadedIds, setLoadedIds] = useState<Set<number>>(new Set());
   const pageCounter = useRef(0);
+
+  const handleImageLoaded = (id: number) => {
+    setLoadedIds((prev) => new Set(prev).add(id));
+  };
 
   async function loadMore() {
     if (loading || finished) return;
@@ -89,7 +95,8 @@ export default function () {
         finished={finished}
         onLoadMore={loadMore}
         renderItem={(item) => {
-          const { url, title, width, height } = item as ImageItem;
+          const { url, title, width, height, id } = item as ImageItem;
+          const isLoaded = loadedIds.has(id);
           return (
             <div
               style={{
@@ -102,12 +109,43 @@ export default function () {
                 transition: 'transform 0.15s ease',
               }}
             >
-              <img
-                src={url}
-                alt={title}
-                loading="lazy"
-                style={{ display: 'block', width: '100%', height: 'auto' }}
-              />
+              {/* 用 aspect-ratio 按图片真实宽高占位，避免加载前布局跳动 */}
+              <div
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  background: '#eee',
+                  overflow: 'hidden',
+                  aspectRatio: `${width} / ${height}`,
+                }}
+              >
+                {/* 加载前的 shimmer 骨架屏 */}
+                {!isLoaded && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(90deg, #eee 0%, #f5f5f5 50%, #eee 100%)',
+                      backgroundSize: '200% 100%',
+                      animation: 'server-load-shimmer 1.4s ease-in-out infinite',
+                    }}
+                  />
+                )}
+                <img
+                  src={url}
+                  alt={title}
+                  loading="lazy"
+                  onLoad={() => handleImageLoaded(id)}
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: isLoaded ? 1 : 0,
+                    transition: 'opacity 0.3s ease',
+                  }}
+                />
+              </div>
               <div
                 style={{
                   display: 'flex',
@@ -172,6 +210,10 @@ export default function () {
       <style>{`
         @keyframes server-load-spin {
           to { transform: rotate(360deg); }
+        }
+        @keyframes server-load-shimmer {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
         }
       `}</style>
     </div>

@@ -39,6 +39,12 @@ function mockFetchImages(page: number): Promise<ImageItem[]> {
 const items = ref<ImageItem[]>([]);
 const loading = ref(false);
 const finished = ref(false);
+// 按图片 id 记录加载状态，用于控制骨架屏 / 图片淡入
+const loadedIds = ref<Set<number>>(new Set());
+
+function onImageLoaded(id: number) {
+  loadedIds.value = new Set(loadedIds.value).add(id);
+}
 
 async function loadMore() {
   if (loading.value || finished.value) return;
@@ -76,12 +82,22 @@ onMounted(() => {
     >
       <template #item="{ item }">
         <div v-if="item" class="img-card">
-          <img
-            :src="(item as ImageItem).url"
-            :alt="(item as ImageItem).title"
-            loading="lazy"
-            class="img-card__image"
-          />
+          <!-- 用 aspect-ratio 按图片真实宽高占位，避免加载前布局跳动 -->
+          <div
+            class="img-card__media"
+            :style="{ aspectRatio: `${(item as ImageItem).width} / ${(item as ImageItem).height}` }"
+          >
+            <!-- 加载前的 shimmer 占位 -->
+            <div v-if="!loadedIds.has((item as ImageItem).id)" class="img-card__skeleton" />
+            <img
+              :src="(item as ImageItem).url"
+              :alt="(item as ImageItem).title"
+              loading="lazy"
+              class="img-card__image"
+              :class="{ 'is-loaded': loadedIds.has((item as ImageItem).id) }"
+              @load="onImageLoaded((item as ImageItem).id)"
+            />
+          </div>
           <div class="img-card__caption">
             <span>{{ (item as ImageItem).title }}</span>
             <span class="img-card__size">
@@ -131,10 +147,38 @@ onMounted(() => {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
+.img-card__media {
+  position: relative;
+  width: 100%;
+  background: #eee;
+  overflow: hidden;
+}
 .img-card__image {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.img-card__image.is-loaded {
+  opacity: 1;
+}
+/* 加载前的 shimmer 骨架屏 */
+.img-card__skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #eee 0%, #f5f5f5 50%, #eee 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 .img-card__caption {
   display: flex;
