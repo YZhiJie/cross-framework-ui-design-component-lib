@@ -37,6 +37,12 @@ title: 瀑布流 Waterfall
 
 <ComponentDemo slug="waterfall" demo-id="responsive" />
 
+### 服务端加载 + 无限滚动
+
+模拟分页接口（setTimeout + picsum.photos 随机图），滚动触底触发 `loadMore` 拉取下一页；图片 `onLoad` 后 ResizeObserver 自动重排；配合 `loading` / `finished` 守卫避免重复触发。
+
+<ComponentDemo slug="waterfall" demo-id="server-load" />
+
 ## API 文档
 
 `@xui-design/core` ComponentSpec · 唯一契约基准，双端一致

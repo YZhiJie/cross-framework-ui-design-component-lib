@@ -37,6 +37,12 @@ With breakpoints configured, column count auto-switchs on container resize (&lt;
 
 <ComponentDemo slug="waterfall" demo-id="responsive" />
 
+### Server Loading + Infinite Scroll
+
+Simulated paginated API (setTimeout + picsum.photos images); scroll-to-bottom triggers `onLoadMore` to fetch the next page; ResizeObserver auto-reflows after each image loads; `loading` / `finished` guards prevent duplicate fetches.
+
+<ComponentDemo slug="waterfall" demo-id="server-load" />
+
 ## API
 
 `@xui-design/core` ComponentSpec · single contract, identical on both frameworks

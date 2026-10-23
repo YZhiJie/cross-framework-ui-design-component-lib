@@ -3,11 +3,15 @@ import BasicVue from './demos/basic.vue';
 import BasicTsx from './demos/basic';
 import ResponsiveVue from './demos/responsive.vue';
 import ResponsiveTsx from './demos/responsive';
+import ServerLoadVue from './demos/server-load.vue';
+import ServerLoadTsx from './demos/server-load';
 
 import basicVueSource from './demos/basic.vue?raw';
 import basicTsxSource from './demos/basic.tsx?raw';
 import responsiveVueSource from './demos/responsive.vue?raw';
 import responsiveTsxSource from './demos/responsive.tsx?raw';
+import serverLoadVueSource from './demos/server-load.vue?raw';
+import serverLoadTsxSource from './demos/server-load.tsx?raw';
 
 /** Waterfall 瀑布流文档元数据 */
 export const waterfallMeta: ComponentMeta = {
@@ -92,6 +96,20 @@ export const waterfallMeta: ComponentMeta = {
       reactComponent: ResponsiveTsx,
       vueSource: responsiveVueSource,
       reactSource: responsiveTsxSource,
+    },
+    {
+      id: 'server-load',
+      title: { 'zh-CN': '服务端加载 + 无限滚动', 'en-US': 'Server Loading + Infinite Scroll' },
+      description: {
+        'zh-CN':
+          '模拟分页接口（setTimeout + picsum.photos 随机图），滚动触底触发 onLoadMore 拉取下一页；图片 onLoad 后 ResizeObserver 自动重排；配合 loading / finished 守卫避免重复触发。',
+        'en-US':
+          'Simulated paginated API (setTimeout + picsum.photos images); scroll-to-bottom triggers onLoadMore to fetch the next page; ResizeObserver auto-reflows after each image loads; loading/finished guards prevent duplicate fetches.',
+      },
+      vueComponent: ServerLoadVue,
+      reactComponent: ServerLoadTsx,
+      vueSource: serverLoadVueSource,
+      reactSource: serverLoadTsxSource,
     },
   ],
   api: {
