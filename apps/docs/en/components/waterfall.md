@@ -55,6 +55,12 @@ Each image gets a random width/height between 200 and 800px for strongly uneven 
 
 <ComponentDemo slug="waterfall" demo-id="random-size" />
 
+### Horizontal Waterfall
+
+`direction="horizontal"` plus `rows` gives a multi-row horizontal masonry: items are packed into the shortest row and flow left to right, card width comes from the card content, and the container scrolls horizontally when overflowing.
+
+<ComponentDemo slug="waterfall" demo-id="horizontal" />
+
 ## API
 
 `@xui-design/core` ComponentSpec · single contract, identical on both frameworks

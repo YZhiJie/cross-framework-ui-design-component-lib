@@ -78,4 +78,25 @@ describe('Waterfall (vue)', () => {
     const rootEl = wrapper.find('.xui-waterfall').element as HTMLElement;
     expect(rootEl.style.getPropertyValue('--xui-waterfall-gutter')).toBe('24px');
   });
+
+  it('direction=horizontal → 渲染横向类名，行数取 rows', () => {
+    const wrapper = mount(Waterfall, {
+      props: { items: makeItems(6), direction: 'horizontal', rows: 2 },
+    });
+
+    expect(wrapper.find('.xui-waterfall--horizontal').exists()).toBe(true);
+    expect(wrapper.findAll('.xui-waterfall__column')).toHaveLength(2);
+    expect(wrapper.findAll('.xui-waterfall__item')).toHaveLength(6);
+  });
+
+  it('direction 从 vertical 切到 horizontal → 行数取 rows', async () => {
+    const wrapper = mount(Waterfall, {
+      props: { items: makeItems(6), columns: 3 },
+    });
+    expect(wrapper.findAll('.xui-waterfall__column')).toHaveLength(3);
+
+    await wrapper.setProps({ direction: 'horizontal', rows: 2 });
+    expect(wrapper.find('.xui-waterfall--horizontal').exists()).toBe(true);
+    expect(wrapper.findAll('.xui-waterfall__column')).toHaveLength(2);
+  });
 });

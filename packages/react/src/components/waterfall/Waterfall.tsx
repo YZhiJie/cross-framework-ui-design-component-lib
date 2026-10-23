@@ -33,6 +33,8 @@ export function Waterfall(props: WaterfallProps) {
     items,
     rowKey,
     columns = 4,
+    direction = 'vertical',
+    rows,
     breakpoints,
     gutter = 16,
     height,
@@ -59,6 +61,8 @@ export function Waterfall(props: WaterfallProps) {
       items,
       rowKey,
       columns,
+      direction,
+      rows,
       gutter,
       onItemClick: (item, index) => callbacksRef.current.onItemClick?.(item, index),
       onLayoutChange: (payload) => callbacksRef.current.onLayoutChange?.(payload),
@@ -70,8 +74,8 @@ export function Waterfall(props: WaterfallProps) {
 
   // Props 值变化同步到逻辑层（回调用 latest-ref，不走 updateOptions）
   useEffect(() => {
-    logic.updateOptions({ items, rowKey, columns, gutter });
-  }, [logic, items, rowKey, columns, gutter]);
+    logic.updateOptions({ items, rowKey, columns, direction, rows, gutter });
+  }, [logic, items, rowKey, columns, direction, rows, gutter]);
 
   // ---- DOM refs ----
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -87,8 +91,8 @@ export function Waterfall(props: WaterfallProps) {
     const container = containerRef.current;
     if (!container) return;
 
-    // 1) 容器宽度 → 响应式列数切换（跳过首次挂载，让初始 columns 先到位）
-    if (breakpoints && !firstMeasureRef.current) {
+    // 1) 容器宽度 → 响应式列数切换（跳过首次挂载，让初始 columns 先到位；横向模式由 rows 固定）
+    if (breakpoints && !firstMeasureRef.current && direction !== 'horizontal') {
       const width = container.clientWidth;
       const fallback = columns ?? 4;
       const newCount = resolveColumnCount(width, breakpoints, fallback);
@@ -96,9 +100,15 @@ export function Waterfall(props: WaterfallProps) {
     }
     firstMeasureRef.current = false;
 
-    // 2) 重新测量所有 item 高度（图片加载 / 内容变化都从这里进）
+    // 2) 重新测量所有 item：纵向测高度，横向测宽度（图片加载 / 内容变化都从这里进）
+    const horizontal = direction === 'horizontal';
     for (const [key, el] of itemRefs.current) {
-      logic.updateItemHeight(key, el.getBoundingClientRect().height);
+      const rect = el.getBoundingClientRect();
+      if (horizontal) {
+        logic.updateItemWidth(key, rect.width);
+      } else {
+        logic.updateItemHeight(key, rect.height);
+      }
     }
   };
 
@@ -118,8 +128,14 @@ export function Waterfall(props: WaterfallProps) {
 
     // jsdom / 旧环境无 ResizeObserver：跳过监听，只做同步首次测量
     if (typeof ResizeObserver === 'undefined') {
+      const horizontal = direction === 'horizontal';
       for (const [key, el] of itemRefs.current) {
-        logic.updateItemHeight(key, el.getBoundingClientRect().height);
+        const rect = el.getBoundingClientRect();
+        if (horizontal) {
+          logic.updateItemWidth(key, rect.width);
+        } else {
+          logic.updateItemHeight(key, rect.height);
+        }
       }
       return;
     }
@@ -146,7 +162,7 @@ export function Waterfall(props: WaterfallProps) {
         frameRef.current = null;
       }
     };
-  }, [logic, breakpoints, columns]);
+  }, [logic, breakpoints, columns, direction]);
 
   // 同步 item observer：items 数组变化后 observe 新增的 DOM
   useLayoutEffect(() => {
@@ -172,8 +188,13 @@ export function Waterfall(props: WaterfallProps) {
     const handleScroll = () => {
       const { scrollTop: st, scrollHeight, clientHeight } = container;
 
-      // 1) 无限滚动阈值触发（守卫 loading/finished）
-      if (!loading && !finished && scrollHeight - st - clientHeight < loadMoreThreshold) {
+      // 1) 无限滚动阈值触发（守卫 loading/finished；横向模式不触发分页）
+      if (
+        direction !== 'horizontal' &&
+        !loading &&
+        !finished &&
+        scrollHeight - st - clientHeight < loadMoreThreshold
+      ) {
         callbacksRef.current.onLoadMore?.();
       }
 
@@ -194,7 +215,7 @@ export function Waterfall(props: WaterfallProps) {
         scrollRafRef.current = null;
       }
     };
-  }, [height, virtual, loadMoreThreshold, loading, finished]);
+  }, [height, virtual, loadMoreThreshold, loading, finished, direction]);
 
   // 注册 item DOM 引用（React ref 回调）
   const registerItemRef = (key: string, el: HTMLDivElement | null) => {
@@ -220,8 +241,8 @@ export function Waterfall(props: WaterfallProps) {
   // 渲染
   const hasItems = state.columns.some((col) => col.length > 0);
 
-  // ---- 虚拟滚动：预先计算每列的可视窗口 ----
-  const isVirtual = virtual && !!height;
+  // ---- 虚拟滚动：预先计算每列的可视窗口（仅纵向模式） ----
+  const isVirtual = virtual && !!height && direction !== 'horizontal';
   const viewportHeight =
     (typeof height === 'number' ? height : Number.parseFloat(height as string)) || 0;
 
@@ -283,6 +304,7 @@ export function Waterfall(props: WaterfallProps) {
         {
           'xui-waterfall--empty': !hasItems,
           'xui-waterfall--scrollable': !!height,
+          'xui-waterfall--horizontal': direction === 'horizontal',
         },
         className,
       )}
@@ -292,7 +314,8 @@ export function Waterfall(props: WaterfallProps) {
         ...(height !== undefined
           ? {
               height: typeof height === 'number' ? `${height}px` : height,
-              overflowY: 'auto',
+              overflowY: direction === 'horizontal' ? 'hidden' : 'auto',
+              overflowX: direction === 'horizontal' ? 'auto' : undefined,
             }
           : {}),
       }}

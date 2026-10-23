@@ -9,6 +9,13 @@ import type { LogicInstance } from '../../types';
 /** 瀑布流数据源条目（键值对） */
 export type WaterfallItem = Record<string, unknown>;
 
+/** 布局方向
+ *
+ * - vertical：多列纵向瀑布，按最短列分配，列内自上而下堆叠（默认）
+ * - horizontal：多行横向瀑布，按最短行分配，行内自左向右排列，容器横向滚动
+ */
+export type WaterfallDirection = 'vertical' | 'horizontal';
+
 /** 响应式断点（按 minWidth 升序匹配，首次命中生效） */
 export type WaterfallBreakpoint = {
   /** 视口最小宽度（px） */
@@ -25,7 +32,11 @@ export type WaterfallProps = {
   rowKey?: string;
   /** 固定列数（breakpoints 未提供时生效；默认 4） */
   columns?: number;
-  /** 响应式断点（提供时优先于 columns；按 minWidth 升序匹配） */
+  /** 布局方向（默认 vertical；horizontal 为多行横向瀑布） */
+  direction?: WaterfallDirection;
+  /** 横向瀑布流的行数（direction='horizontal' 时生效；缺省回退到 columns） */
+  rows?: number;
+  /** 响应式断点（提供时优先于 columns；按 minWidth 升序匹配；仅 vertical 生效） */
   breakpoints?: WaterfallBreakpoint[];
   /** 列间距（px，默认 16） */
   gutter?: number;
@@ -55,10 +66,14 @@ export type WaterfallProps = {
 
 /** 布局变更事件载荷 */
 export type WaterfallLayoutPayload = {
-  /** 当前列数 */
+  /** 当前列数（横向模式为当前行数） */
   columnCount: number;
-  /** 每列累计高度快照（单位 px，含 gutter） */
+  /** 每列累计高度快照（单位 px，含 gutter；横向模式为空数组） */
   columnHeights: number[];
+  /** 布局方向 */
+  direction?: WaterfallDirection;
+  /** 横向模式每行累计宽度快照（单位 px；纵向模式为空数组） */
+  rowWidths?: number[];
 };
 
 /** Waterfall 事件契约 */
@@ -90,8 +105,10 @@ export type WaterfallState = {
 export type WaterfallLogic = LogicInstance<WaterfallProps, WaterfallState> & {
   /** 响应式更新列数（适配层在 ResizeObserver 中调用） */
   setColumnCount: (count: number) => void;
-  /** 更新指定条目的测量高度（适配层在 ResizeObserver 中调用） */
+  /** 更新指定条目的测量高度（纵向模式；适配层在 ResizeObserver 中调用） */
   updateItemHeight: (key: string, height: number) => void;
+  /** 更新指定条目的测量宽度（横向模式；适配层在 ResizeObserver 中调用） */
+  updateItemWidth: (key: string, width: number) => void;
   /** 触发条目点击 */
   handleItemClick: (item: WaterfallItem, index: number) => void;
 };

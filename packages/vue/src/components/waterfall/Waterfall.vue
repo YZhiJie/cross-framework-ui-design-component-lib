@@ -23,6 +23,7 @@ const props = withDefaults(
   >(),
   {
     columns: 4,
+    direction: 'vertical',
     gutter: 16,
     loadMoreThreshold: 200,
   },
@@ -30,7 +31,15 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   itemClick: [item: Record<string, unknown>, index: number];
-  layoutChange: [payload: { columnCount: number; columnHeights: number[] }];
+  layoutChange: [
+    payload: {
+      columnCount: number;
+      columnHeights: number[];
+      direction: 'vertical' | 'horizontal';
+      rowWidths: number[];
+      gutter: number;
+    },
+  ];
   loadMore: [];
 }>();
 
@@ -44,6 +53,8 @@ const logic = createWaterfallLogic({
   items: props.items,
   rowKey: props.rowKey,
   columns: props.columns,
+  direction: props.direction,
+  rows: props.rows,
   gutter: props.gutter,
   onItemClick: (item, index) => emit('itemClick', item, index),
   onLayoutChange: (payload) => emit('layoutChange', payload),
@@ -61,6 +72,8 @@ watchEffect(() => {
     items: props.items,
     rowKey: props.rowKey,
     columns: props.columns,
+    direction: props.direction,
+    rows: props.rows,
     gutter: props.gutter,
   });
 });
@@ -99,13 +112,13 @@ function scheduleRaf() {
   });
 }
 
-/** 一帧内统一执行：测量容器 → 更新列数 → 测量所有 item 高度 */
+/** 一帧内统一执行：测量容器 → 更新列数 → 测量所有 item 尺寸 */
 function doMeasureAndLayout() {
   const el = containerRef.value;
   if (!el) return;
 
-  // 1) 容器宽度 → 响应式列数切换
-  if (props.breakpoints && !firstMeasure) {
+  // 1) 容器宽度 → 响应式列数切换（仅纵向模式，横向由 rows 固定）
+  if (props.breakpoints && !firstMeasure && props.direction !== 'horizontal') {
     const width = el.clientWidth;
     const fallback = props.columns ?? 4;
     const newCount = resolveColumnCount(width, props.breakpoints, fallback);
@@ -113,10 +126,15 @@ function doMeasureAndLayout() {
   }
   firstMeasure = false;
 
-  // 2) 重新测量所有已注册的 item 高度
+  // 2) 重新测量所有已注册的 item：纵向测高度，横向测宽度
+  const horizontal = props.direction === 'horizontal';
   for (const [key, itemEl] of itemRefs) {
-    const h = itemEl.getBoundingClientRect().height;
-    logic.updateItemHeight(key, h);
+    const rect = itemEl.getBoundingClientRect();
+    if (horizontal) {
+      logic.updateItemWidth(key, rect.width);
+    } else {
+      logic.updateItemHeight(key, rect.height);
+    }
   }
 }
 
@@ -171,8 +189,8 @@ let scrollHandler: (() => void) | undefined;
 function handleScroll() {
   const el = containerRef.value;
   if (!el) return;
-  // 无 height / 加载中 / 已全部加载 → 跳过
-  if (!props.height || props.loading || props.finished) return;
+  // 无 height / 加载中 / 已全部加载 / 横向模式（横向滚动不触发分页） → 跳过
+  if (!props.height || props.loading || props.finished || props.direction === 'horizontal') return;
 
   const { scrollTop, scrollHeight, clientHeight } = el;
   const threshold = props.loadMoreThreshold ?? 200;
@@ -194,8 +212,14 @@ onMounted(() => {
   // jsdom / 旧环境无 ResizeObserver：只做首次测量
   if (typeof ResizeObserver === 'undefined') {
     nextTick(() => {
+      const horizontal = props.direction === 'horizontal';
       for (const [key, itemEl] of itemRefs) {
-        logic.updateItemHeight(key, itemEl.getBoundingClientRect().height);
+        const rect = itemEl.getBoundingClientRect();
+        if (horizontal) {
+          logic.updateItemWidth(key, rect.width);
+        } else {
+          logic.updateItemHeight(key, rect.height);
+        }
       }
     });
     return;
@@ -235,6 +259,7 @@ onUnmounted(() => {
     :class="{
       'xui-waterfall--empty': state.columns.flat().length === 0,
       'xui-waterfall--scrollable': !!height,
+      'xui-waterfall--horizontal': direction === 'horizontal',
     }"
     :style="{
       '--xui-waterfall-gutter': `${gutter}px`,

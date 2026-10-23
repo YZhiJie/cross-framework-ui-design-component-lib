@@ -199,6 +199,62 @@ describe('createWaterfallLogic', () => {
     expect(onItemClick).toHaveBeenCalledWith({ id: 42 }, 2);
   });
 
+  it('direction=horizontal：行数取 rows，按 item 宽度分配到最短行', () => {
+    const items = makeItems(6);
+    const logic = createWaterfallLogic({
+      items,
+      rowKey: 'id',
+      direction: 'horizontal',
+      rows: 2,
+    });
+    const state = logic.getState();
+    expect(state.direction).toBe('horizontal');
+    expect(state.columnCount).toBe(2);
+    expect(state.columnHeights).toEqual([]);
+    expect(state.rowWidths).toHaveLength(2);
+
+    // 宽度差异明显时，后续 item 进入更短的一行
+    logic.updateItemWidth('0', 300);
+    logic.updateItemWidth('1', 100);
+    const after = logic.getState();
+    expect(after.rowWidths[0]).toBe(300);
+    expect(after.rowWidths[1]).toBe(100);
+    expect(after.columns[1]).toContain('2');
+  });
+
+  it('direction=horizontal：updateItemHeight 不触发重排', () => {
+    const listener = vi.fn();
+    const logic = createWaterfallLogic({
+      items: makeItems(4),
+      direction: 'horizontal',
+      rows: 2,
+    });
+    logic.subscribe(listener);
+
+    logic.updateItemHeight('0', 500);
+    expect(listener).not.toHaveBeenCalled();
+  });
+
+  it('direction=vertical：updateItemWidth 不触发重排', () => {
+    const listener = vi.fn();
+    const logic = createWaterfallLogic({ items: makeItems(4), columns: 2 });
+    logic.subscribe(listener);
+
+    logic.updateItemWidth('0', 300);
+    expect(listener).not.toHaveBeenCalled();
+  });
+
+  it('updateOptions direction 切换 → 重排并使用对应尺寸缓存', () => {
+    const logic = createWaterfallLogic({ items: makeItems(4), columns: 2 });
+    logic.updateItemWidth('0', 400); // 纵向模式下仅缓存宽度
+
+    logic.updateOptions({ direction: 'horizontal', rows: 2 });
+    const state = logic.getState();
+    expect(state.direction).toBe('horizontal');
+    expect(state.columnCount).toBe(2);
+    expect(state.rowWidths[0] === 400 || state.rowWidths[1] === 400).toBe(true);
+  });
+
   it('onLayoutChange 在重排时触发', () => {
     const onLayoutChange = vi.fn();
     const logic = createWaterfallLogic({
@@ -210,21 +266,29 @@ describe('createWaterfallLogic', () => {
 
     // 初始布局也应触发
     expect(onLayoutChange).toHaveBeenCalledTimes(1);
-    expect(onLayoutChange).toHaveBeenCalledWith({
-      columnCount: 2,
-      columnHeights: expect.any(Array),
-      gutter: 12,
-    });
+    expect(onLayoutChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        columnCount: 2,
+        columnHeights: expect.any(Array),
+        direction: 'vertical',
+        rowWidths: [],
+        gutter: 12,
+      }),
+    );
 
     // 列数变化 → 再次触发
     onLayoutChange.mockClear();
     logic.setColumnCount(3);
     expect(onLayoutChange).toHaveBeenCalledTimes(1);
-    expect(onLayoutChange).toHaveBeenCalledWith({
-      columnCount: 3,
-      columnHeights: expect.any(Array),
-      gutter: 12,
-    });
+    expect(onLayoutChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        columnCount: 3,
+        columnHeights: expect.any(Array),
+        direction: 'vertical',
+        rowWidths: [],
+        gutter: 12,
+      }),
+    );
   });
 
   it('高度缓存跨列数切换复用，不丢失', () => {

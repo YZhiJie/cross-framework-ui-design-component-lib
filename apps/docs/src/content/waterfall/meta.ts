@@ -9,6 +9,8 @@ import ResponsiveServerVue from './demos/responsive-server.vue';
 import ResponsiveServerTsx from './demos/responsive-server';
 import RandomSizeVue from './demos/random-size.vue';
 import RandomSizeTsx from './demos/random-size';
+import HorizontalVue from './demos/horizontal.vue';
+import HorizontalTsx from './demos/horizontal';
 
 import basicVueSource from './demos/basic.vue?raw';
 import basicTsxSource from './demos/basic.tsx?raw';
@@ -20,6 +22,8 @@ import responsiveServerVueSource from './demos/responsive-server.vue?raw';
 import responsiveServerTsxSource from './demos/responsive-server.tsx?raw';
 import randomSizeVueSource from './demos/random-size.vue?raw';
 import randomSizeTsxSource from './demos/random-size.tsx?raw';
+import horizontalVueSource from './demos/horizontal.vue?raw';
+import horizontalTsxSource from './demos/horizontal.tsx?raw';
 
 /** Waterfall 瀑布流文档元数据 */
 export const waterfallMeta: ComponentMeta = {
@@ -150,6 +154,20 @@ export const waterfallMeta: ComponentMeta = {
       vueSource: randomSizeVueSource,
       reactSource: randomSizeTsxSource,
     },
+    {
+      id: 'horizontal',
+      title: { 'zh-CN': '横向瀑布流', 'en-US': 'Horizontal Waterfall' },
+      description: {
+        'zh-CN':
+          'direction="horizontal" + rows=2：条目按最短行分配、行内自左向右排列，宽度由卡片自身决定，内容超宽后容器横向滚动。',
+        'en-US':
+          'direction="horizontal" with rows=2: items are packed into the shortest row and flow left to right; widths come from the cards themselves and the container scrolls horizontally when overflowing.',
+      },
+      vueComponent: HorizontalVue,
+      reactComponent: HorizontalTsx,
+      vueSource: horizontalVueSource,
+      reactSource: horizontalTsxSource,
+    },
   ],
   api: {
     props: [
@@ -182,12 +200,32 @@ export const waterfallMeta: ComponentMeta = {
         },
       },
       {
+        name: 'direction',
+        type: "'vertical' | 'horizontal'",
+        default: "'vertical'",
+        description: {
+          'zh-CN': '布局方向：vertical 多列纵向瀑布；horizontal 多行横向瀑布（容器横向滚动）',
+          'en-US':
+            'Layout direction: vertical multi-column masonry; horizontal multi-row masonry with horizontal scrolling',
+        },
+      },
+      {
+        name: 'rows',
+        type: 'number',
+        default: '—（回退到 columns）',
+        description: {
+          'zh-CN': '横向瀑布流的行数（direction="horizontal" 时生效）',
+          'en-US': 'Row count for horizontal layout (only when direction="horizontal")',
+        },
+      },
+      {
         name: 'breakpoints',
         type: 'WaterfallBreakpoint[]',
         default: '—',
         description: {
-          'zh-CN': '响应式断点（按 minWidth 升序匹配，覆盖 columns）',
-          'en-US': 'Responsive breakpoints (match by ascending minWidth; overrides columns)',
+          'zh-CN': '响应式断点（按 minWidth 升序匹配，覆盖 columns；仅纵向模式生效）',
+          'en-US':
+            'Responsive breakpoints (match by ascending minWidth; overrides columns; vertical only)',
         },
       },
       {

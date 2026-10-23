@@ -4632,3 +4632,33 @@
   border-radius: var(--xui-radius-md, 6px);
   background-color: var(--xui-color-fill, #f3f4f6);
 }
+
+/* ---- 横向瀑布流：多行向下堆叠，行内自左向右排列，内容超宽时横向滚动 ---- */
+.xui-waterfall--horizontal {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.xui-waterfall--horizontal.xui-waterfall--scrollable {
+  /* 覆盖纵向模式的 overflow: hidden auto */
+  overflow: auto hidden;
+}
+
+.xui-waterfall--horizontal .xui-waterfall__column {
+  /* 横向模式下「列」即「行」：不参与等分，宽度由内容决定 */
+  flex: none;
+  flex-direction: row;
+  width: max-content;
+  align-items: flex-start;
+}
+
+.xui-waterfall--horizontal .xui-waterfall__item {
+  /* 条目宽度由内容（图片 / 卡片）自身决定，不拉伸 */
+  flex: none;
+  width: auto;
+}
+
+.xui-waterfall--horizontal .xui-waterfall__item-placeholder {
+  width: 160px;
+  min-height: 120px;
+}

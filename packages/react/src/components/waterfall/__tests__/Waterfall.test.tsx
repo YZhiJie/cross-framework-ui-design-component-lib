@@ -67,4 +67,34 @@ describe('Waterfall (react)', () => {
       }),
     );
   });
+
+  it('direction=horizontal → 渲染横向类名，行数取 rows', () => {
+    const { container } = render(
+      <Waterfall items={makeItems(6)} direction="horizontal" rows={2} />,
+    );
+
+    expect(container.querySelector('.xui-waterfall--horizontal')).not.toBeNull();
+    expect(container.querySelectorAll('.xui-waterfall__column')).toHaveLength(2);
+    expect(container.querySelectorAll('.xui-waterfall__item')).toHaveLength(6);
+  });
+
+  it('direction=horizontal → onLayoutChange 返回 rowWidths', () => {
+    const onLayoutChange = vi.fn();
+    render(
+      <Waterfall
+        items={makeItems(4)}
+        direction="horizontal"
+        rows={2}
+        onLayoutChange={onLayoutChange}
+      />,
+    );
+
+    expect(onLayoutChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        columnCount: 2,
+        direction: 'horizontal',
+        rowWidths: expect.any(Array),
+      }),
+    );
+  });
 });
