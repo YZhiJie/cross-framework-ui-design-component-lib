@@ -7,6 +7,8 @@ import ServerLoadVue from './demos/server-load.vue';
 import ServerLoadTsx from './demos/server-load';
 import ResponsiveServerVue from './demos/responsive-server.vue';
 import ResponsiveServerTsx from './demos/responsive-server';
+import RandomSizeVue from './demos/random-size.vue';
+import RandomSizeTsx from './demos/random-size';
 
 import basicVueSource from './demos/basic.vue?raw';
 import basicTsxSource from './demos/basic.tsx?raw';
@@ -16,6 +18,8 @@ import serverLoadVueSource from './demos/server-load.vue?raw';
 import serverLoadTsxSource from './demos/server-load.tsx?raw';
 import responsiveServerVueSource from './demos/responsive-server.vue?raw';
 import responsiveServerTsxSource from './demos/responsive-server.tsx?raw';
+import randomSizeVueSource from './demos/random-size.vue?raw';
+import randomSizeTsxSource from './demos/random-size.tsx?raw';
 
 /** Waterfall 瀑布流文档元数据 */
 export const waterfallMeta: ComponentMeta = {
@@ -131,6 +135,20 @@ export const waterfallMeta: ComponentMeta = {
       reactComponent: ResponsiveServerTsx,
       vueSource: responsiveServerVueSource,
       reactSource: responsiveServerTsxSource,
+    },
+    {
+      id: 'random-size',
+      title: { 'zh-CN': '随机尺寸图片', 'en-US': 'Random-Size Images' },
+      description: {
+        'zh-CN':
+          '每张图片的宽高都在 200~800px 之间随机生成，高度差异明显；点击「换一批」重新生成一组数据，瀑布流按最短列自动重新排布。',
+        'en-US':
+          'Each image gets a random width/height between 200 and 800px for strongly uneven heights; clicking "Refresh" regenerates the dataset and the waterfall re-packs by shortest column.',
+      },
+      vueComponent: RandomSizeVue,
+      reactComponent: RandomSizeTsx,
+      vueSource: randomSizeVueSource,
+      reactSource: randomSizeTsxSource,
     },
   ],
   api: {

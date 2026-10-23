@@ -49,6 +49,12 @@ title: 瀑布流 Waterfall
 
 <ComponentDemo slug="waterfall" demo-id="responsive-server" />
 
+### 随机尺寸图片
+
+每张图片的宽高都在 200~800px 之间随机生成，高度差异明显；点击「换一批」重新生成一组数据，瀑布流按最短列自动重新排布。
+
+<ComponentDemo slug="waterfall" demo-id="random-size" />
+
 ## API 文档
 
 `@xui-design/core` ComponentSpec · 唯一契约基准，双端一致

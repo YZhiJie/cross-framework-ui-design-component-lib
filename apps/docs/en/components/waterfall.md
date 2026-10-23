@@ -49,6 +49,12 @@ Simulated API returns images with varying width/height (320/400/480/560 wide, ra
 
 <ComponentDemo slug="waterfall" demo-id="responsive-server" />
 
+### Random-Size Images
+
+Each image gets a random width/height between 200 and 800px for strongly uneven heights; clicking "Refresh" regenerates the dataset and the waterfall re-packs by shortest column.
+
+<ComponentDemo slug="waterfall" demo-id="random-size" />
+
 ## API
 
 `@xui-design/core` ComponentSpec · single contract, identical on both frameworks

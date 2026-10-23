@@ -648,6 +648,19 @@ body {
   transform: translateY(-6px);
 }
 
+/* ---------- 右侧页内目录 ---------- */
+
+/* 长标题换行显示，避免被省略号截断（覆盖 VP 默认 nowrap + ellipsis） */
+.VPDocAsideOutline .outline-link {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.5;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  overflow-wrap: anywhere;
+}
+
 /* ---------- 响应式 ---------- */
 
 @media (width <= 900px) {
