@@ -45,7 +45,12 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm changeset publish
+          # 注意：不要用 `pnpm changeset publish` —— changeset 3.x 内部用
+          # Promise.all 并发 publish 所有包，npm registry 在高并发写入时会
+          # 返回瞬时 E404（shared/styles 先撞上 404，后续依赖它们的包全挂）。
+          # 改用 pnpm -r publish，pnpm 会按 workspace 拓扑序**顺序**发布，
+          # 天然规避竞态；同时 workspace:* 依赖在 publish 时自动 rewrite。
+          publish: pnpm -r publish --access public --no-git-checks --filter '!@xui-design/playground-*' --filter '!@xui-design/docs' --filter '!@xui-design/utils'
           version: pnpm changeset version
           commit: "chore: release packages"
           title: "chore: release packages"
