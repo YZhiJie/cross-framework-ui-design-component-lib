@@ -1,6 +1,6 @@
 {
   "name": "@xui-design/icons",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "跨框架组件库 - 图标包",
   "type": "module",
   "main": "./dist/index.cjs",

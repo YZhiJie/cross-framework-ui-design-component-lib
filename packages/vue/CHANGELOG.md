@@ -1,5 +1,26 @@
 # @xui-design/vue
 
+## 0.5.0
+
+### Minor Changes
+
+- [`3ad9a7b`](https://github.com/YZhiJie/cross-framework-ui-design-component-lib/commit/3ad9a7bb9fc7c06b63c0231da7960bfb87747639) - feat: 新增 Waterfall 瀑布流组件
+
+  基于最短列贪心分配的多列瀑布流布局：
+  - 支持响应式断点（breakpoints），容器尺寸变化时 ResizeObserver 自动切换列数
+  - 高度缓存跨列数切换复用：切换 4→2 列时零成本复用已测量高度
+  - 图片/内容异步加载完成后自动触发重排
+  - rAF 合并调度，一帧内多次变化只执行一次重排
+  - Vue #item 作用域 slot（item + index）/ React renderItem 回调双端对齐
+
+### Patch Changes
+
+- Updated dependencies [[`3ad9a7b`](https://github.com/YZhiJie/cross-framework-ui-design-component-lib/commit/3ad9a7bb9fc7c06b63c0231da7960bfb87747639)]:
+  - @xui-design/shared@0.5.0
+  - @xui-design/core@0.5.0
+  - @xui-design/styles@0.5.0
+  - @xui-design/icons@0.5.0
+
 ## 0.4.2
 
 ### Patch Changes
