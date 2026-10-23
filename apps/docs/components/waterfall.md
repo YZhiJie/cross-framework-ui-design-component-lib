@@ -43,6 +43,12 @@ title: 瀑布流 Waterfall
 
 <ComponentDemo slug="waterfall" demo-id="server-load" />
 
+### 响应式断点 + 服务端不同尺寸图片
+
+模拟服务端返回宽高各异的图片（320/400/480/560 宽，高度随机），结合 breakpoints 随容器宽度在 2 / 3 / 4 列间切换；图片加载前按真实宽高占位，加载完成后自动重排。
+
+<ComponentDemo slug="waterfall" demo-id="responsive-server" />
+
 ## API 文档
 
 `@xui-design/core` ComponentSpec · 唯一契约基准，双端一致

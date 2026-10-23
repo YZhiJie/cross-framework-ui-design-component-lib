@@ -43,6 +43,12 @@ Simulated paginated API (setTimeout + picsum.photos images); scroll-to-bottom tr
 
 <ComponentDemo slug="waterfall" demo-id="server-load" />
 
+### Responsive Breakpoints + Mixed-Size Server Images
+
+Simulated API returns images with varying width/height (320/400/480/560 wide, random heights); breakpoints switch between 2/3/4 columns as the container resizes; exact-space placeholders avoid layout shift before images load.
+
+<ComponentDemo slug="waterfall" demo-id="responsive-server" />
+
 ## API
 
 `@xui-design/core` ComponentSpec · single contract, identical on both frameworks

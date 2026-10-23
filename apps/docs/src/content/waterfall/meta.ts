@@ -5,6 +5,8 @@ import ResponsiveVue from './demos/responsive.vue';
 import ResponsiveTsx from './demos/responsive';
 import ServerLoadVue from './demos/server-load.vue';
 import ServerLoadTsx from './demos/server-load';
+import ResponsiveServerVue from './demos/responsive-server.vue';
+import ResponsiveServerTsx from './demos/responsive-server';
 
 import basicVueSource from './demos/basic.vue?raw';
 import basicTsxSource from './demos/basic.tsx?raw';
@@ -12,6 +14,8 @@ import responsiveVueSource from './demos/responsive.vue?raw';
 import responsiveTsxSource from './demos/responsive.tsx?raw';
 import serverLoadVueSource from './demos/server-load.vue?raw';
 import serverLoadTsxSource from './demos/server-load.tsx?raw';
+import responsiveServerVueSource from './demos/responsive-server.vue?raw';
+import responsiveServerTsxSource from './demos/responsive-server.tsx?raw';
 
 /** Waterfall 瀑布流文档元数据 */
 export const waterfallMeta: ComponentMeta = {
@@ -110,6 +114,23 @@ export const waterfallMeta: ComponentMeta = {
       reactComponent: ServerLoadTsx,
       vueSource: serverLoadVueSource,
       reactSource: serverLoadTsxSource,
+    },
+    {
+      id: 'responsive-server',
+      title: {
+        'zh-CN': '响应式断点 + 服务端不同尺寸图片',
+        'en-US': 'Responsive Breakpoints + Mixed-Size Server Images',
+      },
+      description: {
+        'zh-CN':
+          '模拟服务端返回宽高各异的图片（320/400/480/560 宽，高度随机），结合 breakpoints 随容器宽度在 2 / 3 / 4 列间切换；图片加载前按真实宽高占位，加载完成后自动重排。',
+        'en-US':
+          'Simulated API returns images with varying width/height (320/400/480/560 wide, random heights); breakpoints switch between 2/3/4 columns as the container resizes; exact-space placeholders avoid layout shift before images load.',
+      },
+      vueComponent: ResponsiveServerVue,
+      reactComponent: ResponsiveServerTsx,
+      vueSource: responsiveServerVueSource,
+      reactSource: responsiveServerTsxSource,
     },
   ],
   api: {
