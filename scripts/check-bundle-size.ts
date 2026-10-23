@@ -2,10 +2,10 @@
  * 体积检查脚本
  *
  * 检查各包构建产物是否符合体积预算：
- * - @xui-design/shared: < 74KB (gzip；TimeSlotPicker 矩形框选逻辑加入后由 73KB 上调)
- * - @xui-design/core: < 35KB (gzip，Dropdown 契约加入后由 30KB 上调)
- * - @xui-design/vue: < 122KB (gzip, 不含 vue；Carousel 加入后由 115KB 上调)
- * - @xui-design/react: < 100KB (gzip, 不含 react)
+ * - @xui-design/shared: < 78KB (gzip；Waterfall 布局 + breakpoint logic 加入后由 74KB 上调)
+ * - @xui-design/core: < 38KB (gzip，Waterfall 契约加入后由 36KB 上调)
+ * - @xui-design/vue: < 128KB (gzip, 不含 vue；Waterfall SFC + ResizeObserver 加入后由 123KB 上调)
+ * - @xui-design/react: < 101KB (gzip, 不含 react)
  * - @xui-design/styles: < 20KB (gzip)
  * - @xui-design/icons: < 50KB (gzip)
  */
@@ -29,21 +29,21 @@ const budgets: SizeBudget[] = [
   {
     packageName: '@xui-design/shared',
     distDir: 'packages/shared/dist',
-    maxGzipKB: 74,
-    description: '纯逻辑核心层（TimeSlotPicker 矩形框选 + 0.6KB）',
+    maxGzipKB: 78,
+    description: '纯逻辑核心层（Waterfall 布局 + breakpoint logic 上调）',
   },
   {
     packageName: '@xui-design/core',
     distDir: 'packages/core/dist',
-    // 30 → 35 → 36：新增 TimeSlotPicker 契约（types + spec），实测 35.01KB，上调预算
-    maxGzipKB: 36,
+    // 30 → 35 → 36 → 38：Waterfall 契约加入后上调
+    maxGzipKB: 38,
     description: '框架无关抽象层',
   },
   {
     packageName: '@xui-design/vue',
     distDir: 'packages/vue/dist',
-    maxGzipKB: 123,
-    description: 'Vue 适配层（不含 vue；TimeSlotPicker + 1KB）',
+    maxGzipKB: 128,
+    description: 'Vue 适配层（不含 vue；Waterfall + 3.75KB）',
   },
   {
     packageName: '@xui-design/react',

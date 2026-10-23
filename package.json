@@ -13,6 +13,7 @@
     "type-check": "turbo type-check",
     "e2e": "playwright test",
     "e2e:update-visual": "playwright test e2e/visual.spec.ts --update-snapshots",
+    "gate": "tsx scripts/gate.ts",
     "release": "turbo build && changeset publish",
     "changeset": "changeset"
   },
@@ -28,7 +29,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.35.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-vue": "^9.28.0",
     "husky": "^9.0.0",
     "jsdom": "^24.0.0",

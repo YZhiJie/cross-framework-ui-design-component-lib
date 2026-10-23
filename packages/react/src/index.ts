@@ -49,6 +49,13 @@ export { Steps } from './components/steps';
 export type { StepsRef } from './components/steps';
 export { Carousel } from './components/carousel';
 export type { CarouselRef } from './components/carousel';
+export { Waterfall } from './components/waterfall';
+export type {
+  WaterfallItem,
+  WaterfallEvents,
+  WaterfallSlots,
+  WaterfallState,
+} from './components/waterfall';
 export { Button } from './components/button';
 
 export type { SelectRef } from './components/select';
@@ -128,6 +135,9 @@ export type {
   UploadFile,
   TimeSlotPickerProps,
   TimeSlotGranularity,
+  WaterfallProps,
+  WaterfallBreakpoint,
+  WaterfallLayoutPayload,
 } from '@xui-design/core';
 
 export { useLogicState } from './hooks/use-logic-state';

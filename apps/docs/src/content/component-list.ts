@@ -71,6 +71,7 @@ export const COMPONENT_LIST: ComponentEntry[] = [
   { name: 'Table', slug: 'table', title: '表格', category: 'display', available: true },
   { name: 'Tree', slug: 'tree', title: '树形控件', category: 'display', available: true },
   { name: 'Carousel', slug: 'carousel', title: '轮播图', category: 'display', available: true },
+  { name: 'Waterfall', slug: 'waterfall', title: '瀑布流', category: 'display', available: true },
   // 导航布局
   { name: 'Tabs', slug: 'tabs', title: '标签页', category: 'navigation', available: true },
   {

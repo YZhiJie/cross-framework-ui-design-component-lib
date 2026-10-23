@@ -414,6 +414,13 @@ const API_COMPONENTS: ComponentPlan[] = [
     modelProp: 'value',
     modelCoveredProps: ['defaultValue'],
   },
+  {
+    name: 'Waterfall',
+    specKey: 'waterfallSpec',
+    reactSource: 'packages/react/src/components/waterfall/Waterfall.tsx',
+    modelProp: null,
+    modelCoveredProps: [],
+  },
 ];
 
 interface MatrixRow {

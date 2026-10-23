@@ -23,23 +23,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
+      - name: 统一门禁（lint → type-check → build → contract-test → test → bundle-size）
+        run: pnpm gate
 
-      - name: Type check
-        run: pnpm type-check
-
-      - name: Test
+      # 覆盖率不属于门禁判定（不阻塞），单独跑一次带 coverage flag 上传 codecov
+      - name: Test with coverage
         run: pnpm test:coverage
-
-      - name: Build
-        run: pnpm build
-
-      - name: Check bundle size
-        run: pnpm exec tsx scripts/check-bundle-size.ts
-
-      - name: Contract test
-        run: pnpm exec tsx scripts/contract-test.ts
 
       - name: Upload coverage
         uses: codecov/codecov-action@v4

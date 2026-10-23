@@ -37,8 +37,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm build
+      # 发布前再跑一遍门禁，防止 CI → release 间隙有意外变动
+      - name: 统一门禁
+        run: pnpm gate
 
       - name: Create release PR or publish
         id: changesets

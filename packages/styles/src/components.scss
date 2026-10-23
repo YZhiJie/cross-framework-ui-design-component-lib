@@ -4589,3 +4589,46 @@
 .xui-time-slot-picker__legend-swatch.is-selected {
   background-color: var(--xui-color-primary, #4f46e5);
 }
+
+/* ===================== Waterfall（瀑布流布局） ===================== */
+
+.xui-waterfall {
+  --xui-waterfall-gutter: 16px;
+
+  display: flex;
+  width: 100%;
+  gap: var(--xui-waterfall-gutter);
+  box-sizing: border-box;
+}
+
+.xui-waterfall--empty {
+  /* 空态时不显示 flex 布局容器（让 empty slot 直接撑满） */
+  display: block;
+}
+
+.xui-waterfall--scrollable {
+  /* 无限滚动 / 虚拟滚动模式：可滚动容器 */
+  overflow: hidden auto;
+}
+
+.xui-waterfall__column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: var(--xui-waterfall-gutter);
+}
+
+.xui-waterfall__item {
+  /* 关键：防止瀑布流项被 CSS columns 或 print 分页打断 */
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.xui-waterfall__item-placeholder {
+  /* 未提供 item slot 时的占位（方便调试和空数据态） */
+  width: 100%;
+  min-height: 120px;
+  border-radius: var(--xui-radius-md, 6px);
+  background-color: var(--xui-color-fill, #f3f4f6);
+}
