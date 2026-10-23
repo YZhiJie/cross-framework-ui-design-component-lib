@@ -1,0 +1,91 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    "packages/*": {
+      "project": [
+        "src/**/*.{ts,tsx}"
+      ],
+      "entry": [
+        "src/index.ts"
+      ]
+    },
+    "packages/vue": {
+      "project": [
+        "src/**/*.{ts,vue}"
+      ],
+      "entry": [
+        "src/index.ts"
+      ]
+    },
+    "packages/styles": {
+      "project": [
+        "src/**/*"
+      ],
+      "entry": [
+        "src/index.ts"
+      ]
+    },
+    "apps/docs": {
+      "entry": [
+        "scripts/*.ts"
+      ]
+    },
+    ".": {
+      "entry": [
+        "scripts/*.ts",
+        "e2e/**/*.ts"
+      ]
+    }
+  },
+  "includeEntryExports": true,
+  "rules": {
+    "exports": "error",
+    "types": "error",
+    "duplicates": "error",
+    "enumMembers": "off"
+  },
+  "ignoreDependencies": [
+    "@xui-design/styles",
+    "autoprefixer",
+    "husky",
+    "rollup"
+  ],
+  "ignoreIssues": {
+    "packages/shared/src/**": [
+      "exports",
+      "types"
+    ],
+    "packages/vue/src/**": [
+      "exports",
+      "types"
+    ],
+    "packages/react/src/**": [
+      "exports",
+      "types"
+    ],
+    "packages/styles/src/**": [
+      "exports",
+      "types"
+    ],
+    "packages/icons/src/**": [
+      "exports",
+      "types"
+    ],
+    "packages/utils/src/**": [
+      "exports",
+      "types"
+    ],
+    "packages/core/src/components/**": [
+      "exports",
+      "types"
+    ],
+    "packages/core/src/index.ts": [
+      "exports",
+      "types"
+    ],
+    "packages/core/src/spec.ts": [
+      "exports",
+      "types"
+    ]
+  }
+}

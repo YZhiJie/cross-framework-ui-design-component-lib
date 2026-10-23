@@ -12,7 +12,11 @@ export type XuiTheme = 'light' | 'dark';
 /** 主题变化监听器 */
 export type ThemeListener = (theme: XuiTheme) => void;
 
-/** 写入 <html> 的属性名（与 tokens.scss 的选择器 [data-theme='dark'] 对齐） */
+/**
+ * 写入 <html> 的属性名（与 tokens.scss 的选择器 [data-theme='dark'] 对齐）
+ *
+ * @public 供使用方手动切换主题时读取属性名，不在包内部被引用
+ */
 export const THEME_ATTRIBUTE = 'data-theme';
 
 const listeners = new Set<ThemeListener>();

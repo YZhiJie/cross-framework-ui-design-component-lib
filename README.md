@@ -274,9 +274,39 @@ scripts/
 | `pnpm build` | 全部包生产构建 |
 | `pnpm test` | 双端单元测试（Vitest，Vue 289 + React 288） |
 | `pnpm lint` / `pnpm type-check` | ESLint + Stylelint / TS + vue-tsc 类型检查 |
+| `pnpm gate` | 统一门禁：lint + type-check + knip + test + 契约对齐 + 体积检查（提交前必跑） |
+| `pnpm knip` | 未使用文件 / 导出 / 类型 / 依赖检查（公开 API 已按目录白名单，见 `knip.json`） |
+| `pnpm test:coverage` | 单测覆盖率报告 |
+| `pnpm e2e` / `pnpm e2e:update-visual` | Playwright E2E 与视觉回归快照更新 |
+| `pnpm changeset` | 交互式记录变更（选择包与 semver 级别，生成 `.changeset/*.md`） |
+| `pnpm changeset status` | 预览待发布包与版本 bump 级别（不修改文件） |
+| `pnpm changeset version` | 消费 changeset：bump 各包版本并生成 CHANGELOG（会删除 changeset 文件） |
+| `pnpm release` | 本地构建 + `changeset publish`（CI 实际用 `pnpm -r publish` 顺序发布） |
 | `pnpm exec tsx scripts/contract-test.ts` | core ↔ Vue ↔ React 三方契约对齐校验 |
 | `pnpm exec tsx scripts/create-component.ts <Name>` | 一键生成组件四层骨架（core 契约 → shared 逻辑 → 双端适配） |
 | `pnpm --filter @xui-design/docs dev` | 启动文档站（5175，占用顺延 5176） |
+
+### 未使用代码检查（knip）
+
+`tsc` 的 `noUnusedLocals` / ESLint 的 `no-unused-vars` 只检查文件内局部成员，export 一律豁免；跨文件的死导出、死类型与死文件由 [knip](https://knip.dev) 负责。`pnpm knip` 在 `pnpm gate` 中是**阻断项**（配置见根目录 `knip.json`）。
+
+常用配置字段：
+
+| 字段 | 作用 | 本仓库取值 |
+|------|------|-----------|
+| `workspaces.<name>.project` | 参与分析的文件 | 各包 `src/**/*.{ts,tsx}`，`packages/vue` 额外含 `src/**/*.vue` |
+| `workspaces.<name>.entry` | 入口，未被入口引用的文件即视为未使用 | 各包显式 `src/index.ts` |
+| `includeEntryExports` | 是否连入口文件自身的导出一起检查 | `true` |
+| `rules` | 各规则级别（`error` / `warn` / `off`） | `exports`、`types`、`duplicates` 为 `error`；`enumMembers` 为 `off` |
+| `ignoreIssues` | 按文件/目录忽略指定规则 | 各包公共 API 面（见下） |
+| `ignoreDependencies` | 忽略误报的依赖 | `@xui-design/styles`、`autoprefixer`、`husky`、`rollup` |
+
+关键约定：
+
+- **entry 必须显式写 `src/index.ts`**：包 `package.json` 的 `exports` 指向 `dist/types/index.d.ts`，省略后 knip 会把构建产物当入口，导致零发现（等价于失效）。knip 提示的 `Remove redundant entry pattern` 在本仓库属误报，保留即可。
+- **公共 API 用目录级白名单**：`shared` / `vue` / `react` / `styles` / `icons` / `utils` 的 `src/**`、`core/src/components/**`、`core/src/index.ts`、`core/src/spec.ts` 忽略 `exports` / `types`（这些是包对外契约）。`packages/core/src/types.ts` 故意**不在**白名单内，契约层新增的未使用成员会被门禁捕获。
+- **单点豁免用 JSDoc `@public`**：导出确实对外、但静态分析无法识别时（如 `THEME_ATTRIBUTE`、被动态 import 的 `messagesMap`、经对象成员暴露的 `message.open`），加 `@public` 标注而非放宽整目录。
+- **白名单是渐进式的**：后续可按文件逐个收窄，让包内部死导出重新进入告警。
 
 ### 新增组件流程
 

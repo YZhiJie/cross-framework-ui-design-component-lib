@@ -251,7 +251,11 @@ const enUS: UiMessages = {
   },
 };
 
-/** 语言 → 文案映射（生成器等 Node 端工具可直接取值，无需 Vue 上下文） */
+/**
+ * 语言 → 文案映射（生成器等 Node 端工具可直接取值，无需 Vue 上下文）
+ *
+ * @public 由 gen-component-docs.ts 动态导入使用，静态分析无法解析
+ */
 export const messagesMap: Record<'zh-CN' | 'en-US', UiMessages> = {
   'zh-CN': zhCN,
   'en-US': enUS,

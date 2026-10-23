@@ -15,7 +15,7 @@ import type { LText } from '../i18n';
 export type CategoryKey = 'basic' | 'form' | 'display' | 'navigation' | 'feedback';
 
 /** Props API 表格行 */
-export interface ApiPropRow {
+interface ApiPropRow {
   /** 属性名 */
   name: string;
   /** TS 类型（字符串展示） */
@@ -29,7 +29,7 @@ export interface ApiPropRow {
 }
 
 /** Events API 表格行（Vue 事件 ↔ React 回调映射） */
-export interface ApiEventRow {
+interface ApiEventRow {
   /** Vue 事件名（如 change） */
   vue: string;
   /** React 回调名（如 onChange），无对应回调用 '—' */
@@ -41,7 +41,7 @@ export interface ApiEventRow {
 }
 
 /** Slots API 表格行（Vue 插槽 ↔ React 渲染回调映射） */
-export interface ApiSlotRow {
+interface ApiSlotRow {
   /** Vue 插槽名 */
   vue: string;
   /** React 对应回调名（如 renderTitle），无用 '—' */
@@ -51,7 +51,7 @@ export interface ApiSlotRow {
 }
 
 /** 命令式方法表格行（Message 等命令式 API） */
-export interface ApiMethodRow {
+interface ApiMethodRow {
   /** 方法名 */
   name: string;
   /** 函数签名 */
@@ -61,7 +61,7 @@ export interface ApiMethodRow {
 }
 
 /** 附加契约类型块（TableColumn / MessageOptions 等） */
-export interface ApiTypeBlock {
+interface ApiTypeBlock {
   /** 类型名 */
   name: string;
   /** 类型定义（TS 源码文本） */

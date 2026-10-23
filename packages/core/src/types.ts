@@ -5,7 +5,11 @@
  * 与 @xui-design/shared 的 LogicInstance 结构兼容（由 spec 的 satisfies 校验保证一致性）。
  */
 
-/** 属性运行时类型构造器（供 Vue props 校验等运行时 schema 使用） */
+/**
+ * 属性运行时类型构造器（供 Vue props 校验等运行时 schema 使用）
+ *
+ * @public 公共契约原语，供使用方自行扩展 props 声明
+ */
 // args 用 any[]：需与 lib 中 FunctionConstructor 的 new (...argArray: any[]) 声明兼容，
 // 换成 unknown[] 会导致 Function 不再可赋值（实验已验证）
 export type Constructor<T = unknown> = new (
@@ -16,10 +20,18 @@ export type Constructor<T = unknown> = new (
 /** 支持单个构造器或构造器数组（Vue 风格的一多类型声明） */
 export type PropType = Constructor | ReadonlyArray<Constructor>;
 
-/** 取消订阅函数 */
+/**
+ * 取消订阅函数
+ *
+ * @public 公共契约原语
+ */
 export type Unsubscribe = () => void;
 
-/** 状态监听器，收到的是状态快照（浅拷贝） */
+/**
+ * 状态监听器，收到的是状态快照（浅拷贝）
+ *
+ * @public 公共契约原语
+ */
 export type StateListener<S> = (state: S) => void;
 
 /** 订阅状态变更，返回取消订阅函数 */

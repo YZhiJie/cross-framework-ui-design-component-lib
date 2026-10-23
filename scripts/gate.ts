@@ -2,11 +2,13 @@
  * 统一门禁脚本 —— 一条命令走完所有发布前检查
  *
  * 执行顺序（依赖链决定：后一个需要前一个的产物）：
- *   1. type-check  全仓 TypeScript 编译检查（含 noUnusedLocals/noUnusedParameters）
- *   2. build        构建所有包（契约测试 + 体积检查依赖 dist/types）
- *   3. contract-test 双端 API 对齐
- *   4. test         所有单元测试
- *   5. check-bundle-size 体积预算
+ *   1. lint         代码风格 + ESLint
+ *   2. type-check   全仓 TypeScript 编译检查（含 noUnusedLocals/noUnusedParameters）
+ *   3. knip         未使用文件 / 导出 / 类型 / 依赖（阻断）
+ *   4. build        构建所有包（契约测试 + 体积检查依赖 dist/types）
+ *   5. contract-test 双端 API 对齐
+ *   6. test         所有单元测试
+ *   7. check-bundle-size 体积预算
  *
  * 用法：
  *   pnpm gate                # 跑全部门禁
@@ -55,6 +57,14 @@ const steps: GateStep[] = [
     label: 'TypeScript 类型检查（含 noUnusedLocals/noUnusedParameters）',
     cmd: 'pnpm',
     args: ['type-check'],
+    required: true,
+  },
+  {
+    // 公开 API 面已在 knip.json 的 ignoreIssues 中白名单化，其余未使用导出/类型阻断
+    name: 'knip',
+    label: '未使用文件 / 导出 / 类型 / 依赖（knip）',
+    cmd: 'pnpm',
+    args: ['knip'],
     required: true,
   },
   {
@@ -133,6 +143,7 @@ ${C.bold}用法${C.reset}:
 
 ${C.bold}当前步骤${C.reset}:
   type-check      TypeScript 编译检查（含 noUnusedLocals/noUnusedParameters）
+  knip            未使用文件 / 导出 / 类型 / 依赖检查（阻断）
   build           构建所有包
   contract-test   双端 API 契约对齐
   test            单元测试

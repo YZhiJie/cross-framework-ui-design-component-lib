@@ -45,8 +45,6 @@ import { carouselMeta } from './carousel/meta';
 import { waterfallMeta } from './waterfall/meta';
 import { timeSlotPickerMeta } from './time-slot-picker/meta';
 
-export { CATEGORIES, COMPONENT_LIST };
-
 /** 已上线组件元数据（新增组件文档时在此注册） */
 export const componentMetas: ComponentMeta[] = [
   buttonMeta,
