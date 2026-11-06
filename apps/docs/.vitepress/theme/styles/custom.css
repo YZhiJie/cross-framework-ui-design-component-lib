@@ -673,13 +673,38 @@ body {
   overflow-wrap: anywhere;
 }
 
+/* ---------- 左侧栏滚动容器 ---------- */
+
+/* VP 默认让整个 .VPSidebar 滚动，轨道从视口顶端（导航栏品牌区）贯穿到底部。
+ * 改为外层固定、只裁剪不滚动，由内部 .nav 承担滚动：
+ * 轨道从导航栏下沿（桌面）开始，只覆盖菜单列表；移动端抽屉同理。
+ * 同时移除外层 96px 底部留白（滚到底后的大片空白来源之一），
+ * 由列表容器自身 8px 内边距收尾，与末组的 24px 下内边距合计约 32px。
+ * 选择器用 元素 + 双类（0,2,1）压过 VP 组件 scoped 样式的 [data-v-*]（0,2,0）。 */
+aside.VPSidebar[class] {
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+/* 原 curtain 用于遮挡滚入导航栏下方的内容；内容已约束在 .nav 内，不再需要 */
+aside.VPSidebar[class] .curtain {
+  display: none;
+}
+
+aside.VPSidebar .nav {
+  height: 100%;
+  padding-bottom: 8px;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+}
+
 /* ---------- 滚动条 ---------- */
 
 /* 页面级（html）与浅色背景的内部滚动容器：细条 + 低对比 thumb。
  * 同时声明标准属性（Firefox / Chromium 121+）与 -webkit- 伪元素（Safari / 旧 Chromium），
  * 颜色统一取自 --docs-scrollbar-*，由 :root / .dark 两套变量驱动。 */
 html,
-.VPSidebar,
+aside.VPSidebar .nav,
 .vp-doc table,
 .api-table-wrap,
 .VPLocalSearchBox .results {
@@ -688,7 +713,7 @@ html,
 }
 
 html::-webkit-scrollbar,
-.VPSidebar::-webkit-scrollbar,
+aside.VPSidebar .nav::-webkit-scrollbar,
 .vp-doc table::-webkit-scrollbar,
 .api-table-wrap::-webkit-scrollbar,
 .VPLocalSearchBox .results::-webkit-scrollbar {
@@ -697,7 +722,7 @@ html::-webkit-scrollbar,
 }
 
 html::-webkit-scrollbar-track,
-.VPSidebar::-webkit-scrollbar-track,
+aside.VPSidebar .nav::-webkit-scrollbar-track,
 .vp-doc table::-webkit-scrollbar-track,
 .api-table-wrap::-webkit-scrollbar-track,
 .VPLocalSearchBox .results::-webkit-scrollbar-track {
@@ -705,7 +730,7 @@ html::-webkit-scrollbar-track,
 }
 
 html::-webkit-scrollbar-thumb,
-.VPSidebar::-webkit-scrollbar-thumb,
+aside.VPSidebar .nav::-webkit-scrollbar-thumb,
 .vp-doc table::-webkit-scrollbar-thumb,
 .api-table-wrap::-webkit-scrollbar-thumb,
 .VPLocalSearchBox .results::-webkit-scrollbar-thumb {
@@ -714,7 +739,7 @@ html::-webkit-scrollbar-thumb,
 }
 
 html::-webkit-scrollbar-thumb:hover,
-.VPSidebar::-webkit-scrollbar-thumb:hover,
+aside.VPSidebar .nav::-webkit-scrollbar-thumb:hover,
 .vp-doc table::-webkit-scrollbar-thumb:hover,
 .api-table-wrap::-webkit-scrollbar-thumb:hover,
 .VPLocalSearchBox .results::-webkit-scrollbar-thumb:hover {
