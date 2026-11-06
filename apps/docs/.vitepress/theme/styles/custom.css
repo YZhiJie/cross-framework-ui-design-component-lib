@@ -152,6 +152,16 @@
   --docs-on-primary: #fff;
   --docs-radius: 8px;
   --docs-shadow-sm: 0 1px 2px rgb(0 0 0 / 6%);
+
+  /* 滚动条：细条 + 贴近底色的 thumb，hover 时加深给出可见反馈 */
+  --docs-scrollbar-size: 8px;
+  --docs-scrollbar-thumb: #d1d5db;
+  --docs-scrollbar-thumb-hover: #9ca3af;
+  --docs-scrollbar-track: transparent;
+
+  /* 代码块底色恒为深色，与主题无关，滚动条单独用半透明白 */
+  --docs-scrollbar-thumb-on-dark: rgb(255 255 255 / 22%);
+  --docs-scrollbar-thumb-on-dark-hover: rgb(255 255 255 / 38%);
 }
 
 /* 暗色主题：与组件 tokens.scss 的暗色同一属性驱动（.dark 由 VitePress 维护） */
@@ -170,6 +180,8 @@
   --docs-danger: #f87171;
   --docs-on-primary: #111827;
   --docs-shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+  --docs-scrollbar-thumb: #374151;
+  --docs-scrollbar-thumb-hover: #4b5563;
 }
 
 /* 文档框架底色与文字跟随（VP 用自己的容器，这里只调正文底色） */
@@ -659,6 +671,84 @@ body {
   padding-top: 6px;
   padding-bottom: 6px;
   overflow-wrap: anywhere;
+}
+
+/* ---------- 滚动条 ---------- */
+
+/* 页面级（html）与浅色背景的内部滚动容器：细条 + 低对比 thumb。
+ * 同时声明标准属性（Firefox / Chromium 121+）与 -webkit- 伪元素（Safari / 旧 Chromium），
+ * 颜色统一取自 --docs-scrollbar-*，由 :root / .dark 两套变量驱动。 */
+html,
+.VPSidebar,
+.vp-doc table,
+.api-table-wrap,
+.VPLocalSearchBox .results {
+  scrollbar-width: thin;
+  scrollbar-color: var(--docs-scrollbar-thumb) var(--docs-scrollbar-track);
+}
+
+html::-webkit-scrollbar,
+.VPSidebar::-webkit-scrollbar,
+.vp-doc table::-webkit-scrollbar,
+.api-table-wrap::-webkit-scrollbar,
+.VPLocalSearchBox .results::-webkit-scrollbar {
+  width: var(--docs-scrollbar-size);
+  height: var(--docs-scrollbar-size);
+}
+
+html::-webkit-scrollbar-track,
+.VPSidebar::-webkit-scrollbar-track,
+.vp-doc table::-webkit-scrollbar-track,
+.api-table-wrap::-webkit-scrollbar-track,
+.VPLocalSearchBox .results::-webkit-scrollbar-track {
+  background: var(--docs-scrollbar-track);
+}
+
+html::-webkit-scrollbar-thumb,
+.VPSidebar::-webkit-scrollbar-thumb,
+.vp-doc table::-webkit-scrollbar-thumb,
+.api-table-wrap::-webkit-scrollbar-thumb,
+.VPLocalSearchBox .results::-webkit-scrollbar-thumb {
+  background-color: var(--docs-scrollbar-thumb);
+  border-radius: 999px;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+.VPSidebar::-webkit-scrollbar-thumb:hover,
+.vp-doc table::-webkit-scrollbar-thumb:hover,
+.api-table-wrap::-webkit-scrollbar-thumb:hover,
+.VPLocalSearchBox .results::-webkit-scrollbar-thumb:hover {
+  background-color: var(--docs-scrollbar-thumb-hover);
+}
+
+/* 深色代码块（VP 原生代码块与移植的 CodeBlock）：底色恒为深色，
+ * 沿用页面 thumb 会在浅色主题下与底色同明度而不可见，故改用半透明白。 */
+.vp-doc [class*='language-'] pre,
+.code-block__pre {
+  scrollbar-width: thin;
+  scrollbar-color: var(--docs-scrollbar-thumb-on-dark) var(--docs-scrollbar-track);
+}
+
+.vp-doc [class*='language-'] pre::-webkit-scrollbar,
+.code-block__pre::-webkit-scrollbar {
+  width: var(--docs-scrollbar-size);
+  height: var(--docs-scrollbar-size);
+}
+
+.vp-doc [class*='language-'] pre::-webkit-scrollbar-track,
+.code-block__pre::-webkit-scrollbar-track {
+  background: var(--docs-scrollbar-track);
+}
+
+.vp-doc [class*='language-'] pre::-webkit-scrollbar-thumb,
+.code-block__pre::-webkit-scrollbar-thumb {
+  background-color: var(--docs-scrollbar-thumb-on-dark);
+  border-radius: 999px;
+}
+
+.vp-doc [class*='language-'] pre::-webkit-scrollbar-thumb:hover,
+.code-block__pre::-webkit-scrollbar-thumb:hover {
+  background-color: var(--docs-scrollbar-thumb-on-dark-hover);
 }
 
 /* ---------- 响应式 ---------- */
