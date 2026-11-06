@@ -698,6 +698,31 @@ aside.VPSidebar .nav {
   overscroll-behavior: contain;
 }
 
+/* 桌面端让滚动条贴住侧栏右沿：外层去掉右侧内边距，.nav 横向铺满到右边界。
+ * 菜单内容仍受 VPSidebarGroup 的固定宽度约束（侧栏 272px - 左右各 32px = 208px），
+ * 因此文字左对齐/宽度不变，右侧 32px 成为内容与滚动条之间的呼吸区，不会横向溢出。
+ * 移动端抽屉保持原有 32px 右侧内边距（触摸滚动条为浮层，无需贴边）。 */
+@media (width >= 960px) {
+  aside.VPSidebar[class] {
+    padding-right: 0;
+  }
+}
+
+/* ---------- 顶栏背景铺满 ---------- */
+
+/* VP 在「有侧栏」布局下把导航背景画在 .content-body 上，而 .content 的 32px 右内边距
+ * 让背景止于视口右侧 32px 处，露出页面底色。把右内边距从 .content 下沉到 .content-body：
+ * 背景画到视口右沿，图标等内容因总内边距不变而保持原位置。 */
+@media (width >= 960px) {
+  .VPNavBar.has-sidebar:not(.home.top) .content {
+    padding-right: 0;
+  }
+
+  .VPNavBar.has-sidebar:not(.home.top) .content-body {
+    padding-right: 32px;
+  }
+}
+
 /* ---------- 滚动条 ---------- */
 
 /* 页面级（html）与浅色背景的内部滚动容器：细条 + 低对比 thumb。
